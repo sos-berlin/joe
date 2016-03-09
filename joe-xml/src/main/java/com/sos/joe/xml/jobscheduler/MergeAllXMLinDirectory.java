@@ -24,533 +24,533 @@ import com.sos.joe.xml.Utils;
 
 public class MergeAllXMLinDirectory {
 
-	public final static String	MASK_JOB					= "^.*\\.job\\.xml$";
-	public final static String	MASK_LOCK					= "^.*\\.lock\\.xml$";
-	public final static String	MASK_PROCESS_CLASS			= "^.*\\.process_class\\.xml$";
-	public final static String	MASK_JOB_CHAIN				= "^.*\\.job_chain\\.xml$";
-	public final static String	MASK_ORDER					= "^.*\\.order\\.xml$";
-    public final static String  MASK_SCHEDULE               = "^.*\\.schedule\\.xml$";
-    public final static String  MASK_MONITOR                = "^.*\\.monitor\\.xml$";
-	private String				path						= "";
-	private Element				config						= null;
-	private static String		encoding					= "ISO-8859-1";
+    public final static String MASK_JOB = "^.*\\.job\\.xml$";
+    public final static String MASK_LOCK = "^.*\\.lock\\.xml$";
+    public final static String MASK_PROCESS_CLASS = "^.*\\.process_class\\.xml$";
+    public final static String MASK_JOB_CHAIN = "^.*\\.job_chain\\.xml$";
+    public final static String MASK_ORDER = "^.*\\.order\\.xml$";
+    public final static String MASK_SCHEDULE = "^.*\\.schedule\\.xml$";
+    public final static String MASK_MONITOR = "^.*\\.monitor\\.xml$";
+    private String path = "";
+    private Element config = null;
+    private static String encoding = "ISO-8859-1";
     private HashMap<String, String> listOfChanges = null;
     private ArrayList<String> listOfReadOnly = null;
     private ArrayList<String> listOfChangeElementNames = null;
 
-	public MergeAllXMLinDirectory(final String path_) {
-		path = path_;
-	}
+    public MergeAllXMLinDirectory(final String path_) {
+        path = path_;
+    }
 
-	public MergeAllXMLinDirectory() {
-	}
+    public MergeAllXMLinDirectory() {
+    }
 
-	public String parseDocuments() {
-		Element root = null;
-		Document parentDoc = null;
-		Element jobs = null;
+    public String parseDocuments() {
+        Element root = null;
+        Document parentDoc = null;
+        Element jobs = null;
         Element locks = null;
         Element monitors = null;
         Element schedules = null;
-		Element processClass = null;
-		Element jobChains = null;
-		Element orders = null;
+        Element processClass = null;
+        Element jobChains = null;
+        Element orders = null;
         listOfReadOnly = new ArrayList<String>();
         listOfChangeElementNames = new ArrayList<String>();
-		try {
-			SAXBuilder builder = new SAXBuilder();
-			String xml = createConfigurationFile();
-			parentDoc = builder.build(new StringReader(xml));
-			root = parentDoc.getRootElement();
-			if (root != null) {
-				config = root.getChild("config");
-			}
-			addContains(processClass, "process_classes", MASK_PROCESS_CLASS);
-			addContains(schedules, "schedules", MASK_SCHEDULE);
-			addContains(locks, "locks", MASK_LOCK);
-			addContains(jobs, "jobs", MASK_JOB);
-			addContains(jobChains, "job_chains", MASK_JOB_CHAIN);
-			addContainsForOrder(orders, "commands", MASK_ORDER);
-           addContains(monitors, "monitors", MASK_MONITOR);
-			
-			return Utils.getElementAsString(parentDoc.getRootElement());
-			
-        } catch (Exception e) {
-			System.err.println("..error : " + e.getMessage());
-			return null;
-		}
-	}
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            String xml = createConfigurationFile();
+            parentDoc = builder.build(new StringReader(xml));
+            root = parentDoc.getRootElement();
+            if (root != null) {
+                config = root.getChild("config");
+            }
+            addContains(processClass, "process_classes", MASK_PROCESS_CLASS);
+            addContains(schedules, "schedules", MASK_SCHEDULE);
+            addContains(locks, "locks", MASK_LOCK);
+            addContains(jobs, "jobs", MASK_JOB);
+            addContains(jobChains, "job_chains", MASK_JOB_CHAIN);
+            addContainsForOrder(orders, "commands", MASK_ORDER);
+            addContains(monitors, "monitors", MASK_MONITOR);
 
-	protected File getNormalizedFile(final String url) throws Exception {
-		try {
-			if (url.startsWith("file")) {
-				return new java.io.File(java.net.URI.create(url));
+            return Utils.getElementAsString(parentDoc.getRootElement());
+
+        } catch (Exception e) {
+            System.err.println("..error : " + e.getMessage());
+            return null;
+        }
+    }
+
+    protected File getNormalizedFile(final String url) throws Exception {
+        try {
+            if (url.startsWith("file")) {
+                return new java.io.File(java.net.URI.create(url));
             } else {
-				return new java.io.File(url);
-			}
+                return new java.io.File(url);
+            }
         } catch (Exception e) {
-			throw new Exception("-> ..error : " + e);
-		}
-	}
+            throw new Exception("-> ..error : " + e);
+        }
+    }
 
-	private void addContains(Element parent, final String name, final String mask) {
-		SAXBuilder builder = null;
-		Document currDocument = null;
-		String jobXMLFilename = "";
-		try {
-			builder = getBuilder(false);
-			Vector filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), mask, java.util.regex.Pattern.CASE_INSENSITIVE);
-			Iterator orderIterator = filelist.iterator();
-			while (orderIterator.hasNext()) {
-				try {
-					jobXMLFilename = orderIterator.next().toString();
-					File jobXMLFile = new File(jobXMLFilename);
-					currDocument = builder.build(jobXMLFile);
-					Element xmlRoot = currDocument.getRootElement();
-					if (xmlRoot != null) {
-						if (parent == null) {
-							parent = new Element(name);
-							config.addContent(parent);
-						}
+    private void addContains(Element parent, final String name, final String mask) {
+        SAXBuilder builder = null;
+        Document currDocument = null;
+        String jobXMLFilename = "";
+        try {
+            builder = getBuilder(false);
+            Vector filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), mask, java.util.regex.Pattern.CASE_INSENSITIVE);
+            Iterator orderIterator = filelist.iterator();
+            while (orderIterator.hasNext()) {
+                try {
+                    jobXMLFilename = orderIterator.next().toString();
+                    File jobXMLFile = new File(jobXMLFilename);
+                    currDocument = builder.build(jobXMLFile);
+                    Element xmlRoot = currDocument.getRootElement();
+                    if (xmlRoot != null) {
+                        if (parent == null) {
+                            parent = new Element(name);
+                            config.addContent(parent);
+                        }
                         String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName()
                                 + ".xml"));
-						if (Utils.getAttributeValue("name", xmlRoot).length() > 0
-								&& !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
-							listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
-							xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
-						}
-						if (Utils.getAttributeValue("name", xmlRoot).length() == 0) {
-							xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
-						}
-						parent.addContent((Element) xmlRoot.clone());
-						if (!new File(jobXMLFilename).canWrite()) {
-							listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("name", xmlRoot));
-						}
-					}
+                        if (Utils.getAttributeValue("name", xmlRoot).length() > 0
+                                && !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
+                            listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
+                            xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
+                        }
+                        if (Utils.getAttributeValue("name", xmlRoot).length() == 0) {
+                            xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
+                        }
+                        parent.addContent((Element) xmlRoot.clone());
+                        if (!new File(jobXMLFilename).canWrite()) {
+                            listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("name", xmlRoot));
+                        }
+                    }
                 } catch (Exception e) {
-					ErrorLog.message(jobXMLFilename + " has error:" + e.toString(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-					continue;
-				}
-			}
+                    ErrorLog.message(jobXMLFilename + " has error:" + e.toString(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                    continue;
+                }
+            }
         } catch (Exception e) {
-			System.out.println("error: " + e.getMessage());
-		}
-	}
+            System.out.println("error: " + e.getMessage());
+        }
+    }
 
-	private void addContainsForOrder(Element parent, final String name, final String mask) {
-		SAXBuilder builder = new SAXBuilder();
-		Document currDocument = null;
-		try {
+    private void addContainsForOrder(Element parent, final String name, final String mask) {
+        SAXBuilder builder = new SAXBuilder();
+        Document currDocument = null;
+        try {
             Vector<File> filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), mask, java.util.regex.Pattern.CASE_INSENSITIVE);
             Iterator<File> orderIterator = filelist.iterator();
-			while (orderIterator.hasNext()) {
+            while (orderIterator.hasNext()) {
                 File xmlFile = orderIterator.next();
-				currDocument = builder.build(xmlFile);
-				Element xmlRoot = currDocument.getRootElement();
-				if (xmlRoot != null) {
-					if (parent == null) {
-						// config hat keinen Kindknoten {name}, also erzeugen
-						parent = new Element(name);
-						config.addContent(parent);
-					}
+                currDocument = builder.build(xmlFile);
+                Element xmlRoot = currDocument.getRootElement();
+                if (xmlRoot != null) {
+                    if (parent == null) {
+                        // config hat keinen Kindknoten {name}, also erzeugen
+                        parent = new Element(name);
+                        config.addContent(parent);
+                    }
                     String xmlNameWithoutExtension = xmlFile.getName().substring(0, xmlFile.getName().indexOf("."
                             + (xmlRoot.getName().equalsIgnoreCase("add_order") ? "order" : xmlRoot.getName() + ".xml")));
-					String[] splitNames = xmlNameWithoutExtension.split(",");
-					String jobChainname = "";
-					String orderId = "";
-					if (splitNames.length == 2) {
-						jobChainname = splitNames[0];
-						orderId = splitNames[1];
-					}
-					if (Utils.getAttributeValue("job_chain", xmlRoot).length() > 0
-							&& !jobChainname.equalsIgnoreCase(Utils.getAttributeValue("job_chain", xmlRoot))) {
-						listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
-						xmlRoot.setAttribute("job_chain", jobChainname);
-					}
-					if (Utils.getAttributeValue("id", xmlRoot).length() > 0 && !orderId.equalsIgnoreCase(Utils.getAttributeValue("id", xmlRoot))) {
-						listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
-						xmlRoot.setAttribute("id", orderId);
-					}
-					if (Utils.getAttributeValue("job_chain", xmlRoot).length() == 0) {
-						xmlRoot.setAttribute("job_chain", jobChainname);
-					}
-					if (Utils.getAttributeValue("id", xmlRoot).length() == 0) {
-						xmlRoot.setAttribute("id", orderId);
-					}
-					parent.addContent((Element) xmlRoot.clone());
+                    String[] splitNames = xmlNameWithoutExtension.split(",");
+                    String jobChainname = "";
+                    String orderId = "";
+                    if (splitNames.length == 2) {
+                        jobChainname = splitNames[0];
+                        orderId = splitNames[1];
+                    }
+                    if (Utils.getAttributeValue("job_chain", xmlRoot).length() > 0
+                            && !jobChainname.equalsIgnoreCase(Utils.getAttributeValue("job_chain", xmlRoot))) {
+                        listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
+                        xmlRoot.setAttribute("job_chain", jobChainname);
+                    }
+                    if (Utils.getAttributeValue("id", xmlRoot).length() > 0 && !orderId.equalsIgnoreCase(Utils.getAttributeValue("id", xmlRoot))) {
+                        listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
+                        xmlRoot.setAttribute("id", orderId);
+                    }
+                    if (Utils.getAttributeValue("job_chain", xmlRoot).length() == 0) {
+                        xmlRoot.setAttribute("job_chain", jobChainname);
+                    }
+                    if (Utils.getAttributeValue("id", xmlRoot).length() == 0) {
+                        xmlRoot.setAttribute("id", orderId);
+                    }
+                    parent.addContent((Element) xmlRoot.clone());
                     if (!xmlFile.canWrite()) {
-						listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("job_chain", xmlRoot) + ","
-								+ Utils.getAttributeValue("id", xmlRoot));
-					}
-				}
-			}
+                        listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("job_chain", xmlRoot) + ","
+                                + Utils.getAttributeValue("id", xmlRoot));
+                    }
+                }
+            }
         } catch (Exception e) {
-			System.out.println("error: " + e.getMessage());
-		}
-	}
+            System.out.println("error: " + e.getMessage());
+        }
+    }
 
-	private String getChildElementName(final String pName) {
-		if (pName.equals("jobs")) {
-			return "job";
+    private String getChildElementName(final String pName) {
+        if (pName.equals("jobs")) {
+            return "job";
         } else if (pName.equals("process_classes")) {
-				return "process_class";
+            return "process_class";
         } else if (pName.equals("locks")) {
-					return "lock";
+            return "lock";
         } else if (pName.equals("job_chains")) {
-						return "job_chain";
+            return "job_chain";
         } else {
-						return pName;
-					}
-	}
+            return pName;
+        }
+    }
 
-	private String createConfigurationFile() {
-		String xml = "<?xml version=\"1.0\" encoding=\"" + encoding + "\"?> ";
-		try {
-			xml = xml + "<spooler>  " + "      <config> " + "      </config> " + "    </spooler>";
+    private String createConfigurationFile() {
+        String xml = "<?xml version=\"1.0\" encoding=\"" + encoding + "\"?> ";
+        try {
+            xml = xml + "<spooler>  " + "      <config> " + "      </config> " + "    </spooler>";
         } catch (Exception e) {
             System.out.println("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: "
                     + e.getMessage());
-		}
-		return xml;
-	}
+        }
+        return xml;
+    }
 
     public void saveXMLDirectory(final Document doc, final HashMap<String, String> listOfChanges_) {
-		Element jobs = null;
-		Element locks = null;
-		Element processClass = null;
-		Element jobChains = null;
-		Element orders = null;
-		Element schedules = null;
-		Element monitors = null;
-		listOfChanges = listOfChanges_;
-		try {
-			Element root = doc.getRootElement();
-			if (root != null) {
-				config = root.getChild("config");
-			}
-			if (config != null) {
-				jobs = config.getChild("jobs");
-				processClass = config.getChild("process_classes");
-				locks = config.getChild("locks");
-				jobChains = config.getChild("job_chains");
-				orders = config.getChild("commands");
-				schedules = config.getChild("schedules");
-				monitors =  config.getChild("monitors");
-			}
-			save("job", jobs);
-			save("process_class", processClass);
+        Element jobs = null;
+        Element locks = null;
+        Element processClass = null;
+        Element jobChains = null;
+        Element orders = null;
+        Element schedules = null;
+        Element monitors = null;
+        listOfChanges = listOfChanges_;
+        try {
+            Element root = doc.getRootElement();
+            if (root != null) {
+                config = root.getChild("config");
+            }
+            if (config != null) {
+                jobs = config.getChild("jobs");
+                processClass = config.getChild("process_classes");
+                locks = config.getChild("locks");
+                jobChains = config.getChild("job_chains");
+                orders = config.getChild("commands");
+                schedules = config.getChild("schedules");
+                monitors = config.getChild("monitors");
+            }
+            save("job", jobs);
+            save("process_class", processClass);
             save("schedule", schedules);
             save("monitor", monitors);
-			save("lock", locks);
-			save("job_chain", jobChains);
-			save("order", orders);
-			save("add_order", orders);
-			deleteFiles();
-			listOfChanges.clear();
+            save("lock", locks);
+            save("job_chain", jobChains);
+            save("order", orders);
+            save("add_order", orders);
+            deleteFiles();
+            listOfChanges.clear();
         } catch (Exception e) {
-			System.out.println("..error in MergeAllXMLinDirectory.save. Could not save file " + e.getMessage());
-		}
-	}
+            System.out.println("..error in MergeAllXMLinDirectory.save. Could not save file " + e.getMessage());
+        }
+    }
 
-	private void save(final String name, final Element elem) {
-		List list = null;
-		if (elem != null) {
-			list = elem.getChildren(name);
-		}
-		if (list == null || list.size() == 0) {
-			return;
-		}
-		for (int i = 0; i < list.size(); i++) {
-			Element e = (Element) list.get(i);
-			saveLifeElement(name, e);
-		}
-	}
+    private void save(final String name, final Element elem) {
+        List list = null;
+        if (elem != null) {
+            list = elem.getChildren(name);
+        }
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            Element e = (Element) list.get(i);
+            saveLifeElement(name, e);
+        }
+    }
 
     public String saveLifeElement(final String name, final Element e, final HashMap<String, String> listOfChanges_,
             final ArrayList<String> listOfChangeElementNames_) {
-		listOfChangeElementNames = listOfChangeElementNames_;
-		listOfChanges = listOfChanges_;
-		return saveLifeElement(name, e);
-	}
+        listOfChangeElementNames = listOfChangeElementNames_;
+        listOfChanges = listOfChanges_;
+        return saveLifeElement(name, e);
+    }
 
-	public String saveAsLifeElement(String name, final Element e, String filename) {
-		String attrName = "";
-		if (name.equals("add_order"))
-			name = "order";
-		if (name.equals("order")) {
-			if (!filename.endsWith(".order.xml")) {
-				if (new File(filename).renameTo(new File(filename + ".order.xml"))) {
-					new File(filename).deleteOnExit();
-				}
-				filename = filename + ".order.xml";
-			}
-			String[] file = new File(filename).getName().split(",");
-			if (file.length == 2) {
-				attrName = (file.length >= 2 ? file[0] : "") + "," + (file.length >= 2 ? file[1] : "");
-				attrName = attrName.substring(0, attrName.indexOf(".order.xml"));
+    public String saveAsLifeElement(String name, final Element e, String filename) {
+        String attrName = "";
+        if (name.equals("add_order"))
+            name = "order";
+        if (name.equals("order")) {
+            if (!filename.endsWith(".order.xml")) {
+                if (new File(filename).renameTo(new File(filename + ".order.xml"))) {
+                    new File(filename).deleteOnExit();
+                }
+                filename = filename + ".order.xml";
+            }
+            String[] file = new File(filename).getName().split(",");
+            if (file.length == 2) {
+                attrName = (file.length >= 2 ? file[0] : "") + "," + (file.length >= 2 ? file[1] : "");
+                attrName = attrName.substring(0, attrName.indexOf(".order.xml"));
             } else {
-				attrName = Utils.getAttributeValue("job_chain", e) + "," + file[0];
-				filename = filename.replaceAll(new File(filename).getName(), attrName);
-				attrName = attrName.substring(0, attrName.indexOf(".order.xml"));
-			}
+                attrName = Utils.getAttributeValue("job_chain", e) + "," + file[0];
+                filename = filename.replaceAll(new File(filename).getName(), attrName);
+                attrName = attrName.substring(0, attrName.indexOf(".order.xml"));
+            }
         } else {
-			if (!filename.endsWith("." + e.getName() + ".xml")) {
-				if (!new File(filename).renameTo(new File(filename + "." + e.getName() + ".xml"))) {
-					new File(filename).deleteOnExit();
-				}
-				filename = filename + "." + e.getName() + ".xml";
-			}
-			String fname = new File(filename).getName();
-			attrName = fname.substring(0, fname.indexOf("." + e.getName()));
-		}
-		Element _elem = e;
-		if (name.equals("order")) {
-			_elem.removeAttribute("job_chain");
-			_elem.removeAttribute("id");
-			_elem.removeAttribute("replace");
+            if (!filename.endsWith("." + e.getName() + ".xml")) {
+                if (!new File(filename).renameTo(new File(filename + "." + e.getName() + ".xml"))) {
+                    new File(filename).deleteOnExit();
+                }
+                filename = filename + "." + e.getName() + ".xml";
+            }
+            String fname = new File(filename).getName();
+            attrName = fname.substring(0, fname.indexOf("." + e.getName()));
+        }
+        Element _elem = e;
+        if (name.equals("order")) {
+            _elem.removeAttribute("job_chain");
+            _elem.removeAttribute("id");
+            _elem.removeAttribute("replace");
         } else {
-			_elem.removeAttribute("name");
-		}
-		String xml = Utils.getElementAsString(_elem);
-		saveXML(xml, filename);
-		if (name.equals("order")) {
-			Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
-			Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), e);
+            _elem.removeAttribute("name");
+        }
+        String xml = Utils.getElementAsString(_elem);
+        saveXML(xml, filename);
+        if (name.equals("order")) {
+            Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
+            Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), e);
         } else {
-			Utils.setAttribute("name", attrName, e);
-		}
-		return filename;
-	}
+            Utils.setAttribute("name", attrName, e);
+        }
+        return filename;
+    }
 
-	public String saveLifeElement(String pstrCurrentTagName, final Element e) {
-		String filename = " ";
-		String attrName = "";
-		boolean ok = false;
-      
-		if (isOrderTag(pstrCurrentTagName)) {
-			pstrCurrentTagName = "order";
-		}
-		if (pstrCurrentTagName.equals("order")) {
-			attrName = Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e);
+    public String saveLifeElement(String pstrCurrentTagName, final Element e) {
+        String filename = " ";
+        String attrName = "";
+        boolean ok = false;
+
+        if (isOrderTag(pstrCurrentTagName)) {
+            pstrCurrentTagName = "order";
+        }
+        if (pstrCurrentTagName.equals("order")) {
+            attrName = Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e);
         } else {
-			attrName = Utils.getAttributeValue("name", e);
-		}
-		if (attrName != null && attrName.length() == 0){
-			return "";
-		}
-		
-		filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "."
-				+ (pstrCurrentTagName.equalsIgnoreCase("add_order") ? "order" : pstrCurrentTagName) + ".xml";
-		 
-		if (listOfChanges.containsKey(pstrCurrentTagName + "_" + attrName)) {
-			if (listOfChanges.get(pstrCurrentTagName + "_" + attrName).equals(SchedulerDom.DELETE)) {
-				if (!new File(filename).delete()) {
-					ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-				}
+            attrName = Utils.getAttributeValue("name", e);
+        }
+        if (attrName != null && attrName.length() == 0) {
+            return "";
+        }
+
+        filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "."
+                + (pstrCurrentTagName.equalsIgnoreCase("add_order") ? "order" : pstrCurrentTagName) + ".xml";
+
+        if (listOfChanges.containsKey(pstrCurrentTagName + "_" + attrName)) {
+            if (listOfChanges.get(pstrCurrentTagName + "_" + attrName).equals(SchedulerDom.DELETE)) {
+                if (!new File(filename).delete()) {
+                    ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                }
             } else {
-				Element _elem = e;
-				if (isOrderTag(pstrCurrentTagName)) {
-					_elem.removeAttribute("job_chain");
-					_elem.removeAttribute("id");
-					_elem.removeAttribute("replace");
+                Element _elem = e;
+                if (isOrderTag(pstrCurrentTagName)) {
+                    _elem.removeAttribute("job_chain");
+                    _elem.removeAttribute("id");
+                    _elem.removeAttribute("replace");
                 } else {
-					_elem.removeAttribute("name");
-				}
-				if (isJobTag(pstrCurrentTagName)) {
+                    _elem.removeAttribute("name");
+                }
+                if (isJobTag(pstrCurrentTagName)) {
                     if (_elem.getChild("process") != null) { // this is just a
                                                              // workaround to
                                                              // avoid script and
                                                              // process at the
                                                              // same object
-						if (_elem.getChild("process").getAttribute("file") == null) {
-							_elem.removeChild("process");
+                        if (_elem.getChild("process").getAttribute("file") == null) {
+                            _elem.removeChild("process");
                         } else {
-							_elem.removeChild("script");
-						}
-					}
-					e.removeAttribute("spooler_id");
-				}
-				String xml = Utils.getElementAsString(_elem);
-				ok = saveXML(xml, filename);
-				if (isOrderTag(pstrCurrentTagName)) {
-					Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
-					Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), e);
+                            _elem.removeChild("script");
+                        }
+                    }
+                    e.removeAttribute("spooler_id");
+                }
+                String xml = Utils.getElementAsString(_elem);
+                ok = saveXML(xml, filename);
+                if (isOrderTag(pstrCurrentTagName)) {
+                    Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
+                    Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), e);
                 } else {
-					Utils.setAttribute("name", attrName, e);
-				}
-			}
-		}
-		if (ok && !new File(filename).exists()) {
-			String xml = Utils.getElementAsString(e);
-			saveXML(xml, filename);
-		}
-		deleteFiles();
-		return filename;
-	}
+                    Utils.setAttribute("name", attrName, e);
+                }
+            }
+        }
+        if (ok && !new File(filename).exists()) {
+            String xml = Utils.getElementAsString(e);
+            saveXML(xml, filename);
+        }
+        deleteFiles();
+        return filename;
+    }
 
-	private boolean isJobTag(final String pstrTag) {
-		return pstrTag.equalsIgnoreCase("job");
-	}
+    private boolean isJobTag(final String pstrTag) {
+        return pstrTag.equalsIgnoreCase("job");
+    }
 
-	private boolean isOrderTag(final String pstrTag) {
-		return pstrTag.equalsIgnoreCase("order") || pstrTag.equalsIgnoreCase("add_order");
-	}
+    private boolean isOrderTag(final String pstrTag) {
+        return pstrTag.equalsIgnoreCase("order") || pstrTag.equalsIgnoreCase("add_order");
+    }
 
-	private boolean saveXML(final String xml, String filename) {
-		String originalFilename = filename;
-		filename = filename + "~";
-		boolean saveFile = false;
-		try {
-			SAXBuilder builder2 = getBuilder(false);
-			Document doc = builder2.build(new StringReader(xml));
-			// test
-			SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
- 			new File(originalFilename).delete();
-			saveFile = dom.writeElement(filename, doc);
-			if (saveFile && !new File(filename).renameTo(new File(originalFilename))) {
-				ErrorLog.message("could not rename file in " + filename, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-			}
+    private boolean saveXML(final String xml, String filename) {
+        String originalFilename = filename;
+        filename = filename + "~";
+        boolean saveFile = false;
+        try {
+            SAXBuilder builder2 = getBuilder(false);
+            Document doc = builder2.build(new StringReader(xml));
+            // test
+            SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
+            new File(originalFilename).delete();
+            saveFile = dom.writeElement(filename, doc);
+            if (saveFile && !new File(filename).renameTo(new File(originalFilename))) {
+                ErrorLog.message("could not rename file in " + filename, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+            }
             return saveFile;
- 		}
-		
-		catch (Exception e) {
-			
-			ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-            return false;
-		}
-		}
-	
-	private String getFileName(String key, String prefix){
-	    return (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + key.substring(prefix.length()) + "."
-                + prefix.substring(0, prefix.length() - 1) + ".xml";
-	}
+        }
 
-	private void deleteFiles() {
-		String filename = "";
-		String prefix = "";
+        catch (Exception e) {
+
+            ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+            return false;
+        }
+    }
+
+    private String getFileName(String key, String prefix) {
+        return (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + key.substring(prefix.length()) + "."
+                + prefix.substring(0, prefix.length() - 1) + ".xml";
+    }
+
+    private void deleteFiles() {
+        String filename = "";
+        String prefix = "";
         Iterator<String> keys1 = listOfChanges.keySet().iterator();
         Iterator<String> values1 = listOfChanges.values().iterator();
-		while (keys1.hasNext()) {
+        while (keys1.hasNext()) {
             String key = keys1.next();
             String listOfChangesValue = values1.next();
             if (listOfChangesValue == null) {
                 listOfChangesValue = "";
             }
             if (listOfChangesValue.equals(SchedulerDom.DELETE)) {
-				if (key.startsWith("job_chain_")) {
-					prefix = "job_chain_";
+                if (key.startsWith("job_chain_")) {
+                    prefix = "job_chain_";
                 } else if (key.startsWith("job_")) {
-						prefix = "job_";
+                    prefix = "job_";
                 } else if (key.startsWith("process_class_")) {
-							prefix = "process_class_";
+                    prefix = "process_class_";
                 } else if (key.startsWith("lock_")) {
-								prefix = "lock_";
+                    prefix = "lock_";
                 } else if (key.startsWith("order_")) {
-									prefix = "order_";
+                    prefix = "order_";
                 } else if (key.startsWith("schedule_")) {
-                                        prefix = "schedule_";
-                                    }
-                                        if (key.startsWith("monitor_")) {
-                                            prefix = "monitor_";
-                                        }
-				
-                filename = getFileName(key,prefix);
+                    prefix = "schedule_";
+                }
+                if (key.startsWith("monitor_")) {
+                    prefix = "monitor_";
+                }
+
+                filename = getFileName(key, prefix);
                 File f = new File(filename);
 
-                if (prefix.equals("job_chain_")){
-	                String filenameNodeParameters = filename.replaceAll(".job_chain.xml", ".config.xml");
-				    File fNodeParameters = new File(filenameNodeParameters);
-				    if (fNodeParameters.exists()){
-				        fNodeParameters.delete();     
-				    }
-				    String filenameGraphvizDiagram = filename.replaceAll(".job_chain.xml", ".dot");
-					File fGraphvizDiagram = new File(filenameGraphvizDiagram);
-					if (fGraphvizDiagram.exists()){
-						fGraphvizDiagram.delete();     
-                }
+                if (prefix.equals("job_chain_")) {
+                    String filenameNodeParameters = filename.replaceAll(".job_chain.xml", ".config.xml");
+                    File fNodeParameters = new File(filenameNodeParameters);
+                    if (fNodeParameters.exists()) {
+                        fNodeParameters.delete();
+                    }
+                    String filenameGraphvizDiagram = filename.replaceAll(".job_chain.xml", ".dot");
+                    File fGraphvizDiagram = new File(filenameGraphvizDiagram);
+                    if (fGraphvizDiagram.exists()) {
+                        fGraphvizDiagram.delete();
+                    }
                     String filenameGraphvizDiagramPng = filename.replaceAll(".job_chain.xml", ".png");
-					File fGraphvizDiagramPng = new File(filenameGraphvizDiagramPng);
-					if (fGraphvizDiagramPng.exists()){
-						fGraphvizDiagramPng.delete();     
-					}
-				}
-				if (f.exists()) {
-					if (!f.delete()) {
-						ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                    File fGraphvizDiagramPng = new File(filenameGraphvizDiagramPng);
+                    if (fGraphvizDiagramPng.exists()) {
+                        fGraphvizDiagramPng.delete();
+                    }
+                }
+                if (f.exists()) {
+                    if (!f.delete()) {
+                        ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                     }
                 }
             }
         }
     }
 
-	public String getJobname(final String filename) {
-		String jobname = "";
-		try {
-			SAXBuilder builder = new SAXBuilder();
-			Document doc = builder.build(new File(filename));
-			Element root = doc.getRootElement();
-			jobname = Utils.getAttributeValue("name", root);
+    public String getJobname(final String filename) {
+        String jobname = "";
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            Document doc = builder.build(new File(filename));
+            Element root = doc.getRootElement();
+            jobname = Utils.getAttributeValue("name", root);
         } catch (Exception e) {
-			ErrorLog.message(".. could not get jobname from " + filename + " cause: " + e.getMessage(), SWT.ICON_ERROR);
-		}
-		return jobname;
-	}
+            ErrorLog.message(".. could not get jobname from " + filename + " cause: " + e.getMessage(), SWT.ICON_ERROR);
+        }
+        return jobname;
+    }
 
-	public static Element readElementFromHotHolderFile(final File file) {
-		Element elem = null;
-		try {
-			SAXBuilder builder = new SAXBuilder();
-			// String xml = createConfigurationFile();
-			Document doc = builder.build(file);
-			elem = doc.getRootElement();
-			String name = file.getName().substring(0, file.getName().indexOf("."));
-			if (elem.getName().equals("order") || elem.getName().equals("add_order")) {
-				String[] split = name.split(",");
-				String jobChain = split[0];
-				String id = split.length > 1 ? split[1] : "";
-				Utils.setAttribute("job_chain", jobChain, elem);
-				Utils.setAttribute("id", id, elem);
+    public static Element readElementFromHotHolderFile(final File file) {
+        Element elem = null;
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            // String xml = createConfigurationFile();
+            Document doc = builder.build(file);
+            elem = doc.getRootElement();
+            String name = file.getName().substring(0, file.getName().indexOf("."));
+            if (elem.getName().equals("order") || elem.getName().equals("add_order")) {
+                String[] split = name.split(",");
+                String jobChain = split[0];
+                String id = split.length > 1 ? split[1] : "";
+                Utils.setAttribute("job_chain", jobChain, elem);
+                Utils.setAttribute("id", id, elem);
             } else
-				Utils.setAttribute("name", name, elem);
+                Utils.setAttribute("name", name, elem);
         } catch (Exception e) {
-			ErrorLog.message(".. could not read Element from " + file + " cause: " + e.getMessage(), SWT.ICON_ERROR);
-		}
-		return elem;
-	}
+            ErrorLog.message(".. could not read Element from " + file + " cause: " + e.getMessage(), SWT.ICON_ERROR);
+        }
+        return elem;
+    }
 
     public ArrayList<String> getListOfReadOnly() {
-		return listOfReadOnly;
-	}
+        return listOfReadOnly;
+    }
 
     public ArrayList<String> getListOfChangeElementNames() {
-		return listOfChangeElementNames;
-	}
+        return listOfChangeElementNames;
+    }
 
     public void setListOfChangeElementNames(final ArrayList<String> listOfChangeElementNames) {
-		this.listOfChangeElementNames = listOfChangeElementNames;
-	}
+        this.listOfChangeElementNames = listOfChangeElementNames;
+    }
 
-	protected SAXBuilder getBuilder(final boolean validate) throws IOException {
-		SAXBuilder builder = new SAXBuilder(validate);
-		if (validate) {
-			builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-			builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", writeSchemaFile());
-		}
-		return builder;
-	}
+    protected SAXBuilder getBuilder(final boolean validate) throws IOException {
+        SAXBuilder builder = new SAXBuilder(validate);
+        if (validate) {
+            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", writeSchemaFile());
+        }
+        return builder;
+    }
 
-	protected String[] writeSchemaFile() throws IOException {
-		try {
-			String[] s = new String[1];
-			s[0] = getClass().getResource(Options.getSchema()).toString();
-			return s;
+    protected String[] writeSchemaFile() throws IOException {
+        try {
+            String[] s = new String[1];
+            s[0] = getClass().getResource(Options.getSchema()).toString();
+            return s;
         } catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could get schema ", e);
+            try {
+                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could get schema ", e);
             } catch (Exception ee) {
-			}
-			throw new IOException("error in writeSchemaFile(). could get schema " + e.toString());
-		}
-	}
+            }
+            throw new IOException("error in writeSchemaFile(). could get schema " + e.toString());
+        }
+    }
 
 }

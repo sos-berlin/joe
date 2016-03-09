@@ -14,244 +14,224 @@ import sos.util.SOSLogger;
 import org.eclipse.swt.widgets.Text;
 import java.io.File;
 
-
 public class FTPProfilePicker extends Composite {
 
+    /** Button: öffnet einen Dialog zur Erstellen, Bearbeiten und löschen von FTP
+     * Zugänge und */
+    private Button button = null;
 
+    /** Auswahl der konfigurierten Zugangsdaten */
+    private Combo cboProfile = null;
 
-	/** Button: öffnet einen Dialog zur Erstellen, Bearbeiten und löschen von FTP Zugänge und */
-	private        Button               button       = null;
+    /** Konfigurationsdatei. Im Dialog konfigurierten Profile werden hier
+     * gespeichert. */
+    private File configFile = null;
 
-	/** Auswahl der konfigurierten Zugangsdaten */
-	private        Combo                cboProfile   = null;
+    /** @see sos.ftp.profiles.FTPDialogListener */
+    private FTPDialogListener listener = null;
 
-	/** Konfigurationsdatei. Im Dialog konfigurierten Profile werden hier gespeichert.*/
-	private        File                 configFile   = null;
+    /** Dilaog zum anlegen, bearbeiten und löschen von FTP Zugängen */
+    private FTPProfileDialog profileDialog = null;
 
-	/**  @see sos.ftp.profiles.FTPDialogListener*/
-	private        FTPDialogListener    listener     = null;
+    public FTPProfilePicker(Composite parent, int style, String configFile_) {
+        super(parent, style);
+        try {
+            if (configFile_ == null)
+                throw new Exception("Config File is null");
 
-	/** Dilaog zum anlegen, bearbeiten und löschen von FTP Zugängen*/
-	private        FTPProfileDialog     profileDialog= null;
+            configFile = new File(configFile_);
 
+            initialize();
+            init();
+        } catch (Exception e) {
+            FTPProfile.log("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), 1);
+        }
 
-	
-	public FTPProfilePicker(Composite parent, int style, String configFile_) {
-		super(parent, style);
-		try {
-			if(configFile_ == null)
-				throw new Exception("Config File is null");
+    }
 
-			configFile = new File(configFile_);						
+    public FTPProfilePicker(Composite parent, int style, File configFile_) {
+        super(parent, style);
+        try {
 
-			initialize();
-			init();
-		} catch (Exception e){
-			FTPProfile.log("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), 1);    		
-		}
+            configFile = configFile_;
+            initialize();
+            init();
+        } catch (Exception e) {
+            FTPProfile.log("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), 1);
+        }
 
-	}
+    }
 
+    private void init() throws Exception {
+        try {
+            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            FTPProfile.log("Configuration File: " + (configFile != null ? configFile.getCanonicalPath() : ""), SOSLogger.DEBUG9);
+            if (!configFile.exists()) {
+                if (!configFile.createNewFile()) {
+                    FTPProfileDialog.message("Could not create config file: " + configFile, SWT.ICON_WARNING);
+                    throw new Exception("Could not create config file: " + configFile);
+                }
+            }
 
-	public FTPProfilePicker(Composite parent, int style, File configFile_) {
-		super(parent, style);
-		try {
+            profileDialog = new FTPProfileDialog(configFile);
 
-			configFile = configFile_;
-			initialize();
-			init();
-		} catch (Exception e){
-			FTPProfile.log("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), 1);    		
-		}
+            profileDialog.fillCombo(cboProfile);
+        } catch (Exception e) {
+            throw new Exception("error in " + sos.util.SOSClassUtil.getClassName() + ", cause: " + e.toString());
+        }
+    }
 
-	}
+    private void initialize() throws Exception {
+        try {
+            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            GridData gridData2 = new GridData();
+            gridData2.horizontalAlignment = GridData.BEGINNING; // Generated
+            gridData2.verticalAlignment = GridData.FILL; // Generated
+            GridData gridData = new GridData();
+            gridData.horizontalAlignment = GridData.FILL; // Generated
+            gridData.grabExcessHorizontalSpace = true; // Generated
+            gridData.verticalAlignment = GridData.FILL; // Generated
+            GridLayout gridLayout = new GridLayout();
+            gridLayout.numColumns = 2; // Generated
+            gridLayout.verticalSpacing = 0; // Generated
+            gridLayout.marginWidth = 0; // Generated
+            gridLayout.marginHeight = 0; // Generated
+            gridLayout.horizontalSpacing = 0; // Generated
 
-	
-	private  void init() throws Exception {
-		try {
-			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-			FTPProfile.log("Configuration File: " + (configFile != null ? configFile.getCanonicalPath() : ""), SOSLogger.DEBUG9);
-			if(!configFile.exists()) {
-				if(!configFile.createNewFile()) {    			
-					FTPProfileDialog.message("Could not create config file: " + configFile, SWT.ICON_WARNING);
-					throw new Exception("Could not create config file: " + configFile);
-				}
-			}
+            cboProfile = new Combo(this, SWT.READ_ONLY | SWT.BORDER);
+            cboProfile.addSelectionListener(new SelectionAdapter() {
 
-			profileDialog = new FTPProfileDialog(configFile);
+                public void widgetSelected(final SelectionEvent e) {
 
-			profileDialog.fillCombo(cboProfile);
-		} catch (Exception e) {
-			throw new Exception("error in " + sos.util.SOSClassUtil.getClassName() + ", cause: " + e.toString());
-		}
-	}
+                    if (cboProfile.getText().length() > 0) {
+                        listener = (FTPDialogListener) cboProfile.getData();
+                        listener.setCurrProfileName(cboProfile.getText());
+                    }
+                }
+            });
 
+            cboProfile.setLayoutData(gridData);
+            cboProfile.setText("");
 
+            button = new Button(this, SWT.NONE);
+            button.setText("Profile...");
+            button.setLayoutData(gridData2);
+            this.setLayout(gridLayout);
+            button.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
-	private void initialize() throws Exception  {
-		try {
-			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-			GridData gridData2 = new GridData();
-			gridData2.horizontalAlignment = GridData.BEGINNING; // Generated
-			gridData2.verticalAlignment = GridData.FILL; // Generated
-			GridData gridData = new GridData();
-			gridData.horizontalAlignment = GridData.FILL; // Generated
-			gridData.grabExcessHorizontalSpace = true; // Generated
-			gridData.verticalAlignment = GridData.FILL; // Generated
-			GridLayout gridLayout = new GridLayout();
-			gridLayout.numColumns = 2; // Generated
-			gridLayout.verticalSpacing = 0; // Generated
-			gridLayout.marginWidth = 0; // Generated
-			gridLayout.marginHeight = 0; // Generated
-			gridLayout.horizontalSpacing = 0; // Generated
+                public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 
-			cboProfile = new Combo(this, SWT.READ_ONLY | SWT.BORDER);
-			cboProfile.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+                    profileDialog.showModal(cboProfile);
+                }
+            });
+            setSize(new Point(242, 45));
+        } catch (Exception e) {
+            throw new Exception("error in " + sos.util.SOSClassUtil.getClassName() + ", cause: " + e.toString());
+        }
+    }
 
-					if(cboProfile.getText().length() > 0) {
-						listener = (FTPDialogListener)cboProfile.getData();
-						listener.setCurrProfileName(cboProfile.getText());
-					}
-				}
-			});
+    public void dispose() {
+        FTPProfile.log("calling dispose", SOSLogger.DEBUG9);
+        super.dispose();
+    }
 
-			cboProfile.setLayoutData(gridData);
-			cboProfile.setText(""); 
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        cboProfile.setEnabled(enabled);
+        button.setEnabled(enabled);
+    }
 
-			button = new Button(this, SWT.NONE);
-			button.setText("Profile..."); 
-			button.setLayoutData(gridData2);
-			this.setLayout(gridLayout); 
-			button.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        cboProfile.setVisible(visible);
+        button.setVisible(visible);
+    }
 
-					profileDialog.showModal(cboProfile);
-				}
-			});
-			setSize(new Point(242, 45));
-		} catch (Exception e) {
-			throw new Exception("error in " + sos.util.SOSClassUtil.getClassName() + ", cause: " + e.toString());
-		}
-	}
+    public void removeModifyListener(ModifyListener listener) {
+        cboProfile.removeModifyListener(listener);
+    }
 
+    public void setToolTipText(String string) {
+        super.setToolTipText(string);
+        cboProfile.setToolTipText(string);
 
-	
-	public void dispose() {
-		FTPProfile.log("calling dispose", SOSLogger.DEBUG9);
-		super.dispose();
-	}
+    }
 
-	
-	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		cboProfile.setEnabled(enabled);
-		button.setEnabled(enabled);
-	}
+    public void setButtonText(String txt) {
+        if (txt != null)
+            button.setText(txt);
+        else
+            button.setText("");
+    }
 
+    public FTPProfile getProfileByName(String name) throws Exception {
+        try {
+            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            if (listener == null) {
+                listener = (FTPDialogListener) cboProfile.getData();
+            }
 
-	
-	public void setVisible(boolean visible) {
-		super.setVisible(visible);
-		cboProfile.setVisible(visible);
-		button.setVisible(visible);
-	}
+            if (listener.getProfiles() != null && listener.getProfiles().get(name) != null) {
+                listener.setCurrProfileName(name);
+                cboProfile.setText(name);
+                return (FTPProfile) listener.getProfiles().get(name);
+            }
+            return null;
+        } catch (Exception e) {
+            throw new Exception("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString());
+        }
+    }
 
-	public void removeModifyListener(ModifyListener listener) {
-		cboProfile.removeModifyListener(listener);
-	}
+    public FTPProfile getSelectedFTPProfile() throws Exception {
+        try {
+            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            if (listener == null) {
+                listener = (FTPDialogListener) cboProfile.getData();
+            }
 
-	public void setToolTipText(String string) {
-		super.setToolTipText(string);
-		cboProfile.setToolTipText(string);
+            if (getSelectedProfilename() != null) {
+                return (FTPProfile) listener.getProfiles().get(getSelectedProfilename());
+            }
+            return null;
+        } catch (Exception e) {
+            throw new Exception("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString());
+        }
+    }
 
-	}
+    public void setLogger(SOSLogger logger_) {
+        FTPProfile.logger = logger_;
+    }
 
-	public void setButtonText(String txt){
-		if(txt != null)
-			button.setText(txt);
-		else
-			button.setText("");
-	}
+    public void setLogText(Text text_) {
+        FTPProfile.logtext = text_;
+    }
 
-	
-	public FTPProfile getProfileByName(String name) throws Exception{
-		try {
-			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-			if(listener == null) {
-				listener = (FTPDialogListener)cboProfile.getData();
-			}
+    public String getSelectedProfilename() {
+        return cboProfile.getText();
+    }
 
-			if(listener.getProfiles() != null && listener.getProfiles().get(name) != null) {
-				listener.setCurrProfileName(name);
-				cboProfile.setText(name);
-				return (FTPProfile)listener.getProfiles().get(name);
-			}
-			return null;
-		} catch (Exception e) {
-			throw new Exception("error in " +  sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString());
-		}
-	}
+    public void setProfilename(String profilename) {
+        cboProfile.setText(profilename);
+    }
 
+    public FTPDialogListener getListener() {
+        if (listener == null)
+            listener = (FTPDialogListener) cboProfile.getData();
+        return this.listener;
+    }
 
-	public FTPProfile getSelectedFTPProfile() throws Exception{
-		try {
-			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-			if(listener == null) {
-				listener = (FTPDialogListener)cboProfile.getData();
-			}
+    public void addModifyListener(ModifyListener listener) {
+        cboProfile.addModifyListener(listener);
+    }
 
-			if(getSelectedProfilename() != null) {
-				return (FTPProfile)listener.getProfiles().get(getSelectedProfilename());
-			}
-			return null;
-		} catch (Exception e) {
-			throw new Exception("error in " +  sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString());
-		}
-	}
+    public void addSelectionListener(SelectionAdapter listener) {
 
-	
-	public void setLogger(SOSLogger logger_) {
-		FTPProfile.logger = logger_;		
-	}
+        cboProfile.addSelectionListener(listener);
+    }
 
-	
-	public void setLogText(Text text_) {
-		FTPProfile.logtext = text_;
-	}
-
-	
-	public String getSelectedProfilename() {
-		return cboProfile.getText();
-	}
-
-	
-	public void setProfilename(String profilename) {
-		cboProfile.setText(profilename);
-	}
-
-	public FTPDialogListener getListener() {	
-		if(listener == null)
-			listener = (FTPDialogListener)cboProfile.getData();
-		return this.listener;
-	}
-
-	
-	public void addModifyListener(ModifyListener listener) {
-		cboProfile.addModifyListener(listener);
-	}
-
-	
-	public void addSelectionListener(SelectionAdapter listener){
-
-		cboProfile.addSelectionListener(listener);
-	}
-
-	
-	public void addEmptyItem() throws Exception{
-		FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-		profileDialog.fillCombo(cboProfile, true);
-	}
-
+    public void addEmptyItem() throws Exception {
+        FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+        profileDialog.fillCombo(cboProfile, true);
+    }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

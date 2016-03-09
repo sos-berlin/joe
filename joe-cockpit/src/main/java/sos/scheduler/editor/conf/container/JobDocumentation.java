@@ -281,7 +281,7 @@ public class JobDocumentation extends FormBaseClass {
 
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
         } finally {
             restoreCursor();
         }

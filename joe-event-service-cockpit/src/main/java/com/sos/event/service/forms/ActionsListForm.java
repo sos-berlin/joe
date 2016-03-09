@@ -1,4 +1,5 @@
 package com.sos.event.service.forms;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -20,73 +21,76 @@ import com.sos.event.service.listeners.ActionsListListener;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.Events.ActionsDom;
 
-public class ActionsListForm extends SOSJOEMessageCodes  {
-	private ActionsListListener	listener		= null;
-	private Group				actionsGroup	= null;
-	private Table				list			= null;
-	private Button				butRemove		= null;
-	private Button				butNew			= null;
-	private ActionsForm			gui				= null;
-	private ActionsDom			_dom			= null;
+public class ActionsListForm extends SOSJOEMessageCodes {
 
-	public ActionsListForm(Composite parent, int style, ActionsDom dom, Element actions, ActionsForm _gui) {
-		super(parent, style);
-		gui = _gui;
-		_dom = dom;
-		listener = new ActionsListListener(dom, actions);
-		initialize();
-	}
+    private ActionsListListener listener = null;
+    private Group actionsGroup = null;
+    private Table list = null;
+    private Button butRemove = null;
+    private Button butNew = null;
+    private ActionsForm gui = null;
+    private ActionsDom _dom = null;
 
-	private void initialize() {
-		createGroup();
-		setSize(new Point(696, 462));
-		setLayout(new FillLayout());
-		listener.fillActions(list);
-	}
+    public ActionsListForm(Composite parent, int style, ActionsDom dom, Element actions, ActionsForm _gui) {
+        super(parent, style);
+        gui = _gui;
+        _dom = dom;
+        listener = new ActionsListListener(dom, actions);
+        initialize();
+    }
 
-	/**
-	 * This method initializes group
-	 */
-	private void createGroup() {
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2; // Generated
-		actionsGroup = JOE_G_ActionsListForm_Actions.Control(new Group(this, SWT.NONE));
-		actionsGroup.setLayout(gridLayout); // Generated
-		list = JOE_Tbl_ActionsListForm_ActionsList.Control(new Table(actionsGroup, SWT.BORDER));
-		list.addMouseListener(new MouseAdapter() {
-			public void mouseDoubleClick(final MouseEvent e) {
-//				ContextMenu.goTo(list.getSelection()[0].getText(0), _dom, Editor.ACTIONS);
-			}
-		});
-		list.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				butRemove.setEnabled(list.getSelectionCount() > 0);
-			}
-		});
-		list.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
-		butNew = JOE_B_ActionsListForm_New.Control(new Button(actionsGroup, SWT.NONE));
-		butNew.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				TableItem item = new TableItem(list, SWT.NONE);
-				item.setText(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
-				//        		listener.newAction("New Action " + list.getItemCount());
-				listener.newAction(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
-				listener.fillActions(list);
-				butRemove.setEnabled(false);
-				gui.updateActions();
-			}
-		});
-		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butRemove = JOE_B_ActionsListForm_Remove.Control(new Button(actionsGroup, SWT.NONE));
-		butRemove.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				listener.removeAction(list);
-				butRemove.setEnabled(false);
-				gui.updateActions();
-			}
-		});
-		new Label(actionsGroup, SWT.NONE);
-	}
+    private void initialize() {
+        createGroup();
+        setSize(new Point(696, 462));
+        setLayout(new FillLayout());
+        listener.fillActions(list);
+    }
 
+    /** This method initializes group */
+    private void createGroup() {
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 2; // Generated
+        actionsGroup = JOE_G_ActionsListForm_Actions.Control(new Group(this, SWT.NONE));
+        actionsGroup.setLayout(gridLayout); // Generated
+        list = JOE_Tbl_ActionsListForm_ActionsList.Control(new Table(actionsGroup, SWT.BORDER));
+        list.addMouseListener(new MouseAdapter() {
+
+            public void mouseDoubleClick(final MouseEvent e) {
+                // ContextMenu.goTo(list.getSelection()[0].getText(0), _dom,
+                // Editor.ACTIONS);
+            }
+        });
+        list.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(final SelectionEvent e) {
+                butRemove.setEnabled(list.getSelectionCount() > 0);
+            }
+        });
+        list.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
+        butNew = JOE_B_ActionsListForm_New.Control(new Button(actionsGroup, SWT.NONE));
+        butNew.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(final SelectionEvent e) {
+                TableItem item = new TableItem(list, SWT.NONE);
+                item.setText(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
+                // listener.newAction("New Action " + list.getItemCount());
+                listener.newAction(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
+                listener.fillActions(list);
+                butRemove.setEnabled(false);
+                gui.updateActions();
+            }
+        });
+        butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        butRemove = JOE_B_ActionsListForm_Remove.Control(new Button(actionsGroup, SWT.NONE));
+        butRemove.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(final SelectionEvent e) {
+                listener.removeAction(list);
+                butRemove.setEnabled(false);
+                gui.updateActions();
+            }
+        });
+        new Label(actionsGroup, SWT.NONE);
+    }
 
 } // @jve:decl-index=0:visual-constraint="10,10"
