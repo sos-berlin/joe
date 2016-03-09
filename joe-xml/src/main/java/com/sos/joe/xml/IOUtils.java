@@ -83,7 +83,7 @@ public class IOUtils {
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-        }  
+        }
         return objSchedulerHotFolder;
     }
 
@@ -164,7 +164,7 @@ public class IOUtils {
                 fdialog.setText("Open" + getDomInstance(dom) + " File");
                 filename = fdialog.open();
             }
- 
+
             if (isDirectory) {
                 String path = filename;
                 if (filename == null || filename.length() == 0) {
@@ -176,15 +176,15 @@ public class IOUtils {
                         return false;
                     path = fname;
                 }
- 
+
                 MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory(path);
                 xml = allJob.parseDocuments();
- 
+
                 ((SchedulerDom) dom).setListOfReadOnlyFiles(allJob.getListOfReadOnly());
- 
+
                 if (allJob.getListOfChangeElementNames() != null && allJob.getListOfChangeElementNames().size() > 0)
                     ((SchedulerDom) dom).setListOfChangeElementNames(allJob.getListOfChangeElementNames());
- 
+
                 filename = path;
                 if (filename == null)
                     return false;
@@ -385,7 +385,6 @@ public class IOUtils {
         }
     }
 
-    
     public static void saveXML(final Document doc, final String filename) {
         try {
             JDOMSource in = new JDOMSource(doc);

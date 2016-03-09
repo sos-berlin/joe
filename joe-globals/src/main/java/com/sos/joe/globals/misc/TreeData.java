@@ -138,7 +138,7 @@ public class TreeData {
         return _type == type;
     }
 
-     public void UpdateTreeItem() {
+    public void UpdateTreeItem() {
         JSObjBase objO = (JSObjBase) objHotFolderObject;
         objTreeItem.setText(objO.getObjectNameAndTitle());
     }

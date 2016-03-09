@@ -8,7 +8,9 @@ import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.options.Options;
 
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class Messages {
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
+public class Messages {
+
     //    private static final String   BUNDLE_NAME = "sos.scheduler.editor.messages"; //$NON-NLS-1$
     private static final String BUNDLE_NAME = "JOEMessages"; //$NON-NLS-1$
     public static String strLastMsgKey = "";
@@ -74,8 +76,7 @@ import com.sos.joe.globals.options.Options;
             // String msg = RESOURCE_BUNDLE.getString(key);
             String msg = getMsgObj().getMsg(key);
             return msg != null && !msg.equals("");
-        }
-        catch (MissingResourceException e) {
+        } catch (MissingResourceException e) {
             return false;
         }
     }
@@ -89,8 +90,7 @@ import com.sos.joe.globals.options.Options;
             }
 
             return msg != null && !msg.equals("") ? msg : key;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return key;
         }
     }
@@ -109,13 +109,11 @@ import com.sos.joe.globals.options.Options;
             String strR = "";
             if (msg != null && msg.equals("") == false) {
                 strR = msg;
-            }
-            else {
+            } else {
                 strR = key;
             }
             return strR;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return pstrKey;
         }
     }
@@ -132,8 +130,7 @@ import com.sos.joe.globals.options.Options;
                 }
             }
             return msg != null && !msg.equals("") ? msg : key;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return pstrKey;
         }
     }

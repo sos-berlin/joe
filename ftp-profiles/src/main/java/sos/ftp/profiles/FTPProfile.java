@@ -9,8 +9,8 @@ import org.eclipse.swt.widgets.Text;
 import sos.util.SOSLogger;
 import sos.util.SOSString;
 
-
 public class FTPProfile {
+
     @SuppressWarnings("unused")
     private final String conSVNVersion = "$Id$";
 
@@ -48,72 +48,57 @@ public class FTPProfile {
 
     /** Wird proxy verwendet? */
     private boolean useProxy = false;
-    private boolean passiveMode=true;
+    private boolean passiveMode = true;
 
-    /**
-     * Der Wert des Parameters ist der Hostname oder die IP-Adresse eines
+    /** Der Wert des Parameters ist der Hostname oder die IP-Adresse eines
      * Proxies, über den die Verbindung zum SSH Server hergestellt wird. Die
-     * Verwendung von Proxies ist optional.
-     */
+     * Verwendung von Proxies ist optional. */
     private String proxyServer = null;
 
-    
-    /**
-     * Der Wert des Parameters ist der Port des Proxies, über den eine
-     * Verbindung zum SSH Server hergestellt wird.
-     */
+    /** Der Wert des Parameters ist der Port des Proxies, über den eine
+     * Verbindung zum SSH Server hergestellt wird. */
     private String proxyPort = null;
     private String proxyUser = null;
     private String proxyPassword = null;
 
     private String proxyProtocol = null;
 
-    /**
-     * Der Parmeter spezifiziert die Authentifizierungsmethode am SSH Server,
-     * unterstützt werden publickey und password.
-     */
+    /** Der Parmeter spezifiziert die Authentifizierungsmethode am SSH Server,
+     * unterstützt werden publickey und password. */
     private String auth_method = null;
 
-    /**
-     * Der Parameter bestimmt den Pfad und Namen einer Datei mit dem Private Key
+    /** Der Parameter bestimmt den Pfad und Namen einer Datei mit dem Private Key
      * des Benutzers, für den die Anmeldung am SSH Server erfolgt. Der Parameter
      * muss angegeben werden, wenn mit dem Parameterauth_methoddie
      * Authentifizierungsmethodepublickeybestimmt wurde.1 Falls die Datei mit
-     * einem Kennwort geschützt ist, wird es mit dem Parameterpasswordangegeben.
-     * */
+     * einem Kennwort geschützt ist, wird es mit dem Parameterpasswordangegeben. */
     private String auth_file = null;
 
     /** @see sos.util.SOSString Object */
     private SOSString sosString = new SOSString();
 
-  
     /** Hilfsvariable. Flag der beim Fehler auf true gesetzt wird */
     private boolean hasError = false;
-    
-    /**
-     * Ein org.eclipse.swt.widgets.Text Objekt, indem alle Log Ausgaben
-     * geschrieben werden, wenn der logText != null ist
-     */
-    protected static Text logtext = null;
 
+    /** Ein org.eclipse.swt.widgets.Text Objekt, indem alle Log Ausgaben
+     * geschrieben werden, wenn der logText != null ist */
+    protected static Text logtext = null;
 
     /** sos.util.SOSLogger Object */
     protected static SOSLogger logger = null;
 
-    /**
-     * Konstruktor
+    /** Konstruktor
      * 
-     * @param Properties
-     *            . Beinhaltet alle Zugangsdaten.
-     * @throws Exception
-     */
+     * @param Properties . Beinhaltet alle Zugangsdaten.
+     * @throws Exception */
     public FTPProfile(Properties prop) throws Exception {
         try {
             profilename = sosString.parseToString(prop, "profilename");
             host = sosString.parseToString(prop, "host");
             port = sosString.parseToString(prop, "port");
             user = sosString.parseToString(prop, "user");
-            savePassword = sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true" : sosString.parseToString(prop, "save_password"));
+            savePassword = sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true"
+                    : sosString.parseToString(prop, "save_password"));
             password = sosString.parseToString(prop, "password");
             root = sosString.parseToString(prop, "root");
             localdirectory = sosString.parseToString(prop, "localdirectory");
@@ -133,42 +118,34 @@ public class FTPProfile {
         }
     }
 
-    /**
-     * Liefert den Profilename
+    /** Liefert den Profilename
      * 
-     * @return the profilename
-     */
+     * @return the profilename */
     public String getProfilename() {
         return profilename;
     }
 
-    /**
-     * Liefetr die Host oder IP-Adresse, an die Dateien transferiert werden
+    /** Liefetr die Host oder IP-Adresse, an die Dateien transferiert werden
      * 
-     * @return the host
-     */
+     * @return the host */
     public String getHost() {
         return host;
     }
 
-    /**
-     * Port, über den Dateien transferiert werden
+    /** Port, über den Dateien transferiert werden
      * 
-     * @return the port
-     */
+     * @return the port */
     public String getPort() {
         return port;
     }
 
-    /**
-     * Benutzername zur Anmeldung am FTP-Server
+    /** Benutzername zur Anmeldung am FTP-Server
      * 
-     * @return the user
-     */
+     * @return the user */
     public String getUser() {
         return user;
     }
-    
+
     public String getProxyUser() {
         return proxyUser;
     }
@@ -181,93 +158,80 @@ public class FTPProfile {
         return proxyProtocol;
     }
 
-    /**
-     * Soll der Password gespeichert werden.
+    /** Soll der Password gespeichert werden.
      * 
-     * @return the savePassword
-     */
+     * @return the savePassword */
     public boolean isSavePassword() {
         return savePassword;
     }
 
-    /**
-     * Kennwort zur Anmeldung am FTP-Server
+    /** Kennwort zur Anmeldung am FTP-Server
      * 
-     * @return the password
-     */
+     * @return the password */
     public String getPassword() {
         return password;
     }
 
-    public String getDecryptetPassword() throws Exception{
+    public String getDecryptetPassword() throws Exception {
         String password = getPassword();
         if (password.length() > 0 && password.endsWith("=")) {
             password = SOSProfileCrypt.decrypt(getProfilename(), password);
         }
         return password;
     }
-    /**
-     * Das Root Verzeichnis auf der FTP Server
+
+    /** Das Root Verzeichnis auf der FTP Server
      * 
-     * @return the root
-     */
+     * @return the root */
     public String getRoot() {
         return root;
     }
 
-    /**
-     * Kopien der Datein werden im lokalen Verzeichnis abgelegt
+    /** Kopien der Datein werden im lokalen Verzeichnis abgelegt
      * 
      * @return the localdirectory
-     * @throws IOException 
-     */
+     * @throws IOException */
     public String getLocaldirectory() throws IOException {
         return new File(localdirectory).getCanonicalPath();
     }
 
-    /**
-     * Kopien der Datein werden im lokalen Verzeichnis abgelegt
+    /** Kopien der Datein werden im lokalen Verzeichnis abgelegt
      * 
      * @return the localdirectory
-     * @throws IOException 
-     */
+     * @throws IOException */
     public String getLocaldirectory(String defaultFileName) throws IOException {
-    	if (localdirectory.length()==0){
+        if (localdirectory.length() == 0) {
             return new File(defaultFileName).getCanonicalPath();
-    	}else{
+        } else {
             return new File(localdirectory).getCanonicalPath();
-    	}
+        }
     }
 
-    /**
-     * Der Transfer-Modus kann die Werte ascii oder binary beinhalten
+    /** Der Transfer-Modus kann die Werte ascii oder binary beinhalten
      * 
-     * @return the transfermode
-     */
+     * @return the transfermode */
     public String getTransfermode() {
         return transfermode;
     }
+
     public String getPassiveMode() {
-    	if (isPassiveMode()){
-    		return "true";
-    	}else{
-    		return "false";
-    	}
+        if (isPassiveMode()) {
+            return "true";
+        } else {
+            return "false";
+        }
     }
-    /**
-     * Protokoll: FTP oder SFTP
+
+    /** Protokoll: FTP oder SFTP
      * 
-     * @return the protocol
-     */
+     * @return the protocol */
     public String getProtocol() {
         return protocol.toLowerCase();
     }
 
-    /**
-     * Wird proxy verwendet?
+    /** Wird proxy verwendet?
      * 
-     * @return the use_proxy
-     */
+     * @return the use_proxy */
     public boolean getUseProxy() {
         return useProxy;
     }
@@ -276,87 +240,69 @@ public class FTPProfile {
         return passiveMode;
     }
 
-    /**
-     * Der Wert des Parameters ist der Hostname oder die IP-Adresse eines
+    /** Der Wert des Parameters ist der Hostname oder die IP-Adresse eines
      * Proxies, über den die Verbindung zum SSH Server hergestellt wird. Die
      * Verwendung von Proxies ist optional.
      * 
-     * @return the proxy_server
-     */
+     * @return the proxy_server */
     public String getProxyServer() {
         return proxyServer;
     }
 
-    /**
-     * Der Wert des Parameters ist der Port des Proxies, über den eine
+    /** Der Wert des Parameters ist der Port des Proxies, über den eine
      * Verbindung zum SSH Server hergestellt wird.
      * 
-     * @return the proxy_port
-     */
+     * @return the proxy_port */
     public String getProxyPort() {
         return proxyPort;
     }
 
-    /**
-     * Der Parmeter spezifiziert die Authentifizierungsmethode am SSH Server,
+    /** Der Parmeter spezifiziert die Authentifizierungsmethode am SSH Server,
      * unterstützt werden publickey und password.
      * 
-     * @return the auth_method
-     */
+     * @return the auth_method */
     public String getAuthMethod() {
         return auth_method;
     }
 
-    /**
-     * Der Parameter bestimmt den Pfad und Namen einer Datei mit dem Private Key
+    /** Der Parameter bestimmt den Pfad und Namen einer Datei mit dem Private Key
      * des Benutzers, für den die Anmeldung am SSH Server erfolgt. Der Parameter
      * muss angegeben werden, wenn mit dem Parameterauth_methoddie
      * Authentifizierungsmethodepublickeybestimmt wurde.1 Falls die Datei mit
      * einem Kennwort geschützt ist, wird es mit dem Parameterpasswordangegeben.
      * 
-     * @return the auth_file
-     */
+     * @return the auth_file */
     public String getAuthFile() {
         return auth_file;
     }
 
-    /**
-     * Kennwort zur Anmeldung am FTP-Server
+    /** Kennwort zur Anmeldung am FTP-Server
      * 
-     * @param password
-     *            the password to set
-     */
+     * @param password the password to set */
     public void setPassword(String password) {
         this.password = password;
     }
 
     // ******************************************************************************************************//
 
-    /**
-     * Ein org.eclipse.swt.widgets.Text Objekt, indem alle Log Ausgaben
-     * geschrieben werden.
-     */
+    /** Ein org.eclipse.swt.widgets.Text Objekt, indem alle Log Ausgaben
+     * geschrieben werden. */
     public void setLogText(org.eclipse.swt.widgets.Text text) {
         logtext = text;
     }
 
-
-    /**
-     * Ein Flag, der angibt, ob ein Fehler bereits zustande gekommen ist.
+    /** Ein Flag, der angibt, ob ein Fehler bereits zustande gekommen ist.
      * 
-     * @return boolean
-     */
+     * @return boolean */
     public boolean hasError() {
         return hasError;
     }
 
-    /**
-     * Loggen. Wenn ein SOSLogger Objekt übergeben wurde, dann werden die
+    /** Loggen. Wenn ein SOSLogger Objekt übergeben wurde, dann werden die
      * Logausgaben im SOSLogger augegeben. Sonst in Standardausgaben
      * 
      * @param txt
-     * @param level
-     */
+     * @param level */
     public static void log(String txt, int level) {
 
         if (logger == null) {
@@ -427,13 +373,9 @@ public class FTPProfile {
         }
     }
 
-    /**
-     * @param logger
-     *            the logger to set
-     */
+    /** @param logger the logger to set */
     public void setLogger(SOSLogger logger) {
         FTPProfile.logger = logger;
     }
 
-   
 }

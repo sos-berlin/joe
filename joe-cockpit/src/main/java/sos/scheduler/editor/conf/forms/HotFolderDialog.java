@@ -613,8 +613,7 @@ public class HotFolderDialog {
 
             txtName.setText("");
         } catch (Exception ex) {
-            new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " "
-                    + SOSJOEMessageCodes.JOE_M_0004.params(sType), ex);
+            new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " " + SOSJOEMessageCodes.JOE_M_0004.params(sType), ex);
             MainWindow.message(SOSJOEMessageCodes.JOE_M_0004.params(sType) + ex.getMessage(), SWT.ICON_ERROR);
             schedulerConfigurationShell.setFocus();
         }

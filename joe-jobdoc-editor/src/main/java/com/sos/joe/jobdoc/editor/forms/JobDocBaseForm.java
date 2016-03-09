@@ -1,4 +1,5 @@
 package com.sos.joe.jobdoc.editor.forms;
+
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
@@ -15,97 +16,104 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-public abstract class JobDocBaseForm<T>  extends SOSComposite /* SOSJOEMessageCodes */ implements IEditor, IUnsaved {
-	protected T					listener	= null;
-	protected DocumentationDom	dom			= null;
-	protected Button			bApply		= null;
+public abstract class JobDocBaseForm<T> extends SOSComposite /* SOSJOEMessageCodes */implements IEditor, IUnsaved {
 
-	private class modifyTextEvent implements ModifyListener {
-		@Override
-		public void modifyText(ModifyEvent e) {
-			setApplyStatus();
-		}
-	}
+    protected T listener = null;
+    protected DocumentationDom dom = null;
+    protected Button bApply = null;
 
-	protected final modifyTextEvent	modifyTextListener	= new modifyTextEvent();
+    private class modifyTextEvent implements ModifyListener {
 
-	protected Composite objParent = null;
-	
-	protected void setApplyStatus () {
-		
-	}
+        @Override
+        public void modifyText(ModifyEvent e) {
+            setApplyStatus();
+        }
+    }
 
-	public JobDocBaseForm(Composite parent, int style) {
-		super(parent, style);
-		objParent = parent;
-//		setLayout(new GridLayout(1, true));
-		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-	}
+    protected final modifyTextEvent modifyTextListener = new modifyTextEvent();
 
-	public T getDataProvider () {
-		return listener;
-	}
+    protected Composite objParent = null;
 
-	public DocumentationDom getDom() {
-		return dom;
-	}
+    protected void setApplyStatus() {
 
+    }
 
-	@Override public void apply() {
-		if (isUnsaved())
-			applySetting();
-	}
- 
-	@Override public boolean isUnsaved() {
-		boolean flgR = false;
-		if (bApply != null) {
-			flgR = bApply.isEnabled();
-		}
-		return flgR;
-	}
+    public JobDocBaseForm(Composite parent, int style) {
+        super(parent, style);
+        objParent = parent;
+        // setLayout(new GridLayout(1, true));
+        setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+    }
 
- 	
-	protected abstract void applySetting();
-	@Override public abstract boolean applyChanges();
+    public T getDataProvider() {
+        return listener;
+    }
 
+    public DocumentationDom getDom() {
+        return dom;
+    }
 
-	@Override public boolean close() {
-		return applyChanges() && IOUtils.continueAnyway(dom);
-	}
+    @Override
+    public void apply() {
+        if (isUnsaved())
+            applySetting();
+    }
 
-	@Override public boolean hasChanges() {
-		return dom.isChanged();
-	}
+    @Override
+    public boolean isUnsaved() {
+        boolean flgR = false;
+        if (bApply != null) {
+            flgR = bApply.isEnabled();
+        }
+        return flgR;
+    }
 
-	@Override public boolean save() {
-		boolean res = IOUtils.saveFile(dom, false);
-//		if (res)
-//			container.setNewFilename(null);
-		Utils.setResetElement(dom.getRoot());
-		return res;
-	}
+    protected abstract void applySetting();
 
-	@Override public boolean saveAs() {
-		String old = dom.getFilename();
-		boolean res = IOUtils.saveFile(dom, true);
-//		if (res)
-//			container.setNewFilename(old);
-		return res;
-	}
+    @Override
+    public abstract boolean applyChanges();
 
-	@Override public String getHelpKey() {
-		return null;
-	}
+    @Override
+    public boolean close() {
+        return applyChanges() && IOUtils.continueAnyway(dom);
+    }
 
-	@Override public String getFilename() {
-		return dom.getFilename();
-	}
+    @Override
+    public boolean hasChanges() {
+        return dom.isChanged();
+    }
 
+    @Override
+    public boolean save() {
+        boolean res = IOUtils.saveFile(dom, false);
+        // if (res)
+        // container.setNewFilename(null);
+        Utils.setResetElement(dom.getRoot());
+        return res;
+    }
 
+    @Override
+    public boolean saveAs() {
+        String old = dom.getFilename();
+        boolean res = IOUtils.saveFile(dom, true);
+        // if (res)
+        // container.setNewFilename(old);
+        return res;
+    }
 
-	@Override public boolean open(Collection files) {
-		return false;
-	}
+    @Override
+    public String getHelpKey() {
+        return null;
+    }
 
+    @Override
+    public String getFilename() {
+        return dom.getFilename();
+    }
+
+    @Override
+    public boolean open(Collection files) {
+        return false;
+    }
 
 }

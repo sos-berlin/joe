@@ -91,9 +91,9 @@ public class ParameterListener {
                                 item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + name));
                             }
                             if (parameterRequired != null && isParameterRequired(name)) {
-                                if (value.length() == 0){
+                                if (value.length() == 0) {
                                     item.setBackground(Options.getRequiredColor());
-                                }else{
+                                } else {
                                     item.setBackground(SWTResourceManager.getColor(247, 247, 247));
                                 }
                             }
@@ -107,7 +107,7 @@ public class ParameterListener {
 
     public void fillParams(final ArrayList listOfParams, final Table table, final boolean refreshTable) {
         if (refreshTable) {
-            if (_params != null){
+            if (_params != null) {
                 _params.clear();
             }
             table.removeAll();
@@ -497,7 +497,7 @@ public class ParameterListener {
         }
     }
 
-     public void changeUp(final Table table) {
+    public void changeUp(final Table table) {
         int index = table.getSelectionIndex();
         if (index < 0)// nichts ist selektiert
             return;
@@ -522,7 +522,7 @@ public class ParameterListener {
         _dom.setChanged(true);
     }
 
-     public void changeDown(final Table table) {
+    public void changeDown(final Table table) {
         int index = table.getSelectionIndex();
         if (index < 0)// nichts ist selektiert
             return;
@@ -540,7 +540,7 @@ public class ParameterListener {
         Utils.setChangedForDirectory(_parent, _dom);
         _dom.setChanged(true);
     }
-    
+
     public void setJobname(final String jobname) {
         this.jobname = jobname;
     }

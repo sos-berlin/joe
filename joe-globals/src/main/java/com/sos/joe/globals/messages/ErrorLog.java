@@ -1,5 +1,5 @@
 package com.sos.joe.globals.messages;
- 
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -13,39 +13,37 @@ import com.sos.joe.globals.options.Options;
 
 public class ErrorLog extends Exception {
 
-	private static final long	serialVersionUID	= -4414810697191992062L;
-	private final Logger LOGGER = Logger.getLogger(this.getClass());
+    private static final long serialVersionUID = -4414810697191992062L;
+    private final Logger LOGGER = Logger.getLogger(this.getClass());
 
-	public ErrorLog(final String msg) {
-		super();
-		try {
+    public ErrorLog(final String msg) {
+        super();
+        try {
 
-			init();
-			message(msg, SWT.ERROR);
-			LOGGER.info(msg);
-		}
-		catch (Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-	}
+            init();
+            message(msg, SWT.ERROR);
+            LOGGER.info(msg);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
-	public ErrorLog(final String msg, final Exception e) {
-		super();
+    public ErrorLog(final String msg, final Exception e) {
+        super();
 
-		try {
-			init();
-			JobSchedulerException objJSE = new JobSchedulerException(msg, e);
-			objJSE.setIntStatus(JobSchedulerException.NONE);
-	 
-			String strMsg = msg + "\n" + objJSE.ExceptionText();
-			message(strMsg, SWT.ERROR);
-			LOGGER.error(strMsg,e);
-		}
-		catch (Exception ex) {
-			System.out.println(ex.getMessage());
-		}
+        try {
+            init();
+            JobSchedulerException objJSE = new JobSchedulerException(msg, e);
+            objJSE.setIntStatus(JobSchedulerException.NONE);
 
-	}
+            String strMsg = msg + "\n" + objJSE.ExceptionText();
+            message(strMsg, SWT.ERROR);
+            LOGGER.error(strMsg, e);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
 
     public ErrorLog(final String application, String msg, final Exception e) {
         super();
@@ -57,111 +55,80 @@ public class ErrorLog extends Exception {
             String strMsg = msg + "\n" + objJSE.ExceptionText();
             message(application, strMsg, SWT.ERROR);
             LOGGER.error(strMsg);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
 
     }
- 
-	private void init() {
-		String filename = "";
-		try {
-			if (LOGGER != null) {
-				return;
-			}
-			filename = Options.getSchedulerData();
-			if (filename.endsWith("/") || filename.endsWith("\\"))
-				filename = filename + "logs";
-			else
-				filename = filename + "/logs";
 
-			if (!new java.io.File(filename).exists())
-				new java.io.File(filename).mkdirs();
+    private void init() {
+        String filename = "";
+        try {
+            if (LOGGER != null) {
+                return;
+            }
+            filename = Options.getSchedulerData();
+            if (filename.endsWith("/") || filename.endsWith("\\"))
+                filename = filename + "logs";
+            else
+                filename = filename + "/logs";
 
-			filename = filename + "/scheduler_editor.log";
+            if (!new java.io.File(filename).exists())
+                new java.io.File(filename).mkdirs();
 
-		}
-		catch (Exception e) {
-			try {
-				if (LOGGER != null)
-					LOGGER.debug("error in " + SOSClassUtil.getMethodName() + ", cause: " + e.getMessage());
-			}
-			catch (Exception f) {
+            filename = filename + "/scheduler_editor.log";
 
-			}
-		}
-		 
-	}
+        } catch (Exception e) {
+            try {
+                if (LOGGER != null)
+                    LOGGER.debug("error in " + SOSClassUtil.getMethodName() + ", cause: " + e.getMessage());
+            } catch (Exception f) {
 
-	public String getErrorMessage(final Exception ex) {
-		String s = "";
+            }
+        }
 
-		try {
-			Throwable tr = ex.getCause();
+    }
 
-			if (ex.toString() != null)
-				s = ex.toString();
+    public String getErrorMessage(final Exception ex) {
+        String s = "";
 
-			while (tr != null) {
-				if (s.indexOf(tr.toString()) == -1)
-					s = (s.length() > 0 ? s + ", " : "") + tr.toString();
-				tr = tr.getCause();
-			}
+        try {
+            Throwable tr = ex.getCause();
 
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return s;
-	}
+            if (ex.toString() != null)
+                s = ex.toString();
 
-	public static SOSStandardLogger getLogger() {
-		return null;
-	}
-	
-	private static Shell		sShell									= null;													// @jve:decl-index=0:visual-constraint="3,1"
+            while (tr != null) {
+                if (s.indexOf(tr.toString()) == -1)
+                    s = (s.length() > 0 ? s + ", " : "") + tr.toString();
+                tr = tr.getCause();
+            }
 
-	public static Shell getSShell() {
-		return sShell;
-	}
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return s;
+    }
 
+    public static SOSStandardLogger getLogger() {
+        return null;
+    }
 
-	public static int message(String message, int style) {
-		return message(getSShell(), message, style);
-	}
+    private static Shell sShell = null;													// @jve:decl-index=0:visual-constraint="3,1"
 
-	public static int message(String application, String message, int style) {
+    public static Shell getSShell() {
+        return sShell;
+    }
+
+    public static int message(String message, int style) {
+        return message(getSShell(), message, style);
+    }
+
+    public static int message(String application, String message, int style) {
         return message(getSShell(), application, message, style);
     }
- 
-	public static int message(Shell shell, String pstrMessage, int style) {
-		MessageBox mb = new MessageBox(shell, style);
-		if (mb == null) {
-			return -1;
-		}
-		if (pstrMessage == null) {
-			pstrMessage = "??????";
-		}
-		mb.setMessage(pstrMessage);
-		String title = Messages.getLabel("message");
-		if ((style & SWT.ICON_ERROR) != 0)
-			title = Messages.getLabel("error");
-		else {
-			if ((style & SWT.ICON_INFORMATION) != 0)
-				title = Messages.getLabel("information");
-			else
-				if ((style & SWT.ICON_QUESTION) != 0)
-					title = Messages.getLabel("question");
-				else
-					if ((style & SWT.ICON_WARNING) != 0)
-						title = Messages.getLabel("warning");
-		}
-		mb.setText("JOE: " + title);
-		return mb.open();
-	}
- 
-	public static int message(Shell shell, String application, String pstrMessage, int style) {
+
+    public static int message(Shell shell, String pstrMessage, int style) {
         MessageBox mb = new MessageBox(shell, style);
         if (mb == null) {
             return -1;
@@ -176,20 +143,42 @@ public class ErrorLog extends Exception {
         else {
             if ((style & SWT.ICON_INFORMATION) != 0)
                 title = Messages.getLabel("information");
-            else
-                if ((style & SWT.ICON_QUESTION) != 0)
-                    title = Messages.getLabel("question");
-                else
-                    if ((style & SWT.ICON_WARNING) != 0)
-                        title = Messages.getLabel("warning");
+            else if ((style & SWT.ICON_QUESTION) != 0)
+                title = Messages.getLabel("question");
+            else if ((style & SWT.ICON_WARNING) != 0)
+                title = Messages.getLabel("warning");
         }
-        mb.setText(application + ": "  + title);
+        mb.setText("JOE: " + title);
         return mb.open();
     }
 
-	public static void setSShell(Shell pobjShell) {
-		sShell = pobjShell;
-		
-	}
+    public static int message(Shell shell, String application, String pstrMessage, int style) {
+        MessageBox mb = new MessageBox(shell, style);
+        if (mb == null) {
+            return -1;
+        }
+        if (pstrMessage == null) {
+            pstrMessage = "??????";
+        }
+        mb.setMessage(pstrMessage);
+        String title = Messages.getLabel("message");
+        if ((style & SWT.ICON_ERROR) != 0)
+            title = Messages.getLabel("error");
+        else {
+            if ((style & SWT.ICON_INFORMATION) != 0)
+                title = Messages.getLabel("information");
+            else if ((style & SWT.ICON_QUESTION) != 0)
+                title = Messages.getLabel("question");
+            else if ((style & SWT.ICON_WARNING) != 0)
+                title = Messages.getLabel("warning");
+        }
+        mb.setText(application + ": " + title);
+        return mb.open();
+    }
+
+    public static void setSShell(Shell pobjShell) {
+        sShell = pobjShell;
+
+    }
 
 }
