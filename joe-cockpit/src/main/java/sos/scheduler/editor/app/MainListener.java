@@ -1,4 +1,5 @@
 package sos.scheduler.editor.app;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +26,10 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.IOUtils;
 
 public class MainListener extends JOEListener {
+
 	private static final String							conPropertyEDITOR_LANGUAGE	= "editor.language";
-	@SuppressWarnings("unused") private final String	conClsName					= "MainListener";
+    @SuppressWarnings("unused")
+    private final String conClsName = "MainListener";
 	private static final Logger							logger						= Logger.getLogger(MainListener.class);
 	private IContainer									_container					= null;
 	private final SOSString								sosString					= new SOSString();
@@ -59,8 +62,7 @@ public class MainListener extends JOEListener {
 			java.net.URL manifestUrl = new java.net.URL("jar:" + classContainer + "!/META-INF/MANIFEST.MF");
 			if (classContainer.contains(".jar")) {
 				manifest = new Manifest(manifestUrl.openStream());
-			}
-			else {
+            } else {
 				manifest = new Manifest(new java.net.URL(classContainer + "/META-INF/MANIFEST.MF").openStream());
 			}
 			if (manifest != null) {
@@ -74,8 +76,7 @@ public class MainListener extends JOEListener {
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 		}
 		return svnVersion;
 	}
@@ -99,7 +100,9 @@ public class MainListener extends JOEListener {
 				defaultItem = item;
 			}
 			item.addSelectionListener(new SelectionListener() {
-				@Override public void widgetSelected(SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
 					MenuItem item = (MenuItem) e.widget;
 					if (item.getSelection()) {
 						String lang = (String) item.getData();
@@ -108,7 +111,8 @@ public class MainListener extends JOEListener {
 					}
 				}
 
-				@Override public void widgetDefaultSelected(SelectionEvent e) {
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
 				}
 			});
 		}
@@ -151,8 +155,7 @@ public class MainListener extends JOEListener {
 			try {
 				getConnection(iniFile);
 				jobTitleList = sosConnection.getArray(titleFile);
-			}
-			catch (Exception e) {
+            } catch (Exception e) {
 				throw new Exception("Could not get the connection to database, cause: " + e.toString());
 			}
 			String[] titles = new String[jobTitleList.size()];
@@ -161,8 +164,7 @@ public class MainListener extends JOEListener {
 				titles[i] = sosString.parseToString(hash, "description");
 			}
 			Options.setJobTitleList(titles);
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
 			return;
 		}
@@ -195,11 +197,9 @@ public class MainListener extends JOEListener {
 			}
 			holidaysDescription.putAll(filenames);
 			Options.setHolidaysDescription(holidaysDescription);
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
-		}
-		finally {
+        } finally {
 			disconnect();
 		}
 	}
@@ -218,8 +218,7 @@ public class MainListener extends JOEListener {
 			try {
 				getConnection(iniFile);
 				holidayList = sosConnection.getArray(holidayDescriptionFile);
-			}
-			catch (Exception e) {
+            } catch (Exception e) {
 				throw new Exception("Could not get the connection to database, cause: " + e.toString());
 			}
 			String holidayId = "";
@@ -245,13 +244,11 @@ public class MainListener extends JOEListener {
 					field2 = "";
 				}
 			}
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return holidaysDescription;
 	}
-
 
 	private void getConnection(String iniFile) throws Exception {
 		try {
@@ -259,8 +256,7 @@ public class MainListener extends JOEListener {
 				return;
 			sosConnection = SOSConnection.createInstance(iniFile, ErrorLog.getLogger());
 			sosConnection.connect();
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 	}
@@ -269,8 +265,7 @@ public class MainListener extends JOEListener {
 		try {
 			if (sosConnection != null)
 				sosConnection.disconnect();
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			// tu nichts
 		}
 	}

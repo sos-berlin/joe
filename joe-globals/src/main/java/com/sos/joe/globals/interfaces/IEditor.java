@@ -1,22 +1,24 @@
 package com.sos.joe.globals.interfaces;
+
 import java.util.Collection;
 
 public interface IEditor {
-	public boolean hasChanges();
 
-	public boolean close();
+    public boolean hasChanges();
 
-	public boolean saveAs();
+    public boolean close();
 
-	public boolean save();
+    public boolean saveAs();
 
-	public boolean open(Collection files);
+    public boolean save();
 
-	public void openBlank();
+    public boolean open(Collection files);
 
-	public boolean applyChanges();
+    public void openBlank();
 
-	public String getHelpKey();
+    public boolean applyChanges();
 
-	public String getFilename();
+    public String getHelpKey();
+
+    public String getFilename();
 }

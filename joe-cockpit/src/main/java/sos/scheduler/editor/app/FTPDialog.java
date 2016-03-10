@@ -37,8 +37,8 @@ import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public abstract class FTPDialog {
-    private static final Logger LOGGER = Logger.getLogger(FTPDialog.class);
 
+    private static final Logger LOGGER = Logger.getLogger(FTPDialog.class);
 
     protected Button butExecute = null;
     private Group schedulerGroup = null;
@@ -159,8 +159,8 @@ public abstract class FTPDialog {
                             fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
                             _setEnabled(true);
                         } catch (Exception ex) {
-                                MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+                            MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
+                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
                         }
                         Utils.stopCursor(schedulerConfigurationShell);
                     }
@@ -210,7 +210,7 @@ public abstract class FTPDialog {
                             }
                             butExecute.setEnabled(true);
                         } catch (Exception ex) {
-                            LOGGER.error(ex.getMessage(),ex);
+                            LOGGER.error(ex.getMessage(), ex);
                         }
                     }
                 });
@@ -236,7 +236,7 @@ public abstract class FTPDialog {
                                 }
                             }
                         } catch (Exception r) {
-                             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
                     }
                 });
@@ -332,7 +332,7 @@ public abstract class FTPDialog {
                             try {
                                 disconnect();
                             } catch (Exception e1) {
-                                LOGGER.error(e1.getMessage(),e1);
+                                LOGGER.error(e1.getMessage(), e1);
                             }
                         }
                     });
@@ -413,8 +413,8 @@ public abstract class FTPDialog {
             fillTable(h);
             Utils.stopCursor(schedulerConfigurationShell);
         } catch (Exception r) {
-               MainWindow.message("could not refersh Table, cause: " + r.toString(), SWT.ICON_WARNING);
-               new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+            MainWindow.message("could not refersh Table, cause: " + r.toString(), SWT.ICON_WARNING);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
         }
     }
 
@@ -531,7 +531,7 @@ public abstract class FTPDialog {
                 }
             }
         } catch (Exception e) {
-             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
     }
 

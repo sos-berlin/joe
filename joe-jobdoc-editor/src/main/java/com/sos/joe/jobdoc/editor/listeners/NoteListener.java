@@ -110,8 +110,8 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
 
     private Element getElement() {
         if (_parent != null) {
-            List <Element> list = _parent.getChildren(_name, _dom.getNamespace());
-            for (Iterator <Element> it = list.iterator(); it.hasNext();) {
+            List<Element> list = _parent.getChildren(_name, _dom.getNamespace());
+            for (Iterator<Element> it = list.iterator(); it.hasNext();) {
                 Element item = it.next();
                 String strAttributeVal = Utils.getAttributeValue("language", item);
                 if (strAttributeVal.length() <= 0) {

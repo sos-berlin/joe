@@ -489,8 +489,8 @@ public class DetailsListener {
             if (Options.getDetailXSLT() != null && Options.getDetailXSLT().length() > 0) {
                 xml = xml + "<?xml-stylesheet type=\"text/xsl\" href=\"" + Options.getDetailXSLT() + "\"?> ";
             }
-            xml = xml + "<settings>" + "  <job_chain name=\"" + jobChainname + "\"> " + "    <note language=\"de\"/> "
-                    + "    <note language=\"en\"/> " + "    <order> " + "      <params/> " + "    </order> " + "  </job_chain> " + "</settings> ";
+            xml = xml + "<settings>" + "  <job_chain name=\"" + jobChainname + "\"> " + "    <note language=\"de\"/> " + "    <note language=\"en\"/> "
+                    + "    <order> " + "      <params/> " + "    </order> " + "  </job_chain> " + "</settings> ";
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
@@ -800,8 +800,8 @@ public class DetailsListener {
                     if ((dom.isLifeElement() || (new File(jobname).getParent() != null))) {
                         if (!hotFolderfile.exists()) {
                             if (!new File(hotFolderfilename).exists()) {
-                                sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File "
-                                        + hotFolderfilename + " not exist.", SWT.ICON_WARNING);
+                                sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename
+                                        + " not exist.", SWT.ICON_WARNING);
                                 continue;
                             }
                         }
@@ -906,16 +906,15 @@ public class DetailsListener {
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            sos.scheduler.editor.app.MainWindow.message("Could not to be add Monitoring Job to Jobchain " + jobChainname + ", cause: "
-                    + e.getMessage(), SWT.ICON_ERROR);
+            sos.scheduler.editor.app.MainWindow.message("Could not to be add Monitoring Job to Jobchain " + jobChainname + ", cause: " + e.getMessage(), SWT.ICON_ERROR);
         }
     }
 
     /** Ein neuer Job wurde den Jobkette hinzugefügt. Es wird jetzt überprüft, ob
      * die Details Konfigurationsdatei globale Parameter hat. Wenn ja, dann wird
      * diesem Job monitoring hinzugefügt Details der state geändert. */
-    public static boolean existDetailsParameter(String state, String jobchainname, String jobname, SchedulerDom dom, ISchedulerUpdate update,
-            boolean global, String orderid) {
+    public static boolean existDetailsParameter(String state, String jobchainname, String jobname, SchedulerDom dom, ISchedulerUpdate update, boolean global,
+            String orderid) {
         try {
             DetailsListener detailListener = new DetailsListener(jobchainname, state, orderid, JOEConstants.JOB_CHAINS, null, dom.isLifeElement()
                     || dom.isDirectory(), dom.getFilename());
@@ -952,8 +951,7 @@ public class DetailsListener {
                 List listOfElement2 = null;
                 if (dom.isLifeElement() || new File(jobname).getParent() != null) {
                     if (!new File(hotFolderfilename).exists()) {
-                        sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename
-                                + " not exist.", SWT.ICON_WARNING);
+                        sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename + " not exist.", SWT.ICON_WARNING);
                         return;
                     }
                     XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");

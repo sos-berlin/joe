@@ -38,7 +38,7 @@ public class ActionsDom extends DomParser {
             setDoc(doc);
             setChanged(false);
         } catch (Exception e) {
-           LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -161,7 +161,7 @@ public class ActionsDom extends DomParser {
             out.output(element.getContent(), stream);
             stream.close();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
         }
         String str = stream.toString().trim();
         if (str.startsWith("<div")) {

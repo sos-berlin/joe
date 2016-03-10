@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.sos.joe.globals.messages.ErrorLog;
- 
+
 import com.sos.joe.globals.options.Options;
 
 public class WebDavDialogListener {
@@ -197,7 +197,6 @@ public class WebDavDialogListener {
         return null;
     }
 
-     
     public void removeFile(String file) {
         WebdavResource wdr = null;
         try {
@@ -214,8 +213,8 @@ public class WebDavDialogListener {
             }
             wdr.close();
         } catch (Exception e) {
-             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not delete file [" + file + "]", e);
-             if (wdr != null)
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not delete file [" + file + "]", e);
+            if (wdr != null)
                 try {
                     wdr.close();
                 } catch (IOException e1) {
@@ -233,7 +232,7 @@ public class WebDavDialogListener {
         String host = null;
         String port = null;
         try {
- 
+
             user = sosString.parseToString(currProfile.get("user"));
             password = sosString.parseToString(currProfile.get("password"));
             String proxyHost = sosString.parseToString(currProfile.get("proxy_server"));
@@ -274,8 +273,7 @@ public class WebDavDialogListener {
             Options.saveProperties();
         } catch (Exception ex) {
             hasError = true;
-            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; error in webdav server init with [host=" + host + "], [port="
-                    + port + "].", ex);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; error in webdav server init with [host=" + host + "], [port=" + port + "].", ex);
             if (logtext != null)
                 logtext.append("..error in webdav server init with [host=" + host + "], [port=" + port + "], cause: " + getErrorMessage(ex) + "\n");
         }
@@ -333,8 +331,7 @@ public class WebDavDialogListener {
             if (logtext != null)
                 logtext.append("..webdav server reply: saveas[url=" + url + "], [status= " + wdr.getStatusMessage());
         } catch (Exception e) {
-            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..webdav server reply, [status= " + wdr.getStatusMessage()
-                        + "]", e);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..webdav server reply, [status= " + wdr.getStatusMessage() + "]", e);
             if (logtext != null)
                 logtext.append("..webdav server reply: ");
             hasError = true;
@@ -384,7 +381,6 @@ public class WebDavDialogListener {
         }
     }
 
- 
     public ArrayList saveHotFolderAs(String source, String target) {
         ArrayList list = new ArrayList();
         try {
@@ -519,14 +515,14 @@ public class WebDavDialogListener {
             s2 = s2 + "proxy_port=" + sosString.parseToString(profile.get("proxy_port")) + "\n";
             s2 = s2 + "\n\n";
             s2 = s2 + s.substring(pos2);
- 
+
             java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
             java.io.File file = new java.io.File(filename);
             boolean append = false;
             java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(file, append).getChannel();
             wChannel.write(bbuf);
             wChannel.close();
-            
+
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save configurations File: " + configFile, e);
             hasError = true;
@@ -603,5 +599,5 @@ public class WebDavDialogListener {
         }
         return s;
     }
-     
+
 }

@@ -39,8 +39,7 @@ public class SourceGenerator extends JSToolBox {
     private HashMap<String, String> pobjHshMap;
     private String conResource4XslPathName;
     private static final Logger logger = Logger.getLogger(SourceGenerator.class);
-    
-    
+
     private File copyResource2TempFile(final String pstrResourceName) throws IOException {
 
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream(pstrResourceName);
@@ -121,8 +120,7 @@ public class SourceGenerator extends JSToolBox {
                 setXSLTParameter(conXsltParmClassNameExtension, strClassNameExtension);
                 setXSLTParameter(conXsltParmClassName, strWorkerClassName + strClassNameExtension);
 
-                doTransform("JSJobDoc2JSOptionClass.xsl", objXMLFile, outputDir.newFile(strWorkerClassName + strClassNameExtension
-                        + conJavaFilenameExtension));
+                doTransform("JSJobDoc2JSOptionClass.xsl", objXMLFile, outputDir.newFile(strWorkerClassName + strClassNameExtension + conJavaFilenameExtension));
             }
 
             {

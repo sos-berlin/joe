@@ -162,7 +162,7 @@ public class JobAssistentImportJobsForm {
                         try {
                             createTreeItems();
                         } catch (Exception e) {
-                            LOGGER.error(e.getMessage(),e);
+                            LOGGER.error(e.getMessage(), e);
                         }
                         inputTimer.cancel();
                     }
@@ -541,8 +541,8 @@ public class JobAssistentImportJobsForm {
                         Element job = null;
                         if (flagBackUpJob) {
                             if (jobBackUp != null && assistentType != JOEConstants.JOB_WIZARD) {
-                                int cont = ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
-                                        | SWT.YES | SWT.NO | SWT.CANCEL);
+                                int cont = ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION | SWT.YES
+                                        | SWT.NO | SWT.CANCEL);
                                 if (cont == SWT.CANCEL) {
                                     return;
                                 } else if (cont != SWT.YES) {

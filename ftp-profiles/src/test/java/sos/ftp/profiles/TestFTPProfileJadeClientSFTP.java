@@ -9,9 +9,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
- 
+
 public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
- 
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -19,23 +19,21 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
     }
-    
-     
 
     @Before
     public void setUp() throws Exception {
         ftpProperties = new Properties();
-        ftpProperties.put("profilename","test");
-        ftpProperties.put("host","homer.sos");
-        ftpProperties.put("port","22");
-        ftpProperties.put("user","test");
-        ftpProperties.put("password","12345");
-        ftpProperties.put("root","/home/test");
-        ftpProperties.put("transfertype","ASCII");
-        ftpProperties.put("localdirectory",System.getProperty("java.io.tmpdir") + "/jobschedulertest");
-        ftpProperties.put("profilename","test");
-        ftpProperties.put("protocol","sftp");
-        ftpProperties.put("auth_method","password");
+        ftpProperties.put("profilename", "test");
+        ftpProperties.put("host", "homer.sos");
+        ftpProperties.put("port", "22");
+        ftpProperties.put("user", "test");
+        ftpProperties.put("password", "12345");
+        ftpProperties.put("root", "/home/test");
+        ftpProperties.put("transfertype", "ASCII");
+        ftpProperties.put("localdirectory", System.getProperty("java.io.tmpdir") + "/jobschedulertest");
+        ftpProperties.put("profilename", "test");
+        ftpProperties.put("protocol", "sftp");
+        ftpProperties.put("auth_method", "password");
         ftpProfile = new FTPProfile(ftpProperties);
     }
 
@@ -47,7 +45,7 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
     public void testFTPProfileJadeClient() throws Exception {
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(new FTPProfile(new Properties()));
     }
- 
+
     @Test
     public void testMkdir() throws RuntimeException, Exception {
         super.testMkdir();
@@ -61,7 +59,7 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
     @Test
     public void testGetDirectoryContent() throws Exception {
         super.testGetDirectoryContent();
-     }
+    }
 
     @Test
     public void testRemoveFileSOSFileEntry() throws Exception {
@@ -72,8 +70,7 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
     public void testRenameFile() throws RuntimeException, Exception {
         super.testRenameFile();
     }
-    
-    
+
     @Test
     public void testRemoveFileStringString() throws Exception {
         super.testRemoveFileStringString();
@@ -81,7 +78,7 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
 
     @Test
     public void testCopyLocalFileToRemote() throws Exception {
-        super.testCopyLocalFileToRemote();    
+        super.testCopyLocalFileToRemote();
     }
 
     @Test
@@ -91,12 +88,12 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
 
     @Test
     public void testCopyRemoteFileToLocal() throws Exception {
-       super.testCopyRemoteFileToLocal(); 
+        super.testCopyRemoteFileToLocal();
     }
 
     @Test
     public void testCopyRemoteFilesToLocal() throws Exception {
-    	super.testCopyRemoteFilesToLocal();
+        super.testCopyRemoteFilesToLocal();
     }
 
 }
