@@ -30,6 +30,7 @@ import java.io.File;
 
 public class FTPProfileDialog {
 
+<<<<<<< HEAD
     private Group schedulerGroup = null;
     private SOSString sosString = null;
     private static Shell shell = null;
@@ -366,6 +367,335 @@ public class FTPProfileDialog {
                     public void widgetSelected(final SelectionEvent e) {
                         txtProxyServer.setEnabled(useProxyButton.getSelection());
                         txtProxyPort.setEnabled(useProxyButton.getSelection());
+=======
+ 
+	private              Group               schedulerGroup                = null;
+	private              SOSString           sosString                     = null;
+	private   static     Shell               shell   = null;
+	private              FTPProfile          currProfile                   = null;
+	private              Combo               cboConnectname                = null;
+	private              Text                txtPort                       = null;
+	private              Text                txtUsername                   = null;
+    private              Text                txtPassword                   = null;
+    private              Text                txtPassphrase                 = null;
+	private              Text                txtRoot                       = null;
+	private              Text                txtLocalDirectory             = null;
+	private              Button              butAscii                      = null;
+	private              Button              butbinary                     = null;
+	private              Button              butPassive                    = null;
+	private              Text                txtHost                       = null;
+	private              boolean             newProfile                    = false;
+	private              Button              butSavePassword               = null; 
+	private              FTPDialogListener   listener                      = null;
+	private              Button              useProxyButton                = null; 
+    private              Text                txtProxyServer                = null;  
+    private              Text                txtProxyUser                  = null;  
+    private              Combo               cboProxyProtocol              = null; 
+    private              Text                txtProxyPassword              = null;  
+	private              Text                txtProxyPort                  = null; 
+	private              Button              butApply                      = null;
+	private              boolean             saveSettings                  = false;
+	private              Combo               cboProtokol                   = null; 
+	private              TabItem             sshTabItem                    = null; 
+	private              Group               groupAuthenticationMethods    = null;
+	private              Button              butPublicKey                  = null;
+	private              Button              butAuthPassword               = null;
+	private              Text                txtDirPublicKey               = null;
+	private              boolean             saved                         = false; //hilsvariable            
+	private              boolean             init                          = false;   
+	private              Combo               combo                         = null;
+	private   static     boolean             emptyItem                     = false;
+	
+	public FTPProfileDialog(File configFile) throws Exception{
+		try {
+			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+			sosString = new SOSString();
+			listener = new FTPDialogListener(configFile);
+			sosString = new SOSString();
+		} catch (Exception e) {
+			throw new Exception ("error in " +  sos.util.SOSClassUtil.getMethodName() + " cause: " + e.toString());
+		}
+	}        
+
+	public void fillCombo(Combo combo_) throws Exception{
+		try {
+			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+
+			combo = combo_;
+			listener.setConnectionsname(combo);
+			String[] profileNames = listener.getProfileNames();
+			HashMap <String, FTPProfile> p = listener.getProfiles();
+			for(int i = 0; i < profileNames.length; i++) {
+				combo.setData(profileNames[i], p.get(profileNames[i]));
+			}
+			combo.setItems(profileNames);
+			combo.setText(listener.getCurrProfileName() != null ? listener.getCurrProfileName() : "");
+			if(profileNames.length > 0)
+				combo.select(0);
+			combo.setData(listener);
+			sosString = new SOSString();
+
+			if(emptyItem) {
+				combo_.add("", 0);
+				combo_.select(0);
+			}
+		} catch (Exception e) {
+			throw new Exception ("error in " +  sos.util.SOSClassUtil.getMethodName() + " cause: " + e.toString());
+		}
+	}
+
+	public void fillCombo(Combo combo_, boolean emptyItem_) throws Exception{
+		FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+		try {
+			emptyItem = emptyItem_;			
+			fillCombo(combo_);			
+		} catch (Exception e) {
+			throw new Exception ("error in " +  sos.util.SOSClassUtil.getMethodName() + " cause: " + e.toString());
+		}
+	}
+	
+	public void showModal(Combo combo_) {
+
+		try {
+			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+			combo = combo_;
+			fillCombo(combo);
+			shell = new Shell(SWT.CLOSE | SWT.TITLE
+					| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+
+			shell.addTraverseListener(new TraverseListener() {
+				public void keyTraversed(final TraverseEvent e) {				
+					if(e.detail == SWT.TRAVERSE_ESCAPE) {
+						close();
+						saved = true;
+						shell.dispose();
+					}
+				}
+			});
+
+			shell.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(final DisposeEvent e) {
+					close();
+
+				}
+			});
+			final GridLayout gridLayout = new GridLayout();
+			gridLayout.marginTop = 5;
+			gridLayout.marginRight = 5;
+			gridLayout.marginLeft = 5;
+			gridLayout.marginBottom = 5;
+			shell.setLayout(gridLayout);
+			shell.setSize(750, 488);
+			shell.setText("Profiles");
+
+			{
+				schedulerGroup = new Group(shell, SWT.NONE);
+				 
+				schedulerGroup.setText("Profiles");
+				final GridData gridData = new GridData(GridData.FILL,
+						GridData.FILL, true, true);
+				gridData.widthHint = 581;
+				gridData.heightHint = 233;
+				schedulerGroup.setLayoutData(gridData);
+
+				final GridLayout gridLayout_1 = new GridLayout();
+				gridLayout_1.numColumns = 2;
+				gridLayout_1.marginTop = 5;
+				gridLayout_1.marginRight = 5;
+				gridLayout_1.marginLeft = 5;
+				gridLayout_1.marginBottom = 5;
+				schedulerGroup.setLayout(gridLayout_1);
+
+				final TabFolder tabFolder = new TabFolder(schedulerGroup, SWT.NONE);
+				final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 4);
+				gridData_1.heightHint = 178;
+				tabFolder.setLayoutData(gridData_1);
+
+				final TabItem propertiesTabItem = new TabItem(tabFolder, SWT.NONE);
+				propertiesTabItem.setText("Properties");
+
+				final Group group = new Group(tabFolder, SWT.NONE);
+				final GridLayout gridLayout_2 = new GridLayout();
+				gridLayout_2.numColumns = 3;
+				group.setLayout(gridLayout_2);
+				propertiesTabItem.setControl(group);
+
+
+				final Label lblName = new Label(group, SWT.NONE);
+				lblName.setText("Name");
+
+				cboConnectname = new Combo(group, SWT.NONE);
+
+				cboConnectname.setItems(listener.getProfileNames());
+				cboConnectname.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						setEnabled();
+
+					}
+				});
+				final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+				cboConnectname.setLayoutData(gridData_2);
+				cboConnectname.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						if( !cboConnectname.getText().equals(currProfile.getProfilename()))
+							initForm();
+					}
+				});
+
+		 
+
+				final Label protocolLabel = new Label(group, SWT.NONE);
+				protocolLabel.setText("Protocol");
+
+				cboProtokol = new Combo(group, SWT.NONE);
+				cboProtokol.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+				cboProtokol.setItems(new String[] {"FTP", "SFTP"});
+
+				cboProtokol.select(0);
+
+				final Label hostnameOrIpLabel = new Label(group, SWT.NONE);
+				hostnameOrIpLabel.setText("Host Name or IP Address");
+
+				txtHost = new Text(group, SWT.BORDER);
+				txtHost.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						setEnabled();
+					}
+				});
+				txtHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+
+				final Label portLabel = new Label(group, SWT.NONE);
+				portLabel.setText("Port");
+
+				txtPort = new Text(group, SWT.BORDER);
+				txtPort.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						setEnabled();
+					}
+				});
+				txtPort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+
+				final Label userNameLabel = new Label(group, SWT.NONE);
+				userNameLabel.setText("User Name");
+
+				txtUsername = new Text(group, SWT.BORDER);
+				txtUsername.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						setEnabled();
+					}
+				});
+				txtUsername.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+
+				final Label passwordLabel = new Label(group, SWT.NONE);
+				passwordLabel.setText("Password");			
+
+                txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
+				txtPassword.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+					    if (!txtPassphrase.getText().equals(txtPassword.getText())){
+					        txtPassphrase.setText(txtPassword.getText());
+						}
+						setEnabled();
+					}
+				});
+				txtPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+
+				final Label rootLabel = new Label(group, SWT.NONE);
+				rootLabel.setText("Root Directory");
+
+				txtRoot = new Text(group, SWT.BORDER);
+				txtRoot.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						setEnabled();
+					}
+				});
+				txtRoot.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+
+				final Label directoryFroLocalLabel = new Label(group, SWT.NONE);
+				directoryFroLocalLabel.setText("Directory For Local Copy");
+
+				txtLocalDirectory = new Text(group, SWT.BORDER);
+				txtLocalDirectory.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						setEnabled();
+					}
+				});
+				txtLocalDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+
+				final Label savePasswordLabel = new Label(group, SWT.NONE);
+				final GridData gridData_5 = new GridData(SWT.DEFAULT, 24);
+				gridData_5.verticalIndent = 5;
+				savePasswordLabel.setLayoutData(gridData_5);
+				savePasswordLabel.setText("Save Password");
+
+				butSavePassword = new Button(group, SWT.CHECK);
+				butSavePassword.setSelection(true);
+				butSavePassword.addSelectionListener(new SelectionAdapter() {
+					public void widgetDefaultSelected(final SelectionEvent e) {
+
+					}
+					public void widgetSelected(final SelectionEvent e) {
+						setEnabled();
+					}
+				});
+				butSavePassword.setLayoutData(new GridData());
+				new Label(group, SWT.NONE);
+
+				final Label transferModeLabel = new Label(group, SWT.NONE);
+				final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.END, false, false);
+				gridData_3.heightHint = 21;
+				transferModeLabel.setLayoutData(gridData_3);
+				transferModeLabel.setText("Transfer Mode");
+
+				butAscii = new Button(group, SWT.RADIO);
+				butAscii.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						setEnabled();
+					}
+				});
+				butAscii.setLayoutData(new GridData());
+				butAscii.setText("ASCII");
+
+
+				butbinary = new Button(group, SWT.RADIO);
+				butbinary.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						setEnabled();
+					}
+				});
+				butbinary.setLayoutData(new GridData());
+				butbinary.setText("Binary");
+				
+				final Label passiveMode = new Label(group, SWT.NONE);
+				final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.END, false, false);
+				gridData_3.heightHint = 21;
+				passiveMode.setLayoutData(gridData_4);
+				passiveMode.setText("Passive Mode");
+				
+				butPassive = new Button(group, SWT.CHECK);
+				butPassive.addSelectionListener(new SelectionAdapter() {
+					 
+					public void widgetSelected(final SelectionEvent e) {
+						setEnabled();
+					}
+				});
+				butPassive.setLayoutData(new GridData());
+
+				final TabItem proxyTabItem = new TabItem(tabFolder, SWT.NONE);
+				proxyTabItem.setText("Proxy");
+
+				final Group groupProxy = new Group(tabFolder, SWT.NONE);
+				final GridLayout gridLayout_3 = new GridLayout();
+				gridLayout_3.numColumns = 2;
+				groupProxy.setLayout(gridLayout_3);
+				proxyTabItem.setControl(groupProxy);
+
+				useProxyButton = new Button(groupProxy, SWT.CHECK);
+				useProxyButton.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						txtProxyServer.setEnabled(useProxyButton.getSelection());
+						txtProxyPort.setEnabled(useProxyButton.getSelection());
+>>>>>>> 169c4fb818e079ea1afecdb2e4f4d6b196f7fe0a
                         txtProxyUser.setEnabled(useProxyButton.getSelection());
                         txtProxyPassword.setEnabled(useProxyButton.getSelection());
                         cboProxyProtocol.setEnabled(useProxyButton.getSelection());
@@ -435,6 +765,7 @@ public class FTPProfileDialog {
                     public void modifyText(final ModifyEvent e) {
                         setEnabled();
                     }
+<<<<<<< HEAD
                 });
 
                 sshTabItem = new TabItem(tabFolder, SWT.NONE);
@@ -477,6 +808,47 @@ public class FTPProfileDialog {
                 txtPassphrase = new Text(groupAuthenticationMethods, SWT.BORDER);
                 txtPassphrase.addModifyListener(new ModifyListener() {
 
+=======
+                });                
+                 
+				sshTabItem = new TabItem(tabFolder, SWT.NONE);
+				sshTabItem.setText("SSH");
+
+				groupAuthenticationMethods = new Group(tabFolder, SWT.NONE);
+				groupAuthenticationMethods.setText("Authentication Methods");
+				final GridLayout gridLayout_4 = new GridLayout();
+				gridLayout_4.numColumns = 2;
+				groupAuthenticationMethods.setLayout(gridLayout_4);
+				sshTabItem.setControl(groupAuthenticationMethods);
+
+				new Label(groupAuthenticationMethods, SWT.NONE);
+				new Label(groupAuthenticationMethods, SWT.NONE);
+
+				butPublicKey = new Button(groupAuthenticationMethods, SWT.RADIO);
+				butPublicKey.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						setEnabled();
+					}
+				});
+				final GridData gridData_pk = new GridData(GridData.BEGINNING, GridData.END, false, false, 2, 1);
+				butPublicKey.setLayoutData(gridData_pk);
+				butPublicKey.setText("Public Key");
+
+								
+				butAuthPassword = new Button(groupAuthenticationMethods, SWT.RADIO);
+				butAuthPassword.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						setEnabled();
+					}
+				});
+				butAuthPassword.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+				butAuthPassword.setText("Password");
+
+		        final Label passphraseLabel = new Label(groupAuthenticationMethods, SWT.NONE);
+		        passphraseLabel.setText("Passphrase");      
+                txtPassphrase = new Text(groupAuthenticationMethods, SWT.PASSWORD | SWT.BORDER);
+		        txtPassphrase.addModifyListener(new ModifyListener() {
+>>>>>>> 169c4fb818e079ea1afecdb2e4f4d6b196f7fe0a
                     public void modifyText(final ModifyEvent e) {
                         if (!txtPassphrase.getText().equals(txtPassword.getText())) {
                             txtPassword.setText(txtPassphrase.getText());
