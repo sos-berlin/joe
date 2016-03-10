@@ -252,8 +252,7 @@ public class FTPProfileDialog {
 				final Label passwordLabel = new Label(group, SWT.NONE);
 				passwordLabel.setText("Password");			
 
-//                txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
-                txtPassword = new Text(group, SWT.BORDER);
+                txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
 				txtPassword.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 					    if (!txtPassphrase.getText().equals(txtPassword.getText())){
@@ -461,8 +460,7 @@ public class FTPProfileDialog {
 
 		        final Label passphraseLabel = new Label(groupAuthenticationMethods, SWT.NONE);
 		        passphraseLabel.setText("Passphrase");      
-                //txtPassphrase = new Text(group, SWT.PASSWORD | SWT.BORDER);
-                txtPassphrase = new Text(groupAuthenticationMethods, SWT.BORDER);
+                txtPassphrase = new Text(groupAuthenticationMethods, SWT.PASSWORD | SWT.BORDER);
 		        txtPassphrase.addModifyListener(new ModifyListener() {
                     public void modifyText(final ModifyEvent e) {
                         if (!txtPassphrase.getText().equals(txtPassword.getText())){
