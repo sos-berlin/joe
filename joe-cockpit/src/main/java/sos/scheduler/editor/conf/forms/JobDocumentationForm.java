@@ -11,10 +11,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-public class JobDocumentationForm extends Composite /*
-                                                     * implements
-                                                     * IUpdateLanguage
-                                                     */{
+public class JobDocumentationForm extends Composite {
 
     private JobListener objDataProvider = null;
 
@@ -42,4 +39,5 @@ public class JobDocumentationForm extends Composite /*
 
     public void initForm() {
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

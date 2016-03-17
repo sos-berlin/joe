@@ -71,7 +71,7 @@ public class ProcessClassesListener {
                 Element e = (Element) it.next();
                 TableItem item = new TableItem(tableProcessClasses, SWT.NONE);
                 String name = Utils.getAttributeValue("name", e);
-                if (name.equals("")) {
+                if ("".equals(name)) {
                     name = CATCHALL;
                 }
                 item.setText(0, name);

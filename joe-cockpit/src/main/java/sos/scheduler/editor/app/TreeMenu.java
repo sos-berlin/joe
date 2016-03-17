@@ -442,9 +442,10 @@ public class TreeMenu {
                         sos.scheduler.editor.conf.listeners.ProcessClassesListener listener = new sos.scheduler.editor.conf.listeners.ProcessClassesListener((SchedulerDom) _dom, data.getElement());
                         listener.newProcessClass();
                         int i = 1;
-                        if (data.getElement().getChild("process_classes") != null)
+                        if (data.getElement().getChild("process_classes") != null) {
                             i = data.getElement().getChild("process_classes").getChildren("process_class").size() + 1;
-                        listener.applyProcessClass("processClass_" + i, "", 0);
+                        }
+                        listener.applyProcessClass("processClass_" + i, "", "", 0);
                         listener.fillProcessClassesTable(sos.scheduler.editor.conf.forms.ProcessClassesForm.getTable());
                         listener.selectProcessClass(i - 1);
                     } catch (Exception es) {
@@ -588,8 +589,9 @@ public class TreeMenu {
                     return;
                 TreeData data = (TreeData) _tree.getSelection()[0].getData();
                 boolean override = false;
-                if (_tree.getSelection()[0].getData("override_attributes") != null)
+                if (_tree.getSelection()[0].getData("override_attributes") != null) {
                     override = _tree.getSelection()[0].getData("override_attributes").equals("true");
+                }
                 if (_tree.getSelection()[0].getData("key") instanceof String) {
 
                     String key = _tree.getSelection()[0].getData("key").toString();
@@ -767,7 +769,6 @@ public class TreeMenu {
             }
             Element copyClone = (Element) _copy.clone();
             if (!Utils.getAttributeValue("name", _copy).equals("") && existJobname(elem, Utils.getAttributeValue("name", _copy))) {
-
                 String append = "copy(" + (copyClone.getChildren("job").size() + elem.getChildren().size() + 1) + ")of_"
                         + Utils.getAttributeValue("name", copyClone);
                 copyClone.setAttribute("name", append);

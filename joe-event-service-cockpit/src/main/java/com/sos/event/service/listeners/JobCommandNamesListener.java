@@ -22,18 +22,14 @@ public class JobCommandNamesListener {
     private ActionsDom _dom = null;
     private Element _command = null;
 
-    // private Element _job = null;
     public JobCommandNamesListener(ActionsDom dom, Element command, ActionsForm update) {
         _dom = dom;
         _command = command;
         _main = update;
-        // if (_command != null)
-        // _job = _command.getParentElement();
     }
 
     public void fillCommands(Element job, TreeItem parent, boolean expand) {
         List commands = job.getChildren("commands");
-        // java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
         if (commands != null) {
             Iterator it = commands.iterator();
             parent.removeAll();
@@ -43,29 +39,14 @@ public class JobCommandNamesListener {
                     TreeItem item = new TreeItem(parent, SWT.NONE);
                     item.setText(e.getAttributeValue("name"));
                     item.setData(new TreeData(JOEConstants.JOB_COMMAND, e, Options.getHelpURL("job.commands")));
-                    /*
-                     * if (listOfReadOnly != null &&
-                     * listOfReadOnly.contains(Utils.getAttributeValue("name",
-                     * job))) {
-                     * item.setForeground(Display.getCurrent().getSystemColor
-                     * (SWT.COLOR_GRAY)); } else {
-                     * item.setForeground(Display.getCurrent
-                     * ().getSystemColor(SWT.COLOR_BLACK)); }
-                     */
                 }
             }
         }
         parent.setExpanded(expand);
     }
 
-    /*
-     * public boolean isDisabled() { return
-     * _dom.isJobDisabled(Utils.getAttributeValue("name", _job)); }
-     */
     public void addCommand(Element e) {
         _dom.setChanged(true);
-        // _dom.setChangedForDirectory("job",
-        // Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         _command.addContent(e);
         _main.updateCommand();
     }
@@ -78,7 +59,7 @@ public class JobCommandNamesListener {
         Iterator it2 = c.iterator();
         while (it2.hasNext() && j >= 0) {
             Element e2 = (Element) it2.next();
-            if (!e2.getName().equals("start_job") && !e2.getName().equals("add_order") && !e2.getName().equals("order")) {
+            if (!"start_job".equals(e2.getName()) && !"add_order".equals(e2.getName()) && !"order".equals(e2.getName())) {
                 ignore++;
             } else {
                 j--;
@@ -98,8 +79,6 @@ public class JobCommandNamesListener {
         }
         _main.updateCommand();
         _dom.setChanged(true);
-        // _dom.setChangedForDirectory("job",
-        // Utils.getAttributeValue("name",_job), SchedulerDom.DELETE);
     }
 
     public String getCommandAttribute(Table table, String attribute) {
@@ -147,22 +126,22 @@ public class JobCommandNamesListener {
         while (it2.hasNext()) {
             Element e2 = (Element) it2.next();
             created = false;
-            if (e2.getName().equals("start_job") || e2.getName().equals("add_order") || e2.getName().equals("order")) {
-                if (!created) { // Nur die commands add_order und start_job
-                    // anzeigen
+            if ("start_job".equals(e2.getName()) || "add_order".equals(e2.getName()) || "order".equals(e2.getName())) {
+                if (!created) {
                     item = new TableItem(table, SWT.NONE);
                     item.setText(1, "");
                     created = true;
                 }
                 item.setText(0, e2.getName());
                 item.setText(3, Utils.getAttributeValue("at", e2));
-                if (e2.getName().equals("start_job"))
+                if ("start_job".equals(e2.getName())) {
                     item.setText(1, Utils.getAttributeValue("job", e2));
-                if (e2.getName().equals("add_order") || e2.getName().equals("order")) {
+                } else if ("add_order".equals(e2.getName()) || "order".equals(e2.getName())) {
                     item.setText(1, Utils.getAttributeValue("id", e2));
                     item.setText(2, Utils.getAttributeValue("job_chain", e2));
                 }
             }
         }
     }
+
 }

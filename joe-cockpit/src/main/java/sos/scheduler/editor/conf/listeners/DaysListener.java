@@ -111,7 +111,7 @@ public class DaysListener {
             String[] groupUsedDay = used[i].split(" ");
             if (groupUsedDay.length == 1) {
                 a = groupUsedDay[0];
-            } else
+            } else {
                 for (int j = 0; j < groupUsedDay.length; j++) {
                     try {
                         a = (a.length() == 0 ? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j]) - OFFSET[type]];
@@ -119,6 +119,7 @@ public class DaysListener {
                         a = (a.length() == 0 ? a : a + " ") + groupUsedDay[j];
                     }
                 }
+            }
             used[i] = a;
         }
         return used;

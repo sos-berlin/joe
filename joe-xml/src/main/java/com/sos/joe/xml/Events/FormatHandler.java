@@ -13,7 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class FormatHandler extends DefaultHandler implements ContentHandler {
 
-    private static final String[] _noLinebreaks = { "code", "strong" };
+    private static final String[] NO_LINEBREAKS = { "code", "strong" };
     private String _encoding = "utf-8";
     private ActionsDom _dom = null;
     private StringBuilder _sb = new StringBuilder();
@@ -163,8 +163,8 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
     }
 
     private boolean doLinebreak(String name) {
-        for (int i = 0; i < _noLinebreaks.length; i++) {
-            if (_noLinebreaks[i].equals(name)) {
+        for (int i = 0; i < NO_LINEBREAKS.length; i++) {
+            if (NO_LINEBREAKS[i].equals(name)) {
                 return false;
             }
         }

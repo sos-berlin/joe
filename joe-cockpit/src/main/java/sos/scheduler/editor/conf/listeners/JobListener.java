@@ -517,8 +517,9 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
                 intT = 0;
             }
             return intT;
-        } else
+        } else {
             return NONE;
+        }
     }
 
     @Override

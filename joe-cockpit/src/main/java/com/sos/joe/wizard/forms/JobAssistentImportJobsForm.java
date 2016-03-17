@@ -282,8 +282,9 @@ public class JobAssistentImportJobsForm {
             txtJobname.setFocus();
             final GridData anotherGridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
             txtJobname.setLayoutData(anotherGridData);
-            if (listener != null)
+            if (listener != null) {
                 txtJobname.setBackground(Options.getRequiredColor());
+            }
             if (joblistener != null) {
                 if ("start_job".equals(joblistener.getJob().getName())) {
                     txtJobname.setText(Utils.getAttributeValue("job", joblistener.getJob()));
