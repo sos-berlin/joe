@@ -60,7 +60,6 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
         createSashForm();
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         sashForm = new SashForm(this, SWT.NONE);
         createGTree();
@@ -70,13 +69,10 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
         Options.loadSash("main", sashForm);
     }
 
-    /** This method initializes gTree */
     private void createGTree() {
         gTree = JOE_G_JobAssistent_JobChainConfiguration.Control(new Group(sashForm, SWT.NONE));
         gTree.setLayout(new FillLayout());
-        // gTree.setText("Job Chain Configuration");
         tree = new Tree(gTree, SWT.BORDER);
-        // tree.setMenu(new TreeMenu(tree, dom, this).getMenu());
         tree.addListener(SWT.MenuDetect, new Listener() {
 
             @Override
@@ -90,20 +86,19 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
             public void handleEvent(Event e) {
                 if (tree.getSelectionCount() > 0) {
                     selection = tree.getSelection()[0];
-                    // if (selection == null) selection = tree.getItem(0);
                     e.doit = listener.treeSelection(tree, cMainForm);
                     if (!e.doit) {
                         tree.setSelection(new TreeItem[] { selection });
                     } else {
                         selection = tree.getSelection()[0];
                     }
-                } else
+                } else {
                     selection = tree.getItem(0);
+                }
             }
         });
     }
 
-    /** This method initializes cMainForm */
     private void createCMainForm() {
     }
 
@@ -119,7 +114,6 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     @Override
     public void updateState(String state) {
         TreeItem item = tree.getSelection()[0];
-        // item.setText("State: " + state);
         item.setText(JOE_M_JobAssistent_State.params(state));
         dom.setChanged(true);
     }
@@ -127,7 +121,6 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     @Override
     public void updateJobChainname(String name) {
         TreeItem item = tree.getItem(0);
-        // item.setText("Job Chain: " + name);
         item.setText(JOE_JobAssistent_JobChain.params(name));
         dom.setChanged(true);
     }
@@ -182,44 +175,29 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 
     public static String getFile(Collection filenames) {
         try {
-            // open file dialog
-            if (filename == null || filename.equals("")) {
+            if (filename == null || "".equals(filename)) {
                 FileDialog fdialog = JOE_FD_JobAssistent_OpenFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
                 fdialog.setFilterPath(Options.getLastDirectory());
-                // fdialog.setText("Open File");
                 filename = fdialog.open();
             }
-            // check for opened file
             if (filenames != null) {
                 for (Iterator it = filenames.iterator(); it.hasNext();) {
                     if (((String) it.next()).equals(filename)) {
-                        // MainWindow.message(Messages.getString("MainListener.fileOpened"),
-                        // SWT.ICON_INFORMATION | SWT.OK);
                         MainWindow.message(JOE_M_JobAssistent_FileIsOpened.label(), SWT.ICON_INFORMATION | SWT.OK);
                         return "";
                     }
                 }
             }
-            if (filename != null && !filename.equals("")) { //$NON-NLS-1$
+            if (filename != null && !"".equals(filename)) {
                 File file = new File(filename);
-                // System.out.println("~~~~~~~~~~~~~~~~~filename: " + filename);
-                // check the file
                 if (!file.exists()) {
-                    // System.out.println("~~~~~~~~~~~~~~~~~not exist filename: "
-                    // + filename);
-                    //                     MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
-                    // SWT.ICON_WARNING | SWT.OK);
-                    MainWindow.message(JOE_M_JobAssistent_FileNotFound.label(), //$NON-NLS-1$
-                            SWT.ICON_WARNING | SWT.OK);
-                } else if (!file.canRead())
-                    //                     MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
-                    // SWT.ICON_WARNING | SWT.OK);
-                    MainWindow.message(JOE_M_JobAssistent_FileReadProtected.label(), //$NON-NLS-1$
-                            SWT.ICON_WARNING | SWT.OK);
-            } else
+                    MainWindow.message(JOE_M_JobAssistent_FileNotFound.label(), SWT.ICON_WARNING | SWT.OK);
+                } else if (!file.canRead()) {
+                    MainWindow.message(JOE_M_JobAssistent_FileReadProtected.label(), SWT.ICON_WARNING | SWT.OK);
+                }
+            } else {
                 return filename;
-            // MainWindow.getSShell().setText("Job Details Editor [" + filename
-            // + "]");
+            }
             MainWindow.getSShell().setText(JOE_M_JobAssistent_JobDetailsEditor.params(filename));
             Options.setLastDirectory(new File(filename), dom);
             return filename;
@@ -233,8 +211,9 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     @Override
     public boolean save() {
         boolean res = IOUtils.saveFile(dom, false);
-        if (res)
+        if (res) {
             container.setNewFilename(null);
+        }
         return res;
     }
 
@@ -242,8 +221,9 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     public boolean saveAs() {
         String old = dom.getFilename();
         boolean res = IOUtils.saveFile(dom, true);
-        if (res)
+        if (res) {
             container.setNewFilename(old);
+        }
         return res;
     }
 
@@ -263,8 +243,9 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
         if (tree.getSelectionCount() > 0) {
             TreeItem item = tree.getSelection()[0];
             TreeData data = (TreeData) item.getData();
-            if (data != null && data.getHelpKey() != null)
+            if (data != null && data.getHelpKey() != null) {
                 return data.getHelpKey();
+            }
         }
         return null;
     }
@@ -284,6 +265,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 
     @Override
     public void updateTree(String arg0) {
-        // TODO Auto-generated method stub
+        //
     }
+    
 }

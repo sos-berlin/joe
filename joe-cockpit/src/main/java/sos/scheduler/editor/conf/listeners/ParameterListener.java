@@ -43,8 +43,9 @@ public class ParameterListener {
             _includeParams = params.getChildren("include");
         }
         Element environment = _parent.getChild("environment");
-        if (environment != null)
+        if (environment != null) {
             _environments = environment.getChildren("variable");
+        }
     }
 
     private void initParams() {
@@ -66,36 +67,34 @@ public class ParameterListener {
 
     public void fillParams(final Table table) {
         table.removeAll();
-        if (_params == null)
+        if (_params == null) {
             this.initParams();
+        }
         if (_params != null) {
             Iterator it = _params.iterator();
             while (it.hasNext()) {
                 Object o = it.next();
                 if (o instanceof Element) {
                     Element e = (Element) o;
-
-                    if (e.getName().equals("copy_params")) {
+                    if ("copy_params".equals(e.getName())) {
                         TableItem item = new TableItem(table, SWT.NONE);
                         item.setText(0, "<from>");
                         item.setText(1, ((Element) o).getAttributeValue("from"));
-                    } else if (e.getName().equals("param")) {
-                        if (e.getAttributeValue("name") != null) {
-                            String name = Utils.getAttributeValue("name", e);
-                            String value = Utils.getAttributeValue("value", e);
-                            TableItem item = new TableItem(table, SWT.NONE);
-                            item.setText(0, name);
-                            item.setText(1, value);
-                            if (parameterDescription != null) {
-                                item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + name));
-                                item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + name));
-                            }
-                            if (parameterRequired != null && isParameterRequired(name)) {
-                                if (value.length() == 0) {
-                                    item.setBackground(Options.getRequiredColor());
-                                } else {
-                                    item.setBackground(SWTResourceManager.getColor(247, 247, 247));
-                                }
+                    } else if ("param".equals(e.getName()) && e.getAttributeValue("name") != null) {
+                        String name = Utils.getAttributeValue("name", e);
+                        String value = Utils.getAttributeValue("value", e);
+                        TableItem item = new TableItem(table, SWT.NONE);
+                        item.setText(0, name);
+                        item.setText(1, value);
+                        if (parameterDescription != null) {
+                            item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + name));
+                            item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + name));
+                        }
+                        if (parameterRequired != null && isParameterRequired(name)) {
+                            if (value.isEmpty()) {
+                                item.setBackground(Options.getRequiredColor());
+                            } else {
+                                item.setBackground(SWTResourceManager.getColor(247, 247, 247));
                             }
                         }
                     }
@@ -117,18 +116,19 @@ public class ParameterListener {
             if (h.get("name") != null) {
                 TableItem item = existsParams(h.get("name").toString(), table, h.get("default_value") != null ? h.get("default_value").toString() : "");
                 if (!refreshTable && item != null) {
-                    if (h.get("required") != null && h.get("required").equals("true")) {
-                        if (h.get("value") == null || h.get("value").toString().length() == 0)
+                    if (h.get("required") != null && "true".equals(h.get("required"))) {
+                        if (h.get("value") == null || h.get("value").toString().isEmpty()) {
                             item.setBackground(Options.getRequiredColor());
-                        else
+                        } else {
                             item.setBackground(SWTResourceManager.getColor(247, 247, 247));
+                        }
                     }
                 } else {
                     String pname = h.get("name").toString();
                     String pvalue = h.get("default_value") != null ? h.get("default_value").toString() : "";
                     String desc_de = h.get("description_de") != null ? h.get("description_de").toString() : "";
                     String desc_en = h.get("description_en") != null ? h.get("description_en").toString() : "";
-                    saveParameter(table, pname, pvalue, desc_de, desc_en, h.get("required") != null ? h.get("required").equals("true") : false);
+                    saveParameter(table, pname, pvalue, desc_de, desc_en, h.get("required") != null ? "true".equals(h.get("required")) : false);
                 }
             }
         }
@@ -188,7 +188,7 @@ public class ParameterListener {
             _dom.setChanged(true);
             Utils.setChangedForDirectory(_parent, _dom);
         }
-        if (_params.size() == 0) {
+        if (_params.isEmpty()) {
             _parent.removeChild("params");
         }
         table.remove(index);
@@ -217,35 +217,37 @@ public class ParameterListener {
         Element e = new Element("param");
         e.setAttribute("name", name);
         e.setAttribute("value", value);
-
         if ((_dom.isLifeElement() || _dom.isDirectory()) && _params == null) {
             Element params = _parent.getChild("params");
-            if (params != null)
+            if (params != null) {
                 _params = params.getChildren();
+            }
         }
-        if (_params == null)
+        if (_params == null) {
             initParams();
+        }
         _params.add(e);
         TableItem item = new TableItem(table, SWT.NONE);
         item.setText(new String[] { name, value });
-        if (parameterDescription_de != null && parameterDescription_de.trim().length() > 0) {
+        if (parameterDescription_de != null && !parameterDescription_de.trim().isEmpty()) {
             item.setData("parameter_description_de", parameterDescription_de);
             parameterDescription.put("parameter_description_de_" + name, parameterDescription_de);
         }
-        if (parameterDescription_en != null && parameterDescription_en.trim().length() > 0) {
+        if (parameterDescription_en != null && !parameterDescription_en.trim().isEmpty()) {
             item.setData("parameter_description_en", parameterDescription_en);
             parameterDescription.put("parameter_description_en_" + name, parameterDescription_en);
         }
         if (required) {
-            if (value.length() == 0) {
+            if (value.isEmpty()) {
                 item.setBackground(Options.getRequiredColor());
             } else {
                 item.setBackground(SWTResourceManager.getColor(247, 247, 247));
             }
         }
         _dom.setChanged(true);
-        if (type == JOEConstants.JOB_COMMANDS)
+        if (type == JOEConstants.JOB_COMMANDS) {
             _dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
+        }
         Utils.setChangedForDirectory(_parent, _dom);
     }
 
@@ -263,10 +265,11 @@ public class ParameterListener {
                         found = true;
                         e.removeAttribute("live_file");
                         e.removeAttribute("file");
-                        if (isLive)
+                        if (isLive) {
                             e.setAttribute("live_file", file);
-                        else
+                        } else {
                             e.setAttribute("file", file);
+                        }
                         Utils.setAttribute("node", node, e);
                         _dom.setChanged(true);
                         Utils.setChangedForDirectory(_parent, _dom);
@@ -280,15 +283,17 @@ public class ParameterListener {
         }
         if (!found) {
             Element e = new Element("include");
-            if (isLive)
+            if (isLive) {
                 e.setAttribute("live_file", file);
-            else
+            } else {
                 e.setAttribute("file", file);
+            }
             e.setAttribute("node", node);
             _dom.setChanged(true);
             Utils.setChangedForDirectory(_parent, _dom);
-            if (_includeParams == null)
+            if (_includeParams == null) {
                 initParams();
+            }
             _includeParams.add(e);
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(new String[] { file, node, isLive ? "live_file" : "file" });
@@ -306,11 +311,11 @@ public class ParameterListener {
                     Element e = (Element) o;
                     if (name.equals(e.getAttributeValue("name"))) {
                         found = true;
-                        // Utils.setAttribute("value", value, e);
                         e.setAttribute("value", value);
                         _dom.setChanged(true);
-                        if (type == JOEConstants.JOB)
+                        if (type == JOEConstants.JOB) {
                             _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
+                        }
                         Utils.setChangedForDirectory(_parent, _dom);
                         table.getItem(index).setText(1, value);
                         break;
@@ -325,8 +330,9 @@ public class ParameterListener {
             e.setAttribute("value", value);
             _dom.setChanged(true);
             Utils.setChangedForDirectory(_parent, _dom);
-            if (_environments == null)
+            if (_environments == null) {
                 initEnvironment();
+            }
             _environments.add(e);
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(new String[] { name, value });
@@ -340,7 +346,7 @@ public class ParameterListener {
             _params = params.getChildren();
         }
         if (_params != null) {
-            if (name.equals("<from>")) {
+            if ("<from>".equals(name)) {
                 found = table.getSelectionIndex() > -1;
             } else {
                 int index = 0;
@@ -349,16 +355,15 @@ public class ParameterListener {
                     Object o = it.next();
                     if (o instanceof Element) {
                         Element e = (Element) o;
-                        if (e.getName().equals("param")) {
+                        if ("param".equals(e.getName())) {
                             if (name.equals(e.getAttributeValue("name"))) {
                                 found = true;
                                 e.setAttribute("value", value);
                                 _dom.setChanged(true);
-
                                 Utils.setChangedForDirectory(_parent, _dom);
                                 table.getItem(index).setText(1, value);
                                 if (isParameterRequired(table.getItem(index).getText())) {
-                                    if (value != null && value.length() > 0) {
+                                    if (value != null && !value.isEmpty()) {
                                         table.getItem(index).setBackground(SWTResourceManager.getColor(247, 247, 247));
                                     } else {
                                         table.getItem(index).setBackground(Options.getRequiredColor());
@@ -370,8 +375,7 @@ public class ParameterListener {
                     }
                 }
             }
-
-            if (name.equals("<from>") && found) {
+            if ("<from>".equals(name) && found) {
                 int index = table.getSelectionIndex();
                 table.getItem(index).setText(0, name);
                 table.getItem(index).setText(1, value);
@@ -381,12 +385,11 @@ public class ParameterListener {
                 e.removeAttribute("name");
                 e.removeAttribute("value");
                 _dom.setChanged(true);
-
             }
         }
         if (!found) {
             Element e = new Element("param");
-            if (!name.equals("<from>")) {
+            if (!"<from>".equals(name)) {
                 e.setAttribute("name", name);
                 e.setAttribute("value", value);
             } else {
@@ -394,17 +397,21 @@ public class ParameterListener {
                 e.setAttribute("from", value);
             }
             _dom.setChanged(true);
-            if (type == JOEConstants.JOB)
+            if (type == JOEConstants.JOB) {
                 _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
-            if (_params == null)
+            }
+            if (_params == null) {
                 initParams();
-            if (_params != null)
+            }
+            if (_params != null) {
                 _params.add(e);
+            }
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(new String[] { name, value });
         }
-        if (type == JOEConstants.JOB_COMMANDS)
+        if (type == JOEConstants.JOB_COMMANDS) {
             _dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
+        }
         Utils.setChangedForDirectory(_parent, _dom);
     }
 
@@ -436,25 +443,20 @@ public class ParameterListener {
             Document doc = builder.build(new File(xmlPaths));
             Element root = doc.getRootElement();
             Element config = root.getChild("configuration", root.getNamespace());
-
             List listOfParams = config.getChildren("params", config.getNamespace());
-
-            if (listOfParams == null || listOfParams.size() == 0) {
+            if (listOfParams == null || listOfParams.isEmpty()) {
                 return;
             }
-
             Iterator itr = listOfParams.iterator();
             while (itr.hasNext()) {
                 Element params = (Element) itr.next();
-
                 if (params == null) {
                     return;
                 }
-
                 List listMainElements = params.getChildren("param", params.getNamespace());
                 for (int i = 0; i < listMainElements.size(); i++) {
                     Element elMain = (Element) listMainElements.get(i);
-                    if (elMain.getName().equalsIgnoreCase("param")) {
+                    if ("param".equalsIgnoreCase(elMain.getName())) {
                         List noteList = elMain.getChildren("note", elMain.getNamespace());
                         for (int k = 0; k < noteList.size(); k++) {
                             Element note = (Element) noteList.get(k);
@@ -464,8 +466,9 @@ public class ParameterListener {
                                 for (int j = 0; j < notelist.size(); j++) {
                                     Element elNote = (Element) notelist.get(j);
                                     parameterDescription.put("parameter_description_" + language + "_" + elMain.getAttributeValue("name"), elNote.getValue());
-                                    if (elMain.getAttributeValue("required") != null)
+                                    if (elMain.getAttributeValue("required") != null) {
                                         parameterRequired.put(elMain.getAttributeValue("name"), elMain.getAttributeValue("required"));
+                                    }
                                 }
                             }
                         }
@@ -478,33 +481,28 @@ public class ParameterListener {
     }
 
     public String getParameterDescription(final String name) {
-        return parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get("parameter_description_"
-                + Options.getLanguage() + "_" + name).toString()
-                : "";
+        return parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null 
+                ? parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name).toString() : "";
     }
 
     public String getParameterDescription(final String name, final String language) {
-        return parameterDescription.get("parameter_description_" + language + "_" + name) != null ? parameterDescription.get("parameter_description_"
-                + language + "_" + name).toString() : "";
+        return parameterDescription.get("parameter_description_" + language + "_" + name) != null 
+                ? parameterDescription.get("parameter_description_" + language + "_" + name).toString() : "";
     }
 
     private boolean isParameterRequired(final String name) {
         String _isIt = parameterRequired.get(name) != null ? parameterRequired.get(name).toString() : "";
-        if (_isIt.equals("true")) {
-            return true;
-        } else {
-            return false;
-        }
+        return "true".equals(_isIt);
     }
 
     public void changeUp(final Table table) {
         int index = table.getSelectionIndex();
-        if (index < 0)// nichts ist selektiert
+        if (index < 0 || index == 0) {
             return;
-        if (index == 0)// ist bereits ganz oben
-            return;
-        if (_params == null)
+        }
+        if (_params == null) {
             initParams();
+        }
         _dom.reorderDOM();
         Element params = _parent.getChild("params");
         if (params != null) {
@@ -524,12 +522,12 @@ public class ParameterListener {
 
     public void changeDown(final Table table) {
         int index = table.getSelectionIndex();
-        if (index < 0)// nichts ist selektiert
+        if (index < 0 || index == table.getItemCount() - 1) {
             return;
-        if (index == table.getItemCount() - 1)// ist bereits ganz oben
-            return;
-        if (_params == null)
+        }
+        if (_params == null) {
             initParams();
+        }
         Element elem = (Element) _params.get(index);
         Object obj = elem.clone();
         _params.remove(elem);

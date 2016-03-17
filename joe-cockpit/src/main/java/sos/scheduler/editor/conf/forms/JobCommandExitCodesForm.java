@@ -49,8 +49,8 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
     private Button addOrderButton = null;
     private SchedulerDom _dom = null;
 
-    public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) throws JDOMException,
-            TransformerException {
+    public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) 
+            throws JDOMException, TransformerException {
         super(parent, style);
         _dom = dom;
         listener = new JobCommandExitCodesListener(dom, command, main);
@@ -68,9 +68,9 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             addParam();
-        // addCommand();
+        }
     }
 
     public boolean isUnsaved() {
@@ -81,61 +81,48 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
         this.setLayout(new FillLayout());
         createGroup();
         cExitcode.setFocus();
-        // setSize(new org.eclipse.swt.graphics.Point(723, 566));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.makeColumnsEqualWidth = true;
         gridLayout2.numColumns = 1;
         jobsAndOrdersGroup = new Group(this, SWT.NONE);
         String strT = JOE_M_JobAssistent_JobGroup.params(listener.getName()) + " " + listener.getExitCode();
-        if (listener.isDisabled())
+        if (listener.isDisabled()) {
             strT += " " + JOE_M_JobCommand_Disabled.label();
+        }
         jobsAndOrdersGroup.setText(strT);
         jobsAndOrdersGroup.setLayout(gridLayout2);
         GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
         sashForm = new SashForm(jobsAndOrdersGroup, SWT.NONE);
-        // sashForm.setWeights(new int[] { 1 });
         sashForm.setOrientation(512);
         sashForm.setLayoutData(gridData18);
-        // parameter
-        // createJobCommandParameter();
-        // environment
-        // createEnvironment();
         createSashForm();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         createCombo();
         createComposite();
     }
 
-    /** This method initializes combo */
     private void createCombo() {
     }
 
-    /** This method initializes composite */
     private void createComposite() {
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         createGroup1();
         createGroup2();
         createGroup3();
     }
 
-    /** This method initializes group2 */
     private void createGroup2() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         gridLayout.marginHeight = 0;
         gridLayout.verticalSpacing = 0;
-        // gDescription = new Composite(sashForm, SWT.NONE);
-        // gDescription.setText("Jobs and orders");
         gMain = JOE_G_JobCommands_Commands.Control(new Group(sashForm, SWT.NONE));
         gMain.setLayout(gridLayout);
         cExitcode = JOE_Cbo_JobCommands_Exitcode.Control(new Combo(gMain, SWT.NONE));
@@ -149,7 +136,6 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
                 if (event) {
                     listener.setExitCode(cExitcode.getText(), true);
                 }
-                // bApplyExitcode.setEnabled(!cExitcode.getText().equals(""));
             }
         });
         final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -198,8 +184,9 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 
             public void widgetSelected(final SelectionEvent e) {
                 TableItem item = (TableItem) e.item;
-                if (item == null)
+                if (item == null) {
                     return;
+                }
                 bRemoveExitcode.setEnabled(tCommands.getSelectionCount() > 0);
                 cExitcode.setFocus();
             }
@@ -233,11 +220,9 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
     }
 
-    /** This method initializes group3 */
     private void createGroup3() {
         createTable();
     }
@@ -246,21 +231,16 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
     }
 
     private void addJob() {
-        // int index = tCommands.getSelectionIndex();
         Element e = null;
-        // if (index == -1) {
         e = new Element("start_job");
         e.setAttribute("job", "job" + tCommands.getItemCount());
         TableItem item = new TableItem(tCommands, SWT.NONE);
         item.setText(new String[] { "start_job", "job" + tCommands.getItemCount(), "", "" });
         listener.addCommand(e);
-        // }
     }
 
     private void addOrder() {
-        // int index = tCommands.getSelectionIndex();
         Element e = null;
-        // if (index == -1) {
         String newJobChainName = "job_chain" + tCommands.getItemCount();
         e = new Element("order");
         e.setAttribute("job_chain", newJobChainName);
@@ -268,11 +248,10 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
         TableItem item = new TableItem(tCommands, SWT.NONE);
         item.setText(new String[] { "order", "", newJobChainName, "" });
         listener.addCommand(e);
-        // }
     }
 
     public Element getCommand() {
         return listener.getCommand();
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

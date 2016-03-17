@@ -32,9 +32,8 @@ public class JobOptionsListener extends JOEListener {
         _errorDelays = _job.getChildren("delay_after_error");
     }
 
-    // directory trigger
     public boolean isDirectoryTrigger() {
-        return _directories.size() > 0;
+        return !_directories.isEmpty();
     }
 
     public void fillDirectories(Table table) {
@@ -54,15 +53,17 @@ public class JobOptionsListener extends JOEListener {
     }
 
     public void selectDirectory(int index) {
-        if (index >= 0 && index < _directories.size())
+        if (index >= 0 && index < _directories.size()) {
             _directory = (Element) _directories.get(index);
+        }
     }
 
     public void applyDirectory(String directory, String regex) {
         Utils.setAttribute("directory", directory, _directory, _dom);
         Utils.setAttribute("regex", regex, _directory, _dom);
-        if (!_directories.contains(_directory))
+        if (!_directories.contains(_directory)) {
             _directories.add(_directory);
+        }
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
     }
@@ -84,9 +85,8 @@ public class JobOptionsListener extends JOEListener {
         return Utils.getAttributeValue("regex", _directory);
     }
 
-    // setbacks
     public boolean isSetbackDelay() {
-        return _setbacks.size() > 0;
+        return !_setbacks.isEmpty();
     }
 
     public void fillSetbacks(Table table) {
@@ -98,7 +98,7 @@ public class JobOptionsListener extends JOEListener {
             item.setText(0, "" + Utils.getIntValue("setback_count", e));
             item.setText(1, Utils.isAttributeValue("is_maximum", e) ? "Yes" : "No");
             String s = getDelay(e);
-            if (s.equals("00")) {
+            if ("00".equals(s)) {
                 s = "0";
             }
             item.setText(2, s);
@@ -134,16 +134,18 @@ public class JobOptionsListener extends JOEListener {
     }
 
     public void selectSetbackDelay(int index) {
-        if (index >= 0 && index < _setbacks.size())
+        if (index >= 0 && index < _setbacks.size()) {
             _setback = (Element) _setbacks.get(index);
+        }
     }
 
     public void applySetbackDelay(String setbackCount, boolean maximum, String delay) {
         Utils.setAttribute("setback_count", setbackCount, _setback, _dom);
         Utils.setAttribute("is_maximum", maximum, _setback, _dom);
         Utils.setAttribute("delay", delay, _setback, _dom);
-        if (!_setbacks.contains(_setback))
+        if (!_setbacks.contains(_setback)) {
             _setbacks.add(_setback);
+        }
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
     }
@@ -177,9 +179,8 @@ public class JobOptionsListener extends JOEListener {
         return Utils.getIntegerAsString(Utils.getSeconds(_setback.getAttributeValue("delay"), -999));
     }
 
-    // error count
     public boolean isErrorDelay() {
-        return _errorDelays.size() > 0;
+        return !_errorDelays.isEmpty();
     }
 
     public void fillTable(Table table) {
@@ -193,14 +194,14 @@ public class JobOptionsListener extends JOEListener {
         }
     }
 
-    // private String getDelay(Element e) {
     public String getDelay(Element e) {
         String delay = e.getAttributeValue("delay");
-        if (delay == null || delay.equals(""))
+        if (delay == null || "".equals(delay)) {
             delay = "00:00";
-        if (delay.equalsIgnoreCase("stop"))
+        }
+        if ("stop".equalsIgnoreCase(delay)) {
             return "stop";
-        else {
+        } else {
             int hours = Utils.getHours(delay, 0);
             int minutes = Utils.getMinutes(delay, 0);
             int seconds = Utils.getSeconds(delay, 0);
@@ -214,15 +215,17 @@ public class JobOptionsListener extends JOEListener {
     }
 
     public void selectErrorDelay(int index) {
-        if (index >= 0 && index < _errorDelays.size())
+        if (index >= 0 && index < _errorDelays.size()) {
             _errorDelay = (Element) _errorDelays.get(index);
+        }
     }
 
     public void applyErrorDelay(String errorCount, String delay) {
         Utils.setAttribute("error_count", errorCount, _errorDelay, _dom);
         Utils.setAttribute("delay", delay, _errorDelay, _dom);
-        if (!_errorDelays.contains(_errorDelay))
+        if (!_errorDelays.contains(_errorDelay)) {
             _errorDelays.add(_errorDelay);
+        }
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
     }
@@ -241,10 +244,11 @@ public class JobOptionsListener extends JOEListener {
     }
 
     public boolean isStop() {
-        if (_errorDelay != null && _errorDelay.getAttributeValue("delay") != null)
+        if (_errorDelay != null && _errorDelay.getAttributeValue("delay") != null) {
             return _errorDelay.getAttributeValue("delay").equalsIgnoreCase("stop");
-        else
+        } else {
             return false;
+        }
     }
 
     public String getErrorCountHours() {
@@ -270,4 +274,5 @@ public class JobOptionsListener extends JOEListener {
     public List getSetbacks() {
         return _setbacks;
     }
+
 }

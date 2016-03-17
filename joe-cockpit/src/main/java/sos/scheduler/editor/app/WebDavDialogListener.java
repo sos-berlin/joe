@@ -69,8 +69,6 @@ public class WebDavDialogListener {
                     profiles.put(sectionWithoutPrefix, prop);
                     if (currProfileName == null) {
                         init(sectionWithoutPrefix);
-                        // currProfileName = sectionWithoutPrefix;
-                        // currProfile = prop;
                     }
                 }
             }
@@ -166,8 +164,9 @@ public class WebDavDialogListener {
     public HashMap changeDirectory(String profile, String directory) {
         try {
             init(profile);
-            if (!directory.endsWith("/"))
+            if (!directory.endsWith("/")) {
                 directory = directory + "/";
+            }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not change Directory [" + directory + "] ", e);
             hasError = true;
@@ -180,18 +179,19 @@ public class WebDavDialogListener {
         File fn = null;
         try {
             WebdavResource wdr = connect(url);
-            // Datei holen
             fn = new File(currProfile.getProperty("localdirectory") + "//" + new File(url).getName());
             boolean retVal = wdr.getMethod(fn);
             hasError = !retVal;
             wdr.close();
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..webdav server reply [getfile] [status= " + wdr.getStatusMessage());
+            }
             return fn.getCanonicalPath();
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not get File [" + url + "]", e);
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("could not get File [" + url + "] :" + e.getMessage());
+            }
             hasError = true;
         }
         return null;
@@ -202,25 +202,29 @@ public class WebDavDialogListener {
         try {
             wdr = connect(file);
             if (wdr.deleteMethod()) {
-                if (logtext != null)
+                if (logtext != null) {
                     logtext.append("..webdav server reply [delete file=" + file + "], [status= " + wdr.getStatusMessage());
+                }
             } else {
                 hasError = true;
                 new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not delete file [" + file + "], [status= "
                         + wdr.getStatusMessage());
-                if (logtext != null)
+                if (logtext != null) {
                     logtext.append("..webdav server reply [could not delete] , [status= " + wdr.getStatusMessage());
+                }
             }
             wdr.close();
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not delete file [" + file + "]", e);
-            if (wdr != null)
+            if (wdr != null) {
                 try {
                     wdr.close();
                 } catch (IOException e1) {
                 }
-            if (logtext != null)
+            }
+            if (logtext != null) {
                 logtext.append("could not delete file [" + file + "] cause:" + e.getMessage());
+            }
             hasError = true;
         }
     }
@@ -232,50 +236,52 @@ public class WebDavDialogListener {
         String host = null;
         String port = null;
         try {
-
             user = sosString.parseToString(currProfile.get("user"));
             password = sosString.parseToString(currProfile.get("password"));
             String proxyHost = sosString.parseToString(currProfile.get("proxy_server"));
             int proxyPort = 21;
-            if (sosString.parseToString(currProfile.get("proxy_port")).length() > 0)
+            if (!sosString.parseToString(currProfile.get("proxy_port")).isEmpty()) {
                 proxyPort = Integer.parseInt(sosString.parseToString(currProfile.get("proxy_port")));
+            }
             String key = Options.getProperty("profile.timestamp." + currProfileName);
             if (key != null && key.length() > 8) {
                 key = key.substring(key.length() - 8);
             }
-            if (password.length() > 0 && sosString.parseToString(key).length() > 0) {
+            if (!password.isEmpty() && !sosString.parseToString(key).isEmpty()) {
                 password = SOSCrypt.decrypt(key, password);
             }
-            if (password.length() == 0) {
+            if (password.isEmpty()) {
                 Shell shell = new Shell();
                 shell.pack();
                 Dialog dialog = new Dialog(shell);
                 dialog.setText("Password");
                 dialog.open(this);
                 while (!shell.isDisposed()) {
-                    if (!shell.getDisplay().readAndDispatch())
+                    if (!shell.getDisplay().readAndDispatch()) {
                         shell.getDisplay().sleep();
+                    }
                 }
-                // shell.getDisplay().dispose();
-                // shell.dispose();
                 password = getPassword();
             }
             HttpURL hrl = new HttpURL(url);
             hrl.setUserinfo(user, password);
-            if (proxyHost.length() > 0)
+            if (!proxyHost.isEmpty()) {
                 wdr = new WebdavResource(hrl, proxyHost, proxyPort);
-            else
+            } else {
                 wdr = new WebdavResource(hrl);
+            }
             wdr.setDebug(9);
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..webdav server reply [connect] [status= " + wdr.getStatusMessage());
+            }
             Options.setProperty("last_webdav_profile", currProfileName);
             Options.saveProperties();
         } catch (Exception ex) {
             hasError = true;
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; error in webdav server init with [host=" + host + "], [port=" + port + "].", ex);
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..error in webdav server init with [host=" + host + "], [port=" + port + "], cause: " + getErrorMessage(ex) + "\n");
+            }
         }
         return wdr;
     }
@@ -284,26 +290,30 @@ public class WebDavDialogListener {
         HashMap listnames = new HashMap();
         try {
             WebdavResource wdr = connect(directory);
-            if (wdr == null)
+            if (wdr == null) {
                 throw new Exception("could not connect to WebDav Server");
+            }
             WebdavResources e = wdr.getChildResources();
             java.util.Enumeration en = e.getResources();
             while (en.hasMoreElements()) {
                 WebdavResource cr = (WebdavResource) en.nextElement();
                 System.out.println(cr);
-                if (cr.isCollection())
+                if (cr.isCollection()) {
                     listnames.put(cr, "dir");
-                else
+                } else {
                     listnames.put(cr, "file");
+                }
             }
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..webdav server reply [changeDirectory] [status= " + wdr.getStatusMessage());
+            }
         } catch (Exception e) {
             MainWindow.message("could not change Directory [" + directory + "] cause:" + e.getMessage(), SWT.ICON_WARNING);
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not change Directory [" + directory + "]", e);
             hasError = true;
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("could not change Directory [" + directory + "] cause:" + e.getMessage());
+            }
         }
         return listnames;
     }
@@ -323,17 +333,20 @@ public class WebDavDialogListener {
             }
             hasError = !retVal;
             if (logtext != null) {
-                if (hasError)
+                if (hasError) {
                     logtext.append(source + " could not transfer to " + url);
-                else
+                } else {
                     logtext.append(source + " transfer to " + url);
+                }
             }
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..webdav server reply: saveas[url=" + url + "], [status= " + wdr.getStatusMessage());
+            }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..webdav server reply, [status= " + wdr.getStatusMessage() + "]", e);
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..webdav server reply: ");
+            }
             hasError = true;
         }
     }
@@ -351,15 +364,18 @@ public class WebDavDialogListener {
                     hotElementname = filename.substring(0, filename.lastIndexOf(".xml"));
                     hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".") + 1);
                     attrname = filename.substring(0, filename.indexOf("." + hotElementname + ".xml"));
-                    if (changes.containsKey(hotElementname + "_" + attrname) && changes.get(hotElementname + "_" + attrname).equals("delete"))
+                    if (changes.containsKey(hotElementname + "_" + attrname) && "delete".equals(changes.get(hotElementname + "_" + attrname))) {
                         removeFile(target + filename);
+                    }
                 }
             }
             File fSource = new File(source);
-            if (!fSource.exists())
+            if (!fSource.exists()) {
                 throw new Exception(source + " not exist.");
-            if (!fSource.isDirectory())
+            }
+            if (!fSource.isDirectory()) {
                 throw new Exception(source + " is not a directory.");
+            }
             String[] files = fSource.list();
             for (int i = 0; i < files.length; i++) {
                 String sourcefile = source + files[i];
@@ -369,15 +385,17 @@ public class WebDavDialogListener {
                 hotElementname = new File(sourcefile).getName().substring(0, new File(sourcefile).getName().lastIndexOf(".xml"));
                 hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".") + 1);
                 attrname = new File(sourcefile).getName().substring(0, new File(sourcefile).getName().indexOf("." + hotElementname + ".xml"));
-                if (changes.containsKey(hotElementname + "_" + attrname)
-                        && (changes.get(hotElementname + "_" + attrname).equals("modify") || changes.get(hotElementname + "_" + attrname).equals("new")))
+                if (changes.containsKey(hotElementname + "_" + attrname) && ("modify".equals(changes.get(hotElementname + "_" + attrname)) 
+                        || "new".equals(changes.get(hotElementname + "_" + attrname)))) {
                     saveAs(sourcefile, targetFile);
+                }
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..webdav server reply: ", e);
             hasError = true;
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..webdav server reply: ");
+            }
         }
     }
 
@@ -387,26 +405,25 @@ public class WebDavDialogListener {
             source = source.endsWith("/") ? source : source + "/";
             target = target.endsWith("/") ? target : target + "/";
             File fSource = new File(source);
-            if (!fSource.exists())
+            if (!fSource.exists()) {
                 throw new Exception(source + " not exist.");
-            if (!fSource.isDirectory())
+            }
+            if (!fSource.isDirectory()) {
                 throw new Exception(source + " is not a directory.");
+            }
             String[] files = fSource.list();
             for (int i = 0; i < files.length; i++) {
                 String sourcefile = source + files[i];
-                // String targetFile = new File(sourcefile).getName();
                 String targetFile = target + new File(sourcefile).getName();
-                // System.out.println("source: " + sourcefile + ", target: " +
-                // targetFile);
                 saveAs(sourcefile, targetFile);
-                // list.add(target +targetFile);
                 list.add(targetFile);
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..webdav server reply: ", e);
             hasError = true;
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..webdav server reply: ");
+            }
         }
         return list;
     }
@@ -435,21 +452,19 @@ public class WebDavDialogListener {
     public void deleteProfile(String profilename) throws Exception {
         try {
             setCurrProfileName(profilename);
-            // java.util.Properties profile = getCurrProfile();
             String filename = configFile;
             byte[] b = getBytesFromFile(new File(filename));
             String s = new String(b);
-            // System.out.println(s);
             int pos1 = s.indexOf("[" + PREFIX + " " + profilename + "]");
             int pos2 = s.indexOf("[", pos1 + 1);
             if (pos1 == -1) {
-                // System.out.println("profile nicht gefunden");
                 pos1 = s.length();
                 pos2 = -1;
                 return;
             }
-            if (pos2 == -1)
+            if (pos2 == -1) {
                 pos2 = s.length();
+            }
             String s2 = s.substring(0, pos1) + s.substring(pos2);
             java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
             java.io.File file = new java.io.File(filename);
@@ -475,22 +490,21 @@ public class WebDavDialogListener {
             String profilename = currProfileName;
             byte[] b = getBytesFromFile(new File(filename));
             String s = new String(b);
-            // System.out.println(s);
             int pos1 = s.indexOf("[" + PREFIX + profilename + "]");
             int pos2 = s.indexOf("[", pos1 + 1);
             if (pos1 == -1) {
-                // System.out.println("profile nicht gefunden");
                 pos1 = s.length();
                 pos2 = -1;
             }
-            if (pos2 == -1)
+            if (pos2 == -1) {
                 pos2 = s.length();
+            }
             String s2 = s.substring(0, pos1);
-            s2 = s2 + "[" + PREFIX + profilename + "]\n\n";
-            s2 = s2 + "url=" + sosString.parseToString(profile.get("url")) + "\n";
-            s2 = s2 + "user=" + sosString.parseToString(profile.get("user")) + "\n";
+            s2 += "[" + PREFIX + profilename + "]\n\n";
+            s2 += "url=" + sosString.parseToString(profile.get("url")) + "\n";
+            s2 += "user=" + sosString.parseToString(profile.get("user")) + "\n";
             try {
-                if (savePassword && sosString.parseToString(profile.get("password")).length() > 0) {
+                if (savePassword && !sosString.parseToString(profile.get("password")).isEmpty()) {
                     String pass = String.valueOf(SOSUniqueID.get());
                     Options.setProperty("profile.timestamp." + profilename, pass);
                     Options.saveProperties();
@@ -498,7 +512,7 @@ public class WebDavDialogListener {
                         pass = pass.substring(pass.length() - 8);
                     }
                     String encrypt = SOSCrypt.encrypt(pass, sosString.parseToString(profile.get("password")));
-                    s2 = s2 + "password=" + encrypt + "\n";
+                    s2 += "password=" + encrypt + "\n";
                     profile.put("password", encrypt);
                     this.password = encrypt;
                     getProfiles().put(profilename, profile);
@@ -507,22 +521,20 @@ public class WebDavDialogListener {
                 new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..could not encrypt.", e);
                 throw e;
             }
-            s2 = s2 + "localdirectory=" + sosString.parseToString(profile.get("localdirectory")) + "\n";
-            s2 = s2 + "save_password=" + sosString.parseToString(profile.get("save_password")) + "\n";
-            s2 = s2 + "protocol=" + sosString.parseToString(profile.get("protocol")) + "\n";
-            s2 = s2 + "use_proxy=" + sosString.parseToString(profile.get("use_proxy")) + "\n";
-            s2 = s2 + "proxy_server=" + sosString.parseToString(profile.get("proxy_server")) + "\n";
-            s2 = s2 + "proxy_port=" + sosString.parseToString(profile.get("proxy_port")) + "\n";
-            s2 = s2 + "\n\n";
-            s2 = s2 + s.substring(pos2);
-
+            s2 += "localdirectory=" + sosString.parseToString(profile.get("localdirectory")) + "\n";
+            s2 += "save_password=" + sosString.parseToString(profile.get("save_password")) + "\n";
+            s2 += "protocol=" + sosString.parseToString(profile.get("protocol")) + "\n";
+            s2 += "use_proxy=" + sosString.parseToString(profile.get("use_proxy")) + "\n";
+            s2 += "proxy_server=" + sosString.parseToString(profile.get("proxy_server")) + "\n";
+            s2 += "proxy_port=" + sosString.parseToString(profile.get("proxy_port")) + "\n";
+            s2 += "\n\n";
+            s2 += s.substring(pos2);
             java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
             java.io.File file = new java.io.File(filename);
             boolean append = false;
             java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(file, append).getChannel();
             wChannel.write(bbuf);
             wChannel.close();
-
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save configurations File: " + configFile, e);
             hasError = true;
@@ -552,29 +564,28 @@ public class WebDavDialogListener {
         profileNames = convert(l.toArray());
     }
 
-    /*
-     * public boolean isLoggedIn() { return isLoggedIn; }
-     */
     public boolean mkDirs(String path) {
         try {
-            if (!path.endsWith("/"))
+            if (!path.endsWith("/")) {
                 path = path + "/";
+            }
             WebdavResource wr = connect(path);
             if (wr.mkcolMethod()) {
-                if (logtext != null)
+                if (logtext != null) {
                     logtext.append("..webdav server reply [mkdir] [path=" + path + "], [status= " + wr.getStatusMessage());
+                }
             } else {
                 throw new Exception("..webdav server reply [mkdir failed] [path=" + path + "]: ");
             }
         } catch (Exception e) {
             hasError = true;
-            if (logtext != null)
+            if (logtext != null) {
                 logtext.append("..could not create Directory [" + path + "] cause:" + e.getMessage());
+            }
         }
         return true;
     }
 
-    // password nicht ini Datei vorhanden. D.h. in Pop Up Fenster nachfragen
     public String getPassword() {
         return password;
     }
@@ -590,11 +601,13 @@ public class WebDavDialogListener {
     public String getErrorMessage(Exception ex) {
         Throwable tr = ex.getCause();
         String s = "";
-        if (ex.toString() != null)
+        if (ex.toString() != null) {
             s = ex.toString();
+        }
         while (tr != null) {
-            if (s.indexOf(tr.toString()) == -1)
+            if (s.indexOf(tr.toString()) == -1) {
                 s = (s.length() > 0 ? s + ", " : "") + tr.toString();
+            }
             tr = tr.getCause();
         }
         return s;

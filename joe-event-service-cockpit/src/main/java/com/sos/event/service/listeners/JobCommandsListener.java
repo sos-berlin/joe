@@ -26,14 +26,16 @@ public class JobCommandsListener {
         _action = action;
         if (_action != null) {
             Element commands = _action.getChild("commands");
-            if (commands != null)
+            if (commands != null) {
                 _commands = commands.getChildren("command");
+            }
         }
     }
 
     private void initCommands() {
-        if (_action.getChild("commands") == null)
+        if (_action.getChild("commands") == null) {
             _action.addContent(new Element("commands"));
+        }
         _commands = _action.getChild("commands").getChildren("command");
     }
 
@@ -54,20 +56,12 @@ public class JobCommandsListener {
         }
     }
 
-    /*
-     * private boolean haveCode(int code, Table table) { int count =
-     * table.getItemCount(); for (int i = 0; i < count; i++) { TableItem item =
-     * table.getItem(i); String actCode = item.getText(); if
-     * (actCode.indexOf(" " + String.valueOf(code)) >= 0) return true; if
-     * (actCode.indexOf(String.valueOf(code) + " ") >= 0) return true; if
-     * (actCode.trim().equals(String.valueOf(code))) return true; } return
-     * false; }
-     */
     public void newCommands(Table table) {
         Element command = new Element("command");
         command.setAttribute("name", "command_" + (table.getItemCount() + 1));
-        if (_commands == null)
+        if (_commands == null) {
             initCommands();
+        }
         _commands.add(command);
         _dom.setChanged(true);
         fillTable(table);
@@ -82,12 +76,11 @@ public class JobCommandsListener {
             Element e = (Element) item.getData();
             e.detach();
             _dom.setChanged(true);
-            // _dom.setChangedForDirectory("job",
-            // Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
             table.remove(index);
             _main.updateCommands();
-            if (index >= table.getItemCount())
+            if (index >= table.getItemCount()) {
                 index--;
+            }
             if (index >= 0) {
                 table.setSelection(index);
                 return true;
@@ -95,4 +88,5 @@ public class JobCommandsListener {
         }
         return false;
     }
+    
 }

@@ -16,8 +16,9 @@ public class PayloadListener extends JobDocBaseListener<DocumentationDom> {
         _parent = parent;
         _paramsForm = paramsForm;
         _payload = _parent.getChild("payload", _dom.getNamespace());
-        if (_payload != null)
+        if (_payload != null) {
             _document = _payload.getChild("document", _dom.getNamespace());
+        }
     }
 
     public void setPayload() {
@@ -32,12 +33,15 @@ public class PayloadListener extends JobDocBaseListener<DocumentationDom> {
             _paramsForm.checkParams();
             checkDocumentation();
             boolean remove = true;
-            if (_payload.getChild("note", _dom.getNamespace()) != null)
+            if (_payload.getChild("note", _dom.getNamespace()) != null) {
                 remove = false;
-            if (_payload.getChild("params", _dom.getNamespace()) != null)
+            }
+            if (_payload.getChild("params", _dom.getNamespace()) != null) {
                 remove = false;
-            if (_document != null)
+            }
+            if (_document != null) {
                 remove = false;
+            }
             if (remove) {
                 _payload.detach();
                 _payload = null;
@@ -46,7 +50,7 @@ public class PayloadListener extends JobDocBaseListener<DocumentationDom> {
     }
 
     private void checkDocumentation() {
-        if (_document != null && _document.getChildren("note", _dom.getNamespace()).size() == 0) {
+        if (_document != null && _document.getChildren("note", _dom.getNamespace()).isEmpty()) {
             _document.detach();
             _document = null;
         }
@@ -59,8 +63,9 @@ public class PayloadListener extends JobDocBaseListener<DocumentationDom> {
 
     private void setDocumentation() {
         if (_document == null) {
-            if (_payload == null)
+            if (_payload == null) {
                 setPayload();
+            }
             _document = new Element("document", _dom.getNamespace());
             _payload.addContent(_document);
         }
@@ -70,4 +75,5 @@ public class PayloadListener extends JobDocBaseListener<DocumentationDom> {
         setDocumentation();
         return _document;
     }
+    
 }

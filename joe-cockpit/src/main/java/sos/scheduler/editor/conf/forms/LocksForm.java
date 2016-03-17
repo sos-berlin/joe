@@ -1,6 +1,3 @@
-/**
- * 
- */
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
@@ -29,7 +26,6 @@ import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-/** @author */
 public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private LocksListener listener = null;
@@ -45,12 +41,8 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
     private Label label = null;
     private Label label2 = null;
     private SchedulerDom dom = null;
-    // Begrenzung der nicht-exklusiven Belegungen: Defaults ist unbegrenzt
     private Button butUnlimitedNonExclusive = null;
 
-    /** @param parent
-     * @param style
-     * @throws JDOMException */
     public LocksForm(Composite parent, int style, SchedulerDom dom_, Element config) throws JDOMException {
         super(parent, style);
         dom = dom_;
@@ -70,8 +62,9 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyLock();
+        }
     }
 
     public boolean isUnsaved() {
@@ -84,7 +77,6 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(694, 294));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData8 = new org.eclipse.swt.layout.GridData();
         gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -130,8 +122,9 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         sMaxNonExclusive.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR)
+                if (e.keyCode == SWT.CR) {
                     applyLock();
+                }
             }
         });
         sMaxNonExclusive.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -142,21 +135,18 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         new Label(locksGroup, SWT.NONE);
         label = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label.setText("Label");
         label.setLayoutData(gridData7);
         createTable();
         bNew = JOE_B_LocksForm_NewLock.Control(new Button(locksGroup, SWT.NONE));
         bNew.setLayoutData(gridData1);
         getShell().setDefaultButton(bNew);
         label2 = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label2.setText("Label");
         label2.setLayoutData(gridData8);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 apply();
                 listener.newLock();
-
                 setInput(true);
                 bApply.setEnabled(listener.isValidLock(tLock.getText()));
             }
@@ -172,14 +162,16 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
                         int index = tableLocks.getSelectionIndex();
                         listener.removeLock(index);
                         tableLocks.remove(index);
-                        if (index >= tableLocks.getItemCount())
+                        if (index >= tableLocks.getItemCount()) {
                             index--;
+                        }
                         if (tableLocks.getItemCount() > 0) {
                             tableLocks.select(index);
                             listener.selectLock(index);
                             setInput(true);
-                        } else
+                        } else {
                             setInput(false);
+                        }
                     }
                 }
                 bRemove.setEnabled(tableLocks.getSelectionCount() > 0);
@@ -191,7 +183,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         tLock.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && tLock.getText().length() > 0) {
+                if (e.keyCode == SWT.CR && !tLock.getText().isEmpty()) {
                     applyLock();
                     setInput(true);
                 }
@@ -201,11 +193,11 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 boolean valid = listener.isValidLock(tLock.getText()) || dom.isLifeElement();
-                ;
-                if (valid)
+                if (valid) {
                     tLock.setBackground(null);
-                else
+                } else {
                     tLock.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+                }
                 bApply.setEnabled(valid);
             }
         });
@@ -219,7 +211,6 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
         tableLocks = JOE_Tbl_LocksForm_Table.Control(new Table(locksGroup, SWT.FULL_SELECTION | SWT.BORDER));
@@ -254,21 +245,22 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private void applyLock() {
         boolean _continue = true;
-        if (listener.getLock().length() > 0 && !Utils.checkElement(listener.getLock(), dom, JOEConstants.LOCKS, null))
+        if (listener.getLock().length() > 0 && !Utils.checkElement(listener.getLock(), dom, JOEConstants.LOCKS, null)) {
             _continue = false;
-        if (tableLocks.getSelectionCount() > 0)
+        }
+        if (tableLocks.getSelectionCount() > 0) {
             listener.selectLock(tableLocks.getSelectionIndex());
-        if (_continue)
+        }
+        if (_continue) {
             listener.applyLock(tLock.getText(), sMaxNonExclusive.getSelection(), butUnlimitedNonExclusive.getSelection());
+        }
         listener.fillTable(tableLocks);
         setInput(false);
         getShell().setDefaultButton(bNew);
         tLock.setBackground(null);
-        if (dom.isLifeElement())
+        if (dom.isLifeElement()) {
             setInput(true);
-        // if(dom.isDirectory() ||
-        // dom.isLifeElement())dom.setChangedForDirectory("lock",
-        // listener.getLock(), SchedulerDom.MODIFY);
+        }
     }
 
     private void setInput(boolean enabled) {
@@ -278,8 +270,9 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         if (enabled) {
             tLock.setText(listener.getLock());
             butUnlimitedNonExclusive.setSelection(listener.hasUnlimitedNonExclusiveLock());
-            if (!butUnlimitedNonExclusive.getSelection())
+            if (!butUnlimitedNonExclusive.getSelection()) {
                 sMaxNonExclusive.setSelection(listener.getMax_non_exclusive());
+            }
             tLock.setFocus();
         } else {
             tLock.setText("");
@@ -294,4 +287,5 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
     public static Table getTable() {
         return tableLocks;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

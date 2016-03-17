@@ -36,15 +36,10 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
 
-    private static final String conImageICON_OPEN_GIF = "/sos/scheduler/editor/icon_open.gif";
-    private static final String conImageICON_EDIT_GIF = "/sos/scheduler/editor/icon_edit.gif";
-    private final String conClassName = "BaseForm";
-    final String conMethodName = conClassName + "::enclosing_method";
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
+    private static final String IMAGE_ICON_OPEN_GIF = "/sos/scheduler/editor/icon_open.gif";
+    private static final String IMAGE_ICON_EDIT_GIF = "/sos/scheduler/editor/icon_edit.gif";
     private BaseListener listener = null;
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label1 = null;
     private Text tFile = null;
     private Button bApply = null;
@@ -59,9 +54,6 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
     private Button button = null;
     private Button butOpenFileDialog = null;
 
-    /** @param parent
-     * @param style
-     * @throws JDOMException */
     public BaseForm(Composite parent, int style, SchedulerDom dom) throws JDOMException {
         super(parent, style);
         listener = new BaseListener(dom);
@@ -74,8 +66,9 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyFile();
+        }
     }
 
     private void initialize() {
@@ -138,8 +131,8 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
         tComment.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
-                bApply.setEnabled(!tFile.getText().equals(""));
-                button.setEnabled(!tFile.getText().equals(""));
+                bApply.setEnabled(!"".equals(tFile.getText()));
+                button.setEnabled(!"".equals(tFile.getText()));
             }
         });
         final Composite composite = JOE_Cmp_BaseForm_CommentOpen.Control(new Composite(group, SWT.NONE));
@@ -153,19 +146,20 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, true, true);
         button.setLayoutData(gridData);
         button.setEnabled(false);
-        button.setImage(ResourceManager.getImageFromResource(conImageICON_EDIT_GIF));
+        button.setImage(ResourceManager.getImageFromResource(IMAGE_ICON_EDIT_GIF));
         button.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
                 String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
-                if (text != null)
+                if (text != null) {
                     tComment.setText(text);
+                }
             }
         });
         butOpenFileDialog = JOE_B_BaseForm_OpenFileDialog.Control(new Button(composite, SWT.NONE));
         butOpenFileDialog.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, true, true));
         butOpenFileDialog.setEnabled(false);
-        butOpenFileDialog.setImage(ResourceManager.getImageFromResource(conImageICON_OPEN_GIF));
+        butOpenFileDialog.setImage(ResourceManager.getImageFromResource(IMAGE_ICON_OPEN_GIF));
         butOpenFileDialog.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -205,14 +199,16 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = table.getSelectionIndex();
                     listener.removeBaseFile(index);
                     table.remove(index);
-                    if (index >= table.getItemCount())
+                    if (index >= table.getItemCount()) {
                         index--;
+                    }
                     if (table.getItemCount() > 0) {
                         table.select(index);
                         listener.selectBaseFile(index);
                         setInput(true);
-                    } else
+                    } else {
                         setInput(false);
+                    }
                 }
                 bRemove.setEnabled(table.getSelectionCount() > 0);
             }
@@ -223,20 +219,20 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void modifyText(ModifyEvent e) {
                 getShell().setDefaultButton(bApply);
-                bApply.setEnabled(!tFile.getText().equals(""));
-                button.setEnabled(!tFile.getText().equals(""));
+                bApply.setEnabled(!"".equals(tFile.getText()));
+                button.setEnabled(!"".equals(tFile.getText()));
             }
         });
         tFile.addKeyListener(new KeyAdapter() {
 
             public void keyReleased(KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tFile.getText().equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(tFile.getText())) {
                     applyFile();
+                }
             }
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 4);
         table = JOE_Tbl_BaseForm_BaseTable.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
@@ -260,11 +256,9 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         TableColumn tableColumn = JOE_TCl_BaseForm_BaseFiles.Control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(300);
-        // tableColumn.setText(Messages.getLabel("BaseFile"));
         TableColumn tableColumn1 = JOE_TCl_BaseForm_BaseComment.Control(new TableColumn(table, SWT.NONE));
         table.setSortColumn(tableColumn1);
         tableColumn1.setWidth(300);
-        // tableColumn1.setText(Messages.getLabel("Comment"));
     }
 
     private void applyFile() {
@@ -291,12 +285,11 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
         bRemove.setEnabled(table.getSelectionCount() > 0);
     }
 
-    // öffnet das File Dialog um ein Basefile auszuwählen
     private void openFileDialog() {
         sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
         String currPath = "";
         String sep = System.getProperty("file.separator");
-        if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
+        if (con.getCurrentEditor().getFilename() != null && !con.getCurrentEditor().getFilename().isEmpty()) {
             currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();
         } else {
             currPath = Options.getSchedulerData() + sep + "config";
@@ -306,40 +299,40 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
         FileDialog fdialog = JOE_FD_BaseForm_OpenBaseFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
         fdialog.setFilterPath(currPath);
         fdialog.setFilterExtensions(new String[] { "*.xml", "*.sosdoc", "*.*" });
-        // fdialog.setText(Messages.getLabel("OpenBaseFile"));
         String fname = fdialog.open();
-        if (fname == null)
+        if (fname == null) {
             return;
-        // fname = fname.substring(currPath.length()+1);
+        }
         fname = fname.replaceAll("/", sep);
-        // fname = fname.replaceAll("\\\\", sep);
-        if (fname.toLowerCase().startsWith(currPath.toLowerCase()))
+        if (fname.toLowerCase().startsWith(currPath.toLowerCase())) {
             fname = fname.substring(currPath.length() + 1);
+        }
         tFile.setText(fname);
-        // path = fdialog.getFilterPath();
     }
 
-    // öffnet den BaseFile im seperaten Tabitem im Editor
     private void openBaseElement() {
         String currPath = "";
         String sep = System.getProperty("file.separator");
-        if (tFile.getText() != null && tFile.getText().length() > 0) {
+        if (tFile.getText() != null && !tFile.getText().isEmpty()) {
             sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
-            if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
+            if (con.getCurrentEditor().getFilename() != null && !con.getCurrentEditor().getFilename().isEmpty()) {
                 currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();
             } else {
                 currPath = Options.getSchedulerData() + sep + "config";
             }
-            if (!(currPath.endsWith("/") || currPath.endsWith("\\")))
+            if (!(currPath.endsWith("/") || currPath.endsWith("\\"))) {
                 currPath = currPath.concat(sep);
-            if (tFile.getText().toLowerCase().startsWith(currPath.toLowerCase()))
+            }
+            if (tFile.getText().toLowerCase().startsWith(currPath.toLowerCase())) {
                 currPath = tFile.getText();
-            else
+            } else {
                 currPath = currPath.concat(tFile.getText());
+            }
             con.openScheduler(currPath);
             con.setStatusInTitle();
         } else {
             MainWindow.message("There is no Basefile defined.", SWT.ICON_WARNING | SWT.OK);
         }
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

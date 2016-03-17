@@ -23,39 +23,37 @@ import com.sos.joe.xml.DomParser;
 public class DocumentationDom extends DomParser {
 
     private static final Logger LOGGER = Logger.getLogger(DocumentationDom.class);
-    private static final String[] _descriptionOrder = { "job", "releases", "resources", "configuration", "documentation" };
-    private static final String[] _jobOrder = { "script", "process", "monitor" };
-    private static final String[] _releaseOrder = { "title", "author", "note", "changes" };
-    private static final String[] _resourcesOrder = { "database", "memory", "space", "file" };
-    private static final String[] _configurationOrder = { "note", "params", "payload", "settings" };
-    private static final String[] _paramsOrder = { "note", "param" };
-    private static final String[] _payloadOrder = { "note", "params", "document" };
-    private static final String[] _settingsOrder = { "note", "profile", "connection" };
-    private static final String[] _profileOrder = { "note", "section" };
-    private static final String[] _connectionOrder = { "note", "application" };
-    private static final String[] _tmpFiles = { "documentation_editor_schema", "xhtml_schema" };
-    private static final String[] _schemas = { Options.getDocSchema(), Options.getXHTMLSchema() };
+    private static final String[] DESCRIPTION_ORDER = { "job", "releases", "resources", "configuration", "documentation" };
+    private static final String[] JOB_ORDER = { "script", "process", "monitor" };
+    private static final String[] RELEASE_ORDER = { "title", "author", "note", "changes" };
+    private static final String[] RESOURCES_ORDER = { "database", "memory", "space", "file" };
+    private static final String[] CONFIGURATION_ORDER = { "note", "params", "payload", "settings" };
+    private static final String[] PARAMS_ORDER = { "note", "param" };
+    private static final String[] PAYLOAD_ORDER = { "note", "params", "document" };
+    private static final String[] SETTINGS_ORDER = { "note", "profile", "connection" };
+    private static final String[] PROFILE_ORDER = { "note", "section" };
+    private static final String[] CONNECTION_ORDER = { "note", "application" };
+    private static final String[] TMP_FILES = { "documentation_editor_schema", "xhtml_schema" };
+    private static final String[] SCHEMAS = { Options.getDocSchema(), Options.getXHTMLSchema() };
 
     public DocumentationDom() {
-        super(_tmpFiles, _schemas, Options.getDocXSLT());
-        putDomOrder("description", _descriptionOrder);
-        putDomOrder("release", _releaseOrder);
-        putDomOrder("job", _jobOrder);
-        putDomOrder("resources", _resourcesOrder);
-        putDomOrder("configuration", _configurationOrder);
-        putDomOrder("params", _paramsOrder);
-        putDomOrder("payload", _payloadOrder);
-        putDomOrder("settings", _settingsOrder);
-        putDomOrder("profile", _profileOrder);
-        putDomOrder("connection", _connectionOrder);
+        super(TMP_FILES, SCHEMAS, Options.getDocXSLT());
+        putDomOrder("description", DESCRIPTION_ORDER);
+        putDomOrder("release", RELEASE_ORDER);
+        putDomOrder("job", JOB_ORDER);
+        putDomOrder("resources", RESOURCES_ORDER);
+        putDomOrder("configuration", CONFIGURATION_ORDER);
+        putDomOrder("params", PARAMS_ORDER);
+        putDomOrder("payload", PAYLOAD_ORDER);
+        putDomOrder("settings", SETTINGS_ORDER);
+        putDomOrder("profile", PROFILE_ORDER);
+        putDomOrder("connection", CONNECTION_ORDER);
         initDocumentation();
     }
 
     public void initDocumentation() {
-        // open a template
         try {
             Document doc = getBuilder(false).build(getClass().getResource("/sos/scheduler/editor/documentation-template.xml"));
-            //
             Element description = doc.getRootElement();
             if (description != null && description.getChild("releases", description.getNamespace()) != null) {
                 Element release = description.getChild("releases", description.getNamespace()).getChild("release", description.getNamespace());
@@ -64,7 +62,6 @@ public class DocumentationDom extends DomParser {
                     release.setAttribute("modified", sos.util.SOSDate.getCurrentDateAsString("yyyy-MM-dd"));
                 }
             }
-            //
             setDoc(doc);
             setChanged(false);
         } catch (Exception e) {
@@ -81,16 +78,19 @@ public class DocumentationDom extends DomParser {
     public boolean read(String filename, boolean validate) throws JDOMException, IOException {
         FileInputStream objFIS = new FileInputStream(new File(filename));
         Document doc = getBuilder(validate).build(objFIS);
-        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
+        if (!validate && (!doc.hasRootElement() || !"description".equals(doc.getRootElement().getName()))) {
             return false;
-        else if (!validate) {
+        } else if (!validate) {
             Element description = doc.getRootElement();
-            if (description.getChild("job", getNamespace()) == null)
+            if (description.getChild("job", getNamespace()) == null) {
                 description.addContent(new Element("job", getNamespace()));
-            if (description.getChild("releases", getNamespace()) == null)
+            }
+            if (description.getChild("releases", getNamespace()) == null) {
                 description.addContent(new Element("releases", getNamespace()));
-            if (description.getChild("configuration", getNamespace()) == null)
+            }
+            if (description.getChild("configuration", getNamespace()) == null) {
                 description.addContent(new Element("configuration", getNamespace()));
+            }
         }
         setDoc(doc);
         setChanged(false);
@@ -102,21 +102,22 @@ public class DocumentationDom extends DomParser {
     public boolean readString(String str, boolean validate) throws JDOMException, IOException {
         StringReader sr = new StringReader(str);
         Document doc = getBuilder(validate).build(sr);
-        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
+        if (!validate && (!doc.hasRootElement() || !"description".equals(doc.getRootElement().getName()))) {
             return false;
-        else if (!validate) {
-            // try to avoid the worst
+        } else if (!validate) {
             Element description = doc.getRootElement();
-            if (description.getChild("job", getNamespace()) == null)
+            if (description.getChild("job", getNamespace()) == null) {
                 description.addContent(new Element("job", getNamespace()));
-            if (description.getChild("releases", getNamespace()) == null)
+            }
+            if (description.getChild("releases", getNamespace()) == null) {
                 description.addContent(new Element("releases", getNamespace()));
-            if (description.getChild("configuration", getNamespace()) == null)
+            }
+            if (description.getChild("configuration", getNamespace()) == null) {
                 description.addContent(new Element("configuration", getNamespace()));
+            }
         }
         setDoc(doc);
         setChanged(false);
-        // setFilename(filename);
         return true;
     }
 
@@ -133,7 +134,7 @@ public class DocumentationDom extends DomParser {
 
     public void writeFileWithDom(File file) throws IOException, JDOMException {
         String encoding = JOEConstants.DOCUMENTATION_ENCODING;
-        if (encoding.equals("")) {
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
         }
         reorderDOM(getDoc().getRootElement(), getNamespace());
@@ -147,8 +148,9 @@ public class DocumentationDom extends DomParser {
             getBuilder(true).build(new StringReader(s));
         } catch (JDOMException e) {
             int res = ErrorLog.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
+            if (res == SWT.NO) {
                 return;
+            }
         }
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), encoding);
         writer.write(s);
@@ -157,8 +159,9 @@ public class DocumentationDom extends DomParser {
 
     public void writeWithHandler(String filename) throws IOException, JDOMException {
         String encoding = JOEConstants.DOCUMENTATION_ENCODING;
-        if (encoding.equals(""))
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
+        }
         reorderDOM(getDoc().getRootElement(), getNamespace());
         FormatHandler handler = new FormatHandler(this);
         handler.setEnconding(encoding);
@@ -168,8 +171,9 @@ public class DocumentationDom extends DomParser {
             getBuilder(true).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
             int res = ErrorLog.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
+            if (res == SWT.NO) {
                 return;
+            }
         }
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
         writer.write(handler.getXML());
@@ -181,8 +185,9 @@ public class DocumentationDom extends DomParser {
     @Override
     public String getXML(Element element) throws JDOMException {
         String encoding = JOEConstants.DOCUMENTATION_ENCODING;
-        if (encoding.equals(""))
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
+        }
         reorderDOM(element, getNamespace());
         FormatHandler handler = new FormatHandler(this);
         handler.setEnconding(encoding);
@@ -202,7 +207,6 @@ public class DocumentationDom extends DomParser {
             Element div = doc.getRootElement().getChild("div", getNamespace("xhtml"));
             doc.getRootElement().removeContent();
             return div;
-
         } catch (Exception e) {
             new ErrorLog("noteAdDom", e);
         }
@@ -226,4 +230,5 @@ public class DocumentationDom extends DomParser {
         str = str.replaceAll("<pre space=\"preserve\">", "<pre>");
         return str;
     }
+
 }

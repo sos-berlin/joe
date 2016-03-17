@@ -43,18 +43,17 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 public class Utils {
 
     private static final Logger LOGGER = Logger.getLogger(Utils.class);
-
+    private static final String STR_DEFAULT = "";
+    private static final String INT_DEFAULT = null;
+    private static final String BOOLEAN_DEFAULT = null;
+    private static Clipboard _cb = null;
+    private static Element resetElement = null;
     final static String JOE_L_Object_In_Use = "JOE_L_Object_In_Use";
     final static String JOE_L_Process_Class = "processclass";
     final static String JOE_L_Job = "job";
     final static String JOE_L_Job_chain = "job_chain";
     final static String JOE_L_Lock = "lock";
     final static String JOE_L_Schedule = "schedule";
-    private static final String STR_DEFAULT = "";
-    private static final String INT_DEFAULT = null;
-    private static final String BOOLEAN_DEFAULT = null;
-    private static Clipboard _cb = null;
-    private static Element resetElement = null;
 
     public static String getIntegerAsString(int i) {
         String s;
@@ -70,8 +69,9 @@ public class Utils {
         if (element != null) {
             String val = element.getAttributeValue(attribute);
             return val == null ? "" : val;
-        } else
+        } else {
             return "";
+        }
     }
 
     public static int getIntValue(String attribute, Element element) {
@@ -79,8 +79,9 @@ public class Utils {
     }
 
     public static int getIntValue(String attribute, int defaultValue, Element element) {
-        if (element == null)
+        if (element == null) {
             return defaultValue;
+        }
         String val = element.getAttributeValue(attribute);
         if (val != null) {
             try {
@@ -93,25 +94,25 @@ public class Utils {
     }
 
     public static boolean isAttributeValue(String attribute, Element element) {
-        return getAttributeValue(attribute, element).equalsIgnoreCase("yes");
+        return "yes".equalsIgnoreCase(getAttributeValue(attribute, element));
     }
 
     public static boolean getBooleanValue(String attribute, Element element) {
-        return getAttributeValue(attribute, element).equalsIgnoreCase("true");
+        return "true".equalsIgnoreCase(getAttributeValue(attribute, element));
     }
 
     public static void setAttribute(String attribute, String value, String defaultValue, Element element, DomParser dom) {
         if (value == null || value.trim().equals(defaultValue)) {
             element.removeAttribute(attribute);
-            if (dom != null)
+            if (dom != null) {
                 dom.setChanged(true);
-            // }
+            }
         } else if (!value.trim().equals(element.getAttributeValue(attribute))) {
             element.setAttribute(attribute, value.trim());
             if (dom != null) {
                 dom.setChanged(true);
                 if (dom instanceof SchedulerDom) {
-                    if (element.getName().equals("order")) {
+                    if ("order".equals(element.getName())) {
                         ((SchedulerDom) dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain", element) + ","
                                 + Utils.getAttributeValue("id", element), SchedulerDom.MODIFY);
                     } else {
@@ -177,65 +178,76 @@ public class Utils {
     public static String getElement(String name, Element parent, Namespace ns) {
         if (parent != null) {
             Element element = parent.getChild(name, ns);
-            if (element != null)
+            if (element != null) {
                 return element.getTextTrim();
-            else
+            } else {
                 return "";
-        } else
+            }
+        } else {
             return "";
+        }
     }
 
     public static void setElement(String name, String value, boolean optional, Element parent, Namespace ns, DomParser dom) {
         if (parent != null) {
             Element element = parent.getChild(name, ns);
-            if (element == null && ((value != null && value.length() > 0) || !optional)) {
+            if (element == null && ((value != null && !value.isEmpty()) || !optional)) {
                 element = new Element(name, ns).setText(value);
                 parent.addContent(element);
-                if (dom != null)
+                if (dom != null) {
                     dom.setChanged(true);
-            } else if (element != null && (value == null || value.length() == 0) && optional) {
+                }
+            } else if (element != null && (value == null || value.isEmpty()) && optional) {
                 element.detach();
-                if (dom != null)
+                if (dom != null) {
                     dom.setChanged(true);
+                }
             } else if (element.getTextTrim() != null && !element.getTextTrim().equals(value)) {
                 element.setText(value);
-                if (dom != null)
+                if (dom != null) {
                     dom.setChanged(true);
+                }
             }
         }
     }
 
     public static int getHours(String time, int defaultValue) {
-        if (time == null || time.equals(""))
+        if (time == null || "".equals(time)) {
             return defaultValue;
+        }
         String[] str = time.split(":");
-        if (str.length > 1)
+        if (str.length > 1) {
             return new Integer(str[0]).intValue();
-        else
+        } else {
             return defaultValue;
+        }
     }
 
     public static int getMinutes(String time, int defaultValue) {
-        if (time == null || time.equals(""))
+        if (time == null || "".equals(time)) {
             return defaultValue;
+        }
         String[] str = time.split(":");
-        if (str.length > 1)
+        if (str.length > 1) {
             return new Integer(str[1]).intValue();
-        else
+        } else {
             return defaultValue;
+        }
     }
 
     public static int getSeconds(String time, int defaultValue) {
         try {
-            if (time == null || time.equals(""))
+            if (time == null || "".equals(time)) {
                 return defaultValue;
+            }
             String[] str = time.split(":");
-            if (str.length > 2)
+            if (str.length > 2) {
                 return new Integer(str[2]).intValue();
-            else if (str.length == 1)
+            } else if (str.length == 1) {
                 return new Integer(str[0]).intValue();
-            else
+            } else {
                 return defaultValue;
+            }
         } catch (NumberFormatException e) {
             return defaultValue;
         }
@@ -248,8 +260,9 @@ public class Utils {
             return asStr(seconds);
         } else if (onlySeconds && seconds == 0) {
             return asStr(hours) + ":" + asStr(minutes);
-        } else
+        } else {
             return asStr(hours) + ":" + asStr(minutes) + ":" + asStr(seconds);
+        }
     }
 
     public static String getTime(int maxHour, String hours, String minutes, String seconds, boolean onlySeconds) {
@@ -267,12 +280,15 @@ public class Utils {
         if (h < 0 && m < 0 && s < 0) {
             return "";
         } else {
-            if (h < 0)
+            if (h < 0) {
                 h = 0;
-            if (m < 0)
+            }
+            if (m < 0) {
                 m = 0;
-            if (s < 0)
+            }
+            if (s < 0) {
                 s = 0;
+            }
             return getTime(h, m, s, onlySeconds);
         }
     }
@@ -308,11 +324,9 @@ public class Utils {
 
     public static boolean isOnlyDigits(String s) {
         try {
-            if (s.equals("")) {
+            if ("".equals(s) || "-".equals(s)) {
                 return true;
             }
-            if (s.equals("-"))
-                return true;
             Integer.parseInt(s);
             return true;
         } catch (Exception ee) {
@@ -347,8 +361,9 @@ public class Utils {
                 i = -999;
             }
         }
-        if (i > maxValue)
+        if (i > maxValue) {
             i = maxValue;
+        }
         return i;
     }
 
@@ -384,28 +399,30 @@ public class Utils {
     }
 
     public static void setBackground(Text t, boolean colorIt) {
-        if (t.getText().length() == 0 && colorIt)
+        if (t.getText().length() == 0 && colorIt) {
             t.setBackground(Options.getRequiredColor());
-        else
+        } else {
             t.setBackground(null);
+        }
     }
 
     public static void setBackground(Table t, boolean colorIt) {
-        if (t.getItemCount() == 0 && colorIt)
+        if (t.getItemCount() == 0 && colorIt) {
             t.setBackground(Options.getRequiredColor());
-        else
+        } else {
             t.setBackground(null);
+        }
     }
 
     public static void setBackground(Control c, boolean toColor) {
-        if (toColor)
+        if (toColor) {
             c.setBackground(Options.getRequiredColor());
-        else
+        } else {
             c.setBackground(null);
+        }
     }
 
     public static String getFileFromURL(String url) {
-
         if (url != null && new java.io.File(url).isDirectory()) {
             return new java.io.File(url).getPath();
         }
@@ -419,18 +436,15 @@ public class Utils {
 
     public static boolean applyFormChanges(Control c) {
         if (c instanceof IUnsaved) {
-            // looking for unsaved changes...
             IUnsaved unsaved = (IUnsaved) c;
             if (unsaved.isUnsaved()) {
-                int ok = ErrorLog.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
-                        SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
-                if (ok == SWT.CANCEL)
+                int ok = ErrorLog.message(Messages.getString("MainListener.apply_changes"), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+                if (ok == SWT.CANCEL) {
                     return false;
-                if (ok == SWT.NO)
-                    return true;// return false;
-                else if (ok == SWT.YES) {
+                } else if (ok == SWT.NO) {
+                    return true;
+                } else if (ok == SWT.YES) {
                     unsaved.apply();
-                    // return false;
                 }
             }
         }
@@ -485,10 +499,9 @@ public class Utils {
     public static boolean isNumeric(String str) {
         boolean retVal = true;
         char[] c = null;
-        if (str == null)
+        if (str == null || str.isEmpty()) {
             return false;
-        if (str.length() == 0)
-            return false;
+        }
         c = str.toCharArray();
         for (int i = 0; i < str.length(); i++) {
             if (!Character.isDigit(c[i])) {
@@ -504,10 +517,9 @@ public class Utils {
 
     public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr, boolean showFunction, String scriptLanguage,
             boolean showWizzardInfo) {
-
         TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         dialog.setSize(new Point(500, 400));
-        if (selectStr != null && selectStr.trim().length() > 0) {
+        if (selectStr != null && !selectStr.trim().isEmpty()) {
             dialog.setContent(xml, selectStr);
         } else {
             dialog.setContent(xml);
@@ -531,31 +543,29 @@ public class Utils {
         if (!dialog.isApplyBoardClick()) {
             s = null;
         }
-
         return s;
     }
 
     public static void copyClipboard(String content, Display display) {
-        if (_cb == null)
+        if (_cb == null) {
             _cb = new Clipboard(display);
+        }
         TextTransfer transfer = TextTransfer.getInstance();
         _cb.setContents(new Object[] { content }, new Transfer[] { transfer });
     }
 
     public static boolean isElementEnabled(String which, SchedulerDom dom, Element elem) {
-        if (which.equals("job") && elem != null && !elem.getName().equals("job")) {
+        if ("job".equals(which) && elem != null && !"job".equals(elem.getName())) {
             elem = getJobElement(elem);
         }
         java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (which.equalsIgnoreCase("commands")) {
+        if ("commands".equalsIgnoreCase(which)) {
             if (listOfReadOnly != null
                     && listOfReadOnly.contains(which + "_" + Utils.getAttributeValue("job_chain", elem) + "," + Utils.getAttributeValue("id", elem))) {
-                // this.setEnabled(false);
                 return false;
             }
         } else {
             if (listOfReadOnly != null && listOfReadOnly.contains(which + "_" + Utils.getAttributeValue("name", elem))) {
-                // this.setEnabled(false);
                 return false;
             }
         }
@@ -567,9 +577,9 @@ public class Utils {
         int counter = 0;
         while (loop) {
             if (elem != null && elem.getParentElement() != null && !elem.getParentElement().getName().equalsIgnoreCase("spooler")) {
-                if (elem.getName().equalsIgnoreCase("job")) {
+                if ("job".equalsIgnoreCase(elem.getName())) {
                     return elem;
-                } else if (elem.getParentElement().getName().equalsIgnoreCase("job")) {
+                } else if ("job".equalsIgnoreCase(elem.getParentElement().getName())) {
                     return elem.getParentElement();
                 } else {
                     elem = elem.getParentElement();
@@ -589,15 +599,15 @@ public class Utils {
         boolean loop = true;
         int counter = 0;
         while (loop) {
-            if (elem != null && elem.getParentElement() != null && !elem.getParentElement().getName().equalsIgnoreCase("spooler")) {
-                if (elem.getName().equalsIgnoreCase("job") || elem.getName().equalsIgnoreCase("job_chain") || elem.getName().equalsIgnoreCase("add_order")
-                        || elem.getName().equalsIgnoreCase("order") || elem.getName().equalsIgnoreCase("process_class")
-                        || elem.getName().equalsIgnoreCase("schedule") || elem.getName().equalsIgnoreCase("lock")) {
+            if (elem != null && elem.getParentElement() != null && !"spooler".equalsIgnoreCase(elem.getParentElement().getName())) {
+                if ("job".equalsIgnoreCase(elem.getName()) || "job_chain".equalsIgnoreCase(elem.getName()) || "add_order".equalsIgnoreCase(elem.getName())
+                        || "order".equalsIgnoreCase(elem.getName()) || "process_class".equalsIgnoreCase(elem.getName())
+                        || "schedule".equalsIgnoreCase(elem.getName()) || "lock".equalsIgnoreCase(elem.getName())) {
                     return elem;
-                } else if (elem.getParentElement().getName().equalsIgnoreCase("job") || elem.getParentElement().getName().equalsIgnoreCase("job_chain")
-                        || elem.getParentElement().getName().equalsIgnoreCase("add_order") || elem.getParentElement().getName().equalsIgnoreCase("order")
-                        || elem.getParentElement().getName().equalsIgnoreCase("process_class")
-                        || elem.getParentElement().getName().equalsIgnoreCase("schedule") || elem.getParentElement().getName().equalsIgnoreCase("lock")) {
+                } else if ("job".equalsIgnoreCase(elem.getParentElement().getName()) || "job_chain".equalsIgnoreCase(elem.getParentElement().getName())
+                        || "add_order".equalsIgnoreCase(elem.getParentElement().getName()) || "order".equalsIgnoreCase(elem.getParentElement().getName())
+                        || "process_class".equalsIgnoreCase(elem.getParentElement().getName())
+                        || "schedule".equalsIgnoreCase(elem.getParentElement().getName()) || "lock".equalsIgnoreCase(elem.getParentElement().getName())) {
                     return elem.getParentElement();
                 } else {
                     elem = elem.getParentElement();
@@ -618,10 +628,10 @@ public class Utils {
         int counter = 0;
         while (loop) {
             if (elem != null && elem.getParentElement() != null) {
-                if (elem.getName().equalsIgnoreCase("job") || elem.getName().equalsIgnoreCase("schedule") || elem.getName().equalsIgnoreCase("order")
-                        || elem.getName().equalsIgnoreCase("add_order")) {
+                if ("job".equalsIgnoreCase(elem.getName()) || "schedule".equalsIgnoreCase(elem.getName()) || "order".equalsIgnoreCase(elem.getName())
+                        || "add_order".equalsIgnoreCase(elem.getName())) {
                     return elem;
-                } else if (elem.getParentElement().getName().equalsIgnoreCase("job")) {
+                } else if ("job".equalsIgnoreCase(elem.getParentElement().getName())) {
                     return elem.getParentElement();
                 } else {
                     elem = elem.getParentElement();
@@ -642,24 +652,26 @@ public class Utils {
             return s;
         }
         int len = s.length();
-        StringBuffer str = new StringBuffer(len);
+        StringBuilder str = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
             char ch = s.charAt(i);
             switch (ch) {
             case '<':
-                str.append("&lt;"); //$NON-NLS-1$
+                str.append("&lt;");
                 break;
             case '>':
-                str.append("&gt;"); //$NON-NLS-1$
+                str.append("&gt;");
                 break;
             case '"':
-                str.append("&quot;"); //$NON-NLS-1$
+                str.append("&quot;");
                 break;
             case '&':
-                if (!(s.substring(i).startsWith("&quot;") || s.substring(i).startsWith("&lt;") || s.substring(i).startsWith("&gt;") || s.substring(i).startsWith("&amp;")))
-                    str.append("&amp;"); //$NON-NLS-1$
-                else
+                if (!(s.substring(i).startsWith("&quot;") || s.substring(i).startsWith("&lt;") || s.substring(i).startsWith("&gt;") 
+                        || s.substring(i).startsWith("&amp;"))) {
+                    str.append("&amp;");
+                } else {
                     str.append(ch);
+                }
                 break;
             default:
                 str.append(ch);
@@ -677,7 +689,6 @@ public class Utils {
         return newValue;
     }
 
-    // löscht alle Kinder der Element elem, wenn diese einen Attribut name haben
     public static void removeChildrensWithName(Element elem, String name) {
         Element child = elem.getChild(name);
         java.util.ArrayList nl = new java.util.ArrayList();
@@ -685,13 +696,14 @@ public class Utils {
             java.util.List l = child.getChildren();
             for (int i = 0; i < l.size(); i++) {
                 Element e = (Element) l.get(i);
-                if (Utils.getAttributeValue("name", e).length() > 0) {
+                if (!Utils.getAttributeValue("name", e).isEmpty()) {
                     nl.add(e);
                 }
             }
             l.removeAll(nl);
-            if (l.size() == 0)
+            if (l.isEmpty()) {
                 elem.removeChildren(name);
+            }
         }
     }
 
@@ -715,48 +727,47 @@ public class Utils {
         } catch (Exception e) {
             return false;
         }
-        // Matcher matcher = pattern.matcher(filename);
     }
 
     public static boolean checkElement(String name, SchedulerDom _dom, int type, String which) {
-        boolean onlyWarning = false;// -> true: Gibt nur eine Warnung aus. Sonst
-                                    // Warnung mit Yes- und No- Button um ggf.
-                                    // die Änderungen zurückzunehmen
+        boolean onlyWarning = false;
         try {
-            if (which == null)
+            if (which == null) {
                 which = "";
+            }
             if (type == JOEConstants.JOB_CHAIN) {
                 String strObject = Messages.getLabel(JOE_L_Job_chain);
                 String strM = Messages.getLabel(JOE_L_Object_In_Use);
                 String strException = String.format(strM, strObject, name);
                 XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
                 List<Element> listOfElement_3 = x3.selectNodes(_dom.getDoc());
-                if (!listOfElement_3.isEmpty())
-
+                if (!listOfElement_3.isEmpty()) {
                     throw new Exception(strException);
+                }
                 XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
                 List<Element> listOfElement_4 = x4.selectNodes(_dom.getDoc());
-                if (!listOfElement_4.isEmpty())
+                if (!listOfElement_4.isEmpty()) {
                     throw new Exception(strException);
+                }
             } else if (type == JOEConstants.JOB_CHAINS) {
                 String strObject = Messages.getLabel(JOE_L_Job_chain);
                 String strM = Messages.getLabel(JOE_L_Object_In_Use);
                 String strException = String.format(strM, strObject, name);
                 XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-                if (!listOfElement_3.isEmpty())
-
+                if (!listOfElement_3.isEmpty()) {
                     throw new Exception(strException);
+                }
                 XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
                 List listOfElement_4 = x4.selectNodes(_dom.getDoc());
-                if (!listOfElement_4.isEmpty())
-
+                if (!listOfElement_4.isEmpty()) {
                     throw new Exception(strException);
+                }
             } else if (type == JOEConstants.JOB) {
                 String strObject = Messages.getLabel(JOE_L_Job);
                 String strM = Messages.getLabel(JOE_L_Object_In_Use);
                 String strException = String.format(strM, strObject, name);
-                if (which != null && which.equalsIgnoreCase("close")) {
+                if (which != null && "close".equalsIgnoreCase(which)) {
                     onlyWarning = true;
                     XPath x0 = XPath.newInstance("//job[@name='" + name + "']");
                     Element e = (Element) x0.selectSingleNode(_dom.getDoc());
@@ -764,32 +775,35 @@ public class Utils {
                     if (!isOrder) {
                         XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
                         List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-                        if (!listOfElement_3.isEmpty())
+                        if (!listOfElement_3.isEmpty()) {
                             throw new Exception(strException);
+                        }
                     }
                 } else {
-                    if (name.length() == 0)
+                    if (name.isEmpty()) {
                         return true;
-                    //
+                    }
                     XPath x0 = XPath.newInstance("//job[@name='" + name + "']");
                     Element e = (Element) x0.selectSingleNode(_dom.getDoc());
-                    boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
+                    boolean isOrder = "yes".equalsIgnoreCase(Utils.getAttributeValue("order", e));
                     if (isOrder) {
                         XPath x = XPath.newInstance("//job[@name='" + name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");
                         List listOfElement = x.selectNodes(_dom.getDoc());
-                        if (!listOfElement.isEmpty())
+                        if (!listOfElement.isEmpty()) {
                             throw new Exception("An order job [name=" + name + "] may not use single_start-, start_once- and "
                                     + "let_run attributes in Runtime Elements. Should these attributes be deleted?");
+                        }
                         XPath x2 = XPath.newInstance("//job[@name='" + name + "']/run_time//period[@let_run='yes' or @single_start]");
                         List listOfElement_2 = x2.selectNodes(_dom.getDoc());
-                        if (!listOfElement_2.isEmpty())
+                        if (!listOfElement_2.isEmpty()) {
                             throw new Exception("An order job [name=" + name + "] may not use single_start-, start_once- and "
                                     + "let_run attributes in Runtime Elements. Should these attributes be deleted?");
+                        }
                     }
                     XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
                     List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                     if (!listOfElement_3.isEmpty()) {
-                        if (which.equalsIgnoreCase("change_order")) {
+                        if ("change_order".equalsIgnoreCase(which)) {
                             throw new Exception(strException);
                         } else {
                             throw new Exception(strException);
@@ -802,32 +816,36 @@ public class Utils {
                 String strException = String.format(strM, strObject, name);
                 XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-                if (!listOfElement_3.isEmpty())
+                if (!listOfElement_3.isEmpty()) {
                     throw new Exception(strException);
+                }
             } else if (type == JOEConstants.LOCKS) {
                 String strObject = Messages.getLabel(JOE_L_Lock);
                 String strM = Messages.getLabel(JOE_L_Object_In_Use);
                 String strException = String.format(strM, strObject, name);
                 XPath x3 = XPath.newInstance("//lock.use[@lock='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-                if (!listOfElement_3.isEmpty())
+                if (!listOfElement_3.isEmpty()) {
                     throw new Exception(strException);
+                }
             } else if (type == JOEConstants.PROCESS_CLASSES) {
                 String strObject = Messages.getLabel(JOE_L_Process_Class);
                 String strM = Messages.getLabel(JOE_L_Object_In_Use);
                 String strException = String.format(strM, strObject, name);
                 XPath x3 = XPath.newInstance("//job[@process_class='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-                if (!listOfElement_3.isEmpty())
+                if (!listOfElement_3.isEmpty()) {
                     throw new Exception(strException);
+                }
             } else if (type == JOEConstants.SCHEDULES || type == JOEConstants.SCHEDULE) {
                 String strObject = Messages.getLabel(JOE_L_Schedule);
                 String strM = Messages.getLabel(JOE_L_Object_In_Use);
                 String strException = String.format(strM, strObject, name);
                 XPath x3 = XPath.newInstance("//run_time[@schedule='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-                if (!listOfElement_3.isEmpty())
+                if (!listOfElement_3.isEmpty()) {
                     throw new Exception(strException);
+                }
             }
         } catch (Exception e) {
             if (onlyWarning) {
@@ -844,13 +862,13 @@ public class Utils {
 
     public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
         if (dom.isDirectory() || dom.isLifeElement()) {
-            // mögliche hot folder element
             Element e = Utils.getHotFolderParentElement(elem);
-            if (e.getName().equals("order") || e.getName().equals("add_order")) {
-                if (getJobElement(e).getName().equals("job"))
+            if ("order".equals(e.getName()) || "add_order".equals(e.getName())) {
+                if ("job".equals(getJobElement(e).getName())) {
                     dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name", Utils.getJobElement(e)), SchedulerDom.MODIFY);
-                else
+                } else {
                     dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e), SchedulerDom.MODIFY);
+                }
             } else {
                 dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name", e), SchedulerDom.MODIFY);
             }
@@ -859,10 +877,7 @@ public class Utils {
 
     public static boolean hasSchedulesElement(SchedulerDom dom, Element element) {
         try {
-            if (Utils.getAttributeValue("schedule", element).length() > 0)
-                return true;
-            else
-                return false;
+            return !Utils.getAttributeValue("schedule", element).isEmpty();
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
@@ -870,21 +885,21 @@ public class Utils {
     }
 
     public static void startCursor(Shell shell) {
-        if (!shell.isDisposed())
+        if (!shell.isDisposed()) {
             shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
+        }
     }
 
     public static void stopCursor(Shell shell) {
-        if (!shell.isDisposed())
+        if (!shell.isDisposed()) {
             shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
+        }
     }
 
     public static void setResetElement(Element elem) {
         resetElement = (Element) elem.clone();
     }
 
-    // public static void reset(Element elem, ISchedulerUpdate update,
-    // SchedulerDom currdom) {
     public static void reset(Element elem, IDataChanged update, DomParser currdom) {
         try {
             elem.getAttributes().removeAll(elem.getAttributes());
@@ -894,12 +909,13 @@ public class Utils {
                 elem.setAttribute(attr.getName(), attr.getValue());
             }
             elem.setContent(resetElement.cloneContent());
-            if (currdom instanceof SchedulerDom)
+            if (currdom instanceof SchedulerDom) {
                 update.updateTree("main");
-            else if (currdom instanceof ActionsDom)
+            } else if (currdom instanceof ActionsDom) {
                 update.updateTree("main");
-            else if (currdom instanceof DocumentationDom)
+            } else if (currdom instanceof DocumentationDom) {
                 update.updateTree("main");
+            }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
@@ -919,4 +935,5 @@ public class Utils {
         butHelp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_help_small.gif"));
         return butHelp;
     }
+
 }

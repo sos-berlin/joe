@@ -100,8 +100,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyDelay();
+        }
     }
 
     public boolean isUnsaved() {
@@ -114,7 +115,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(678, 425));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 1;
@@ -125,7 +125,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         createGroup2();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         GridData gridData51 = new org.eclipse.swt.layout.GridData();
         gridData51.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -180,7 +179,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label1.setText("Label");
         label1.setLayoutData(gridData110);
         createTable3();
         bNewDirectory = JOE_B_JobOptionsForm_NewDir.Control(new Button(group1, SWT.NONE));
@@ -195,7 +193,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label21 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label21.setText("Label");
         label21.setLayoutData(gridData210);
         bRemoveDirectory = JOE_B_JobOptionsForm_RemoveDir.Control(new Button(group1, SWT.NONE));
         bRemoveDirectory.setEnabled(false);
@@ -207,8 +204,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = tDirectories.getSelectionIndex();
                     listener.deleteDirectory(index);
                     tDirectories.remove(index);
-                    if (index >= tDirectories.getItemCount())
+                    if (index >= tDirectories.getItemCount()) {
                         index--;
+                    }
                     if (tDirectories.getItemCount() > 0) {
                         tDirectories.setSelection(index);
                         listener.selectDirectory(index);
@@ -223,22 +221,23 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         tDirectory.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (!tDirectory.getText().equals(""))
+                if (!"".equals(tDirectory.getText())) {
                     getShell().setDefaultButton(bApplyDirectory);
-                bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
+                }
+                bApplyDirectory.setEnabled(!"".equals(tDirectory.getText()));
             }
         });
         tRegex.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (!tDirectory.getText().equals(""))
+                if (!"".equals(tDirectory.getText())) {
                     getShell().setDefaultButton(bApplyDirectory);
-                bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
+                }
+                bApplyDirectory.setEnabled(!"".equals(tDirectory.getText()));
             }
         });
     }
 
-    /** This method initializes group2 */
     private void createGroup2() {
         GridData gridData23 = new org.eclipse.swt.layout.GridData();
         gridData23.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -336,13 +335,11 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label5 = new Label(group2, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label5.setText("Label");
         label5.setLayoutData(gridData22);
         createTable();
         bNewDelay = JOE_B_JobOptionsForm_NewDelayAfterError.Control(new Button(group2, SWT.NONE));
         bNewDelay.setLayoutData(gridData13);
         label6 = new Label(group2, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label6.setText("Label");
         label6.setLayoutData(gridData23);
         bNewDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -365,8 +362,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = tErrorDelay.getSelectionIndex();
                     listener.deleteErrorDelay(index);
                     tErrorDelay.remove(index);
-                    if (index >= tErrorDelay.getItemCount())
+                    if (index >= tErrorDelay.getItemCount()) {
                         index--;
+                    }
                     if (tErrorDelay.getItemCount() > 0) {
                         tErrorDelay.setSelection(index);
                         listener.selectErrorDelay(index);
@@ -408,7 +406,7 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         sErrorSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if ((Utils.str2int(sErrorHours.getText()) > 0) || (Utils.str2int(sErrorMinutes.getText()) > 0)) {
+                if (Utils.str2int(sErrorHours.getText()) > 0 || Utils.str2int(sErrorMinutes.getText()) > 0) {
                     Utils.setBackground(0, 59, sErrorSeconds);
                 } else {
                     sErrorSeconds.setBackground(null);
@@ -419,7 +417,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         });
     }
 
-    /** This method initializes group3 */
     private void createGroup3() {
         GridData gridData29 = new org.eclipse.swt.layout.GridData();
         gridData29.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -478,15 +475,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 getShell().setDefaultButton(bApplySetback);
-                /*
-                 * sSetBackHours.setEnabled(!bIsMaximum.getSelection());
-                 * sSetBackMinutes.setEnabled(!bIsMaximum.getSelection());
-                 * sSetBackSeconds.setEnabled(!bIsMaximum.getSelection());
-                 */
                 bApplySetback.setEnabled(true);
             }
         });
-        @SuppressWarnings("unused")
         final Label delayLabel = JOE_L_JobOptionsForm_Delay.Control(new Label(group3, SWT.NONE));
         sSetBackHours = JOE_T_JobOptionsForm_SetBackHours.Control(new Text(group3, SWT.BORDER));
         sSetBackHours.addVerifyListener(new VerifyListener() {
@@ -522,7 +513,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label31 = new Label(group3, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label31.setText("Label");
         label31.setLayoutData(gridData25);
         createTable2();
         bNewSetback = JOE_B_JobOptionsForm_NewSetBack.Control(new Button(group3, SWT.NONE));
@@ -540,7 +530,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label30 = new Label(group3, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label30.setText("Label");
         label30.setLayoutData(gridData26);
         bRemoveSetback = JOE_B_JobOptionsForm_RemoveSetback.Control(new Button(group3, SWT.NONE));
         bRemoveSetback.setEnabled(false);
@@ -552,8 +541,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = tSetback.getSelectionIndex();
                     listener.deleteSetbackDelay(index);
                     tSetback.remove(index);
-                    if (index >= tSetback.getItemCount())
+                    if (index >= tSetback.getItemCount()) {
                         index--;
+                    }
                     if (tSetback.getItemCount() > 0) {
                         tSetback.setSelection(index);
                         listener.selectSetbackDelay(index);
@@ -587,7 +577,7 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         sSetBackSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if ((Utils.str2int(sSetBackHours.getText()) > 0) || (Utils.str2int(sSetBackMinutes.getText()) > 0)) {
+                if (Utils.str2int(sSetBackHours.getText()) > 0 || Utils.str2int(sSetBackMinutes.getText()) > 0) {
                     Utils.setBackground(0, 59, sSetBackSeconds);
                 } else {
                     sSetBackSeconds.setBackground(null);
@@ -598,7 +588,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
         tErrorDelay = JOE_Tbl_JobOptionsForm_ErrorDelay.Control(new Table(group2, SWT.BORDER | SWT.FULL_SELECTION));
         tErrorDelay.setSortDirection(SWT.UP);
@@ -612,8 +601,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                     listener.selectErrorDelay(tErrorDelay.getSelectionIndex());
                     initErrorDelay(true);
                     sErrorCount.selectAll();
-                } else
+                } else {
                     initErrorDelay(false);
+                }
                 bRemoveDelay.setEnabled(tErrorDelay.getSelectionCount() > 0);
             }
         });
@@ -624,7 +614,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         tableColumn1.setWidth(250);
     }
 
-    /** This method initializes table */
     private void createTable2() {
         tSetback = JOE_Tbl_JobOptionsForm_SetBack.Control(new Table(group3, SWT.BORDER | SWT.FULL_SELECTION));
         tSetback.setSortDirection(SWT.UP);
@@ -638,8 +627,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                     listener.selectSetbackDelay(tSetback.getSelectionIndex());
                     initSetback(true);
                     sSetBackCount.selectAll();
-                } else
+                } else {
                     initSetback(false);
+                }
                 bRemoveSetback.setEnabled(tSetback.getSelectionCount() > 0);
             }
         });
@@ -652,7 +642,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         tableColumn4.setWidth(250);
     }
 
-    /** This method initializes table */
     private void createTable3() {
         GridData gridData30 = new org.eclipse.swt.layout.GridData();
         gridData30.horizontalSpan = 4;
@@ -672,8 +661,9 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                     listener.selectDirectory(tDirectories.getSelectionIndex());
                     initDirectory(true);
                     tDirectory.setFocus();
-                } else
+                } else {
                     initDirectory(false);
+                }
                 bRemoveDirectory.setEnabled(tDirectories.getSelectionCount() > 0);
             }
 
@@ -687,7 +677,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         tableColumn6.setWidth(250);
     }
 
-    // directories
     private void initDirectories(boolean enabled) {
         tDirectory.setEnabled(enabled);
         tRegex.setEnabled(enabled);
@@ -721,7 +710,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         }
     }
 
-    // setbacks
     private void initSetbacks(boolean enabled) {
         sSetBackCount.setEnabled(enabled);
         bIsMaximum.setEnabled(enabled);
@@ -733,25 +721,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         listener.fillSetbacks(tSetback);
     }
 
-    /*
-     * private void initSetback(boolean enabled) {
-     * sSetBackCount.setEnabled(enabled); bIsMaximum.setEnabled(enabled);
-     * sSetBackHours.setEnabled(enabled); sSetBackMinutes.setEnabled(enabled);
-     * sSetBackSeconds.setEnabled(enabled); if (enabled) {
-     * bIsMaximum.setSelection(listener.isMaximum()); if
-     * (bIsMaximum.getSelection()) { sSetBackHours.setEnabled(false);
-     * sSetBackMinutes.setEnabled(false); sSetBackSeconds.setEnabled(false); }
-     * else { sSetBackHours.setText(Utils.fill(2,
-     * listener.getSetbackCountHours())); sSetBackMinutes.setText(Utils.fill(2,
-     * listener.getSetbackCountMinutes())); if
-     * (!(listener.getSetbackCountHours() +
-     * listener.getSetbackCountMinutes()).equals("")) {
-     * sSetBackSeconds.setText(Utils.fill(2,
-     * listener.getSetbackCountSeconds())); } else {
-     * sSetBackSeconds.setText(listener.getSetbackCountSeconds()); } }
-     * sSetBackCount.setText(listener.getSetbackCount()); }
-     * bApplySetback.setEnabled(false); }
-     */
     private void initSetback(boolean enabled) {
         sSetBackCount.setEnabled(enabled);
         bIsMaximum.setEnabled(enabled);
@@ -760,19 +729,13 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         sSetBackSeconds.setEnabled(enabled);
         if (enabled) {
             bIsMaximum.setSelection(listener.isMaximum());
-            /*
-             * if (bIsMaximum.getSelection()) { sSetBackHours.setEnabled(false);
-             * sSetBackMinutes.setEnabled(false);
-             * sSetBackSeconds.setEnabled(false); } else {
-             */
             sSetBackHours.setText(Utils.fill(2, listener.getSetbackCountHours()));
             sSetBackMinutes.setText(Utils.fill(2, listener.getSetbackCountMinutes()));
-            if (!(listener.getSetbackCountHours() + listener.getSetbackCountMinutes()).equals("")) {
+            if (!"".equals(listener.getSetbackCountHours() + listener.getSetbackCountMinutes())) {
                 sSetBackSeconds.setText(Utils.fill(2, listener.getSetbackCountSeconds()));
             } else {
                 sSetBackSeconds.setText(listener.getSetbackCountSeconds());
             }
-            // }
             sSetBackCount.setText(listener.getSetbackCount());
         }
         bApplySetback.setEnabled(false);
@@ -784,18 +747,17 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         int maxSetback = 0;
         int sel = tSetback.getSelectionIndex();
         TableItem[] setback = tSetback.getItems();
-        if (sSetBackCount.getText().equals("0"))
+        if ("0".equals(sSetBackCount.getText())) {
             MainWindow.message(JOE_M_ZeroNotAllowed.label(), SWT.ICON_INFORMATION);
-        else {
+        } else {
             for (int i = 0; i < setback.length; i++) {
-                // if (setback[i].getText(1).equalsIgnoreCase("Yes") && sel !=
-                // i) {
                 if (setback[i].getText(1).equalsIgnoreCase(JOE_M_Yes.label()) && sel != i) {
                     maximum = maximum + 1;
                 }
             }
-            if (bIsMaximum.getSelection())
+            if (bIsMaximum.getSelection()) {
                 maximum = maximum + 1;
+            }
             boolean found = false;
             for (int i = 0; i < setback.length; i++) {
                 if (setback[i].getText(0).equals(sSetBackCount.getText()) && sel != i) {
@@ -803,17 +765,11 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
             for (int i = 0; i < setback.length; i++) {
-                // if ( i != sel && maximumMax <
-                // Utils.str2int(setback[i].getText(0)) &&
-                // setback[i].getText(1).equalsIgnoreCase("yes")) {
                 if (i != sel && maximumMax < Utils.str2int(setback[i].getText(0)) && setback[i].getText(1).equalsIgnoreCase(JOE_M_Yes.label())) {
                     maximumMax = Utils.str2int(setback[i].getText(0));
                 }
             }
             for (int i = 0; i < setback.length; i++) {
-                // if (i != sel &&
-                // !setback[i].getText(1).equalsIgnoreCase("yes") && maxSetback
-                // < Utils.str2int(setback[i].getText(0))) {
                 if (i != sel && !setback[i].getText(1).equalsIgnoreCase(JOE_M_Yes.label()) && maxSetback < Utils.str2int(setback[i].getText(0))) {
                     maxSetback = Utils.str2int(setback[i].getText(0));
                 }
@@ -832,7 +788,7 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                     MainWindow.message(JOE_M_0033.label(), SWT.ICON_INFORMATION);
                     sSetBackCount.setFocus();
                 } else {
-                    if (sSetBackCount.getText().equals("")) {
+                    if ("".equals(sSetBackCount.getText())) {
                         MainWindow.message(JOE_M_0034.label(), SWT.ICON_INFORMATION);
                         sSetBackCount.setFocus();
                     } else {
@@ -842,11 +798,12 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                             sSetBackCount.setFocus();
                         } else {
                             String delay = sSetBackSeconds.getText();
-                            if (!(sSetBackMinutes.getText() + sSetBackHours.getText()).equals("")) {
+                            if (!"".equals(sSetBackMinutes.getText() + sSetBackHours.getText())) {
                                 delay = Utils.getTime(sSetBackHours.getText(), sSetBackMinutes.getText(), sSetBackSeconds.getText(), true);
                             }
-                            if (delay.equals("00") || delay.equals(""))
+                            if ("00".equals(delay) || "".equals(delay)) {
                                 delay = "0";
+                            }
                             listener.applySetbackDelay(sSetBackCount.getText(), bIsMaximum.getSelection(), delay);
                             listener.fillSetbacks(tSetback);
                             initSetback(false);
@@ -860,7 +817,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         }
     }
 
-    // error delays
     private void initErrorDelays(boolean enabled) {
         bNewDelay.setEnabled(true);
         bStop.setEnabled(enabled);
@@ -909,30 +865,23 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         int maxErrorDelay = 0;
         int maxAktErrorDelay = 0;
         for (int i = 0; i < errorDelay.length; i++) {
-            // if (i != sel &&
-            // !errorDelay[i].getText(1).equalsIgnoreCase("stop") &&
-            // maxAktErrorDelay < Utils.str2int(errorDelay[i].getText(0))) {
             if (i != sel && !errorDelay[i].getText(1).equalsIgnoreCase(JOE_M_Stop.label()) && maxAktErrorDelay < Utils.str2int(errorDelay[i].getText(0))) {
                 maxAktErrorDelay = Utils.str2int(errorDelay[i].getText(0));
             }
         }
         for (int i = 0; i < errorDelay.length; i++) {
-            // if (i != sel && maxErrorDelay <
-            // Utils.str2int(errorDelay[i].getText(0)) &&
-            // errorDelay[i].getText(1).equalsIgnoreCase("stop")) {
             if (i != sel && maxErrorDelay < Utils.str2int(errorDelay[i].getText(0)) && errorDelay[i].getText(1).equalsIgnoreCase(JOE_M_Stop.label())) {
                 maxErrorDelay = Utils.str2int(errorDelay[i].getText(0));
             }
         }
         for (int i = 0; i < errorDelay.length; i++) {
-            // if (errorDelay[i].getText(1).equalsIgnoreCase("stop") && sel !=
-            // i) {
             if (errorDelay[i].getText(1).equalsIgnoreCase(JOE_M_Stop.label()) && sel != i) {
                 maximum = maximum + 1;
             }
         }
-        if (bStop.getSelection())
+        if (bStop.getSelection()) {
             maximum = maximum + 1;
+        }
         for (int i = 0; i < errorDelay.length; i++) {
             if (errorDelay[i].getText(0).equals(sErrorCount.getText()) && sel != i) {
                 found = true;
@@ -956,14 +905,14 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
                 if (maximum > 1) {
                     MainWindow.message(JOE_M_0038.label(), SWT.ICON_INFORMATION);
                 } else {
-                    if (sErrorCount.getText().equals("")) {
+                    if ("".equals(sErrorCount.getText())) {
                         MainWindow.message(JOE_M_0039.label(), SWT.ICON_INFORMATION);
                         sErrorCount.setFocus();
                     } else {
                         String delay = Utils.getTime(sErrorHours.getText(), sErrorMinutes.getText(), sErrorSeconds.getText(), true);
-                        if (bStop.getSelection())
-                            // delay = "stop";
+                        if (bStop.getSelection()) {
                             delay = JOE_M_Stop.label();
+                        }
                         listener.applyErrorDelay(sErrorCount.getText(), delay);
                         listener.fillTable(tErrorDelay);
                         sortTable(tErrorDelay);
@@ -996,4 +945,4 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
         }
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

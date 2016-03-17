@@ -30,8 +30,9 @@ public class IncludeFilesListener extends JobDocBaseListener<DocumentationDom> {
                 files.add(file == null ? "" : file);
             }
             return (String[]) files.toArray(new String[] {});
-        } else
+        } else {
             return new String[0];
+        }
     }
 
     public void saveIncludes(String[] includes) {
@@ -40,16 +41,16 @@ public class IncludeFilesListener extends JobDocBaseListener<DocumentationDom> {
             for (int i = 0; i < includes.length; i++) {
                 _parent.addContent(new Element("include", _dom.getNamespace()).setAttribute("file", includes[i]));
             }
-            // _dom.setChanged(true);
         }
     }
 
     public boolean exists(String file, String[] items) {
-        for (int i = 0; i < items.length; i++)
+        for (int i = 0; i < items.length; i++) {
             if (file.equals(items[i])) {
                 ErrorLog.message(Messages.getString("include.fileExists"), SWT.ICON_INFORMATION);
                 return true;
             }
+        }
         return false;
     }
 
@@ -57,4 +58,5 @@ public class IncludeFilesListener extends JobDocBaseListener<DocumentationDom> {
         _changes = changes;
         _dom.setChanged(true);
     }
+    
 }

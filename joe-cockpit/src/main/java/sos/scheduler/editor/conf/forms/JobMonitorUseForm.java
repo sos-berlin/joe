@@ -51,8 +51,9 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyMonitorUse();
+        }
     }
 
     public boolean isUnsaved() {
@@ -65,7 +66,6 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(678, 425));
     }
 
-    /** This method initializes group1 */
     private void createGroup() {
         GridData gridData51 = new org.eclipse.swt.layout.GridData();
         gridData51.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -81,18 +81,17 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
         tMonitorUse.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (!tMonitorUse.getText().equals(""))
+                if (!"".equals(tMonitorUse.getText())) {
                     getShell().setDefaultButton(bApplyMonitorUse);
+                }
                 bApplyMonitorUse.setEnabled(listener.isValidMonitor(tMonitorUse.getText()));
             }
         });
         tMonitorUse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         label11 = JOE_L_JobMonitorUseForm_Ordering.Control(new Label(group1, SWT.NONE));
         label11.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
         edOrdering = JOE_T_JobMonitorUseForm_Ordering.Control(new Text(group1, SWT.BORDER));
         edOrdering.setEnabled(true);
-
         edOrdering.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -120,8 +119,9 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
                 if (tMonitorUseTable.getSelectionCount() > 0) {
                     listener.selectMonitorUse(tMonitorUseTable.getSelectionIndex());
                     initMonitorUse(true);
-                } else
+                } else {
                     initMonitorUse(false);
+                }
                 bRemoveMontiorUse.setEnabled(tMonitorUseTable.getSelectionCount() > 0);
             }
         });
@@ -153,8 +153,9 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = tMonitorUseTable.getSelectionIndex();
                     listener.deleteMonitorUse(index);
                     tMonitorUseTable.remove(index);
-                    if (index >= tMonitorUseTable.getItemCount())
+                    if (index >= tMonitorUseTable.getItemCount()) {
                         index--;
+                    }
                     if (tMonitorUseTable.getItemCount() > 0) {
                         tMonitorUseTable.setSelection(index);
                         listener.selectMonitorUse(index);
@@ -173,7 +174,7 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
             public void widgetSelected(final SelectionEvent e) {
                 String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_MONITOR);
                 tMonitorUse.setEnabled(true);
-                if (name != null && name.length() > 0) {
+                if (name != null && !name.isEmpty()) {
                     tMonitorUseTable.deselectAll();
                     listener.newMonitorUse();
                     initMonitorUse(true);
@@ -185,15 +186,15 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
         butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
     }
 
-    // monitor.use
     private void initMonitorUseTable(boolean enabled) {
         tMonitorUseTable.setEnabled(enabled);
         bNewMonitorUse.setEnabled(true);
         initMonitorUse(false);
         listener.fillMonitorUse(tMonitorUseTable);
         String[] monitors = listener.getMonitors();
-        if (monitors != null)
+        if (monitors != null) {
             tMonitorUse.setItems(monitors);
+        }
     }
 
     private void initMonitorUse(boolean enabled) {
@@ -219,4 +220,5 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
     public void setToolTipText() {
         //
     }
+
 }

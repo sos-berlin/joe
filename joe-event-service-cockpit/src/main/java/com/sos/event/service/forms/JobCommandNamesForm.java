@@ -59,8 +59,7 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
     }
 
     public void apply() {
-        // if (isUnsaved())
-        // addParam();
+        // 
     }
 
     public boolean isUnsaved() {
@@ -76,7 +75,6 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         txtName.setFocus();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 4;
@@ -152,24 +150,22 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         new Label(gMain, SWT.NONE);
         final Label label = new Label(gMain, SWT.HORIZONTAL | SWT.SEPARATOR);
         label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
-        // label.setText("label");
         new Label(gMain, SWT.NONE);
         tCommands = JOE_Tbl_JobCommandNamesForm_Commands.Control(new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER));
         tCommands.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                String str = tCommands.getSelection()[0].getText(2).length() > 0 ? tCommands.getSelection()[0].getText(2)
+                String str = !tCommands.getSelection()[0].getText(2).isEmpty() ? tCommands.getSelection()[0].getText(2)
                         : tCommands.getSelection()[0].getText(1);
-                // ContextMenu.goTo(tCommands.getSelection()[0].getText(0) +
-                // ": " + str, _dom, Editor.JOB_COMMAND_EXIT_CODES);
             }
         });
         tCommands.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
                 TableItem item = (TableItem) e.item;
-                if (item == null)
+                if (item == null) {
                     return;
+                }
                 bRemoveExitcode.setEnabled(tCommands.getSelectionCount() > 0);
             }
         });
@@ -229,4 +225,4 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         return listener.getCommand();
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

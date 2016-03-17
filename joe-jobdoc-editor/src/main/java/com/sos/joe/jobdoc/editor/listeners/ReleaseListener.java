@@ -10,7 +10,6 @@ public class ReleaseListener extends JobDocBaseListener<DocumentationDom> {
 
     private Element _release;
 
-    // private boolean _newRelease = false;
     public ReleaseListener(DocumentationDom dom, Element release) {
         _dom = dom;
         _release = release;
@@ -53,10 +52,11 @@ public class ReleaseListener extends JobDocBaseListener<DocumentationDom> {
     }
 
     public String getNote(String which) {
-        if (_release != null && !_release.getChildren(which, _release.getNamespace()).isEmpty())
+        if (_release != null && !_release.getChildren(which, _release.getNamespace()).isEmpty()) {
             return _dom.noteAsStr(_release.getChild(which, _release.getNamespace()));
-        else
+        } else {
             return "";
+        }
     }
 
     public void applyRelease(String title, String id, String created, String modified) {
@@ -66,4 +66,5 @@ public class ReleaseListener extends JobDocBaseListener<DocumentationDom> {
         Utils.setElement("title", title, false, _release, _dom.getNamespace(), _dom);
         _dom.setChanged(true);
     }
+    
 }

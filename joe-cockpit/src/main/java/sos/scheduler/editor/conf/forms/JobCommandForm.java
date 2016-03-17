@@ -58,7 +58,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
     public JobCommandForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) throws JDOMException, TransformerException {
         super(parent, style);
         listener = new JobCommandListener(dom, command, main);
-        if (command.getName().equalsIgnoreCase("start_job")) {
+        if ("start_job".equalsIgnoreCase(command.getName())) {
             type = JOEConstants.JOB;
         } else {
             type = JOEConstants.COMMANDS;
@@ -71,9 +71,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        // if (isUnsaved())
-        // addParam();
-        // addCommand();
+        // 
     }
 
     public boolean isUnsaved() {
@@ -85,15 +83,12 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         createGroup();
     }
 
-    /** This method initializes group */
     private void createGroup_() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.makeColumnsEqualWidth = true;
         gridLayout2.numColumns = 1;
         jobsAndOrdersGroup = new Group(this, SWT.NONE);
-        jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : "")); // TODO
-                                                                                                                              // lang
-                                                                                                                              // "Commands for Job: "...
+        jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
         jobsAndOrdersGroup.setLayout(gridLayout2);
         GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
         sashForm = new SashForm(jobsAndOrdersGroup, SWT.NONE);
@@ -102,20 +97,21 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         GridLayout gridLayout3 = new GridLayout();
         gridLayout3.numColumns = 2;
         gDescription = new Group(sashForm, SWT.NONE);
-        gDescription.setText("Jobs and Orders"); // TODO lang "Jobs and Orders"
+        gDescription.setText("Jobs and Orders");
         gDescription.setLayout(gridLayout3);
         jobchainLabel = new Label(gDescription, SWT.NONE);
         final GridData gridData_10 = new GridData();
         jobchainLabel.setLayoutData(gridData_10);
-        jobchainLabel.setText("Job chain"); // TODO lang "Job chain"
+        jobchainLabel.setText("Job chain");
         cJobchain = new Combo(gDescription, SWT.NONE);
         cJobchain.setEnabled(false);
         cJobchain.setItems(listener.getJobChains());
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 listener.setJobChain(cJobchain.getText());
                 String curstate = Utils.getAttributeValue("state", listener.getCommand());
                 tState.setItems(listener.getStates());
@@ -130,7 +126,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         cJobchain.setLayoutData(gridData_8);
         lblJob = new Label(gDescription, SWT.NONE);
         lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
-        lblJob.setText("Job / Order ID"); // TODO lang "Job / Order ID"
+        lblJob.setText("Job / Order ID");
         tJob = new Text(gDescription, SWT.BORDER);
         tJob.addFocusListener(new FocusAdapter() {
 
@@ -153,7 +149,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         tJob.setLayoutData(gridData_3);
         final Label startAtLabel = new Label(gDescription, SWT.NONE);
         startAtLabel.setLayoutData(new GridData());
-        startAtLabel.setText("Start at"); // TODO lang "Start at"
+        startAtLabel.setText("Start at");
         tStartAt = new Text(gDescription, SWT.BORDER);
         tStartAt.addFocusListener(new FocusAdapter() {
 
@@ -173,7 +169,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         priorityLabel = new Label(gDescription, SWT.NONE);
         final GridData gridData_11 = new GridData();
         priorityLabel.setLayoutData(gridData_11);
-        priorityLabel.setText("Priority"); // TODO lang "Priority"
+        priorityLabel.setText("Priority");
         tPriority = new Text(gDescription, SWT.BORDER);
         tPriority.addFocusListener(new FocusAdapter() {
 
@@ -191,7 +187,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         titleLabel = new Label(gDescription, SWT.NONE);
         titleLabel.setLayoutData(new GridData());
-        titleLabel.setText("Title"); // TODO lang "Title"
+        titleLabel.setText("Title");
         tTitle = new Text(gDescription, SWT.BORDER);
         tTitle.addFocusListener(new FocusAdapter() {
 
@@ -211,14 +207,15 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         tTitle.setLayoutData(gridData_5);
         stateLabel = new Label(gDescription, SWT.NONE);
         stateLabel.setLayoutData(new GridData());
-        stateLabel.setText("State"); // TODO lang "State"
+        stateLabel.setText("State");
         tState = new Combo(gDescription, SWT.BORDER);
         tState.setEnabled(false);
         tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setState(tState.getText());
+                }
             }
         });
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -226,13 +223,14 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         tState.setLayoutData(gridData_2);
         endStateLabel = new Label(gDescription, SWT.NONE);
         endStateLabel.setLayoutData(new GridData());
-        endStateLabel.setText("End State"); // TODO lang "End State"
+        endStateLabel.setText("End State");
         cboEndstate = new Combo(gDescription, SWT.NONE);
         cboEndstate.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setEndState(cboEndstate.getText());
+                }
             }
         });
         cboEndstate.setEnabled(false);
@@ -240,7 +238,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         replaceLabel = new Label(gDescription, SWT.NONE);
         final GridData gridData_12 = new GridData();
         replaceLabel.setLayoutData(gridData_12);
-        replaceLabel.setText("Replace"); // TODO lang "Replace"
+        replaceLabel.setText("Replace");
         bReplace = new Button(gDescription, SWT.CHECK);
         bReplace.setSelection(true);
         bReplace.setEnabled(true);
@@ -254,15 +252,15 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         createSashForm();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.makeColumnsEqualWidth = true;
         gridLayout2.numColumns = 1;
         jobsAndOrdersGroup = new Group(this, SWT.NONE);
         String strT = JOE_M_JobCommand_CommandsForJob.params(listener.getName());
-        if (listener.isDisabled())
+        if (listener.isDisabled()) {
             strT += " " + JOE_M_JobCommand_Disabled.label();
+        }
         jobsAndOrdersGroup.setText(strT);
         jobsAndOrdersGroup.setLayout(gridLayout2);
         GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
@@ -282,8 +280,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 listener.setJobChain(cJobchain.getText());
                 String curstate = Utils.getAttributeValue("state", listener.getCommand());
                 tState.setItems(listener.getStates());
@@ -356,8 +355,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setState(tState.getText());
+                }
             }
         });
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -369,8 +369,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         cboEndstate.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setEndState(cboEndstate.getText());
+                }
             }
         });
         cboEndstate.setEnabled(false);
@@ -391,12 +392,10 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         createSashForm();
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         createGroup2();
     }
 
-    /** This method initializes group2 */
     private void createGroup2() {
         if (type == JOEConstants.JOB) {
             setCommandsEnabled(false);
@@ -454,11 +453,11 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
                 cboEndstate.setItems(listener.getStates());
                 cboEndstate.setText(Utils.getAttributeValue("end_state", listener.getCommand()));
                 tPriority.setText(Utils.getAttributeValue("priority", listener.getCommand()));
-                bReplace.setSelection(Utils.getAttributeValue("replace", listener.getCommand()).equals("yes"));
+                bReplace.setSelection("yes".equals(Utils.getAttributeValue("replace", listener.getCommand())));
             } else {
                 tJob.setText(Utils.getAttributeValue("job", listener.getCommand()));
             }
         }
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -19,17 +19,13 @@ import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class FormBaseClass {
 
-    @SuppressWarnings("unused")
-    private final String conClassName = "FormBaseClass";
-    private static final Logger LOGGER = Logger.getLogger(FormBaseClass.class);
-
     protected JOEListener objJobDataProvider = null;
     protected Composite objParent = null;
     protected Shell shell = null;
     protected Cursor objLastCursor = null;
     protected FormBaseClass objParentForm = this;
-
     protected final int intComboBoxStyle = SWT.NONE;
+    private static final Logger LOGGER = Logger.getLogger(FormBaseClass.class);
 
     protected FormBaseClass(Composite parent, int style) {
         shell = parent.getShell();
@@ -43,7 +39,6 @@ public class FormBaseClass {
         GridLayout grdL = new GridLayout();
         pParentComposite.setLayout(new GridLayout());
         setResizableV(pParentComposite);
-        ;
     }
 
     protected void setResizableV(Control objControl) {
@@ -67,7 +62,6 @@ public class FormBaseClass {
                 Editor.objMainWindow.setStatusLine("");
             }
         });
-
     }
 
     protected void showWaitCursor() {

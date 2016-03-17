@@ -14,7 +14,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDom> {
 
-    private static final String _defaultName = "[unknown]";
+    private static final String DEFAULT_NAME = "[unknown]";
     private Element _resources;
     private Element _database;
     private Element _resource;
@@ -35,10 +35,11 @@ public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDo
                 Element database = (Element) it.next();
                 TableItem item = new TableItem(table, SWT.NONE);
                 String name = Utils.getAttributeValue("name", database);
-                item.setText(0, !name.equals("") ? name : _defaultName);
+                item.setText(0, !name.equals("") ? name : DEFAULT_NAME);
                 item.setText(1, Utils.getBooleanValue("required", database) ? "yes" : "no");
-                if (database.equals(_database))
+                if (database.equals(_database)) {
                     table.select(index);
+                }
                 index++;
             }
         }
@@ -60,8 +61,9 @@ public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDo
             } catch (Exception e) {
                 return false;
             }
-        } else
+        } else {
             return false;
+        }
     }
 
     public String getDBName() {
@@ -72,18 +74,6 @@ public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDo
         return Utils.getBooleanValue("required", _database);
     }
 
-    /*
-     * public void applyDatabase(String dbName, boolean required) { if
-     * (_resources == null) _resources =
-     * ResourcesListener.getResourcesElement(_dom, _parent);
-     * Utils.setAttribute("name", dbName, _database);
-     * Utils.setBoolean("required", required, _database); if (_newDatabase)
-     * _resources.addContent(_database); _newDatabase = false;
-     * _dom.setChanged(true); } public void removeDatabase(int index) { if
-     * (setDatabase(index)) { _database.detach(); _database = null;
-     * _dom.setChanged(true); ResourcesListener.checkResources(_dom, _parent); }
-     * }
-     */
     public void fillResources(Table table) {
         table.removeAll();
         int index = 0;
@@ -93,8 +83,9 @@ public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDo
                 TableItem item = new TableItem(table, SWT.NONE);
                 item.setText(0, Utils.getAttributeValue("name", resource));
                 item.setText(1, Utils.getAttributeValue("type", resource));
-                if (resource.equals(_resource))
+                if (resource.equals(_resource)) {
                     table.select(index);
+                }
                 index++;
             }
         }
@@ -116,8 +107,9 @@ public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDo
             } catch (Exception e) {
                 return false;
             }
-        } else
+        } else {
             return false;
+        }
     }
 
     public Element getResource() {
@@ -135,10 +127,11 @@ public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDo
     public void applyResource(String name, String type) {
         Utils.setAttribute("name", name, _resource);
         Utils.setAttribute("type", type, _resource);
-        if (_newResource)
+        if (_newResource) {
             _database.addContent(_resource);
-        else
+        } else {
             _dom.setChanged(true);
+        }
         _newResource = false;
     }
 
@@ -161,4 +154,5 @@ public class DatabaseResourceListener extends JobDocBaseListener<DocumentationDo
     public boolean isNewDatabase() {
         return _newDatabase;
     }
+
 }

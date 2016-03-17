@@ -11,11 +11,11 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ConnectionsListener extends JobDocBaseListener<DocumentationDom> {
 
-    private final static Logger LOGGER = Logger.getLogger(ConnectionsListener.class);
-    public static final String defaultName = "default";
+    private static final Logger LOGGER = Logger.getLogger(ConnectionsListener.class);
     private SettingsListener _settings;
     private Element _connection;
     private boolean _newConn;
+    public static final String defaultName = "default";
 
     public ConnectionsListener(DocumentationDom dom, Element parent) {
         _dom = dom;
@@ -33,8 +33,9 @@ public class ConnectionsListener extends JobDocBaseListener<DocumentationDom> {
             Element con = (Element) it.next();
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(Utils.getAttributeValue("name", con));
-            if (con.equals(_connection))
+            if (con.equals(_connection)) {
                 table.select(index);
+            }
             index++;
         }
     }
@@ -88,4 +89,5 @@ public class ConnectionsListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isNewConnection() {
         return _newConn;
     }
+    
 }

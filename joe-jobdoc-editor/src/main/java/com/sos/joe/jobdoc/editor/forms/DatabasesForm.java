@@ -38,7 +38,6 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
     private Button bRemove = null;
     private Label label = null;
     private Button bNew = null;
-    @SuppressWarnings("unused")
     private Label label6 = null;
     private Text tDB = null;
     private DocumentationForm _gui = null;
@@ -58,38 +57,25 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
         setDatabaseStatus(false);
     }
 
-    /** This method initializes group */
     private void createGroup() {
         group = JOE_G_DBForm_Databases.Control(new SOSGroup(this, SWT.NONE));
-        // group.setLayout(new GridLayout());
         createSashForm();
     }
 
-    /** This method initializes group1 */
-    /** This method initializes sashForm */
     private void createSashForm() {
-        // sashForm = new SashForm(group, SWT.NONE);
-        // sashForm.setOrientation(SWT.VERTICAL); // Generated
-        // createComposite();
         createComposite1();
     }
 
-    /** This method initializes composite */
-    // private void createComposite() {
-    // createGroup1();
-    // }
-    /** This method initializes composite1 */
     private void createComposite1() {
         GridData gridData8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        gridData8.widthHint = 90; // Generated
+        gridData8.widthHint = 90;
         GridData gridData2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
-        gridData2.widthHint = 90; // Generated
+        gridData2.widthHint = 90;
         GridData gridData1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
         GridLayout gridLayout3 = new GridLayout();
-        gridLayout3.numColumns = 5; // Generated
+        gridLayout3.numColumns = 5;
         composite1 = new SOSComposite(group, SWT.NONE);
-        composite1.setLayout(gridLayout3); // Generated
-
+        composite1.setLayout(gridLayout3);
         label6 = JOE_L_Name.Control(new SOSLabel(composite1, SWT.NONE));
         tDB = JOE_T_DBForm_Database.Control(new Text(composite1, SWT.BORDER));
         tDB.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -123,14 +109,13 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
         });
         label = new Label(composite1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
-        // label.setText("Label"); // Generated
         tDatabases = JOE_Tbl_DBForm_Databases.Control(new Table(composite1, SWT.FULL_SELECTION | SWT.BORDER));
         TableColumn tableColumn2 = JOE_TCl_DBForm_Name.Control(new TableColumn(tDatabases, SWT.NONE));
-        tableColumn2.setWidth(300); // Generated
+        tableColumn2.setWidth(300);
         TableColumn tableColumn3 = JOE_TCl_DBForm_Required.Control(new TableColumn(tDatabases, SWT.NONE));
-        tableColumn3.setWidth(173); // Generated
+        tableColumn3.setWidth(173);
         bNew = JOE_B_DBForm_New.Control(new Button(composite1, SWT.NONE));
-        bNew.setLayoutData(gridData8); // Generated
+        bNew.setLayoutData(gridData8);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -142,9 +127,9 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
                 tDB.setFocus();
             }
         });
-        tDatabases.setLayoutData(gridData1); // Generated
-        tDatabases.setHeaderVisible(true); // Generated
-        tDatabases.setLinesVisible(true); // Generated
+        tDatabases.setLayoutData(gridData1);
+        tDatabases.setHeaderVisible(true);
+        tDatabases.setLinesVisible(true);
         tDatabases.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -157,7 +142,7 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
             }
         });
         bRemove = JOE_B_DBForm_Remove.Control(new Button(composite1, SWT.NONE));
-        bRemove.setLayoutData(gridData2); // Generated
+        bRemove.setLayoutData(gridData2);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -175,52 +160,26 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
 
     @Override
     public void apply() {
-        // if (bApplyRes.isEnabled())
-        // applyResource();
-        if (bApply.isEnabled())
+        if (bApply.isEnabled()) {
             applyDatabase();
+        }
     }
 
     @Override
     public boolean isUnsaved() {
-        // Options.saveSash("databases", sashForm.getWeights());
-        // return bApplyRes.isEnabled() || bApply.isEnabled();
         return bApply.isEnabled();
     }
 
     private void setDatabaseStatus(boolean enabled) {
         tDB.setEnabled(enabled);
         cRequired.setEnabled(enabled);
-        // tResources.setEnabled(enabled);
-        // bNewRes.setEnabled(enabled);
-        // setResourceStatus(false);
         if (enabled) {
             tDB.setText(listener.getDBName());
             cRequired.setSelection(listener.isRequired());
-            // listener.fillResources(tResources);
         }
         bApply.setEnabled(false);
     }
 
-    /*
-     * private void setResourceStatus(boolean enabled) { //
-     * tName.setEnabled(enabled); // cType.setEnabled(enabled); //
-     * bNotes.setEnabled(enabled); // bRemoveRes.setEnabled(false); if (enabled)
-     * { tName.setText(listener.getName()); //
-     * cType.select(cType.indexOf(listener.getType())); tName.setFocus(); } //
-     * bApplyRes.setEnabled(false); }
-     */
-    /*
-     * private void setApplyResStatus() {
-     * //bApplyRes.setEnabled(tName.getText().length() > 0); //
-     * getShell().setDefaultButton(bApplyRes); }
-     */
-    /*
-     * private void applyResource() { //listener.applyResource(tName.getText(),
-     * cType.getText()); // listener.fillResources(tResources); //
-     * bRemoveRes.setEnabled(tResources.getSelectionCount() > 0); //
-     * bApplyRes.setEnabled(false); // getShell().setDefaultButton(bApply); }
-     */
     private void applyDatabase() {
         listener.applyDatabase(tDB.getText(), cRequired.getSelection());
         listener.fillDatabases(tDatabases);
@@ -236,19 +195,17 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
 
     @Override
     public void openBlank() {
-        // TODO Auto-generated method stub
-
+        // 
     }
 
     @Override
     protected void applySetting() {
-        // TODO Auto-generated method stub
-
+        // 
     }
 
     @Override
     public boolean applyChanges() {
-        // TODO Auto-generated method stub
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

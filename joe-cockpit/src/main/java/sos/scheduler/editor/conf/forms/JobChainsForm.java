@@ -41,8 +41,6 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
     private Button butDetails = null;
     private SchedulerDom _dom = null;
     private int lastSelectionIndex = -1;
-    /** Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft
-     * werden, ob der Checkbox in der Tabelle - State gesetzt werden soll. */
     private boolean checkParameter = false;
 
     public JobChainsForm(Composite parent, int style, SchedulerDom dom, Element config, ISchedulerUpdate update_) {
@@ -60,7 +58,6 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(676, 464));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         group = new Group(this, SWT.NONE);
         final GridLayout gridLayout = new GridLayout();
@@ -76,8 +73,9 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
         tChains.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                if (tChains.getSelectionCount() > 0)
+                if (tChains.getSelectionCount() > 0) {
                     ContextMenu.goTo(tChains.getSelection()[0].getText(0), _dom, JOEConstants.JOB_CHAIN);
+                }
             }
         });
         tChains.getHorizontalBar().setMaximum(0);
@@ -87,7 +85,6 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
         tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-
                 boolean enabled = true;
                 if (tChains.getSelectionCount() > 0) {
                     listener.selectChain(tChains.getSelectionIndex());
@@ -125,9 +122,8 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
                 if (c != SWT.YES) {
                     return;
                 }
-                if ((tChains.getSelection().length > 0)
-                        && (Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), JOEConstants.JOB_CHAINS, null))) {
-                    // wird der Job woandes verwendet?
+                if ((tChains.getSelection().length > 0) && Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), 
+                        JOEConstants.JOB_CHAINS, null)) {
                     deleteChain();
                 }
             }
@@ -185,7 +181,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
         tChains.select(tChains.getItemCount() - 1);
         bRemoveChain.setEnabled(tChains.getSelectionCount() > 0);
         getShell().setDefaultButton(bNewChain);
-        if (listener.getChainName() != null && listener.getChainName().length() > 0) {
+        if (listener.getChainName() != null && !listener.getChainName().isEmpty()) {
             butDetails.setEnabled(true);
         } else {
             butDetails.setEnabled(false);
@@ -202,9 +198,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
         }
         String name = tChains.getSelection()[0].getText(0);
         lastSelectionIndex = tChains.getSelectionIndex();
-
-        if (name != null && name.length() > 0) {
-
+        if (name != null && !name.isEmpty()) {
             boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
             if (state == null) {
                 DetailDialogForm detail = new DetailDialogForm(name, isLifeElement, listener.get_dom().getFilename());
@@ -237,4 +231,5 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
     public static Table getTableChains() {
         return tChains;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

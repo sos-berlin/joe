@@ -55,7 +55,6 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(653, 468));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData19 = new org.eclipse.swt.layout.GridData();
         gridData19.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -72,8 +71,9 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
         tServices.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                if (tServices.getSelectionCount() > 0)
+                if (tServices.getSelectionCount() > 0) {
                     ContextMenu.goTo(tServices.getSelection()[0].getText(0), _dom, JOEConstants.WEBSERVICE);
+                }
             }
         });
         tServices.setHeaderVisible(true);
@@ -86,7 +86,6 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
                 bRemove.setEnabled(selection);
                 if (selection) {
                     listener.selectService(tServices.getSelectionIndex());
-
                 }
             }
         });
@@ -104,8 +103,6 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.newService(tServices);
-                // setInput(true);
-                // tName.setFocus();
             }
         });
         group.setLayout(gridLayout);
@@ -120,14 +117,13 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = tServices.getSelectionIndex();
                     listener.removeService(index);
                     tServices.remove(index);
-                    if (index >= tServices.getItemCount())
+                    if (index >= tServices.getItemCount()) {
                         index--;
+                    }
                     if (tServices.getItemCount() > 0) {
                         tServices.select(index);
                         listener.selectService(index);
-                        // setInput(true);
-                    }// else
-                     // setInput(false);
+                    }
                 }
                 bRemove.setEnabled(tServices.getSelectionCount() > 0);
             }
@@ -139,4 +135,5 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
     public static Table getTable() {
         return tServices;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

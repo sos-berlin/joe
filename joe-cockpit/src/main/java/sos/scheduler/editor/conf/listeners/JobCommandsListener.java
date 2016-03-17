@@ -24,8 +24,9 @@ public class JobCommandsListener {
         _dom = dom;
         _main = update;
         _job = job;
-        if (_job != null)
+        if (_job != null) {
             _commands = _job.getChildren("commands");
+        }
     }
 
     private void initCommands() {
@@ -53,12 +54,15 @@ public class JobCommandsListener {
         for (int i = 0; i < count; i++) {
             TableItem item = table.getItem(i);
             String actCode = item.getText();
-            if (actCode.indexOf(" " + String.valueOf(code)) >= 0)
+            if (actCode.indexOf(" " + String.valueOf(code)) >= 0) {
                 return true;
-            if (actCode.indexOf(String.valueOf(code) + " ") >= 0)
+            }
+            if (actCode.indexOf(String.valueOf(code) + " ") >= 0) {
                 return true;
-            if (actCode.trim().equals(String.valueOf(code)))
+            }
+            if (actCode.trim().equals(String.valueOf(code))) {
                 return true;
+            }
         }
         return false;
     }
@@ -71,16 +75,20 @@ public class JobCommandsListener {
         int count = table.getItemCount();
         for (int i = 0; i < count; i++) {
             TableItem item = table.getItem(i);
-            if (item.getText().equals("success"))
+            if ("success".equals(item.getText())) {
                 success = true;
-            if (item.getText().equals("error"))
+            }
+            if ("error".equals(item.getText())) {
                 error = true;
+            }
         }
-        if (!success)
+        if (!success) {
             code = "success";
-        if (!error)
+        }
+        if (!error) {
             code = "error";
-        if (code.equals("")) {
+        }
+        if ("".equals(code)) {
             int c = 1;
             while (!found) {
                 if (!haveCode(c, table)) {
@@ -92,8 +100,9 @@ public class JobCommandsListener {
         }
         Element commands = new Element("commands");
         commands.setAttribute("on_exit_code", code);
-        if (_commands == null)
+        if (_commands == null) {
             initCommands();
+        }
         _commands.add(commands);
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
@@ -112,8 +121,9 @@ public class JobCommandsListener {
             _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
             table.remove(index);
             _main.updateCommands();
-            if (index >= table.getItemCount())
+            if (index >= table.getItemCount()) {
                 index--;
+            }
             if (index >= 0) {
                 table.setSelection(index);
                 return true;
@@ -121,4 +131,5 @@ public class JobCommandsListener {
         }
         return false;
     }
+
 }

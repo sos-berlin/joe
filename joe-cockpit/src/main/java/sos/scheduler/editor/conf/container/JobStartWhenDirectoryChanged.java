@@ -25,14 +25,9 @@ import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 public class JobStartWhenDirectoryChanged extends FormBaseClass {
 
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-
     private Group group1 = null;
     private FolderNameSelector tDirectory = null;
-    // private Text tDirectory=null;
     private Text tRegex = null;
-    @SuppressWarnings("unused")
     private Label label11 = null;
     private Button bApplyDirectory = null;
     private Label label1 = null;
@@ -46,7 +41,6 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
     public JobStartWhenDirectoryChanged(Composite pParentComposite, JobListener pobjDataProvider) {
         super(pParentComposite, pobjDataProvider);
         showWaitCursor();
-
         objJobDataProvider = pobjDataProvider;
         createGroup();
         initForm();
@@ -54,7 +48,6 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
     }
 
     private void createGroup() {
-
         GridData gridData51 = new org.eclipse.swt.layout.GridData();
         gridData51.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData51.widthHint = 90;
@@ -78,7 +71,6 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData4.grabExcessHorizontalSpace = true;
         gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 5;
         GridData gridData = new org.eclipse.swt.layout.GridData();
@@ -86,25 +78,16 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-
         group1 = SOSJOEMessageCodes.JOE_G_JobOptionsForm_StartWhenDirectoryChanged.Control(new Group(objParent, SWT.NONE));
         group1.setLayout(gridLayout1);
         group1.setLayoutData(gridData);
-
-        @SuppressWarnings("unused")
         Label label = SOSJOEMessageCodes.JOE_L_JobOptionsForm_WatchDirectory.Control(new Label(group1, SWT.NONE));
-
         tDirectory = new FolderNameSelector(group1, SWT.BORDER);
         tDirectory.setParentForm(this);
         tDirectory.setDataProvider(objJobDataProvider);
-
-        // tDirectory = new Text(group1,SWT.BORDER);
-
         label11 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_FileRegex.Control(new Label(group1, SWT.NONE));
-
         tRegex = SOSJOEMessageCodes.JOE_T_JobOptionsForm_FileRegex.Control(new Text(group1, SWT.BORDER));
         tRegex.setLayoutData(gridData4);
-
         bApplyDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDir.Control(new Button(group1, SWT.NONE));
         bApplyDirectory.setEnabled(false);
         bApplyDirectory.setLayoutData(gridData51);
@@ -114,13 +97,9 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
                 applyDirectory();
             }
         });
-
         label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label1.setText("Label");
         label1.setLayoutData(gridData110);
-
         createTable3();
-
         bNewDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewDir.Control(new Button(group1, SWT.NONE));
         bNewDirectory.setLayoutData(gridData41);
         bNewDirectory.addSelectionListener(new SelectionAdapter() {
@@ -132,11 +111,8 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
                 tDirectory.setFocus();
             }
         });
-
         label21 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label21.setText("Label");
         label21.setLayoutData(gridData210);
-
         bRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveDir.Control(new Button(group1, SWT.NONE));
         bRemoveDirectory.setEnabled(false);
         bRemoveDirectory.setLayoutData(gridData31);
@@ -147,8 +123,9 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
                     int index = tDirectories.getSelectionIndex();
                     objJobDataProvider.deleteDirectory(index);
                     tDirectories.remove(index);
-                    if (index >= tDirectories.getItemCount())
+                    if (index >= tDirectories.getItemCount()) {
                         index--;
+                    }
                     if (tDirectories.getItemCount() > 0) {
                         tDirectories.setSelection(index);
                         objJobDataProvider.selectDirectory(index);
@@ -160,37 +137,28 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
                 }
             }
         });
-
         tDirectory.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
-                if (!tDirectory.getText().equals("")) {
+                if (!"".equals(tDirectory.getText())) {
                     getShell().setDefaultButton(bApplyDirectory);
                 }
-                bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
+                bApplyDirectory.setEnabled(!"".equals(tDirectory.getText()));
             }
         });
-
         tRegex.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
-                if (!tDirectory.getText().equals(""))
+                if (!"".equals(tDirectory.getText())) {
                     getShell().setDefaultButton(bApplyDirectory);
-                bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
+                }
+                bApplyDirectory.setEnabled(!"".equals(tDirectory.getText()));
             }
         });
-
     }
 
     private void initForm() {
         objJobDataProvider.fillDirectories(tDirectories);
-        /*
-         * this.tRegex.setText(that.tRegex.getText());
-         * this.tDirectory.setText(that.tDirectory.getText()); for (int i=
-         * 0;i<that.tDirectories.getItemCount();i++){ TableItem t = new
-         * TableItem(this.tDirectories, SWT.None);
-         * t.setText(that.tDirectories.getItems()[i].getText()); }
-         */
     }
 
     private void initDirectory(boolean enabled) {
@@ -226,7 +194,6 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         gridData30.grabExcessHorizontalSpace = true;
         gridData30.grabExcessVerticalSpace = true;
         gridData30.verticalSpan = 3;
-
         tDirectories = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_Dirs.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
         tDirectories.setHeaderVisible(true);
         tDirectories.setLayoutData(gridData30);
@@ -238,8 +205,9 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
                     objJobDataProvider.selectDirectory(tDirectories.getSelectionIndex());
                     initDirectory(true);
                     tDirectory.setFocus();
-                } else
+                } else {
                     initDirectory(false);
+                }
                 bRemoveDirectory.setEnabled(tDirectories.getSelectionCount() > 0);
             }
 
@@ -247,11 +215,10 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
                 tDirectory.selectAll();
             }
         });
-
         TableColumn tableColumn5 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Dir.Control(new TableColumn(tDirectories, SWT.NONE));
         tableColumn5.setWidth(300);
-
         TableColumn tableColumn6 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Regex.Control(new TableColumn(tDirectories, SWT.NONE));
         tableColumn6.setWidth(250);
     }
+    
 }

@@ -41,21 +41,16 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 public class ProcessForm extends JobDocBaseForm<ProcessListener> {
 
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label = null;
-    @SuppressWarnings("unused")
     private Label label1 = null;
-    @SuppressWarnings("unused")
     private Label label2 = null;
     private Text tFile = null;
     private Text tParameter = null;
     private Text tLog = null;
     private Button cUseProcess = null;
     private Group group1 = null;
-    @SuppressWarnings("unused")
     private Label label3 = null;
     private Text tName = null;
-    @SuppressWarnings("unused")
     private Label label4 = null;
     private Text tValue = null;
     private Label label5 = null;
@@ -77,46 +72,44 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (cUseProcess.getSelection() != listener.isProcess()) {
-                    if (cUseProcess.getSelection())
+                    if (cUseProcess.getSelection()) {
                         listener.setProcess();
+                    }
                     initValues();
                 }
             }
         });
         createGroup();
-        // setSize(new Point(623, 421));
-        // setLayout(new GridLayout());
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true);
         GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData2.horizontalIndent = 7; // Generated
+        gridData2.horizontalIndent = 7;
         GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData1.horizontalIndent = 7; // Generated
+        gridData1.horizontalIndent = 7;
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData.horizontalIndent = 7; // Generated
+        gridData.horizontalIndent = 7;
         GridLayout gridLayout = new GridLayout(2, false);
-        // gridLayout.numColumns = 2; // Generated
         group = JOE_G_ProcessForm_Process.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayoutData(gridData11); // Generated
-        group.setLayout(gridLayout); // Generated
+        group.setLayoutData(gridData11);
+        group.setLayout(gridLayout);
         label = JOE_L_ProcessForm_File.Control(new SOSLabel(group, SWT.NONE));
         tFile = JOE_T_ProcessForm_File.Control(new Text(group, SWT.BORDER));
-        tFile.setLayoutData(gridData); // Generated
+        tFile.setLayoutData(gridData);
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 listener.setFile(tFile.getText());
-                if (cUseProcess.getSelection())
+                if (cUseProcess.getSelection()) {
                     Utils.setBackground(tFile, true);
+                }
             }
         });
         label1 = JOE_L_ProcessForm_Parameter.Control(new SOSLabel(group, SWT.NONE));
         tParameter = JOE_T_ProcessForm_Parameter.Control(new Text(group, SWT.BORDER));
-        tParameter.setLayoutData(gridData1); // Generated
+        tParameter.setLayoutData(gridData1);
         tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -126,7 +119,7 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
         });
         label2 = JOE_L_ProcessForm_Log.Control(new SOSLabel(group, SWT.NONE));
         tLog = JOE_T_ProcessForm_Log.Control(new Text(group, SWT.BORDER));
-        tLog.setLayoutData(gridData2); // Generated
+        tLog.setLayoutData(gridData2);
         tLog.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -137,7 +130,6 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
         createGroup1();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         GridData gridData8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
@@ -148,32 +140,32 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
         GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         GridLayout gridLayout1 = new GridLayout(5, false);
         group1 = JOE_G_ProcessForm_EnvironmentVariables.Control(new SOSGroup(group, SWT.NONE));
-        group1.setLayout(gridLayout1); // Generated
-        group1.setLayoutData(gridData3); // Generated
+        group1.setLayout(gridLayout1);
+        group1.setLayoutData(gridData3);
         label3 = JOE_L_Name.Control(new SOSLabel(group1, SWT.NONE));
         tName = JOE_T_ProcessForm_Name.Control(new Text(group1, SWT.BORDER));
-        tName.setLayoutData(gridData4); // Generated
+        tName.setLayoutData(gridData4);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(tName.getText().length() > 0);
+                bApply.setEnabled(!tName.getText().isEmpty());
                 getShell().setDefaultButton(bApply);
             }
         });
         label4 = JOE_L_ProcessForm_Value.Control(new SOSLabel(group1, SWT.NONE));
         tValue = JOE_T_ProcessForm_Value.Control(new Text(group1, SWT.BORDER));
-        tValue.setLayoutData(gridData5); // Generated
+        tValue.setLayoutData(gridData5);
         tValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(tName.getText().length() > 0);
+                bApply.setEnabled(!tName.getText().isEmpty());
                 getShell().setDefaultButton(bApply);
             }
         });
         bApply = JOE_B_ProcessForm_Apply.Control(new Button(group1, SWT.NONE));
-        bApply.setLayoutData(gridData9); // Generated
+        bApply.setLayoutData(gridData9);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -182,12 +174,12 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
             }
         });
         label5 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label5.setText("Label"); // Generated
-        label5.setLayoutData(gridData6); // Generated
+        label5.setText("Label");
+        label5.setLayoutData(gridData6);
         tVariables = JOE_Tbl_ProcessForm_Variables.Control(new Table(group1, SWT.BORDER));
-        tVariables.setHeaderVisible(true); // Generated
-        tVariables.setLayoutData(gridData7); // Generated
-        tVariables.setLinesVisible(true); // Generated
+        tVariables.setHeaderVisible(true);
+        tVariables.setLayoutData(gridData7);
+        tVariables.setLinesVisible(true);
         tVariables.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -203,7 +195,7 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
             }
         });
         bRemove = JOE_B_ProcessForm_Remove.Control(new Button(group1, SWT.NONE));
-        bRemove.setLayoutData(gridData8); // Generated
+        bRemove.setLayoutData(gridData8);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -216,7 +208,7 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
                     bApply.setEnabled(false);
                 }
                 bRemove.setEnabled(false);
-                boolean valid = (!tName.getText().equals(""));
+                boolean valid = !"".equals(tName.getText());
                 if (valid) {
                     getShell().setDefaultButton(bApply);
                 }
@@ -224,15 +216,16 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
             }
         });
         TableColumn tableColumn = JOE_TCl_ProcessForm_Name.Control(new TableColumn(tVariables, SWT.NONE));
-        tableColumn.setWidth(150); // Generated
+        tableColumn.setWidth(150);
         TableColumn tableColumn1 = JOE_TCl_ProcessForm_Value.Control(new TableColumn(tVariables, SWT.NONE));
-        tableColumn1.setWidth(60); // Generated
+        tableColumn1.setWidth(60);
     }
 
     @Override
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyParam();
+        }
     }
 
     @Override
@@ -273,19 +266,17 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
 
     @Override
     public void openBlank() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     protected void applySetting() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     public boolean applyChanges() {
-        // TODO Auto-generated method stub
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

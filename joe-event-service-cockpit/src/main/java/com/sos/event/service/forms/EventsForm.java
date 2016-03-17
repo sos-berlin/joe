@@ -68,13 +68,11 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         txtLogic.setFocus();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
         actionsGroup = new Group(this, SWT.NONE);
         actionsGroup.setLayout(gridLayout);
-        @SuppressWarnings("unused")
         final Label lblLogic = JOE_L_EventsForm_Logic.Control(new Label(actionsGroup, SWT.NONE));
         txtLogic = JOE_T_EventsForm_Logic.Control(new Text(actionsGroup, SWT.BORDER));
         txtLogic.addModifyListener(new ModifyListener() {
@@ -96,7 +94,6 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         final Label label = new Label(actionsGroup, SWT.HORIZONTAL | SWT.SEPARATOR);
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
-        // gridData_1.heightHint = 18;
         label.setLayoutData(gridData_1);
         label.setText("label");
         new Label(actionsGroup, SWT.NONE);
@@ -113,15 +110,16 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         txtGroup.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !txtGroup.equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(txtGroup)) {
                     apply();
+                }
             }
         });
         txtGroup.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
                 butApply.setEnabled(true);
-                butEventGroupOperation.setEnabled(txtGroup.getText().length() > 0);
+                butEventGroupOperation.setEnabled(!txtGroup.getText().isEmpty());
             }
         });
         txtGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
@@ -134,7 +132,6 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        @SuppressWarnings("unused")
         final Label logicLabel = JOE_L_EventsForm_Logic.Control(new Label(group, SWT.NONE));
         txtGroupLogic = JOE_T_EventsForm_LogicGroup.Control(new Text(group, SWT.BORDER));
         txtGroupLogic.addModifyListener(new ModifyListener() {
@@ -146,8 +143,9 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         txtGroupLogic.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !txtGroup.equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(txtGroup)) {
                     apply();
+                }
             }
         });
         txtGroupLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -177,7 +175,6 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        @SuppressWarnings("unused")
         final Label eventClassLabel = JOE_L_EventsForm_EventClass.Control(new Label(group, SWT.NONE));
         cboEventClass = JOE_Cbo_EventsForm_EventClass.Control(new Combo(group, SWT.BORDER));
         cboEventClass.addModifyListener(new ModifyListener() {
@@ -189,8 +186,9 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         cboEventClass.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !txtGroup.equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(txtGroup)) {
                     apply();
+                }
             }
         });
         cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
@@ -217,8 +215,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                // ContextMenu.goTo(table.getSelection()[0].getText(0), _dom,
-                // Editor.EVENTS);
+                // 
             }
         });
         table.addSelectionListener(new SelectionAdapter() {
@@ -251,8 +248,9 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
 
     public void apply() {
         if (butApply.isEnabled()) {
-            if (txtGroup.getText().length() > 0)
+            if (!txtGroup.getText().isEmpty()) {
                 listener.apply(txtGroup.getText(), cboEventClass.getText(), txtGroupLogic.getText(), table);
+            }
             cboEventClass.setText("");
             txtGroup.setText("");
             txtGroupLogic.setText("");
@@ -261,4 +259,5 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         }
         butApply.setEnabled(false);
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

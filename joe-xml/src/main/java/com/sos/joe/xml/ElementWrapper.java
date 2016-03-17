@@ -22,8 +22,9 @@ public class ElementWrapper extends XMLUtils {
         if (objElement != null) {
             String val = objElement.getAttributeValue(attribute);
             return val == null ? "" : val;
-        } else
+        } else {
             return "";
+        }
     }
 
 }

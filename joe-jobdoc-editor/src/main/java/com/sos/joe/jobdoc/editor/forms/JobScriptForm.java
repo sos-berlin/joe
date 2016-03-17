@@ -27,8 +27,9 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
         this.job = job;
         listener = new JobScriptListener(dom, job);
         cUseScript.setSelection(listener.isScript());
-        if (listener.isScript())
+        if (listener.isScript()) {
             scriptForm.setParams(dom, job, JOEConstants.DOC_SCRIPT);
+        }
         scriptForm.init(listener.isScript(), true);
     }
 
@@ -39,8 +40,9 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (cUseScript.getSelection() != listener.isScript()) {
-                    if (cUseScript.getSelection())
+                    if (cUseScript.getSelection()) {
                         listener.setScript();
+                    }
                     scriptForm.setParams(dom, job, JOEConstants.DOC_SCRIPT);
                     scriptForm.init(listener.isScript(), true);
                 }
@@ -49,15 +51,14 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
         createScriptForm();
     }
 
-    /** This method initializes scriptForm */
     private void createScriptForm() {
         GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.grabExcessVerticalSpace = true; // Generated
-        gridData.verticalAlignment = GridData.FILL; // Generated
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.verticalAlignment = GridData.FILL;
         scriptForm = new ScriptForm(this, SWT.NONE);
-        scriptForm.setLayoutData(gridData); // Generated
+        scriptForm.setLayoutData(gridData);
     }
 
     @Override
@@ -87,4 +88,5 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
         apply();
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

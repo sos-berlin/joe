@@ -32,30 +32,23 @@ public class ConfigForm extends SOSJOEMessageCodes {
 
     private Button butBrowse_2 = null;
     private Combo cConfigurationDeleteEvent = null;
-    @SuppressWarnings("unused")
     private Label label12_3 = null;
     private Button butBrowse_1 = null;
     private Combo cConfigurationModifyEvent = null;
-    @SuppressWarnings("unused")
     private Label label12_2 = null;
     private Button butBrowse = null;
     private Combo cConfigurationAddEvent = null;
     private Label label12_1 = null;
     private ConfigListener listener = null;
     private Group gConfig = null;
-    @SuppressWarnings("unused")
     private Label label = null;
     private Text tSpoolerID = null;
-    @SuppressWarnings("unused")
     private Label label7 = null;
     private Text tParameter = null;
-    @SuppressWarnings("unused")
     private Label label10 = null;
     private Text tIncludePath = null;
-    @SuppressWarnings("unused")
     private Label label11 = null;
     private Text tLogDir = null;
-    @SuppressWarnings("unused")
     private Label label12 = null;
     private Text tMailXSLTStylesheet = null;
     private Group gPorts = null;
@@ -63,7 +56,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
     private Label label14 = null;
     private Text sPort = null;
     private Text sTcpPort = null;
-    @SuppressWarnings("unused")
     private Label label4 = null;
     private Text sUdpPort = null;
     private Group gMainScheduler = null;
@@ -72,10 +64,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
     private Label label2 = null;
     private Text sMainSchedulerPort = null;
     private Group gJavaOptions = null;
-    @SuppressWarnings("unused")
     private Label label8 = null;
     private Text tJavaClassPath = null;
-    @SuppressWarnings("unused")
     private Label label9 = null;
     private Text tJavaOptions = null;
     private Group group = null;
@@ -84,8 +74,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
     private Button button = null;
     private Text txtCentralConfigDir = null;
 
-    /** @param parent
-     * @param style */
     public ConfigForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate _update) {
         super(parent, style);
         listener = new ConfigListener(dom);
@@ -97,7 +85,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
         this.setLayout(new FillLayout());
         createGConfig();
         setSize(new org.eclipse.swt.graphics.Point(714, 501));
-        // set all values
         listener.getDom().setInit(true);
         tSpoolerID.setText(listener.getSpoolerID());
         tParameter.setText(listener.getParam());
@@ -127,11 +114,11 @@ public class ConfigForm extends SOSJOEMessageCodes {
         sPort.setEnabled(cSamePorts.getSelection());
         sTcpPort.setEnabled(!cSamePorts.getSelection());
         sUdpPort.setEnabled(!cSamePorts.getSelection());
-        if (!sPort.getEnabled() && sTcpPort.getText().equals("") && sUdpPort.getText().equals("")) {
+        if (!sPort.getEnabled() && "".equals(sTcpPort.getText()) && "".equals(sUdpPort.getText())) {
             sTcpPort.setText(sPort.getText());
             sUdpPort.setText(sPort.getText());
         }
-        if (sPort.getEnabled() && sTcpPort.getText().equals(sUdpPort.getText()) && !sTcpPort.getText().equals("")) {
+        if (sPort.getEnabled() && sTcpPort.getText().equals(sUdpPort.getText()) && !"".equals(sTcpPort.getText())) {
             String s = sTcpPort.getText();
             sTcpPort.setText("");
             sUdpPort.setText("");
@@ -139,7 +126,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
         }
     }
 
-    /** This method initializes gConfig */
     private void createGConfig() {
         GridLayout gridLayout1 = new GridLayout();
         GridLayout gridLayout = new GridLayout();
@@ -179,7 +165,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setIncludePath(tIncludePath.getText());
             }
         });
-        @SuppressWarnings("unused")
         final Label ipaddressLabel = JOE_L_ConfigForm_IPAddress.Control(new Label(group_1, SWT.NONE));
         tIpAddress = JOE_T_ConfigForm_IPAddress.Control(new Text(group_1, SWT.BORDER));
         tIpAddress.addModifyListener(new ModifyListener() {
@@ -223,7 +208,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
         createGroup();
     }
 
-    /** This method initializes gPorts */
     private void createGPorts() {
         GridData gridData42 = new GridData();
         gridData42.horizontalSpan = 2;
@@ -257,7 +241,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
-                if (jobname != null && jobname.length() > 0) {
+                if (jobname != null && !jobname.isEmpty()) {
                     cConfigurationAddEvent.setText(jobname);
                 }
             }
@@ -279,8 +263,9 @@ public class ConfigForm extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
-                if (jobname != null && jobname.length() > 0)
+                if (jobname != null && !jobname.isEmpty()) {
                     cConfigurationModifyEvent.setText(jobname);
+                }
             }
         });
         label12_3 = JOE_L_ConfigForm_ConfigDeleteEvent.Control(new Label(eventGroup, SWT.NONE));
@@ -300,13 +285,13 @@ public class ConfigForm extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
-                if (jobname != null && jobname.length() > 0)
+                if (jobname != null && !jobname.isEmpty()) {
                     cConfigurationDeleteEvent.setText(jobname);
+                }
             }
         });
     }
 
-    /** This method initializes gMainScheduler */
     private void createGMainScheduler() {
         GridData gridData18 = new GridData();
         gridData18.horizontalSpan = 2;
@@ -317,7 +302,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
         gridLayout3.numColumns = 4;
     }
 
-    /** This method initializes gJavaOptions */
     private void createGJavaOptions() {
         GridData gridData24 = new GridData();
         gridData24.horizontalIndent = 9;
@@ -431,10 +415,11 @@ public class ConfigForm extends SOSJOEMessageCodes {
         sMainSchedulerPort.addModifyListener(new ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (sMainSchedulerPort.getText().equals(""))
+                if ("".equals(sMainSchedulerPort.getText())) {
                     sMainSchedulerPort.setBackground(Options.getRequiredColor());
-                else
+                } else {
                     sMainSchedulerPort.setBackground(null);
+                }
                 listener.setMainScheduler(listener.getMainSchedulerHost() + ":" + sMainSchedulerPort.getText());
             }
         });
@@ -461,7 +446,6 @@ public class ConfigForm extends SOSJOEMessageCodes {
         });
     }
 
-    /** This method initializes group */
     private void createGroup() {
         group = JOE_G_ConfigForm_Comment.Control(new Group(gConfig, SWT.NONE));
         group.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true));
@@ -473,8 +457,9 @@ public class ConfigForm extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
-                if (text != null)
+                if (text != null) {
                     tComment.setText(text);
+                }
             }
         });
         button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
@@ -498,4 +483,4 @@ public class ConfigForm extends SOSJOEMessageCodes {
         new Label(group, SWT.NONE);
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

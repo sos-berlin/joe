@@ -16,31 +16,19 @@ import java.io.File;
 
 public class FTPProfilePicker extends Composite {
 
-    /** Button: öffnet einen Dialog zur Erstellen, Bearbeiten und löschen von FTP
-     * Zugänge und */
     private Button button = null;
-
-    /** Auswahl der konfigurierten Zugangsdaten */
     private Combo cboProfile = null;
-
-    /** Konfigurationsdatei. Im Dialog konfigurierten Profile werden hier
-     * gespeichert. */
     private File configFile = null;
-
-    /** @see sos.ftp.profiles.FTPDialogListener */
     private FTPDialogListener listener = null;
-
-    /** Dilaog zum anlegen, bearbeiten und löschen von FTP Zugängen */
     private FTPProfileDialog profileDialog = null;
 
     public FTPProfilePicker(Composite parent, int style, String configFile_) {
         super(parent, style);
         try {
-            if (configFile_ == null)
+            if (configFile_ == null) {
                 throw new Exception("Config File is null");
-
+            }
             configFile = new File(configFile_);
-
             initialize();
             init();
         } catch (Exception e) {
@@ -52,14 +40,12 @@ public class FTPProfilePicker extends Composite {
     public FTPProfilePicker(Composite parent, int style, File configFile_) {
         super(parent, style);
         try {
-
             configFile = configFile_;
             initialize();
             init();
         } catch (Exception e) {
             FTPProfile.log("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), 1);
         }
-
     }
 
     private void init() throws Exception {
@@ -72,9 +58,7 @@ public class FTPProfilePicker extends Composite {
                     throw new Exception("Could not create config file: " + configFile);
                 }
             }
-
             profileDialog = new FTPProfileDialog(configFile);
-
             profileDialog.fillCombo(cboProfile);
         } catch (Exception e) {
             throw new Exception("error in " + sos.util.SOSClassUtil.getClassName() + ", cause: " + e.toString());
@@ -85,34 +69,30 @@ public class FTPProfilePicker extends Composite {
         try {
             FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
             GridData gridData2 = new GridData();
-            gridData2.horizontalAlignment = GridData.BEGINNING; // Generated
-            gridData2.verticalAlignment = GridData.FILL; // Generated
+            gridData2.horizontalAlignment = GridData.BEGINNING;
+            gridData2.verticalAlignment = GridData.FILL;
             GridData gridData = new GridData();
-            gridData.horizontalAlignment = GridData.FILL; // Generated
-            gridData.grabExcessHorizontalSpace = true; // Generated
-            gridData.verticalAlignment = GridData.FILL; // Generated
+            gridData.horizontalAlignment = GridData.FILL;
+            gridData.grabExcessHorizontalSpace = true;
+            gridData.verticalAlignment = GridData.FILL;
             GridLayout gridLayout = new GridLayout();
-            gridLayout.numColumns = 2; // Generated
-            gridLayout.verticalSpacing = 0; // Generated
-            gridLayout.marginWidth = 0; // Generated
-            gridLayout.marginHeight = 0; // Generated
-            gridLayout.horizontalSpacing = 0; // Generated
-
+            gridLayout.numColumns = 2;
+            gridLayout.verticalSpacing = 0;
+            gridLayout.marginWidth = 0;
+            gridLayout.marginHeight = 0;
+            gridLayout.horizontalSpacing = 0;
             cboProfile = new Combo(this, SWT.READ_ONLY | SWT.BORDER);
             cboProfile.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
-
-                    if (cboProfile.getText().length() > 0) {
+                    if (!cboProfile.getText().isEmpty()) {
                         listener = (FTPDialogListener) cboProfile.getData();
                         listener.setCurrProfileName(cboProfile.getText());
                     }
                 }
             });
-
             cboProfile.setLayoutData(gridData);
             cboProfile.setText("");
-
             button = new Button(this, SWT.NONE);
             button.setText("Profile...");
             button.setLayoutData(gridData2);
@@ -120,7 +100,6 @@ public class FTPProfilePicker extends Composite {
             button.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
                 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-
                     profileDialog.showModal(cboProfile);
                 }
             });
@@ -158,10 +137,11 @@ public class FTPProfilePicker extends Composite {
     }
 
     public void setButtonText(String txt) {
-        if (txt != null)
+        if (txt != null) {
             button.setText(txt);
-        else
+        } else {
             button.setText("");
+        }
     }
 
     public FTPProfile getProfileByName(String name) throws Exception {
@@ -170,7 +150,6 @@ public class FTPProfilePicker extends Composite {
             if (listener == null) {
                 listener = (FTPDialogListener) cboProfile.getData();
             }
-
             if (listener.getProfiles() != null && listener.getProfiles().get(name) != null) {
                 listener.setCurrProfileName(name);
                 cboProfile.setText(name);
@@ -188,7 +167,6 @@ public class FTPProfilePicker extends Composite {
             if (listener == null) {
                 listener = (FTPDialogListener) cboProfile.getData();
             }
-
             if (getSelectedProfilename() != null) {
                 return (FTPProfile) listener.getProfiles().get(getSelectedProfilename());
             }
@@ -215,8 +193,9 @@ public class FTPProfilePicker extends Composite {
     }
 
     public FTPDialogListener getListener() {
-        if (listener == null)
+        if (listener == null) {
             listener = (FTPDialogListener) cboProfile.getData();
+        }
         return this.listener;
     }
 
@@ -225,7 +204,6 @@ public class FTPProfilePicker extends Composite {
     }
 
     public void addSelectionListener(SelectionAdapter listener) {
-
         cboProfile.addSelectionListener(listener);
     }
 
@@ -234,4 +212,4 @@ public class FTPProfilePicker extends Composite {
         profileDialog.fillCombo(cboProfile, true);
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

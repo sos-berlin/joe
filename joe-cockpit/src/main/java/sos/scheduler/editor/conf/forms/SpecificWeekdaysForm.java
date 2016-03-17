@@ -47,7 +47,6 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
         setSize(new org.eclipse.swt.graphics.Point(443, 312));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData5 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
         gridData5.heightHint = 10;
@@ -62,7 +61,6 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
         createCombo();
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData2.widthHint = 90;
-
         bAdd = JOE_B_SpecificWeekdaysForm_AddWeekday.Control(new Button(group, SWT.NONE));
         bAdd.setLayoutData(gridData2);
         getShell().setDefaultButton(bAdd);
@@ -73,13 +71,13 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
                 _main.updateSpecificWeekdays();
                 _main.updateFont();
                 String s = cWeekdayNumber.getText() + "." + cWeekdays.getText();
-                if (lUsedDays.indexOf(s) == -1)
+                if (lUsedDays.indexOf(s) == -1) {
                     lUsedDays.add(s);
+                }
                 bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
             }
         });
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label2.setText("Label");
         label2.setLayoutData(gridData5);
         lUsedDays = JOE_Lst_SpecificWeekdaysForm_UsedDays.Control(new List(group, SWT.BORDER));
         lUsedDays.setLayoutData(gridData);
@@ -104,7 +102,6 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
         });
     }
 
-    /** This method initializes combo */
     private void createCombo() {
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData4.widthHint = 300;
@@ -113,8 +110,6 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
         cWeekdayNumber.setVisibleItemCount(8);
         cWeekdayNumber.select(0);
         cWeekdayNumber.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        // String[] strWeekdays =
-        // JOE_M_SpecificWeekdaysForm_Weekdays.label().split(";");
         String[] strWeekdays = DaysListener.getWeekdays();
         cWeekdays = JOE_Cbo_SpecificWeekdaysForm_Weekdays.Control(new Combo(group, SWT.READ_ONLY));
         cWeekdays.setItems(strWeekdays);
@@ -123,4 +118,4 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
         cWeekdays.setLayoutData(gridData4);
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

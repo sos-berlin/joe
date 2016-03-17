@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.jar.Manifest;
 
 import org.apache.log4j.Logger;
@@ -28,9 +27,6 @@ import com.sos.joe.xml.IOUtils;
 public class MainListener extends JOEListener {
 
     private static final String conPropertyEDITOR_LANGUAGE = "editor.language";
-    @SuppressWarnings("unused")
-    private final String conClsName = "MainListener";
-    private static final Logger logger = Logger.getLogger(MainListener.class);
     private IContainer _container = null;
     private final SOSString sosString = new SOSString();
     private SOSConnection sosConnection = null;
@@ -42,13 +38,7 @@ public class MainListener extends JOEListener {
     public void showAbout() {
         TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
         objAboutDialogBox.setText("About JOE - JobScheduler Object Editor");
-        String message = com.sos.joe.globals.messages.Messages.getString("MainListener.aboutText", VersionInfo.JAR_VERSION/*
-                                                                                                                           * Options
-                                                                                                                           * .
-                                                                                                                           * getVersion
-                                                                                                                           * (
-                                                                                                                           * )
-                                                                                                                           */+ //
+        String message = com.sos.joe.globals.messages.Messages.getString("MainListener.aboutText", VersionInfo.JAR_VERSION +
                 "\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n" + "SVN: \t" + getSVNVersion());
         objAboutDialogBox.setContent(message, SWT.CENTER);
         objAboutDialogBox.getStyledText().setEditable(false);
@@ -127,8 +117,9 @@ public class MainListener extends JOEListener {
             String def = Options.getDefault(conPropertyEDITOR_LANGUAGE);
             MainWindow.message("The language " + Options.getLanguage() + " was not found - setting to " + def, SWT.ICON_WARNING | SWT.OK);
             Options.setLanguage(def);
-            if (defaultItem != null)
+            if (defaultItem != null) {
                 defaultItem.setSelection(true);
+            }
         }
     }
 
@@ -138,8 +129,9 @@ public class MainListener extends JOEListener {
 
     public void loadOptions() {
         String msg = Options.loadOptions(getClass());
-        if (msg != null)
+        if (msg != null) {
             MainWindow.message("No options file " + Options.getDefaultOptionFilename() + " found - using defaults!\n" + msg, SWT.ICON_ERROR | SWT.OK);
+        }
     }
 
     public void saveOptions() {
@@ -153,8 +145,9 @@ public class MainListener extends JOEListener {
         String titleFile = Options.getProperty("title_file");
         String iniFile = Options.getProperty("ini_file");
         try {
-            if (sosString.parseToString(titleFile).length() == 0 || sosString.parseToString(iniFile).length() == 0)
+            if (sosString.parseToString(titleFile).isEmpty() || sosString.parseToString(iniFile).isEmpty()) {
                 return;
+            }
             String data = new File(Options.getDefaultOptionFilename()).getParent();
             data = data.endsWith("/") || data.endsWith("\\") ? data : data + "/";
             iniFile = data + iniFile;
@@ -216,8 +209,9 @@ public class MainListener extends JOEListener {
         String holidayDescriptionFile = Options.getProperty(propertyName);
         String iniFile = Options.getProperty("ini_file");
         try {
-            if (sosString.parseToString(holidayDescriptionFile).length() == 0 || sosString.parseToString(iniFile).length() == 0)
+            if (sosString.parseToString(holidayDescriptionFile).isEmpty() || sosString.parseToString(iniFile).isEmpty()) {
                 return new HashMap();
+            }
             String home = new File(Options.getDefaultOptionFilename()).getParent();
             home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
             iniFile = home + iniFile;
@@ -232,19 +226,17 @@ public class MainListener extends JOEListener {
             String field2 = "";
             for (int i = 0; i < holidayList.size(); i++) {
                 HashMap hash = (HashMap) holidayList.get(i);
-                if (sosString.parseToString(hash, "holiday_id").length() > 0) {
+                if (!sosString.parseToString(hash, "holiday_id").isEmpty()) {
                     holidayId = sosString.parseToString(hash, "holiday_id");
                 }
-                if (sosString.parseToString(hash, "description").length() > 0) {
+                if (!sosString.parseToString(hash, "description").isEmpty()) {
                     field2 = sosString.parseToString(hash, "description");
-                    // merke: holiday_id_<id>, description
                     holidaysDescription.put("holiday_id_" + holidayId, field2);
-                    // merke: description, <id>
                     holidaysDescription.put(field2, holidayId);
                     holidayId = "";
                     field2 = "";
                 }
-                if (sosString.parseToString(hash, "holiday_date").length() > 0) {
+                if (!sosString.parseToString(hash, "holiday_date").isEmpty()) {
                     field2 = sosString.parseToString(hash, "holiday_date");
                     holidaysDescription.put(holidayId + "_" + field2, holidayId);
                     holidayId = "";
@@ -259,8 +251,9 @@ public class MainListener extends JOEListener {
 
     private void getConnection(String iniFile) throws Exception {
         try {
-            if (sosConnection != null)
+            if (sosConnection != null) {
                 return;
+            }
             sosConnection = SOSConnection.createInstance(iniFile, ErrorLog.getLogger());
             sosConnection.connect();
         } catch (Exception e) {
@@ -270,10 +263,12 @@ public class MainListener extends JOEListener {
 
     public void disconnect() {
         try {
-            if (sosConnection != null)
+            if (sosConnection != null) {
                 sosConnection.disconnect();
+            }
         } catch (Exception e) {
-            // tu nichts
+            // do nothing
         }
     }
+
 }

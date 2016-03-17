@@ -34,15 +34,12 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
     TreeItem tItem = null;
     Element parentElement = null;
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label5 = null;
-    @SuppressWarnings("unused")
     private Label label6 = null;
     private Label label7 = null;
     private Table tSections = null;
     private Text tName = null;
     private Text tID = null;
-    @SuppressWarnings("unused")
     private Label label8 = null;
     private Combo cReference = null;
     private Button bNew = null;
@@ -67,7 +64,6 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
         bRemove.setEnabled(false);
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -79,10 +75,10 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         GridLayout gridLayout1 = new GridLayout(5, false);
         group = MsgHandler.newMsg("JOE_G_SectionsForm_Sections").Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gridLayout1); // Generated
+        group.setLayout(gridLayout1);
         label5 = MsgHandler.newMsg("JOE_L_Name").Control(new SOSLabel(group, SWT.NONE));
         tName = MsgHandler.newMsg("JOE_T_SectionsForm_Name").Control(new Text(group, SWT.BORDER));
-        tName.setLayoutData(gridData); // Generated
+        tName.setLayoutData(gridData);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -103,7 +99,7 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
         createCReference();
         label6 = MsgHandler.newMsg("JOE_L_SectionsForm_ID").Control(new SOSLabel(group, SWT.NONE));
         tID = MsgHandler.newMsg("JOE_T_SectionsForm_ID").Control(new Text(group, SWT.BORDER));
-        tID.setLayoutData(gridData2); // Generated
+        tID.setLayoutData(gridData2);
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -112,21 +108,19 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
             }
         });
         label7 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label7.setText("Label"); // Generated
-        label7.setLayoutData(gridData4); // Generated
+        label7.setText("Label");
+        label7.setLayoutData(gridData4);
         tSections = MsgHandler.newMsg("JOE_Tbl_SectionsForm_Sections").Control(new Table(group, SWT.BORDER));
-        tSections.setHeaderVisible(true); // Generated
-        tSections.setLayoutData(gridData1); // Generated
-        tSections.setLinesVisible(true); // Generated
+        tSections.setHeaderVisible(true);
+        tSections.setLayoutData(gridData1);
+        tSections.setLinesVisible(true);
         tSections.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tSections.getSelectionCount() > 0) {
-                    if (listener.selectSection(tSections.getSelectionIndex())) {
-                        setSectionStatus(true);
-                        bRemove.setEnabled(true);
-                    }
+                if (tSections.getSelectionCount() > 0 && listener.selectSection(tSections.getSelectionIndex())) {
+                    setSectionStatus(true);
+                    bRemove.setEnabled(true);
                 }
             }
         });
@@ -143,10 +137,10 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
             }
         });
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label"); // Generated
-        label.setLayoutData(gridData7); // Generated
+        label.setText("Label");
+        label.setLayoutData(gridData7);
         bRemove = MsgHandler.newMsg("JOE_B_SectionsForm_Remove").Control(new Button(group, SWT.NONE));
-        bRemove.setLayoutData(gridData8); // Generated
+        bRemove.setLayoutData(gridData8);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -160,18 +154,17 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
             }
         });
         TableColumn tableColumn3 = MsgHandler.newMsg("JOE_TCl_SectionsForm_Name").Control(new TableColumn(tSections, SWT.NONE));
-        tableColumn3.setWidth(200); // Generated
+        tableColumn3.setWidth(200);
         TableColumn tableColumn5 = MsgHandler.newMsg("JOE_TCl_SectionsForm_Reference").Control(new TableColumn(tSections, SWT.NONE));
-        tableColumn5.setWidth(180); // Generated
+        tableColumn5.setWidth(180);
         TableColumn tableColumn4 = MsgHandler.newMsg("JOE_TCl_SectionsForm_ID").Control(new TableColumn(tSections, SWT.NONE));
-        tableColumn4.setWidth(180); // Generated
+        tableColumn4.setWidth(180);
     }
 
-    /** This method initializes cReference */
     private void createCReference() {
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         cReference = MsgHandler.newMsg("JOE_Cbo_SectionsForm_Reference").Control(new Combo(group, SWT.NONE));
-        cReference.setLayoutData(gridData3); // Generated
+        cReference.setLayoutData(gridData3);
         cReference.addModifyListener(new ModifyListener() {
 
             @Override
@@ -183,8 +176,9 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
 
     @Override
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applySection();
+        }
     }
 
     private void setSectionStatus(boolean enabled) {
@@ -216,8 +210,9 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
 
     private void fillTable() {
         listener.fillSections(tSections);
-        if (treeHandler != null)
+        if (treeHandler != null) {
             treeHandler.fillSections(tItem, parentElement, true);
+        }
     }
 
     @Override
@@ -240,4 +235,5 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
     public boolean open(Collection files) {
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

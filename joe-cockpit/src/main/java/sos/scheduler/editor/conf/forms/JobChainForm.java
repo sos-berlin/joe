@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.forms;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -37,11 +36,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 
-    private final String conClassName = "JobChainForm";
-    final String conMethodName = conClassName + "::enclosing_method";
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-    private static final Logger logger = Logger.getLogger(JobChainForm.class);
     private JobChainListener listener = null;
     private JobListener jobListener = null;
     private Group jobChainGroup = null;
@@ -56,8 +50,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
     private boolean init = false;
     private boolean changeJobChainName = true;
     private Text sMaxorders;
-    @SuppressWarnings("unused")
-    private Label lblProcessClass = null;
     private Combo cProcessClass = null;
     private Button butBrowse = null;
     private Button butShowProcessClass = null;
@@ -87,7 +79,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         tName.setFocus();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         jobChainGroup = new Group(this, SWT.NONE);
         String strJobChainName = "";
@@ -101,11 +92,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         jobChainGroup.setLayout(gridLayout);
         chainNameLabel = JOE_L_JobChainForm_ChainName.Control(new Label(jobChainGroup, SWT.NONE));
         chainNameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-
         new Label(jobChainGroup, SWT.NONE);
-
         tName = JOE_T_JobChainForm_ChainName.Control(new Text(jobChainGroup, SWT.BORDER));
-
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 1, 1);
         gridData_4.widthHint = 273;
         tName.setLayoutData(gridData_4);
@@ -120,16 +108,14 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 String newName = tName.getText().trim();
                 boolean setSelection = true;
                 try {
-                    setSelection = (Utils.elementIsUsed(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null).length() > 0);
+                    setSelection = !Utils.elementIsUsed(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null).isEmpty();
                 } catch (JDOMException e1) {
                     setSelection = false;
                 }
-
                 if (Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null)) {
                     if (setSelection) {
                         tName.setSelection(newName.length());
                     }
-
                     boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
                     if (existname) {
                         tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
@@ -167,11 +153,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 showDetails(null);
             }
         });
-        @SuppressWarnings("unused")
         final Label titleLabel = JOE_L_JobChainForm_Title.Control(new Label(jobChainGroup, SWT.NONE));
-
         new Label(jobChainGroup, SWT.NONE);
-
         txtTitle = JOE_T_JobChainForm_Title.Control(new Text(jobChainGroup, SWT.BORDER));
         txtTitle.addModifyListener(new ModifyListener() {
 
@@ -184,11 +167,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
         new Label(jobChainGroup, SWT.NONE);
-        @SuppressWarnings("unused")
         Label lblMaxOrders = JOE_L_JobChainForm_MaxOrders.Control(new Label(jobChainGroup, SWT.NONE));
-
         new Label(jobChainGroup, SWT.NONE);
-
         sMaxorders = JOE_T_JobChainForm_MaxOrders.Control(new Text(jobChainGroup, SWT.BORDER));
         sMaxorders.addModifyListener(new ModifyListener() {
 
@@ -196,7 +176,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 if (init) {
                     return;
                 }
-
                 listener.setMaxorders(sMaxorders.getText().trim());
             }
         });
@@ -204,8 +183,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         gd_sMaxorders.minimumWidth = 60;
         sMaxorders.setLayoutData(gd_sMaxorders);
         new Label(jobChainGroup, SWT.NONE);
-
-        @SuppressWarnings("unused")
         Label lblProcessClass = JOE_L_JobChainForm_ProcessClass.Control(new Label(jobChainGroup, SWT.NONE));
         butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(jobChainGroup, SWT.ARROW | SWT.DOWN));
         butShowProcessClass.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
@@ -220,7 +197,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         butShowProcessClass.setAlignment(SWT.RIGHT);
         butShowProcessClass.setVisible(true);
-
         Combo combo = new Combo(jobChainGroup, SWT.NONE);
         combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         cProcessClass = JOE_Cbo_JobMainComposite_ProcessClass.Control(combo);
@@ -244,7 +220,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 listener.setProcessClass(cProcessClass.getText());
             }
         });
-
         cProcessClass.addMouseListener(new MouseListener() {
 
             @Override
@@ -258,7 +233,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
             @Override
             public void mouseDoubleClick(MouseEvent arg0) {
                 String strT = cProcessClass.getText();
-                if (strT.length() > 0) {
+                if (!strT.isEmpty()) {
                     ContextMenu.goTo(strT, listener.get_dom(), JOEConstants.PROCESS_CLASSES);
                 }
             }
@@ -268,11 +243,11 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void widgetSelected(final SelectionEvent e) {
                 String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
-                if (name != null && name.length() > 0)
+                if (name != null && !name.isEmpty()) {
                     cProcessClass.setText(name);
+                }
             }
         });
-
         new Label(jobChainGroup, SWT.NONE);
         new Label(jobChainGroup, SWT.NONE);
         Button button = new Button(jobChainGroup, SWT.CHECK);
@@ -285,17 +260,14 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 if (init) {
                     return;
                 }
-
                 listener.setRecoverable(bRecoverable.getSelection());
             }
         });
         new Label(jobChainGroup, SWT.NONE);
-
         new Label(jobChainGroup, SWT.NONE);
         new Label(jobChainGroup, SWT.NONE);
         Button button_1 = new Button(jobChainGroup, SWT.CHECK);
         butDistributed = JOE_B_JobChainForm_Distributed.Control(button_1);
-
         butDistributed.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         butDistributed.addSelectionListener(new SelectionAdapter() {
 
@@ -308,7 +280,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         butDistributed.setSelection(listener.isDistributed());
         new Label(jobChainGroup, SWT.NONE);
-
         new Label(jobChainGroup, SWT.NONE);
         new Label(jobChainGroup, SWT.NONE);
         Button button_2 = new Button(jobChainGroup, SWT.CHECK);
@@ -322,11 +293,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                     return;
                 }
                 listener.setVisible(bVisible.getSelection());
-
             }
         });
         new Label(jobChainGroup, SWT.NONE);
-
     }
 
     private void fillChain(boolean enable, boolean isNew) {
@@ -348,7 +317,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void showDetails(String state) {
-        if (tName.getText() != null && tName.getText().length() > 0) {
+        if (tName.getText() != null && !tName.getText().isEmpty()) {
             boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
             if (state == null) {
                 DetailDialogForm detail = new DetailDialogForm(tName.getText(), isLifeElement, listener.get_dom().getFilename());
@@ -364,4 +333,4 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         }
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

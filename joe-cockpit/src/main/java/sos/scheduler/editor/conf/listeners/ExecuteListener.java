@@ -74,8 +74,9 @@ public class ExecuteListener {
         if (_job.getChild("script") != null) {
             int c = sos.scheduler.editor.app.MainWindow.message("ExecuteListener: Do you want really remove script and put new Run Executable File?", SWT.YES
                     | SWT.NO | SWT.ICON_WARNING);
-            if (c != SWT.YES)
+            if (c != SWT.YES) {
                 return;
+            }
         }
         initProcess();
         Utils.setAttribute("file", file, _process, _dom);

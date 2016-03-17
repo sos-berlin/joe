@@ -31,7 +31,6 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
-// import sos.scheduler.editor.app.Messages;
 public class JobOptions extends FormBaseClass {
 
     private Combo cboHistoryWithLog = null;
@@ -61,10 +60,6 @@ public class JobOptions extends FormBaseClass {
     private Button addButton = null;
     private Text txtWarnIfLongerThan = null;
     private Text txtWarnIfShorterThan = null;
-    @SuppressWarnings("unused")
-    private final String conClassName = "JobOptions";
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
     private boolean init = true;
     private JobListener objJobDataProvider = null;
 
@@ -89,13 +84,6 @@ public class JobOptions extends FormBaseClass {
         gridLayout_2.numColumns = 4;
         gOptionsGroup.setLayout(gridLayout_2);
         lblJobChainJob = SOSJOEMessageCodes.JOE_L_JobOptions_JobChainJob.Control(new Label(gOptionsGroup, SWT.NONE));
-        // lblJobChainJob.addHelpListener(new HelpListener() {
-        // @Override
-        // public void helpRequested(HelpEvent objHelpEvent) {
-        // MainWindow.message(Messages.getString("OrderJob.Help"),
-        // SWT.ICON_INFORMATION);
-        // }
-        // });
         lblJobChainJob.addKeyListener(new KeyListener() {
 
             @Override
@@ -116,18 +104,19 @@ public class JobOptions extends FormBaseClass {
         bOrderYes.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent e) {
-                if (init || bOrderYes.getSelection() == false) {
+                if (init || !bOrderYes.getSelection()) {
                     return;
                 }
                 objJobDataProvider.setOrder(bOrderYes.getSelection());
                 boolean _deleteRuntimeAttribute = false;
                 Element job = objJobDataProvider.getJob();
                 if (objJobDataProvider.getOrder() && job != null && job.getChild("run_time") != null) {
-                    if (sos.scheduler.editor.app.Utils.getAttributeValue("single_start", job.getChild("run_time")).length() > 0
-                            || sos.scheduler.editor.app.Utils.getAttributeValue("let_run", job.getChild("run_time")).length() > 0
-                            || sos.scheduler.editor.app.Utils.getAttributeValue("once", job.getChild("run_time")).length() > 0) {
+                    if (!sos.scheduler.editor.app.Utils.getAttributeValue("single_start", job.getChild("run_time")).isEmpty()
+                            || !sos.scheduler.editor.app.Utils.getAttributeValue("let_run", job.getChild("run_time")).isEmpty()
+                            || !sos.scheduler.editor.app.Utils.getAttributeValue("once", job.getChild("run_time")).isEmpty()) {
                         if (bOrderYes.isVisible()) {
-                            _deleteRuntimeAttribute = Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB, "change_order");
+                            _deleteRuntimeAttribute = Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB, 
+                                    "change_order");
                         }
                         if (_deleteRuntimeAttribute) {
                             objJobDataProvider.getJob().getChild("run_time").removeAttribute("single_start");
@@ -144,9 +133,10 @@ public class JobOptions extends FormBaseClass {
         bOrderNo.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent e) {
-                if (init)
+                if (init) {
                     return;
-                if (objJobDataProvider.getOrder()
+                }
+                if (objJobDataProvider.getOrder() 
                         && !Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB, "change_order")) {
                     init = true;
                     bOrderNo.setSelection(false);
@@ -159,25 +149,9 @@ public class JobOptions extends FormBaseClass {
         });
         new Label(gOptionsGroup, SWT.NONE);
         new Label(gOptionsGroup, SWT.NONE);
-        @SuppressWarnings("unused")
         final Label stop_on_errorLabel = SOSJOEMessageCodes.JOE_L_JobOptions_StopOnError.Control(new Label(gOptionsGroup, SWT.NONE));
         bStopOnError = SOSJOEMessageCodes.JOE_B_JobOptions_StopOnError.Control(new Button(gOptionsGroup, SWT.CHECK));
         bStopOnError.setSelection(objJobDataProvider.getStopOnError());
-        // http://www.sos-berlin.com/doc/en/scheduler.doc/xml/job.xml#attribute_stop_on_error
-        // bStopOnError.addKeyListener(new KeyListener() {
-        // @Override
-        // public void keyPressed(KeyEvent event) {
-        // if (objJobDataProvider.Check4HelpKey(event.keyCode, "job",
-        // "stop_on_error")) {
-        // event.doit = true;
-        // return;
-        // }
-        // }
-        //
-        // @Override
-        // public void keyReleased(KeyEvent arg0) {
-        // }
-        // });
         bStopOnError.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(KeyEvent event) {
@@ -187,7 +161,6 @@ public class JobOptions extends FormBaseClass {
                 }
             }
         });
-        // gridData_16.widthHint = 17;
         bStopOnError.setSelection(true);
         bStopOnError.addSelectionListener(new SelectionAdapter() {
 
@@ -200,7 +173,6 @@ public class JobOptions extends FormBaseClass {
         });
         new Label(gOptionsGroup, SWT.NONE);
         new Label(gOptionsGroup, SWT.NONE);
-        @SuppressWarnings("unused")
         final Label logLevelLabel = SOSJOEMessageCodes.JOE_L_MailForm_LogLevel.Control(new Label(gOptionsGroup, SWT.NONE));
         logLevel = SOSJOEMessageCodes.JOE_Cbo_MailForm_LogLevel.Control(new Combo(gOptionsGroup, intComboBoxStyle));
         GridData gd_LogLevel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -214,14 +186,11 @@ public class JobOptions extends FormBaseClass {
             }
         });
         logLevel.setItems(new String[] { "info", "debug1", "debug2", "debug3", "debug4", "debug5", "debug6", "debug7", "debug8", "debug9", "" });
-        // ------
         new Label(gOptionsGroup, SWT.NONE);
         final Label label_2 = new Label(gOptionsGroup, SWT.HORIZONTAL | SWT.SEPARATOR);
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
         gridData_4.heightHint = 8;
         label_2.setLayoutData(gridData_4);
-        // -----
-        @SuppressWarnings("unused")
         final Label historyLabel = SOSJOEMessageCodes.JOE_L_MailForm_History.Control(new Label(gOptionsGroup, SWT.NONE));
         cboHistory = SOSJOEMessageCodes.JOE_Cbo_MailForm_History.Control(new Combo(gOptionsGroup, intComboBoxStyle));
         cboHistory.setText(objJobDataProvider.getHistory());
@@ -237,8 +206,6 @@ public class JobOptions extends FormBaseClass {
         cboHistory.setLayoutData(gd_cboHistory);
         new Label(gOptionsGroup, SWT.NONE);
         new Label(gOptionsGroup, SWT.NONE);
-        // ----
-        @SuppressWarnings("unused")
         final Label historyOnProcessLabel = SOSJOEMessageCodes.JOE_L_MailForm_HistoryOnProcess.Control(new Label(gOptionsGroup, SWT.NONE));
         cboHistoryOnProcess = SOSJOEMessageCodes.JOE_Cbo_MailForm_HistoryOnProcess.Control(new Combo(gOptionsGroup, intComboBoxStyle));
         cboHistoryOnProcess.setText(objJobDataProvider.getHistoryOnProcess());
@@ -252,11 +219,13 @@ public class JobOptions extends FormBaseClass {
                 char[] c = cboHistoryOnProcess.getText().toCharArray();
                 for (int i = 0; i < c.length; i++) {
                     isDigit = Character.isDigit(c[i]);
-                    if (!isDigit)
+                    if (!isDigit) {
                         break;
+                    }
                 }
-                if (cboHistoryOnProcess.getText().equals("yes") || cboHistoryOnProcess.getText().equals("no") || isDigit)
+                if ("yes".equals(cboHistoryOnProcess.getText()) || "no".equals(cboHistoryOnProcess.getText()) || isDigit) {
                     objJobDataProvider.setHistoryOnProcess(cboHistoryOnProcess.getText());
+                }
             }
         });
         cboHistoryOnProcess.addVerifyListener(new VerifyListener() {
@@ -276,8 +245,6 @@ public class JobOptions extends FormBaseClass {
         cboHistoryOnProcess.setLayoutData(gd_cboHistoryOnProcess);
         new Label(gOptionsGroup, SWT.NONE);
         new Label(gOptionsGroup, SWT.NONE);
-        // -----
-        @SuppressWarnings("unused")
         final Label historyWithLogLabel = SOSJOEMessageCodes.JOE_L_MailForm_HistoryWithLog.Control(new Label(gOptionsGroup, SWT.NONE));
         cboHistoryWithLog = SOSJOEMessageCodes.JOE_Cbo_MailForm_HistoryWithLog.Control(new Combo(gOptionsGroup, intComboBoxStyle));
         cboHistoryWithLog.setText(objJobDataProvider.getHistoryWithLog());
@@ -291,7 +258,6 @@ public class JobOptions extends FormBaseClass {
         GridData gd_cboHistoryWithLog = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_cboHistoryWithLog.minimumWidth = 150;
         cboHistoryWithLog.setLayoutData(gd_cboHistoryWithLog);
-        // ---
         cboHistoryOnProcess.setItems(new String[] { "0", "1", "2", "3", "4", "" });
         objParent.layout();
     }
@@ -314,20 +280,21 @@ public class JobOptions extends FormBaseClass {
         tIgnoreSignals.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setIgnoreSignal(tIgnoreSignals.getText());
             }
         });
-        // gridData_3.widthHint = 48;
         tIgnoreSignals.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
         addButton = SOSJOEMessageCodes.JOE_B_JobMainOptionForm_Add.Control(new Button(gMainOptionsGroup, SWT.NONE));
         addButton.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (init)
+                if (init) {
                     return;
-                if (tIgnoreSignals.getText().equals("")) {
+                }
+                if ("".equals(tIgnoreSignals.getText())) {
                     tIgnoreSignals.setText(cSignals.getText());
                 } else {
                     tIgnoreSignals.setText(tIgnoreSignals.getText() + " " + cSignals.getText());
@@ -349,8 +316,8 @@ public class JobOptions extends FormBaseClass {
         sPriority.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
-                e.doit = (Utils.isOnlyDigits(e.text) || e.text.equals("idle") || e.text.equals("below_normal") || e.text.equals("normal")
-                        || e.text.equals("above_normal") || e.text.equals("high"));
+                e.doit = (Utils.isOnlyDigits(e.text) || "idle".equals(e.text) || "below_normal".equals(e.text) || "normal".equals(e.text)
+                        || "above_normal".equals(e.text) || "high".equals(e.text));
             }
         });
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -359,8 +326,9 @@ public class JobOptions extends FormBaseClass {
         sPriority.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 Utils.setBackground(-20, 20, sPriority);
                 objJobDataProvider.setPriority(sPriority.getText());
             }
@@ -375,14 +343,14 @@ public class JobOptions extends FormBaseClass {
         comVisible.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setVisible(comVisible.getText());
             }
         });
         new Label(gMainOptionsGroup, SWT.NONE);
         new Label(gMainOptionsGroup, SWT.NONE);
-        // gridData_16.widthHint = 17;
         final Label minMaskLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_MinTasks.Control(new Label(gMainOptionsGroup, SWT.NONE));
         minMaskLabel.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
         tMintasks = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_MinTasks.Control(new Text(gMainOptionsGroup, SWT.BORDER));
@@ -395,8 +363,9 @@ public class JobOptions extends FormBaseClass {
         tMintasks.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setMintasks(tMintasks.getText());
             }
         });
@@ -421,8 +390,9 @@ public class JobOptions extends FormBaseClass {
         sTasks.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setTasks(sTasks.getText());
             }
         });
@@ -439,12 +409,12 @@ public class JobOptions extends FormBaseClass {
         sTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setTimeout(sTimeout.getText());
             }
         });
-        // gridData_9.widthHint = 75;
         sTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         final Label hhmmssLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(gMainOptionsGroup, SWT.NONE));
         hhmmssLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -452,48 +422,39 @@ public class JobOptions extends FormBaseClass {
         label11.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
         sIdleTimeout = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_IdleTimeout.Control(new Text(gMainOptionsGroup, SWT.BORDER));
         sIdleTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        // sIdleTimeout.addVerifyListener(new VerifyListener() {
-        // public void verifyText(final VerifyEvent e) {
-        //
-        // }
-        // });
         sIdleTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setIdleTimeout(sIdleTimeout.getText());
             }
         });
         final Label hhmmssLabel_1 = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_IdleTimeoutFormat.Control(new Label(gMainOptionsGroup, SWT.NONE));
         hhmmssLabel_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        @SuppressWarnings("unused")
         final Label warnIfLongerLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_WarnIfLonger.Control(new Label(gMainOptionsGroup, SWT.NONE));
         txtWarnIfLongerThan = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_WarnIfLonger.Control(new Text(gMainOptionsGroup, SWT.BORDER));
-        // txtWarnIfLongerThan.addVerifyListener(new VerifyListener() {
-        // public void verifyText(final VerifyEvent e) {
-        //
-        // }
-        // });
         txtWarnIfLongerThan.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setWarnIfLongerThan(txtWarnIfLongerThan.getText());
             }
         });
         txtWarnIfLongerThan.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         final Label hhmmssLabel_1_1 = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_WarnIfLongerFormat.Control(new Label(gMainOptionsGroup, SWT.NONE));
         hhmmssLabel_1_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        @SuppressWarnings("unused")
         final Label warnIfShorterLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_WarnIfShorter.Control(new Label(gMainOptionsGroup, SWT.NONE));
         txtWarnIfShorterThan = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_WarnIfShorter.Control(new Text(gMainOptionsGroup, SWT.BORDER));
         txtWarnIfShorterThan.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setWarnIfShorterThan(txtWarnIfShorterThan.getText());
             }
         });
@@ -507,8 +468,9 @@ public class JobOptions extends FormBaseClass {
         bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objJobDataProvider.setForceIdletimeout(bForceIdletimeout.getSelection());
             }
         });
@@ -526,9 +488,9 @@ public class JobOptions extends FormBaseClass {
         int index = 0;
         bForceIdletimeout.setSelection(objJobDataProvider.getForceIdletimeout());
         index = sPriority.indexOf(objJobDataProvider.getPriority());
-        if (index >= 0)
+        if (index >= 0) {
             sPriority.select(index);
-        else {
+        } else {
             int p = Utils.str2int(objJobDataProvider.getPriority(), 20);
             if (p == -999) {
                 sPriority.setText("");
@@ -540,10 +502,12 @@ public class JobOptions extends FormBaseClass {
             }
         }
         sTasks.setText(objJobDataProvider.getTasks());
-        if (objJobDataProvider.getMintasks() != null)
+        if (objJobDataProvider.getMintasks() != null) {
             tMintasks.setText(objJobDataProvider.getMintasks());
-        if (objJobDataProvider.getPriority() != null)
+        }
+        if (objJobDataProvider.getPriority() != null) {
             sPriority.setText(objJobDataProvider.getPriority());
+        }
         tIgnoreSignals.setText(objJobDataProvider.getIgnoreSignal());
         sTimeout.setText(objJobDataProvider.getTimeout());
         sIdleTimeout.setText(objJobDataProvider.getIdleTimeout());
@@ -560,4 +524,5 @@ public class JobOptions extends FormBaseClass {
     public Button getbOrderNo() {
         return bOrderNo;
     }
+
 }

@@ -97,26 +97,21 @@ public class ScheduleListener {
         if (_dom.isLifeElement() || _schedule == null) {
             return null;
         }
-        /*
-         * Element schedules = _schedule.getParentElement(); if(schedules ==
-         * null) return null;
-         */
         String currSchedulename = Utils.getAttributeValue("name", _schedule);
         Element schedules = null;
-        if (_schedule.getParentElement() != null)
+        if (_schedule.getParentElement() != null) {
             schedules = (Element) _schedule.getParentElement().clone();
-        else
+        } else {
             return null;
+        }
         s = schedules.getChildren("schedule");
         java.util.ArrayList list = new java.util.ArrayList();
         list.add("");
-        // int index = 0;
         for (int i = 0; i < s.size(); i++) {
             if (s.get(i) instanceof Element) {
                 Element e = (Element) s.get(i);
                 if (!Utils.getAttributeValue("name", e).equals(currSchedulename)) {
                     list.add(Utils.getAttributeValue("name", e));
-                    // index++;
                 }
             }
         }
@@ -124,14 +119,7 @@ public class ScheduleListener {
         for (int i = 0; i < list.size(); i++) {
             str[i] = (String) list.get(i);
         }
-        // convert in String[]
-        /*
-         * String[] str = new String[s.size()-1]; int index = 0; for(int i = 0;
-         * i < s.size(); i++) { if(s.get(i) instanceof Element) { Element e =
-         * (Element)s.get(i); if(!Utils.getAttributeValue("name",
-         * e).equals(currSchedulename)) { str[index] =
-         * Utils.getAttributeValue("name", e); index++; } } }
-         */
         return str;
     }
+    
 }

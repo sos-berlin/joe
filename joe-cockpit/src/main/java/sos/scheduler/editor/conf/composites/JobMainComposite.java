@@ -34,18 +34,12 @@ import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
 public class JobMainComposite extends SOSJOEMessageCodes {
 
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
+    private static final Logger LOGGER = Logger.getLogger(JobMainComposite.class);
     private final int intNoOfLabelColumns = 2;
-    @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(JobMainComposite.class);
-    @SuppressWarnings("unused")
-    private final String conClassName = "JobMainForm";
     private JobListener objDataProvider = null;
     private Group gMain = null;
     private Text tbxJobName = null;
     private Label lblJobTitlelabel1 = null;
-    @SuppressWarnings("unused")
     private Label lblProcessClass = null;
     private Text tbxJobTitle = null;
     private Combo cProcessClass = null;
@@ -57,10 +51,6 @@ public class JobMainComposite extends SOSJOEMessageCodes {
     private GridLayout gridLayout = null;
     private String isUsed;
 
-    /** Create the composite.
-     * 
-     * @param parent
-     * @param style */
     public JobMainComposite(Group parent, int style, JobListener objDataProvider_) {
         super(parent, style);
         objDataProvider = objDataProvider_;
@@ -80,10 +70,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
         tbxJobName.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
-                if (!init) {
-                    // e.doit = Utils.checkElement(objDataProvider.getJobName(),
-                    // objDataProvider.get_dom(), JOEConstants.JOB, null);
-                }
+                // 
             }
         });
         tbxJobName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
@@ -105,22 +92,20 @@ public class JobMainComposite extends SOSJOEMessageCodes {
         tbxJobTitle.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 objDataProvider.setTitle(tbxJobTitle.getText());
             }
         });
-        // tbxJobTitle.setItems(Options.getJobTitleList());
         lblProcessClass = JOE_L_JobMainComposite_ProcessClass.Control(new Label(gMain, SWT.NONE));
-        // butShowProcessClass = JOE_goto.Control(new Button(gMain, SWT.ARROW |
-        // SWT.DOWN));
         butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(gMain, SWT.ARROW | SWT.DOWN));
         butShowProcessClass.setVisible(objDataProvider.get_dom() != null && !objDataProvider.get_dom().isLifeElement());
         butShowProcessClass.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
                 String strT = cProcessClass.getText();
-                if (strT.length() > 0) {
+                if (!strT.isEmpty()) {
                     ContextMenu.goTo(strT, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
                 }
             }
@@ -178,7 +163,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
             @Override
             public void mouseDoubleClick(MouseEvent arg0) {
                 String strT = cProcessClass.getText();
-                if (strT.length() > 0) {
+                if (!strT.isEmpty()) {
                     ContextMenu.goTo(strT, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
                 }
             }
@@ -188,8 +173,9 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
-                if (name != null && name.length() > 0)
+                if (name != null && !name.isEmpty()) {
                     cProcessClass.setText(name);
+                }
             }
         });
     }
@@ -199,7 +185,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
         try {
             isUsed = Utils.elementIsUsed(objDataProvider.getJobName(), objDataProvider.get_dom(), JOEConstants.JOB, null);
         } catch (JDOMException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         tbxJobName.setText(objDataProvider.getJobName());
         tbxJobTitle.setText(objDataProvider.getTitle());
@@ -211,7 +197,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
     }
 
     private void checkName() {
-        if (isUsed.length() > 0) {
+        if (!isUsed.isEmpty()) {
             int c = MainWindow.message(isUsed, SWT.YES | SWT.NO | SWT.ICON_WARNING);
             if (c != SWT.YES) {
                 isUsed = "";
@@ -221,7 +207,6 @@ public class JobMainComposite extends SOSJOEMessageCodes {
                 tbxJobName.setSelection(tbxJobName.getText().length());
             }
             isUsed = "";
-
         }
         if (Utils.existName(tbxJobName.getText(), objDataProvider.getJob(), "job")) {
             tbxJobName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
@@ -237,4 +222,5 @@ public class JobMainComposite extends SOSJOEMessageCodes {
     public Group getgMain() {
         return gMain;
     }
+    
 }
