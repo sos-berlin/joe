@@ -24,12 +24,12 @@ public class SchedulesListener {
     public SchedulesListener(SchedulerDom dom, ISchedulerUpdate update) {
         _dom = dom;
         _main = update;
-        if (_dom.isLifeElement()) {
-        } else {
+        if (!_dom.isLifeElement()) {
             _config = _dom.getRoot().getChild("config");
             _schedules = _config.getChild("schedules");
-            if (_schedules != null)
+            if (_schedules != null) { 
                 _list = _schedules.getChildren("schedule");
+            }
         }
     }
 
@@ -64,8 +64,9 @@ public class SchedulesListener {
         Element schedule = new Element("schedule");
         String name = "schedule" + (table.getItemCount() + 1);
         schedule.setAttribute("name", name);
-        if (_list == null)
+        if (_list == null) {
             initSchedules();
+        }
         _list.add(schedule);
         fillTable(table);
         table.setSelection(table.getItemCount() - 1);
@@ -85,15 +86,17 @@ public class SchedulesListener {
             _dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", e), SchedulerDom.DELETE);
             table.remove(index);
             _main.updateSchedules();
-            if (_list == null)
+            if (_list == null) {
                 initSchedules();
-            if (_list.size() == 0) {
+            }
+            if (_list.isEmpty()) {
                 _config.removeChild("schedules");
                 _schedules = null;
                 _list = null;
             }
-            if (index >= table.getItemCount())
+            if (index >= table.getItemCount()) {
                 index--;
+            }
             if (index >= 0) {
                 table.setSelection(index);
                 return true;
@@ -101,4 +104,5 @@ public class SchedulesListener {
         }
         return false;
     }
+
 }

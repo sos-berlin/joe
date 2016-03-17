@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.sos.event.service.forms;
 
 import java.io.File;
@@ -86,15 +83,10 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     private String includeFile = null;
     private Button butNewIncludes = null;
     private Button butIsLifeFile = null;
-    // private Button butDown = null;
-    // private Button butUp = null;
     private Button butNewParam = null;
     private Button butNewEnvironment = null;
     private boolean isRemoteConnection = false;
 
-    /** @param parent
-     * @param style
-     * @throws JDOMException */
     public ParameterForm(Composite parent, int style, ActionsDom _dom, Element parentElem, ActionsForm main, int type_) throws JDOMException {
         super(parent, style);
         dom = _dom;
@@ -106,11 +98,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private void initialize() {
         sosString = new SOSString();
-        try {
-            isRemoteConnection = false; // sosString.parseToString(MainWindow.getContainer().getCurrentTab().getData("ftp_title")).length()
-                                        // > 0;
-        } catch (Exception e) {
-        }
+        isRemoteConnection = false;
         this.setLayout(new GridLayout());
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 1;
@@ -124,36 +112,38 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             addParam();
+        }
     }
 
     public boolean isUnsaved() {
         return bApply.isEnabled();
     }
 
-    /** This method initializes group2 */
     public void createParameterGroup() {
         tabFolder = new CTabFolder(gJobParameter, SWT.BORDER);
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gridData_2.heightHint = 203;
         gridData_2.widthHint = 760;
         tabFolder.setLayoutData(gridData_2);
-        // Parameter
-        if (type == JOEConstants.JOB_COMMANDS)
+        if (type == JOEConstants.JOB_COMMANDS) {
             createJobCommandParameter();
-        // Includes
-        if (type != JOEConstants.WEBSERVICE)
+        }
+        if (type != JOEConstants.WEBSERVICE) {
             createIncludes();
+        }
         tabFolder.setSelection(0);
-        if (tParaName != null)
+        if (tParaName != null) {
             tParaName.setFocus();
+        }
         setToolTipText();
     }
 
     private void addParam() {
-        if (!tParaName.getText().equals(""))
+        if (!"".equals(tParaName.getText())) {
             listener.saveParameter(tParameter, tParaName.getText().trim(), tParaValue.getText());
+        }
         tParaName.setText("");
         tParaValue.setText("");
         bRemove.setEnabled(false);
@@ -162,9 +152,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void addInclude() {
-        listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), (type == JOEConstants.JOB
-                || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection()
-                : false));
+        listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == JOEConstants.JOB
+                || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
         txtIncludeFilename.setText("");
         txtIncludeNode.setText("");
         butIncludesApply.setEnabled(false);
@@ -172,16 +161,17 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         butOpenInclude.setEnabled(false);
         tableIncludeParams.deselectAll();
         txtIncludeFilename.setFocus();
-        if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
+        if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
             butIsLifeFile.setSelection(false);
+        }
     }
 
     public void initForm() {
         tParameter.removeAll();
-        if (includeFile != null && includeFile.trim().length() > 0) {
-            if (new File(Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData()
-                    : Options.getSchedulerData() + "/" + includeFile).exists())
-                listener.getAllParameterDescription();
+        if (includeFile != null
+                && !includeFile.trim().isEmpty() && (new File(Options.getSchedulerData().endsWith("/") 
+                        || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData() : Options.getSchedulerData() + "/" + includeFile).exists())) {
+            listener.getAllParameterDescription();
         }
         listener.fillParams(tParameter);
         listener.fillEnvironment(tableEnvironment);
@@ -208,42 +198,44 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             });
         } else {
-            @SuppressWarnings("unused")
             final Label lblNode_ = JOE_L_ActionsParameterForm_File.Control(new Label(group_3, SWT.NONE));
         }
         txtIncludeFilename = JOE_T_ActionsParameterForm_IncludeFilename.Control(new Text(group_3, SWT.BORDER));
         txtIncludeFilename.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
-                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
-                    butIsLifeFile.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
+                butIncludesApply.setEnabled(!"".equals(txtIncludeFilename.getText().trim()));
+                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
+                    butIsLifeFile.setEnabled(!"".equals(txtIncludeFilename.getText().trim()));
+                }
             }
         });
         txtIncludeFilename.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(txtIncludeFilename)) {
                     addInclude();
+                }
             }
         });
         txtIncludeFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        @SuppressWarnings("unused")
         final Label lblNode = JOE_L_ActionsParameterForm_Node.Control(new Label(group_3, SWT.NONE));
         txtIncludeNode = JOE_T_ActionsParameterForm_IncludeNode.Control(new Text(group_3, SWT.BORDER));
         txtIncludeNode.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
-                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
-                    butIsLifeFile.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
+                butIncludesApply.setEnabled(!"".equals(txtIncludeFilename.getText().trim()));
+                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
+                    butIsLifeFile.setEnabled(!"".equals(txtIncludeFilename.getText().trim()));
+                }
             }
         });
         txtIncludeNode.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(txtIncludeFilename)) {
                     addInclude();
+                }
             }
         });
         txtIncludeNode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -258,7 +250,6 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         butIncludesApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         label4_3 = new Label(group_3, SWT.HORIZONTAL | SWT.SEPARATOR);
         label4_3.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
-        // label4_3.setText("Label");
         tableIncludeParams = JOE_Tbl_ActionsParameterForm_IncludeParams.Control(new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER));
         tableIncludeParams.addMouseListener(new MouseAdapter() {
 
@@ -269,12 +260,14 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void widgetSelected(final SelectionEvent e) {
                 TableItem item = (TableItem) e.item;
-                if (item == null)
+                if (item == null) {
                     return;
+                }
                 txtIncludeFilename.setText(item.getText(0));
                 txtIncludeNode.setText(item.getText(1));
-                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
-                    butIsLifeFile.setSelection(item.getText(2).equalsIgnoreCase("live_file"));
+                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
+                    butIsLifeFile.setSelection("live_file".equalsIgnoreCase(item.getText(2)));
+                }
                 butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);
                 butIncludesApply.setEnabled(false);
                 butOpenInclude.setEnabled(true && !isRemoteConnection);
@@ -300,8 +293,9 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 tableIncludeParams.deselectAll();
                 txtIncludeFilename.setText("");
                 txtIncludeNode.setText("");
-                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
+                if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
                     butIsLifeFile.setSelection(false);
+                }
                 butIncludesApply.setEnabled(false);
                 butOpenInclude.setEnabled(false);
                 butRemoveInclude.setEnabled(false);
@@ -309,17 +303,6 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butNewIncludes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        // Include-Datei im Editor öffnen
-        // butOpenInclude = new Button(group_3, SWT.NONE); //
-        // butOpenInclude.addSelectionListener(new SelectionAdapter() {
-        // public void widgetSelected(final SelectionEvent e) {
-        // // createParameterTabItem();
-        // }
-        // });
-        // butOpenInclude.setEnabled(false);
-        // butOpenInclude.setLayoutData(new GridData(GridData.FILL,
-        // GridData.CENTER, false, false));
-        // butOpenInclude.setText("Open");
         butRemoveInclude = JOE_B_ActionsParameterForm_RemoveInclude.Control(new Button(group_3, SWT.NONE));
         butRemoveInclude.setEnabled(false);
         butRemoveInclude.addSelectionListener(new SelectionAdapter() {
@@ -363,15 +346,16 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tParaName.equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(tParaName)) {
                     addParam();
+                }
             }
         });
         tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tParaName.getText().equals(""));
-                if (tParaName.getText().equals("<from>")) {
+                bApply.setEnabled(!"".equals(tParaName.getText()));
+                if ("<from>".equals(tParaName.getText())) {
                     cSource.setVisible(true);
                     tParaValue.setVisible(false);
                 } else {
@@ -406,14 +390,15 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tParaName.equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(tParaName)) {
                     addParam();
+                }
             }
         });
         tParaValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tParaName.getText().equals(""));
+                bApply.setEnabled(!"".equals(tParaName.getText()));
             }
         });
         bApply = JOE_B_ActionsParameterForm_Apply.Control(new Button(group, SWT.NONE));
@@ -442,11 +427,13 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 TableItem item = (TableItem) e.item;
-                if (item == null)
+                if (item == null) {
                     return;
+                }
                 tParaName.setText(item.getText(0));
-                if (tParaName.getText().equals("<from>"))
+                if ("<from>".equals(tParaName.getText())) {
                     cSource.setText(item.getText(1));
+                }
                 tParaValue.setText(item.getText(1));
                 bRemove.setEnabled(tParameter.getSelectionCount() > 0);
                 bApply.setEnabled(false);
@@ -565,6 +552,6 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             butEnvRemove.setToolTipText(Messages.getTooltip("job.environment.btn_remove"));
             butNewEnvironment.setToolTipText(Messages.getTooltip("job.environment.new"));
         }
-        // butOpenInclude.setToolTipText(Messages.getTooltip("parameter.includetable_open.name"));
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

@@ -52,7 +52,6 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
         _dom = dom;
     }
 
-    @SuppressWarnings("deprecation")
     public void fillTree(Tree tree) {
         tree.removeAll();
         Utils.setResetElement(_dom.getRoot());
@@ -182,8 +181,9 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
             if (tree.getSelectionCount() > 0) {
                 Control[] children = c.getChildren();
                 for (int i = 0; i < children.length; i++) {
-                    if (!Utils.applyFormChanges(children[i]))
+                    if (!Utils.applyFormChanges(children[i])) {
                         return false;
+                    }
                     children[i].dispose();
                 }
                 TreeItem item = tree.getSelection()[0];
@@ -289,8 +289,9 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
             Element e = (Element) it.next();
             if (e.getNamespace().equals(element.getNamespace())) {
                 String id = e.getAttributeValue("id");
-                if (id != null && !id.equals(ownID))
+                if (id != null && !id.equals(ownID)) {
                     list.add(e.getName() + ": " + id);
+                }
                 getIDs(list, e, ownID);
             }
         }
@@ -299,21 +300,23 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
 
     public static String getID(String name) {
         int index = name.indexOf(':');
-        if (index < 0)
+        if (index < 0) {
             return name;
-        else
+        } else {
             return name.substring(index + 2);
+        }
     }
 
     public static String getIDName(String id) {
-        if (id.equals(""))
+        if ("".equals(id)) {
             return id;
+        }
         for (Iterator it = _IDs.iterator(); it.hasNext();) {
             String name = (String) it.next();
-            if (getID(name).equals(id))
+            if (getID(name).equals(id)) {
                 return name;
+            }
         }
-        // not found
         return "unknown: " + id;
     }
 
@@ -325,14 +328,11 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
     public void treeFillReleases(TreeItem parent, Element elem) {
         parent.removeAll();
         java.util.List listOfRelease = elem.getChildren("release", elem.getNamespace());
-        // parent.setExpanded(true);
         for (int i = 0; i < listOfRelease.size(); i++) {
             Element release = (Element) listOfRelease.get(i);
-            // Release
             TreeItem item = new TreeItem(parent, SWT.NONE);
             item.setText("Release: " + Utils.getAttributeValue("id", release));
             item.setData(new TreeData(JOEConstants.DOC_RELEASE, release, Options.getDocHelpURL("releases")));
-            // Autoren
             TreeItem itemAuthor = new TreeItem(item, SWT.NONE);
             itemAuthor.setText("Author");
             itemAuthor.setData(new TreeData(JOEConstants.DOC_RELEASE_AUTHOR, release, Options.getDocHelpURL("releases")));
@@ -342,8 +342,9 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
     }
 
     public void treeFillDatabaseResources(TreeItem parent, Element resources) {
-        if (resources == null)
+        if (resources == null) {
             return;
+        }
         parent.removeAll();
         java.util.List list = resources.getChildren("database", resources.getNamespace());
         for (int i = 0; i < list.size(); i++) {
@@ -355,4 +356,5 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
             itemDatabase.setExpanded(true);
         }
     }
+
 }

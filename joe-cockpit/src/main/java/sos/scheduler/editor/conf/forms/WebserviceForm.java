@@ -29,7 +29,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private WebserviceListener listener = null;
-    private Group group = null;
     private Group group_1;
     private Composite gWebService = null;
     private Button bApply = null;
@@ -63,8 +62,9 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyService();
+        }
     }
 
     public boolean isUnsaved() {
@@ -78,7 +78,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
         tName.setFocus();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
@@ -100,11 +99,9 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
         new Label(group_1, SWT.NONE);
     }
 
-    /** This method initializes table */
     private void createTable() {
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         GridData gridData12 = new org.eclipse.swt.layout.GridData();
         gridData12.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -143,17 +140,16 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 getShell().setDefaultButton(null);
                 boolean valid = listener.isValid(tName.getText());
-                if (valid)
+                if (valid) {
                     tName.setBackground(null);
-                else
+                } else {
                     tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-                valid = (valid && !tName.getText().equals("") && !tURL.getText().equals(""));
+                }
+                valid = valid && !"".equals(tName.getText()) && !"".equals(tURL.getText());
                 if (valid) {
                     getShell().setDefaultButton(bApply);
                 }
                 bApply.setEnabled(valid);
-                // gWebService.setText(GROUP_WEB_SERVICE + ": " +
-                // tName.getText());
             }
         });
         label1 = JOE_L_WebserviceForm_URL.Control(new Label(gWebService, SWT.NONE));
@@ -170,11 +166,11 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
         tURL.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if ((tURL.getText().length() > 0) && (tURL.getText().charAt(0) != '/')) {
+                if (!tURL.getText().isEmpty() && tURL.getText().charAt(0) != '/') {
                     tURL.setText("/" + tURL.getText());
                     tURL.setSelection(2);
                 }
-                boolean valid = (!tName.getText().equals("") && !tURL.getText().equals(""));
+                boolean valid = !"".equals(tName.getText()) && !"".equals(tURL.getText());
                 if (valid) {
                     getShell().setDefaultButton(bApply);
                 }
@@ -194,15 +190,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setEnabledComponent();
-                /*
-                 * boolean valid = (!tName.getText().equals(""));
-                 * bApply.setEnabled(valid); if (valid) {
-                 * getShell().setDefaultButton(bApply); }
-                 * sTimeout.setEnabled(!cChain.getText().equals(""));
-                 * tRequest.setEnabled(!sTimeout.getEnabled());
-                 * tResponse.setEnabled(!sTimeout.getEnabled());
-                 * tForward.setEnabled(!sTimeout.getEnabled());
-                 */
             }
         });
         label3 = JOE_L_WebserviceForm_Timeout.Control(new Label(gWebService, SWT.NONE));
@@ -217,7 +204,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
         sTimeout.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                boolean valid = (!tName.getText().equals(""));
+                boolean valid = !"".equals(tName.getText());
                 if (valid) {
                     getShell().setDefaultButton(bApply);
                 }
@@ -229,7 +216,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
         bDebug.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                boolean valid = (!tName.getText().equals(""));
+                boolean valid = !"".equals(tName.getText());
                 if (valid) {
                     getShell().setDefaultButton(bApply);
                 }
@@ -243,12 +230,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setEnabledComponent();
-                /*
-                 * boolean valid = (!tName.getText().equals("")); if (valid) {
-                 * getShell().setDefaultButton(bApply); }
-                 * bApply.setEnabled(valid);
-                 * cChain.setEnabled(tRequest.getText().equals(""));
-                 */
             }
         });
         label19 = JOE_L_WebserviceForm_ResponseXSLT.Control(new Label(gWebService, SWT.NONE));
@@ -258,12 +239,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setEnabledComponent();
-                /*
-                 * boolean valid = (!tName.getText().equals("")); if (valid) {
-                 * getShell().setDefaultButton(bApply); }
-                 * bApply.setEnabled(valid);
-                 * cChain.setEnabled(tResponse.getText().equals(""));
-                 */
             }
         });
         label13 = JOE_L_WebserviceForm_ForwardXSLT.Control(new Label(gWebService, SWT.NONE));
@@ -272,7 +247,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
         tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                boolean valid = (!tName.getText().equals(""));
+                boolean valid = !"".equals(tName.getText());
                 if (valid) {
                     getShell().setDefaultButton(bApply);
                 }
@@ -284,22 +259,15 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
     private void applyService() {
         boolean found = false;
         boolean exist = false;
-        // TODO
-        /*
-         * for (int i = 0; i < services.length; i++) { String url =
-         * services[i].getText(1); String name = services[i].getText(0); if
-         * (url.equals(tURL.getText()) && sel != i) { found = true; } if
-         * (name.equals(tName.getText()) && sel != i) { exist = true; } }
-         */
         if (found) {
             MainWindow.message(JOE_M_0041.label(), SWT.ICON_INFORMATION);
             tURL.setFocus();
         } else {
-            if (!tRequest.getText().equals("") && tResponse.getText().equals("")) {
+            if (!"".equals(tRequest.getText()) && "".equals(tResponse.getText())) {
                 MainWindow.message(JOE_M_0042.label(), SWT.ICON_INFORMATION);
                 tResponse.setFocus();
             } else {
-                if (tRequest.getText().equals("") && !tResponse.getText().equals("")) {
+                if ("".equals(tRequest.getText()) && !"".equals(tResponse.getText())) {
                     MainWindow.message(JOE_M_0043.label(), SWT.ICON_INFORMATION);
                     tRequest.setFocus();
                 } else {
@@ -307,21 +275,17 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                         MainWindow.message(JOE_M_0044.params(tName.getText()), SWT.ICON_INFORMATION);
                         tName.setFocus();
                     } else {
-                        if (tURL.getText().equals("")) {
+                        if ("".equals(tURL.getText())) {
                             MainWindow.message(JOE_M_0045.label(), SWT.ICON_INFORMATION);
                             tURL.setFocus();
                         } else {
-                            if (Utils.str2int(sTimeout.getText()) == 0 && sTimeout.getText().length() > 0) {
+                            if (Utils.str2int(sTimeout.getText()) == 0 && !sTimeout.getText().isEmpty()) {
                                 MainWindow.message(JOE_M_0046.label(), SWT.ICON_INFORMATION);
                             } else {
-                                listener.applyService(bDebug.getSelection(), cChain.getText(), tName.getText(), tForward.getText(), tRequest.getText(), tResponse.getText(),
-                                // sTimeout.getText(), tURL.getText(),
-                                // tParams.getItems());
+                                listener.applyService(bDebug.getSelection(), cChain.getText(), tName.getText(), tForward.getText(), tRequest.getText(), 
+                                        tResponse.getText(),
                                 sTimeout.getText(), tURL.getText());
-                                // listener.fillTable(tServices);
-                                // setInput(true);
                                 bApply.setEnabled(false);
-                                // getShell().setDefaultButton(bNew);
                             }
                         }
                     }
@@ -344,8 +308,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
             tResponse.setText(listener.getResponseXSLT());
             sTimeout.setText(Utils.getIntegerAsString(Utils.str2int(listener.getTimeout())));
             tURL.setText(listener.getURL());
-            // gWebService.setText(GROUP_WEB_SERVICE + ": " +
-            // listener.getName());
             tName.setFocus();
         } else {
             tName.setText("");
@@ -355,7 +317,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
             tResponse.setText("");
             sTimeout.setText("");
             tURL.setText("");
-            // gWebService.setText(GROUP_WEB_SERVICE);
         }
         bDebug.setEnabled(enabled);
         cChain.setEnabled(enabled);
@@ -374,28 +335,16 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void setEnabledComponent() {
-        boolean valid = (!tName.getText().equals(""));
-        // bApply.setEnabled(valid);
+        boolean valid = !"".equals(tName.getText());
         if (valid) {
             getShell().setDefaultButton(bApply);
         }
-        sTimeout.setEnabled(!cChain.getText().equals(""));
+        sTimeout.setEnabled(!"".equals(cChain.getText()));
         tRequest.setEnabled(!sTimeout.getEnabled());
         tResponse.setEnabled(!sTimeout.getEnabled());
         tForward.setEnabled(!sTimeout.getEnabled());
         bApply.setEnabled(valid);
-        cChain.setEnabled(tRequest.getText().equals(""));
-        /*
-         * if(JOEConstants.JOB_CHAIN == type) { boolean valid =
-         * (!tName.getText().equals("")); bApply.setEnabled(valid); if (valid) {
-         * getShell().setDefaultButton(bApply); }
-         * sTimeout.setEnabled(!cChain.getText().equals(""));
-         * tRequest.setEnabled(!sTimeout.getEnabled());
-         * tResponse.setEnabled(!sTimeout.getEnabled());
-         * tForward.setEnabled(!sTimeout.getEnabled()); } else { boolean valid =
-         * (!tName.getText().equals("")); if (valid) {
-         * getShell().setDefaultButton(bApply); } bApply.setEnabled(valid);
-         * cChain.setEnabled(tRequest.getText().equals("")); }
-         */
+        cChain.setEnabled("".equals(tRequest.getText()));
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

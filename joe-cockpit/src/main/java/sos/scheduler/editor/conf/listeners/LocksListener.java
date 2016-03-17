@@ -26,8 +26,9 @@ public class LocksListener {
         _dom = dom;
         _config = config;
         _locks = _config.getChild("locks");
-        if (_locks != null)
+        if (_locks != null) {
             _list = _locks.getChildren("lock");
+        }
     }
 
     private void initLocks() {
@@ -48,8 +49,9 @@ public class LocksListener {
                 TableItem item = new TableItem(table, SWT.NONE);
                 String name = Utils.getAttributeValue("name", e);
                 item.setText(0, name);
-                if (Utils.getAttributeValue("max_non_exclusive", e).length() > 0)
+                if (!Utils.getAttributeValue("max_non_exclusive", e).isEmpty()) {
                     item.setText(1, "" + Utils.getIntValue("max_non_exclusive", e));
+                }
                 if (!Utils.isElementEnabled("lock", _dom, e)) {
                     item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
                 }
@@ -58,12 +60,14 @@ public class LocksListener {
     }
 
     public void selectLock(int index) {
-        if (_list == null)
+        if (_list == null) {
             initLocks();
-        if (_list != null && index >= 0 && index < _list.size())
+        }
+        if (_list != null && index >= 0 && index < _list.size()) {
             _lock = (Element) _list.get(index);
-        else
+        } else {
             _lock = null;
+        }
     }
 
     public Element getLock(int index) {
@@ -77,12 +81,11 @@ public class LocksListener {
     }
 
     public boolean hasUnlimitedNonExclusiveLock() {
-        return Utils.getAttributeValue("max_non_exclusive", _lock).length() == 0;
+        return Utils.getAttributeValue("max_non_exclusive", _lock).isEmpty();
     }
 
     public int getMax_non_exclusive() {
-        int m = Utils.getIntValue("max_non_exclusive", _lock);
-        return m;
+        return Utils.getIntValue("max_non_exclusive", _lock);
     }
 
     public void newLock() {
@@ -94,23 +97,29 @@ public class LocksListener {
         String oldLockName = Utils.getAttributeValue("name", _lock);
         _dom.setChangedForDirectory("lock", oldLockName, SchedulerDom.DELETE);
         Utils.setAttribute("name", name, _lock, _dom);
-        if (unlimitedNonExclusive)
+        if (unlimitedNonExclusive) {
             _lock.removeAttribute("max_non_exclusive");
-        else
+        } else {
             Utils.setAttribute("max_non_exclusive", maxNonExclusive, _lock, _dom);
-        if (_list == null)
+        }
+        if (_list == null) {
             initLocks();
+        }
         if (!_list.contains(_lock)) {
             _list.add(_lock);
-            if (_dom.isLifeElement() || _dom.isDirectory())
+            if (_dom.isLifeElement() || _dom.isDirectory()) {
                 _dom.setChangedForDirectory("lock", name, SchedulerDom.NEW);
-            if (_dom.isLifeElement())
+            }
+            if (_dom.isLifeElement()) {
                 _dom.getRoot().setAttribute("name", name);
+            }
         } else {
-            if (_dom.isLifeElement())
+            if (_dom.isLifeElement()) {
                 _dom.getRoot().setAttribute("name", name);
-            if (_dom.isLifeElement() || _dom.isDirectory())
+            }
+            if (_dom.isLifeElement() || _dom.isDirectory()) {
                 _dom.setChangedForDirectory("lock", name, SchedulerDom.MODIFY);
+            }
         }
     }
 
@@ -118,7 +127,7 @@ public class LocksListener {
         if (index >= 0 && index < _list.size()) {
             String name = Utils.getAttributeValue("name", (Element) _list.get(index));
             _list.remove(index);
-            if (_list.size() == 0) {
+            if (_list.isEmpty()) {
                 _config.removeChild("process_classes");
                 _locks = null;
                 _list = null;
@@ -133,10 +142,12 @@ public class LocksListener {
         if (_list != null) {
             for (Iterator it = _list.iterator(); it.hasNext();) {
                 Element e = (Element) it.next();
-                if (Utils.getAttributeValue("name", e).equals(name))
+                if (Utils.getAttributeValue("name", e).equals(name)) {
                     return false;
+                }
             }
         }
         return true;
     }
+
 }

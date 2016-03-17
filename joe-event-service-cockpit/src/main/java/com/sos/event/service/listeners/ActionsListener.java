@@ -30,8 +30,7 @@ import com.sos.joe.xml.Events.ActionsDom;
 
 public class ActionsListener implements IUpdateTree {
 
-    private final static Logger LOGGER = Logger.getLogger(ActionsListener.class);
-
+    private static final Logger LOGGER = Logger.getLogger(ActionsListener.class);
     private ActionsDom _dom;
     private ActionsForm _gui;
     public static String ACTION_PREFIX = "Action: ";
@@ -56,17 +55,18 @@ public class ActionsListener implements IUpdateTree {
     public boolean treeSelection(Tree tree, Composite c) {
         try {
             if (tree.getSelectionCount() > 0) {
-                // dispose the old form
                 Control[] children = c.getChildren();
                 for (int i = 0; i < children.length; i++) {
-                    if (!Utils.applyFormChanges(children[i]))
+                    if (!Utils.applyFormChanges(children[i])) {
                         return false;
+                    }
                     children[i].dispose();
                 }
                 TreeItem item = tree.getSelection()[0];
                 TreeData data = (TreeData) item.getData();
-                if (data == null)
+                if (data == null) {
                     return false;
+                }
                 _dom.setInit(true);
                 switch (data.getType()) {
                 case JOEConstants.ACTIONS:
@@ -88,8 +88,6 @@ public class ActionsListener implements IUpdateTree {
                     new EventForm(c, SWT.NONE, _dom, data.getElement(), JOEConstants.REMOVE_EVENT_GROUP);
                     break;
                 case JOEConstants.ACTION_COMMANDS:
-                    // new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(),
-                    // _gui, this);
                     new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(), _gui);
                     break;
                 case JOEConstants.JOB_COMMAND_EXIT_CODES:
@@ -207,8 +205,8 @@ public class ActionsListener implements IUpdateTree {
         for (int i = 0; i < cmdList.size(); i++) {
             Element cmdElem = (Element) cmdList.get(i);
             TreeItem item = new TreeItem(parent, SWT.NONE);
-            String name = Utils.getAttributeValue("job_chain", cmdElem) != null && Utils.getAttributeValue("job_chain", cmdElem).length() > 0 ? Utils.getAttributeValue("job_chain", cmdElem)
-                    : Utils.getAttributeValue("job", cmdElem);
+            String name = Utils.getAttributeValue("job_chain", cmdElem) != null && Utils.getAttributeValue("job_chain", cmdElem).length() > 0 
+                    ? Utils.getAttributeValue("job_chain", cmdElem) : Utils.getAttributeValue("job", cmdElem);
             item.setText(cmdElem.getName() + ": " + name);
             item.setData(new TreeData(JOEConstants.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
             item.setExpanded(false);
@@ -220,4 +218,5 @@ public class ActionsListener implements IUpdateTree {
             item.setText("Parameter");
         }
     }
+    
 }

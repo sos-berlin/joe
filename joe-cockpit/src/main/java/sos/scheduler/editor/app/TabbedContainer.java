@@ -39,17 +39,14 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class TabbedContainer implements IContainer, IEditorAdapter {
 
-    private static final String conImageEDITOR_SMALL_PNG = "/sos/scheduler/editor/editor-small.png";
-    @SuppressWarnings("unused")
-    private final String conClassName = "TabbedContainer";
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-    private static final Logger logger = Logger.getLogger(TabbedContainer.class);
+    private static final String IMAGE_EDITOR_SMALL_PNG = "/sos/scheduler/editor/editor-small.png";
+    private static final Logger LOGGER = Logger.getLogger(TabbedContainer.class);
     private static final String NEW_SCHEDULER_TITLE = "Unknown";
     private static final String NEW_DOCUMENTATION_TITLE = "Unknown";
     private static final String NEW_DETAIL_TITLE = "Unknown";
     private CTabFolder folder = null;
     private final ArrayList<String> filelist = new ArrayList<String>();
+    private String strTitleText = "";
 
     class TabData {
 
@@ -63,9 +60,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         }
     }
 
-    // public TabbedContainer(MainWindow window, Composite parent) {
     public TabbedContainer(Composite parent) {
-        // this.window = window;
         folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
         folder.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         initialize();
@@ -79,7 +74,6 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         folder.setSimple(false);
         folder.setSize(new Point(690, 478));
         folder.setLayout(new FillLayout());
-        // on tab selection
         folder.addSelectionListener(new SelectionListener() {
 
             @Override
@@ -94,32 +88,24 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
                 widgetSelected(e);
             }
         });
-        // on tab close
         folder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 
             @Override
             public void close(CTabFolderEvent event) {
-                // IEditor editor = getCurrentEditor();
                 IEditor editor = (IEditor) ((CTabItem) (event.item)).getControl();
                 if (editor.hasChanges()) {
                     event.doit = editor.close();
                 }
-                if (event.doit)
+                if (event.doit) {
                     filelist.remove(editor.getFilename());
+                }
             }
         });
         folder.addTraverseListener(new TraverseListener() {
 
             @Override
             public void keyTraversed(final TraverseEvent e) {
-                /*
-                 * if(e.detail == SWT.TRAVERSE_ESCAPE) {
-                 * System.out.println(folder.getChildren().length); IEditor
-                 * editor = (IEditor)folder.getSelection().getControl();
-                 * filelist.remove(editor.getFilename()); editor.close();
-                 * folder.getSelection().dispose();
-                 * folder.removeControlListener(listener) }
-                 */
+                //
             }
         });
     }
@@ -129,7 +115,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
         scheduler.openBlank();
         CTabItem tab = newItem(scheduler, NEW_SCHEDULER_TITLE);
-        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
+        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(IMAGE_EDITOR_SMALL_PNG)));
         return scheduler;
     }
 
@@ -138,7 +124,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, type);
         scheduler.openBlank(type);
         CTabItem tab = newItem(scheduler, NEW_SCHEDULER_TITLE);
-        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
+        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(IMAGE_EDITOR_SMALL_PNG)));
         return scheduler;
     }
 
@@ -147,7 +133,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
         detailForm.openBlank();
         CTabItem tab = newItem(detailForm, NEW_DETAIL_TITLE);
-        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
+        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(IMAGE_EDITOR_SMALL_PNG)));
         return detailForm;
     }
 
@@ -156,30 +142,33 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
         if (detailForm.open(filelist)) {
             CTabItem tab = newItem(detailForm, detailForm.getFilename());
-            tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
+            tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(IMAGE_EDITOR_SMALL_PNG)));
             return detailForm;
-        } else
+        } else {
             return null;
+        }
     }
 
     public JobChainConfigurationForm openDetails(String filename) {
         JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
         if (detailForm.open(filename, filelist)) {
             CTabItem tab = newItem(detailForm, detailForm.getFilename());
-            tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
+            tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(IMAGE_EDITOR_SMALL_PNG)));
             return detailForm;
-        } else
+        } else {
             return null;
+        }
     }
 
     public ActionsForm openActions(String filename) {
         ActionsForm actionsForm = new ActionsForm(this, folder, SWT.NONE);
         if (actionsForm.open(filename, filelist)) {
             CTabItem tab = newItem(actionsForm, actionsForm.getFilename());
-            tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
+            tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(IMAGE_EDITOR_SMALL_PNG)));
             return actionsForm;
-        } else
+        } else {
             return null;
+        }
     }
 
     @Override
@@ -187,10 +176,11 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
         if (scheduler.open(filelist)) {
             CTabItem tab = newItem(scheduler, scheduler.getFilename());
-            tab.setImage(ResourceManager.getImageFromResource(conImageEDITOR_SMALL_PNG));
+            tab.setImage(ResourceManager.getImageFromResource(IMAGE_EDITOR_SMALL_PNG));
             return scheduler;
-        } else
+        } else {
             return null;
+        }
     }
 
     @Override
@@ -198,10 +188,11 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
         if (scheduler.open(filename, filelist)) {
             CTabItem tab = newItem(scheduler, scheduler.getFilename());
-            tab.setImage(ResourceManager.getImageFromResource(conImageEDITOR_SMALL_PNG));
+            tab.setImage(ResourceManager.getImageFromResource(IMAGE_EDITOR_SMALL_PNG));
             return scheduler;
-        } else
+        } else {
             return null;
+        }
     }
 
     @Override
@@ -217,11 +208,11 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         try {
             DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
             if (doc.open(filelist)) {
-                // CTabItem tab = newItem(doc, doc.getFilename());
                 newItem(doc, doc.getFilename());
                 return doc;
-            } else
+            } else {
                 return null;
+            }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             return null;
@@ -233,12 +224,11 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         try {
             DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
             if (doc.open(filename, filelist)) {
-                // CTabItem tab = newItem(doc, doc.getFilename());
                 newItem(doc, doc.getFilename());
-                // tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
                 return doc;
-            } else
+            } else {
                 return null;
+            }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             return null;
@@ -250,11 +240,10 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         try {
             DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
             if (doc.open(filelist)) {
-                // CTabItem tab = newItem(doc, doc.getFilename());
-                // tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
                 return doc.getFilename();
-            } else
+            } else {
                 return null;
+            }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             return null;
@@ -275,8 +264,6 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         }
     }
 
-    private String strTitleText = "";
-
     @Override
     public void setTitleText(final String pstrTitle) {
         strTitleText = pstrTitle;
@@ -288,7 +275,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
 
             @Override
             public void widgetDisposed(final DisposeEvent e) {
-                MainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
+                MainWindow.getSShell().setText(strTitleText);
                 MainWindow.setSaveStatus();
             }
         });
@@ -301,26 +288,29 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         t.caption = shortCaption(title);
         tab.setToolTipText(filename);
         tab.setText(title);
-        if (!filename.equals(NEW_DOCUMENTATION_TITLE) && !filename.equals(NEW_SCHEDULER_TITLE))
+        if (!NEW_DOCUMENTATION_TITLE.equals(filename) && !NEW_SCHEDULER_TITLE.equals(filename)) {
             filelist.add(filename);
+        }
         return tab;
     }
 
     @Override
     public CTabItem getCurrentTab() {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return null;
-        else
+        } else {
             return folder.getItem(folder.getSelectionIndex());
+        }
     }
 
     public CTabItem getFolderTab(String filename) {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return null;
-        else {
+        } else {
             for (int i = 0; i < folder.getItemCount(); i++) {
-                if (filelist.get(i).equals(filename))
+                if (filelist.get(i).equals(filename)) {
                     return folder.getItem(i);
+                }
             }
             return null;
         }
@@ -328,50 +318,56 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
 
     @Override
     public IEditor getCurrentEditor() {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return null;
-        else
+        } else {
             return (IEditor) getCurrentTab().getControl();
+        }
     }
 
     public IEditor getEditor(String filename) {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return null;
-        else
+        } else {
             return ((IEditor) getFolderTab(filename).getControl());
-        // SchedulerForm f = ((SchedulerForm)(IEditor)
-        // folder.getItem(0).getControl()).getDom().getFilename()
+        }
     }
 
     @Override
     public void setStatusInTitle() {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return;
+        }
         CTabItem tab = getCurrentTab();
         TabData t = (TabData) tab.getData();
         String title = t.caption;
-        if (tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0 && tab.getData("ftp_remote_directory") != null
-                && tab.getData("ftp_remote_directory").toString().length() > 0)
+        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty() && tab.getData("ftp_remote_directory") != null
+                && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
-        if (tab.getData("webdav_profile_name") != null && tab.getData("webdav_profile_name").toString().length() > 0
-                && tab.getData("webdav_remote_directory") != null && tab.getData("webdav_remote_directory").toString().length() > 0)
+        }
+        if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty()
+                && tab.getData("webdav_remote_directory") != null && !tab.getData("webdav_remote_directory").toString().isEmpty()) {
             title = tab.getData("webdav_remote_directory").toString();
+        }
         tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
         setWindowTitle();
         MainWindow.setMenuStatus();
     }
 
     public void setStatusInTitle(CTabItem tab) {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return;
+        }
         TabData t = (TabData) tab.getData();
         String title = t.caption;
-        if (tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0 && tab.getData("ftp_remote_directory") != null
-                && tab.getData("ftp_remote_directory").toString().length() > 0)
+        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty() && tab.getData("ftp_remote_directory") != null
+                && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
-        if (tab.getData("webdav_profile_name") != null && tab.getData("webdav_profile_name").toString().length() > 0
-                && tab.getData("webdav_remote_directory") != null && tab.getData("webdav_remote_directory").toString().length() > 0)
+        }
+        if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty()
+                && tab.getData("webdav_remote_directory") != null && !tab.getData("webdav_remote_directory").toString().isEmpty()) {
             title = tab.getData("webdav_remote_directory").toString();
+        }
         tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
         setWindowTitle();
         MainWindow.setMenuStatus();
@@ -379,8 +375,9 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
 
     @Override
     public void setNewFilename(String oldFilename) {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return;
+        }
         String filename = getCurrentEditor().getFilename();
         CTabItem tab = getCurrentTab();
         if (oldFilename != null) {
@@ -388,9 +385,10 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
             filelist.add(filename);
         }
         String title = setSuffix(tab, Utils.getFileFromURL(filename));
-        if (tab.getData("ftp_remote_directory") != null && tab.getData("ftp_remote_directory").toString().length() > 0
-                && tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0)
+        if (tab.getData("ftp_remote_directory") != null && !tab.getData("ftp_remote_directory").toString().isEmpty()
+                && tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
+        }
         tab.setText(title);
         tab.setToolTipText(filename);
         tab.setData(new TabData(Utils.getFileFromURL(filename), shortCaption(title)));
@@ -398,8 +396,9 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
     }
 
     public void setNewFilename(String oldFilename, String newFilename) {
-        if (folder.getItemCount() == 0)
+        if (folder.getItemCount() == 0) {
             return;
+        }
         CTabItem tab = getCurrentTab();
         if (oldFilename != null) {
             filelist.remove(oldFilename);
@@ -416,15 +415,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         Shell shell = folder.getShell();
         String ftp = getCurrentTab().getData("ftp_title") != null ? getCurrentTab().getData("ftp_title").toString() + "\\" : "";
         String webdav = getCurrentTab().getData("webdav_title") != null ? getCurrentTab().getData("webdav_title").toString() + "\\" : "";
-        /*
-         * if(ftp != null && ftp.length() > 0 ) { String f = new
-         * File(getCurrentTab().getText()).getName(); }
-         */
-        // / shell.setText((String) shell.getData() + webdav + ftp + " " +
-        // getCurrentTab().getText());
         shell.setText(strTitleText + webdav + ftp + " " + getCurrentTab().getText());
-        // shell.setText((String) shell.getData() + " [" +
-        // getCurrentTab().getText() + "]");
     }
 
     private String setSuffix(CTabItem tab, String title) {
@@ -432,8 +423,9 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         TabData t = (TabData) tab.getData();
         if (t != null) {
             t.cnt = sameTitles;
-            if (sameTitles > 0)
+            if (sameTitles > 0) {
                 title = title + "(" + (sameTitles + 1) + ")";
+            }
         }
         return title;
     }
@@ -455,10 +447,8 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
     private int getSameTitles(String title) {
         int cnt = -1;
         int i = 0;
-        // boolean found = false;
         while (cnt == -1) {
             if (isFreeIndex(i, title)) {
-                // found = true;
                 cnt = i;
             }
             i++;
@@ -497,60 +487,53 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         if (scheduler.openDirectory(filename, filelist)) {
             CTabItem tab = newItem(scheduler, scheduler.getFilename());
             Options.setLastFolderName(scheduler.getFilename());
-            tab.setImage(ResourceManager.getImageFromResource(conImageEDITOR_SMALL_PNG));
+            tab.setImage(ResourceManager.getImageFromResource(IMAGE_EDITOR_SMALL_PNG));
             return scheduler;
-        } else
+        } else {
             return null;
+        }
     }
 
     public SchedulerForm openLiveElement(String filename, int type) {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, type);
         if (scheduler.open(filename, filelist, type)) {
             CTabItem tab = newItem(scheduler, scheduler.getFilename());
-            tab.setImage(ResourceManager.getImageFromResource(conImageEDITOR_SMALL_PNG));
+            tab.setImage(ResourceManager.getImageFromResource(IMAGE_EDITOR_SMALL_PNG));
             return scheduler;
-        } else
+        } else {
             return null;
+        }
     }
 
     @Override
     public Composite openQuick(String xmlFilename) {
-        final String conMethodName = conClassName + "::openQuick";
-        logger.trace(String.format("Enter procedure %1$s ", conMethodName));
+        final String methodName = "TabbedContainer::openQuick";
+        LOGGER.trace(String.format("Enter procedure %1$s ", methodName));
         try {
-            if (xmlFilename != null && xmlFilename.length() > 0) {
+            if (xmlFilename != null && !xmlFilename.isEmpty()) {
                 SAXBuilder builder = new SAXBuilder();
                 org.jdom.Document doc = builder.build(new File(xmlFilename));
                 org.jdom.Element root = doc.getRootElement();
                 String strRootName = root.getName();
-                if (strRootName.equalsIgnoreCase("description")) {
+                if ("description".equalsIgnoreCase(strRootName)) {
                     return openDocumentation(xmlFilename);
-                }
-                if (strRootName.equalsIgnoreCase("spooler")) {
+                } else if ("spooler".equalsIgnoreCase(strRootName)) {
                     return openScheduler(xmlFilename);
-                }
-                if (strRootName.equalsIgnoreCase("actions")) {
+                } else if ("actions".equalsIgnoreCase(strRootName)) {
                     return openActions(xmlFilename);
-                }
-                if (strRootName.equalsIgnoreCase("job")) {
+                } else if ("job".equalsIgnoreCase(strRootName)) {
                     return openLiveElement(xmlFilename, SchedulerDom.LIVE_JOB);
-                }
-                if (strRootName.equalsIgnoreCase("job_chain")) {
+                } else if ("job_chain".equalsIgnoreCase(strRootName)) {
                     return openLiveElement(xmlFilename, SchedulerDom.LIVE_JOB_CHAIN);
-                }
-                if (strRootName.equalsIgnoreCase("process_class")) {
+                } else if ("process_class".equalsIgnoreCase(strRootName)) {
                     return openLiveElement(xmlFilename, SchedulerDom.LIFE_PROCESS_CLASS);
-                }
-                if (strRootName.equalsIgnoreCase("lock")) {
+                } else if ("lock".equalsIgnoreCase(strRootName)) {
                     return openLiveElement(xmlFilename, SchedulerDom.LIFE_LOCK);
-                }
-                if (strRootName.equalsIgnoreCase("order") || strRootName.equalsIgnoreCase("add_order")) {
+                } else if ("order".equalsIgnoreCase(strRootName) || "add_order".equalsIgnoreCase(strRootName)) {
                     return openLiveElement(xmlFilename, SchedulerDom.LIFE_ORDER);
-                }
-                if (strRootName.equalsIgnoreCase("schedule")) {
+                } else if ("schedule".equalsIgnoreCase(strRootName)) {
                     return openLiveElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
-                }
-                if (strRootName.equalsIgnoreCase("monitor")) {
+                } else if ("monitor".equalsIgnoreCase(strRootName)) {
                     return openLiveElement(xmlFilename, SchedulerDom.LIFE_MONITOR);
                 }
                 MainWindow.message("Unknown root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);
@@ -564,8 +547,8 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
 
     @Override
     public org.eclipse.swt.widgets.Composite openQuick() {
-        final String conMethodName = conClassName + "::openQuick";
-        logger.trace(String.format("Enter procedure %1$s ", conMethodName));
+        final String methodName = "TabbedContainer::openQuick";
+        LOGGER.trace(String.format("Enter procedure %1$s ", methodName));
         String xmlFilename = "";
         try {
             FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
@@ -589,7 +572,6 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         return actions;
     }
 
-    /** @return the filelist */
     public ArrayList getFilelist() {
         return filelist;
     }

@@ -27,7 +27,6 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
 
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label = null;
     private Text tFile = null;
     private Button bAdd = null;
@@ -56,44 +55,43 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
         label51.setText(separator);
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData4 = new GridData();
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        gridData4.verticalAlignment = GridData.CENTER; // Generated
+        gridData4.horizontalAlignment = GridData.FILL;
+        gridData4.verticalAlignment = GridData.CENTER;
         GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        gridData3.verticalAlignment = GridData.BEGINNING; // Generated
+        gridData3.horizontalAlignment = GridData.FILL;
+        gridData3.verticalAlignment = GridData.BEGINNING;
         GridData gridData2 = new GridData();
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
-        gridData2.grabExcessHorizontalSpace = true; // Generated
-        gridData2.grabExcessVerticalSpace = true; // Generated
-        gridData2.verticalAlignment = GridData.FILL; // Generated
+        gridData2.horizontalAlignment = GridData.FILL;
+        gridData2.grabExcessHorizontalSpace = true;
+        gridData2.grabExcessVerticalSpace = true;
+        gridData2.verticalAlignment = GridData.FILL;
         GridData gridData1 = new GridData();
-        gridData1.horizontalSpan = 3; // Generated
-        gridData1.verticalAlignment = GridData.CENTER; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
+        gridData1.horizontalSpan = 3;
+        gridData1.verticalAlignment = GridData.CENTER;
+        gridData1.horizontalAlignment = GridData.FILL;
         GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.verticalAlignment = GridData.CENTER;
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 3; // Generated
+        gridLayout.numColumns = 3;
         group = JOE_G_IncludeFilesForm_IncludeFiles.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gridLayout); // Generated
+        group.setLayout(gridLayout);
         label = JOE_L_IncludeFilesForm_File.Control(new SOSLabel(group, SWT.NONE));
         tFile = JOE_T_IncludeFilesForm_File.Control(new Text(group, SWT.BORDER));
-        tFile.setLayoutData(gridData); // Generated
+        tFile.setLayoutData(gridData);
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bAdd.setEnabled(tFile.getText().length() > 0);
+                bAdd.setEnabled(!tFile.getText().isEmpty());
                 getShell().setDefaultButton(bAdd);
             }
         });
         bAdd = JOE_B_IncludeFilesForm_Add.Control(new Button(group, SWT.NONE));
-        bAdd.setLayoutData(gridData4); // Generated
+        bAdd.setLayoutData(gridData4);
         bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -102,26 +100,27 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
             }
         });
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label1.setText("Label"); // Generated
-        label1.setLayoutData(gridData1); // Generated
+        label1.setText("Label");
+        label1.setLayoutData(gridData1);
         label51 = JOE_L_IncludeFilesForm_Parameter.Control(new SOSLabel(group, SWT.NONE));
         label51.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-        label51.setVisible(false); // Generated
+        label51.setVisible(false);
         fileList = JOE_Lst_IncludeFilesForm_Files.Control(new List(group, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL));
-        fileList.setLayoutData(gridData2); // Generated
+        fileList.setLayoutData(gridData2);
         fileList.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 boolean selection = fileList.getSelectionIndex() >= 0;
-                if (selection)
+                if (selection) {
                     tFile.setText(fileList.getItem(fileList.getSelectionIndex()));
+                }
                 bAdd.setEnabled(false);
                 bRemove.setEnabled(selection);
             }
         });
         bRemove = JOE_B_IncludeFilesForm_Remove.Control(new Button(group, SWT.NONE));
-        bRemove.setLayoutData(gridData3); // Generated
+        bRemove.setLayoutData(gridData3);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -134,21 +133,19 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
     @Override
     public void apply() {
         addFile();
-        if (listener != null)
+        if (listener != null) {
             listener.saveIncludes(fileList.getItems());
+        }
     }
 
     @Override
     public boolean isUnsaved() {
-        if (listener != null)
+        if (listener != null) {
             listener.saveIncludes(fileList.getItems());
+        }
         return bAdd.isEnabled();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
-     */
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -159,7 +156,7 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
     }
 
     private void addFile() {
-        if (tFile.getText().length() > 0 && !listener.exists(tFile.getText(), fileList.getItems())) {
+        if (!tFile.getText().isEmpty() && !listener.exists(tFile.getText(), fileList.getItems())) {
             fileList.add(tFile.getText());
             tFile.setText("");
             bAdd.setEnabled(false);
@@ -192,8 +189,8 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
 
     @Override
     public boolean applyChanges() {
-
         apply();
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

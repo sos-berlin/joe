@@ -41,17 +41,20 @@ public class JobLockUseListener {
     }
 
     public void selectLockUse(int index) {
-        if (index >= 0 && index < _lockUseList.size())
+        if (index >= 0 && index < _lockUseList.size()) {
             _lockUse = (Element) _lockUseList.get(index);
+        }
     }
 
     public void applyLockUse(String lockUse, boolean exclusive) {
-        if (_lockUse == null)
+        if (_lockUse == null) {
             newLockUse();
+        }
         Utils.setAttribute("lock", lockUse, _lockUse, _dom);
         Utils.setAttribute("exclusive", exclusive, _lockUse, _dom);
-        if (!_lockUseList.contains(_lockUse))
+        if (!_lockUseList.contains(_lockUse)) {
             _lockUseList.add(_lockUse);
+        }
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
     }
@@ -70,7 +73,7 @@ public class JobLockUseListener {
     }
 
     public boolean getExclusive() {
-        if (Utils.getAttributeValue("exclusive", _lockUse) == null || Utils.getAttributeValue("exclusive", _lockUse).length() == 0) {
+        if (Utils.getAttributeValue("exclusive", _lockUse) == null || Utils.getAttributeValue("exclusive", _lockUse).isEmpty()) {
             return true;
         } else {
             return (Utils.getAttributeValue("exclusive", _lockUse).equals("yes"));
@@ -78,13 +81,15 @@ public class JobLockUseListener {
     }
 
     public boolean isValidLock(String lock) {
-        if (lock.equals(""))
+        if ("".equals(lock)) {
             return false;
+        }
         if (_lockUseList != null) {
             for (Iterator it = _lockUseList.iterator(); it.hasNext();) {
                 Element e = (Element) it.next();
-                if (Utils.getAttributeValue("lock", e).equals(lock))
+                if (Utils.getAttributeValue("lock", e).equals(lock)) {
                     return false;
+                }
             }
         }
         return true;
@@ -106,8 +111,9 @@ public class JobLockUseListener {
                 Object o = it.next();
                 if (o instanceof Element) {
                     String name = ((Element) o).getAttributeValue("name");
-                    if (name == null)
+                    if (name == null) {
                         name = "";
+                    }
                     names[i++] = name;
                 }
             }
@@ -118,4 +124,5 @@ public class JobLockUseListener {
     public Element getJob() {
         return _job;
     }
+
 }

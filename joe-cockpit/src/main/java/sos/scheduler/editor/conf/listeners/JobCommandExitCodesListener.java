@@ -29,8 +29,9 @@ public class JobCommandExitCodesListener {
         _dom = dom;
         _command = command;
         _main = update;
-        if (_command != null)
+        if (_command != null) {
             _job = _command.getParentElement();
+        }
     }
 
     public void fillCommands(Element job, TreeItem parent, boolean expand) {
@@ -80,7 +81,7 @@ public class JobCommandExitCodesListener {
         Iterator it2 = c.iterator();
         while (it2.hasNext() && j >= 0) {
             Element e2 = (Element) it2.next();
-            if (!e2.getName().equals("start_job") && !e2.getName().equals("add_order") && !e2.getName().equals("order")) {
+            if (!"start_job".equals(e2.getName()) && !"add_order".equals(e2.getName()) && !"order".equals(e2.getName())) {
                 ignore++;
             } else {
                 j--;
@@ -116,8 +117,9 @@ public class JobCommandExitCodesListener {
 
     public void setExitCode(String value, boolean updateTree) {
         Utils.setAttribute("on_exit_code", value, _command, _dom);
-        if (updateTree)
+        if (updateTree) {
             _main.updateTreeItem(value);
+        }
     }
 
     public Element getCommand() {
@@ -133,18 +135,18 @@ public class JobCommandExitCodesListener {
         while (it2.hasNext()) {
             Element e2 = (Element) it2.next();
             created = false;
-            if (e2.getName().equals("start_job") || e2.getName().equals("add_order") || e2.getName().equals("order")) {
-                if (!created) { // Nur die commands add_order und start_job
-                    // anzeigen
+            if ("start_job".equals(e2.getName()) || "add_order".equals(e2.getName()) || "order".equals(e2.getName())) {
+                if (!created) {
                     item = new TableItem(table, SWT.NONE);
                     item.setText(1, "");
                     created = true;
                 }
                 item.setText(0, e2.getName());
                 item.setText(3, Utils.getAttributeValue("at", e2));
-                if (e2.getName().equals("start_job"))
+                if ("start_job".equals(e2.getName())) {
                     item.setText(1, Utils.getAttributeValue("job", e2));
-                if (e2.getName().equals("add_order") || e2.getName().equals("order")) {
+                }
+                if ("add_order".equals(e2.getName()) || "order".equals(e2.getName())) {
                     item.setText(1, Utils.getAttributeValue("id", e2));
                     item.setText(2, Utils.getAttributeValue("job_chain", e2));
                 }

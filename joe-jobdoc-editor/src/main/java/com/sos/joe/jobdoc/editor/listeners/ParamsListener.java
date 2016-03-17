@@ -10,7 +10,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ParamsListener extends JobDocBaseListener<DocumentationDom> {
 
-    private final static Logger LOGGER = Logger.getLogger(ParamsListener.class);
+    private static final Logger LOGGER = Logger.getLogger(ParamsListener.class);
     private Element _params;
     private Element _param;
     private boolean _newParam;
@@ -29,7 +29,7 @@ public class ParamsListener extends JobDocBaseListener<DocumentationDom> {
     }
 
     public void checkParams() {
-        if (_params != null && getID().length() == 0 && getReference().length() == 0 && _params.getChildren().size() == 0) {
+        if (_params != null && getID().isEmpty() && getReference().isEmpty() && _params.getChildren().isEmpty()) {
             _params.detach();
             _params = null;
         }
@@ -77,8 +77,9 @@ public class ParamsListener extends JobDocBaseListener<DocumentationDom> {
                 item.setText(3, getAttributeValue("reference", param));
                 item.setText(4, getAttributeValue("id", param));
                 item.setText(5, getAttributeValue("DataType", param));
-                if (param.equals(_param))
+                if (param.equals(_param)) {
                     table.select(index);
+                }
                 index++;
             }
         }

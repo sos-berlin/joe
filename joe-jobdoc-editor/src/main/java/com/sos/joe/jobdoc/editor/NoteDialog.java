@@ -69,14 +69,17 @@ public class NoteDialog extends Dialog {
         _shell.open();
         Display display = _shell.getDisplay();
         while (!_shell.isDisposed()) {
-            if (!display.readAndDispatch())
+            if (!display.readAndDispatch()) {
                 display.sleep();
+            }
         }
-        if (_fNote != null)
+        if (_fNote != null) {
             _fNote.dispose();
+        }
     }
 
     public void setTooltip(String string) {
         _fNote.setToolTipText(string);
     }
+    
 }

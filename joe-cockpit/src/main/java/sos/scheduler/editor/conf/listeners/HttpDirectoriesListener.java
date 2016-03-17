@@ -44,8 +44,9 @@ public class HttpDirectoriesListener {
     }
 
     public void applyHttpDirectory(TableItem[] httpDirectories) {
-        if (_http_server != null)
+        if (_http_server != null) {
             _http_server.removeChildren("http_directory");
+        }
         if (httpDirectories.length > 0) {
             if (_http_server == null && _config.getAttribute("http_server") == null) {
                 _http_server = new Element("http_server");
@@ -55,7 +56,7 @@ public class HttpDirectoriesListener {
                 Element directory = new Element("http_directory");
                 Utils.setAttribute("url_path", httpDirectories[i].getText(0), directory);
                 Utils.setAttribute("path", httpDirectories[i].getText(1), directory);
-                if (httpDirectories[i].getText(0) != "") {
+                if (!"".equals(httpDirectories[i].getText(0))) {
                     _http_server.addContent(directory);
                 }
             }

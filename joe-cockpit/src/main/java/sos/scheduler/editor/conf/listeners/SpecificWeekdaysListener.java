@@ -44,11 +44,13 @@ public class SpecificWeekdaysListener {
         boolean found = false;
         int index = 0;
         for (int i = 0; i < _daynames.length; i++) {
-            if (_daynames[i].equals(which))
+            if (_daynames[i].equals(which)) {
                 index = i + 1;
+            }
         }
-        if (index > 4)
+        if (index > 4) {
             index = (-1) * (index - 4);
+        }
         which = String.valueOf(index);
         Element daylist = _runtime.getChild("monthdays");
         if (daylist == null) {
@@ -71,11 +73,9 @@ public class SpecificWeekdaysListener {
             w.setAttribute("which", which);
             daylist.addContent(w);
             _dom.setChanged(true);
-            if (_runtime != null && _runtime.getParentElement() != null)
-                // _dom.setChangedForDirectory("job",
-                // Utils.getAttributeValue("name",_runtime.getParentElement()),
-                // SchedulerDom.MODIFY);
+            if (_runtime != null && _runtime.getParentElement() != null) {
                 _dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
+            }
         }
     }
 
@@ -85,21 +85,20 @@ public class SpecificWeekdaysListener {
         int index = 0;
         StringTokenizer t = new StringTokenizer(day_string.toLowerCase(), ".");
         // ----------------------------------------------------------
-        // String token = "";
-        if (t.hasMoreTokens())
+        if (t.hasMoreTokens()) {
             which = t.nextToken();
-        if (t.hasMoreTokens())
-            day = t.nextToken();
-        for (int i = 0; i < _daynames.length; i++) {
-            if (_daynames[i].equalsIgnoreCase(which))
-                index = i + 1;
         }
-        /*
-         * First 1=0 Second 2=1 Third 3=2 Fourth 4=3 Last -1=4 5 <--Second -2=5
-         * 6 <--Third= -3=6 7 <--Fourth -4=7 8
-         */
-        if (index > 4)
+        if (t.hasMoreTokens()) {
+            day = t.nextToken();
+        }
+        for (int i = 0; i < _daynames.length; i++) {
+            if (_daynames[i].equalsIgnoreCase(which)) {
+                index = i + 1;
+            }
+        }
+        if (index > 4) {
             index = (index - 4) * (-1);
+        }
         which = String.valueOf(index);
         Element daylist = _runtime.getChild("monthdays");
         if (daylist != null) {
@@ -116,19 +115,17 @@ public class SpecificWeekdaysListener {
                     for (int i = 0; i < _list.size(); i++) {
                         Element s = (Element) _list.get(i);
                         if (s.getChildren().size() > 0) {
-                            // _elementName[_type] wird noch woanders verwendet
                             isEmpty = false;
                             break;
                         }
                     }
-                    if (list.size() == 0 && isEmpty)
+                    if (list.isEmpty() && isEmpty) {
                         _runtime.removeChild("monthdays");
+                    }
                     _dom.setChanged(true);
-                    if (_runtime != null && _runtime.getParentElement() != null)
-                        // _dom.setChangedForDirectory("job",
-                        // Utils.getAttributeValue("name",_runtime.getParentElement()),
-                        // SchedulerDom.MODIFY);
+                    if (_runtime != null && _runtime.getParentElement() != null) {
                         _dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
+                    }
                     break;
                 }
             }
@@ -155,8 +152,9 @@ public class SpecificWeekdaysListener {
                     day = day.substring(0, 1).toUpperCase() + day.substring(1).toLowerCase();
                     which = e.getAttributeValue("which");
                     w = (Weekday) days.get(day);
-                    if (w == null)
+                    if (w == null) {
                         w = new Weekday();
+                    }
                     w.which = w.which + "," + which;
                     w.day = day;
                     w.elements.put(which, e);
@@ -170,18 +168,14 @@ public class SpecificWeekdaysListener {
             while (weekdayV_it.hasNext()) {
                 w = (Weekday) weekdayV_it.next();
                 StringTokenizer t = new StringTokenizer(w.which, ",");
-                // ----------------------------------------------------------
                 String token = "";
                 while (t.hasMoreTokens()) {
                     token = t.nextToken();
-                    if (!token.equals("") && token != null && !token.equals("null")) {
+                    if (!"".equals(token) && token != null && !"null".equals(token)) {
                         i = Integer.parseInt(token) - 1;
-                        /*
-                         * First 1=0 Second 2=1 Third 3=2 Fourth 4=3 Last -1=4
-                         * <--Second -2=5 <--Third= -3=6 <--Fourth -4=7
-                         */
-                        if (i < 0)
+                        if (i < 0) {
                             i = 3 + (-1) * (i + 1);
+                        }
                         _usedDays[index] = _daynames[i] + "." + w.day;
                         index++;
                     }
@@ -194,11 +188,6 @@ public class SpecificWeekdaysListener {
     }
 
     public void fillTreeDays(TreeItem parent, boolean expand) {
-        // 1.Reading Node "monthdays"
-        // 2.for each day making instance
-        // 3. setting which (e.g. 1,3,-4)
-        // 4.Iterate all found days
-        // 5.Create nodes for tree (parsing with tokenizer)
         parent.removeAll();
         TreeMap days = new TreeMap();
         String day = "";
@@ -207,7 +196,6 @@ public class SpecificWeekdaysListener {
         if (_runtime != null && _runtime.getChild("monthdays") != null) {
             Element daylist = _runtime.getChild("monthdays");
             List list = daylist.getChildren("weekday");
-            // int size = list.size();
             Iterator it = list.iterator();
             int i = 0;
             while (it.hasNext()) {
@@ -217,8 +205,9 @@ public class SpecificWeekdaysListener {
                     day = day.substring(0, 1).toUpperCase() + day.substring(1).toLowerCase();
                     which = e.getAttributeValue("which");
                     w = (Weekday) days.get(day);
-                    if (w == null)
+                    if (w == null) {
                         w = new Weekday();
+                    }
                     w.which = w.which + "," + which;
                     w.day = day;
                     w.elements.put(which, e);
@@ -232,29 +221,24 @@ public class SpecificWeekdaysListener {
                 w = (Weekday) weekdayV_it.next();
                 TreeItem itemDay = new TreeItem(parent, SWT.NONE);
                 itemDay.setText(w.day);
-                // itemDay.setData("max_occur", "1");
-                // itemDay.setData("key", w.getName());
                 if (!Utils.isElementEnabled("job", _dom, _runtime)) {
                     itemDay.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
                 }
                 StringTokenizer t = new StringTokenizer(w.which, ",");
-                // ----------------------------------------------------------
                 String token = "";
                 while (t.hasMoreTokens()) {
                     token = t.nextToken();
-                    if (!token.equals("") && token != null && !token.equals("null")) {
+                    if (!"".equals(token) && token != null && !"null".equals(token)) {
                         TreeItem item = new TreeItem(itemDay, SWT.NONE);
                         i = Integer.parseInt(token) - 1;
-                        if (i < 0)
+                        if (i < 0) {
                             i = (i + 1) * (-1) + 3;
+                        }
                         Element e = (Element) w.elements.get(token);
                         item.setText(_daynames[i]);
                         item.setData("max_occur", "1");
                         item.setData("key", e.getName() + "_@_");
                         item.setData("copy_element", e);
-                        // item.setData(new TreeData(JOEConstants.PERIODS,
-                        // (Element)w.elements.get(token),
-                        // Options.getHelpURL("periods")));
                         item.setData(new TreeData(JOEConstants.PERIODS, e, Options.getHelpURL("periods")));
                         if (!Utils.isElementEnabled("job", _dom, _runtime)) {
                             item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -266,4 +250,5 @@ public class SpecificWeekdaysListener {
             parent.setExpanded(expand);
         }
     }
+
 }

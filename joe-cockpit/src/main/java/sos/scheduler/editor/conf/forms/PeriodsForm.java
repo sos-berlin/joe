@@ -46,8 +46,9 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyPeriod();
+        }
     }
 
     public boolean isUnsaved() {
@@ -60,7 +61,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(689, 476));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData7 = new org.eclipse.swt.layout.GridData();
         gridData7.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -94,7 +94,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label.setText("Label");
         label.setLayoutData(gridData3);
         createTable();
         bNew = JOE_B_PeriodsForm_NewPeriod.Control(new Button(group, SWT.NONE));
@@ -103,7 +102,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // repeat bzw. repeat_absolute darf nur einmal def. werden
                 periodForm.hasRepeatTimes(listener.hasRepeatTimes());
                 tPeriods.deselectAll();
                 getShell().setDefaultButton(bApply);
@@ -113,7 +111,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label1.setText("Label");
         label1.setLayoutData(gridData7);
         bRemove = JOE_B_PeriodsForm_RemovePeriod.Control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
@@ -127,7 +124,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
         GridData gridData4 = new org.eclipse.swt.layout.GridData();
         gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -164,7 +160,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         newColumnTableColumn_1.setWidth(100);
     }
 
-    /** This method initializes periodForm */
     private void createPeriodForm() {
         GridData gridData = new org.eclipse.swt.layout.GridData();
         gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -183,7 +178,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         } else if (newPeriod) {
             periodForm.setPeriod(listener.getNewPeriod());
             periodForm.fillPeriod();
-
             periodForm.setEnabled(true);
         }
     }
@@ -221,13 +215,12 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         if (tPeriods.getSelectionCount() > 0) {
             if (tPeriods.getSelection()[0].getData() != null) {
                 Element currPeriod = (Element) tPeriods.getSelection()[0].getData();
-                if (currPeriod.getName().equals("at"))
+                if ("at".equals(currPeriod.getName())) {
                     periodForm.setAtElement(currPeriod);
-                else
+                } else {
                     periodForm.setPeriod(currPeriod);
+                }
                 if (listener.isRepeatElement(currPeriod)) {
-                    // es muss die Möglichkeit gegeben werden, einen
-                    // repeat/absolute_repeat element zu verändern
                     periodForm.hasRepeatTimes(false);
                 } else {
                     periodForm.hasRepeatTimes(listener.hasRepeatTimes());
@@ -246,13 +239,12 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         if (tPeriods.getSelectionCount() > 0) {
             int index = tPeriods.getSelectionIndex();
             tPeriods.remove(index);
-            // listener.removePeriod(index);
             listener.removePeriod(listener.getPeriod(index));
-            if (index >= tPeriods.getItemCount())
+            if (index >= tPeriods.getItemCount()) {
                 index--;
+            }
             if (tPeriods.getItemCount() > 0) {
                 tPeriods.select(index);
-                // tPeriodSelect();
             }
         }
         fillPeriod(true);
@@ -260,4 +252,5 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
         bApply.setEnabled(false);
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

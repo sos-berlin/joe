@@ -60,10 +60,6 @@ public class ReleasesListener extends JobDocBaseListener<DocumentationDom> {
         return _release;
     }
 
-    /*
-     * public void removeRelease() { if (_release != null) { _release.detach();
-     * _release = null; _dom.setChanged(true); } }
-     */
     public void removeRelease(int index) {
         if (_parent != null) {
             _parent.getChildren("release", _dom.getNamespace()).remove(index);
@@ -86,15 +82,6 @@ public class ReleasesListener extends JobDocBaseListener<DocumentationDom> {
         Utils.setAttribute("created", created, _release);
         Utils.setAttribute("modified", modified, _release);
         Utils.setElement("title", title, false, _release, _dom.getNamespace(), _dom);
-        /*
-         * _release.removeChildren("author", _dom.getNamespace()); for (int i =
-         * 0; i < authors.length; i++) { Element author = new Element("author",
-         * _dom.getNamespace()); Utils.setAttribute("name",
-         * authors[i].getText(0), author); Utils.setAttribute("email",
-         * authors[i].getText(1), author); _release.addContent(author); } if
-         * (_newRelease && !_parent.getContent().contains(_release)) {
-         * _parent.addContent(_release); }
-         */
         _newRelease = false;
         _dom.setChanged(true);
     }
@@ -113,10 +100,12 @@ public class ReleasesListener extends JobDocBaseListener<DocumentationDom> {
             item.setText(1, Utils.getElement("title", release, _dom.getNamespace()));
             item.setText(2, Utils.getAttributeValue("created", release));
             item.setText(3, Utils.getAttributeValue("modified", release));
-            if (release.equals(_release))
+            if (release.equals(_release)) {
                 table.select(index);
+            }
             index++;
         }
         Utils.setBackground(table, true);
     }
+
 }

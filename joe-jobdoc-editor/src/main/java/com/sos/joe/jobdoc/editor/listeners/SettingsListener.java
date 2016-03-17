@@ -24,12 +24,10 @@ public class SettingsListener extends JobDocBaseListener<DocumentationDom> {
     public void checkSettings() {
         if (_settings != null) {
             boolean remove = true;
-            if (_settings.getChild("note", _dom.getNamespace()) != null)
+            if (_settings.getChild("note", _dom.getNamespace()) != null || _settings.getChild("profile", _dom.getNamespace()) != null 
+                    || _settings.getChild("connection", _dom.getNamespace()) != null) {
                 remove = false;
-            if (_settings.getChild("profile", _dom.getNamespace()) != null)
-                remove = false;
-            if (_settings.getChild("connection", _dom.getNamespace()) != null)
-                remove = false;
+            }
             if (remove) {
                 _settings.detach();
                 _settings = null;

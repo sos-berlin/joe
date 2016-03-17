@@ -36,8 +36,9 @@ public class BaseListener {
         int index = 0;
         while (it.hasNext()) {
             String file = ((Element) it.next()).getAttributeValue("file");
-            if (file == null)
+            if (file == null) {
                 file = "UNKNOWN FILE";
+            }
             files[index++] = file;
         }
         return files;
@@ -50,17 +51,19 @@ public class BaseListener {
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(0, Utils.getAttributeValue("file", e));
             String comment = Utils.getAttributeValue("__comment__", e);
-            if (comment.indexOf("\n") > -1)
+            if (comment.indexOf("\n") > -1) {
                 comment = comment.substring(0, comment.indexOf("\n") - 1) + "...";
+            }
             item.setText(1, comment);
         }
     }
 
     public void selectBaseFile(int index) {
-        if (index >= 0 && index < _list.size())
+        if (index >= 0 && index < _list.size()) {
             _baseFile = (Element) _list.get(index);
-        else
+        } else {
             _baseFile = null;
+        }
     }
 
     public void newBaseFile() {
@@ -70,18 +73,21 @@ public class BaseListener {
     public void applyBaseFile(String file, String comment) {
         _baseFile.setAttribute("file", file);
         _baseFile.setAttribute("__comment__", comment);
-        if (!_list.contains(_baseFile))
+        if (!_list.contains(_baseFile)) {
             _list.add(_baseFile);
+        }
         _dom.setChanged(true);
     }
 
     public void removeBaseFile(int index) {
-        if (index >= 0 && index < _list.size())
+        if (index >= 0 && index < _list.size()) {
             _list.remove(index);
+        }
         _dom.setChanged(true);
     }
 
     public String getFile() {
         return Utils.getAttributeValue("file", _baseFile);
     }
+
 }

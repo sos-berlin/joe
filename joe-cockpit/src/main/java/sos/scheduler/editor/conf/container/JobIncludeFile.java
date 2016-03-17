@@ -37,11 +37,6 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class JobIncludeFile extends FormBaseClass {
 
-    @SuppressWarnings("unused")
-    private final String conClassName = "JobIncludeFile";
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-
     private Group group = null;
     private JobListener objJobDataProvider = null;
     private boolean init = true;
@@ -65,18 +60,15 @@ public class JobIncludeFile extends FormBaseClass {
         if (that == null) {
             return;
         }
-
         this.tbxFile2Include.setText(that.tbxFile2Include.getText());
         for (int i = 0; i < that.tableIncludes.getItemCount(); i++) {
             TableItem t = new TableItem(this.tableIncludes, SWT.None);
             t.setText(that.tableIncludes.getItems()[i].getText());
         }
-        ;
     }
 
     private void createGroup() {
         int intNumColumns = 3;
-
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.marginWidth = 0;
         gridLayout1.marginHeight = 0;
@@ -85,42 +77,19 @@ public class JobIncludeFile extends FormBaseClass {
         group.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, true, intNumColumns, 1));
         group.setLayout(gridLayout1);
         setResizableV(group);
-
         butIsLiveFile = SOSJOEMessageCodes.JOE_B_ParameterForm_LifeFile.Control(new Button(group, SWT.CHECK));
-
         final FileNameSelector fleFile2Include = new FileNameSelector(group, SWT.BORDER);
         fleFile2Include.setDataProvider(objJobDataProvider);
         tbxFile2Include = fleFile2Include;
-
-        // tbxFile2Include.addMouseListener(new MouseListener() {
-        //
-        // @Override
-        // public void mouseDoubleClick(MouseEvent arg0) {
-        // String strT = fleFile2Include.getFileName();
-        // if (strT.trim().length() > 0) {
-        // applyFile2Include();
-        // }
-        // }
-        //
-        // @Override
-        // public void mouseDown(MouseEvent arg0) {
-        // }
-        //
-        // @Override
-        // public void mouseUp(MouseEvent arg0) {
-        // }
-        // });
-
         tbxFile2Include.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(MouseEvent arg0) {
                 String strT = fleFile2Include.getFileName();
-                if (strT.trim().length() > 0) {
+                if (!strT.trim().isEmpty()) {
                     applyFile2Include();
                 }
             }
         });
-
         butIsLiveFile.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -130,7 +99,6 @@ public class JobIncludeFile extends FormBaseClass {
                 fleFile2Include.flgIsFileFromLiveFolder = butIsLiveFile.getSelection();
             }
         });
-
         bAdd = SOSJOEMessageCodes.JOE_B_JobIncludeFile_Add.Control(new Button(group, SWT.NONE));
         bAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         bAdd.setEnabled(false);
@@ -140,11 +108,8 @@ public class JobIncludeFile extends FormBaseClass {
                 applyFile2Include();
             }
         });
-
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label.setText("Label");
         label.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false, 3, 1));
-
         tableIncludes = SOSJOEMessageCodes.JOE_Tbl_JobIncludeFile_Includes.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         tableIncludes.addSelectionListener(new SelectionAdapter() {
 
@@ -153,7 +118,7 @@ public class JobIncludeFile extends FormBaseClass {
                     tbxFile2Include.setText(tableIncludes.getSelection()[0].getText(0));
                     tbxFile2Include.setEnabled(true);
                     butIsLiveFile.setSelection(tableIncludes.getSelection()[0].getText(1) != null
-                            && tableIncludes.getSelection()[0].getText(1).equals("live_file"));
+                            && "live_file".equals(tableIncludes.getSelection()[0].getText(1)));
                     bRemove.setEnabled(tableIncludes.getSelectionCount() > 0);
                     bAdd.setEnabled(false);
                 }
@@ -165,13 +130,10 @@ public class JobIncludeFile extends FormBaseClass {
         gridData_2.heightHint = 4;
         gridData_2.minimumHeight = 20;
         tableIncludes.setLayoutData(gridData_2);
-
         final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_Name.Control(new TableColumn(tableIncludes, SWT.NONE));
         newColumnTableColumn.setWidth(272);
-
         final TableColumn newColumnTableColumn_1 = SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_FileLiveFile.Control(new TableColumn(tableIncludes, SWT.NONE));
         newColumnTableColumn_1.setWidth(81);
-
         final Button butNew = SOSJOEMessageCodes.JOE_B_JobIncludeFile_New.Control(new Button(group, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
 
@@ -185,7 +147,6 @@ public class JobIncludeFile extends FormBaseClass {
             }
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
         tbxFile2Include.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
@@ -212,10 +173,9 @@ public class JobIncludeFile extends FormBaseClass {
                     int index = tableIncludes.getSelectionIndex();
                     objJobDataProvider.removeInclude(index);
                     objJobDataProvider.fillTable(tableIncludes);
-                    if (index >= tableIncludes.getItemCount())
+                    if (index >= tableIncludes.getItemCount()) {
                         index--;
-                    // if (tableIncludes.getItemCount() > 0)
-                    // tableIncludes.setSelection(index);
+                    }
                     tableIncludes.deselectAll();
                     tbxFile2Include.setText("");
                     tbxFile2Include.setEnabled(false);
@@ -227,28 +187,16 @@ public class JobIncludeFile extends FormBaseClass {
     private void applyFile2Include() {
         String strFileName = tbxFile2Include.getText();
         boolean flgIsLiveFile = butIsLiveFile.getSelection();
-        // File objF = null;
-        // if (flgIsLiveFile == true) {
-        // objF = new File(Options.getSchedulerHotFolder(), strFileName);
-        // }
-        // else {
-        // objF = new File(strFileName);
-        // }
-        // if (objF.exists() == false || objF.canRead() == false) {
-        // MainWindow.ErrMsg(String.format("File '%1$s' not found or is not readable",
-        // strFileName));
-        // tbxFile2Include.setText("");
-        // } else {
         objJobDataProvider.addInclude(tableIncludes, strFileName, flgIsLiveFile);
         tbxFile2Include.setText("");
         tbxFile2Include.setEnabled(false);
         butIsLiveFile.setEnabled(false);
         tableIncludes.deselectAll();
-        // }
         tbxFile2Include.setFocus();
     }
 
     public Table getTableIncludes() {
         return tableIncludes;
     }
+
 }

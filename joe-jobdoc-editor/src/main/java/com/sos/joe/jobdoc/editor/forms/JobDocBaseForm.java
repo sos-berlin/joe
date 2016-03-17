@@ -16,11 +16,13 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-public abstract class JobDocBaseForm<T> extends SOSComposite /* SOSJOEMessageCodes */implements IEditor, IUnsaved {
+public abstract class JobDocBaseForm<T> extends SOSComposite implements IEditor, IUnsaved {
 
     protected T listener = null;
     protected DocumentationDom dom = null;
     protected Button bApply = null;
+    protected final modifyTextEvent modifyTextListener = new modifyTextEvent();
+    protected Composite objParent = null;
 
     private class modifyTextEvent implements ModifyListener {
 
@@ -30,10 +32,6 @@ public abstract class JobDocBaseForm<T> extends SOSComposite /* SOSJOEMessageCod
         }
     }
 
-    protected final modifyTextEvent modifyTextListener = new modifyTextEvent();
-
-    protected Composite objParent = null;
-
     protected void setApplyStatus() {
 
     }
@@ -41,7 +39,6 @@ public abstract class JobDocBaseForm<T> extends SOSComposite /* SOSJOEMessageCod
     public JobDocBaseForm(Composite parent, int style) {
         super(parent, style);
         objParent = parent;
-        // setLayout(new GridLayout(1, true));
         setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
     }
 
@@ -55,8 +52,9 @@ public abstract class JobDocBaseForm<T> extends SOSComposite /* SOSJOEMessageCod
 
     @Override
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applySetting();
+        }
     }
 
     @Override
@@ -86,8 +84,6 @@ public abstract class JobDocBaseForm<T> extends SOSComposite /* SOSJOEMessageCod
     @Override
     public boolean save() {
         boolean res = IOUtils.saveFile(dom, false);
-        // if (res)
-        // container.setNewFilename(null);
         Utils.setResetElement(dom.getRoot());
         return res;
     }
@@ -96,8 +92,6 @@ public abstract class JobDocBaseForm<T> extends SOSComposite /* SOSJOEMessageCod
     public boolean saveAs() {
         String old = dom.getFilename();
         boolean res = IOUtils.saveFile(dom, true);
-        // if (res)
-        // container.setNewFilename(old);
         return res;
     }
 

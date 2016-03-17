@@ -50,10 +50,11 @@ public class ContextMenu {
         _menu = new Menu(_combo.getShell(), SWT.POP_UP);
         MenuItem item = new MenuItem(_menu, SWT.PUSH);
         item.addListener(SWT.Selection, getListener());
-        if (_type == JOEConstants.SCRIPT)
+        if (_type == JOEConstants.SCRIPT) {
             item.setText(ContextMenu.DELETE);
-        else
+        } else {
             item.setText(ContextMenu.GOTO);
+        }
         _menu.addListener(SWT.Show, new Listener() {
 
             @Override
@@ -61,10 +62,12 @@ public class ContextMenu {
                 MenuItem item = null;
                 if (_type == JOEConstants.SCRIPT) {
                     item = getItem(ContextMenu.DELETE);
-                } else
+                } else {
                     item = getItem(ContextMenu.GOTO);
-                if (item != null)
+                }
+                if (item != null) {
                     item.setEnabled(true);
+                }
             }
         });
     }
@@ -78,75 +81,15 @@ public class ContextMenu {
 
             @Override
             public void handleEvent(final Event e) {
-                if (_type == JOEConstants.SCRIPT)
+                if (_type == JOEConstants.SCRIPT) {
                     delete(_combo, _dom, _type);
-                else
+                } else {
                     goTo(_combo.getText(), _dom, _type);
+                }
             }
         };
     }
 
-    /*
-     * private void applyXMLChange(String newXML){ if(_dom instanceof
-     * SchedulerDom) {
-     * if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement())
-     * newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>"; }
-     * //System.out.println("debug: \n" + newXML); try { _dom.readString(newXML,
-     * true); refreshTree("main"); } catch (Exception de) { try { new
-     * ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , de); }
-     * catch(Exception ee) { //tu nichts }
-     * MainWindow.message(MainWindow.getSShell(), "..error while update XML: " +
-     * de.getMessage(), SWT.ICON_WARNING ); } } private Listener
-     * getCopyListener() { return new Listener() { public void handleEvent(Event
-     * e) { Element element = getElement(); if (element != null) _copy =
-     * (Element) element.clone(); } }; } private Listener getDeleteListener () {
-     * return new Listener() { public void handleEvent(Event e) { int ok =
-     * MainWindow.message("Do you wont really remove life file: " +
-     * _dom.getFilename(), //$NON-NLS-1$ SWT.ICON_QUESTION | SWT.YES | SWT.NO |
-     * SWT.CANCEL); if (ok == SWT.CANCEL || ok == SWT.NO) return; if(!new
-     * java.io.File(_dom.getFilename()).delete()) {
-     * MainWindow.message("could not remove life file", SWT.ICON_WARNING |
-     * SWT.OK); } sos.scheduler.editor.app.IContainer con =
-     * MainWindow.getContainer(); con.getCurrentTab().dispose(); } }; } private
-     * Listener getClipboardListener() { return new Listener() { public void
-     * handleEvent(Event e) { } }; } private Listener getPasteListener() {
-     * return new Listener() { public void handleEvent(Event e) { Element target
-     * = getElement(); if ((target != null && _copy != null)) { String tName =
-     * target.getName(); String cName = _copy.getName(); if(_dom instanceof
-     * SchedulerDom && ((SchedulerDom)_dom).isLifeElement()) {
-     * //if(cName.equals("job")) { target = (Element)_copy.clone(); TreeData
-     * data = (TreeData) _combo.getData(); data.setElement(target); return; //}
-     * } if (tName.equals("jobs") && cName.equals("job")) { // copy job String
-     * append = "copy(" + (target.getChildren("job").size() + 1); Element
-     * currCopy = (Element)_copy.clone(); if(existJobname(target,
-     * Utils.getAttributeValue("name", _copy))) currCopy.setAttribute("name",
-     * append + ")of_" + Utils.getAttributeValue("name", _copy));
-     * target.addContent(currCopy); refreshTree("jobs"); //_gui.update();
-     * if(_dom instanceof SchedulerDom && !((SchedulerDom)_dom).isLifeElement())
-     * //_gui.updateJobs(); _dom.setChanged(true); } else if
-     * (tName.equals("job") && cName.equals("run_time")) { // copy // run_time
-     * target.removeChildren("run_time"); target.addContent(_copy);
-     * //_gui.updateJob(); _dom.setChanged(true); } else if
-     * (tName.equals("config") && cName.equals("config")) { // copy // run_time
-     * //target.getParentElement().removeContent(); Element spooler =
-     * target.getParentElement(); spooler.removeChildren("config");
-     * spooler.addContent((Element)_copy.clone()); refreshTree("main");
-     * _dom.setChanged(true); //_gui.update(); } else if
-     * (tName.equals("commands") && cName.equals("order")) { // copy job String
-     * append = "copy(" + (target.getChildren("order").size() + 1); Element
-     * currCopy = (Element)_copy.clone(); currCopy.setAttribute("id", append +
-     * ")of_" + Utils.getAttributeValue("id", _copy));
-     * target.addContent(currCopy); refreshTree("main");
-     * //_gui.updateCommands(); //_gui.updateOrders(); //_gui.update();
-     * _dom.setChanged(true); } else if (tName.equals("job_chains") &&
-     * cName.equals("job_chain")) { // copy job String append = "copy(" +
-     * (target.getChildren("job_chain").size() + 1); Element currCopy =
-     * (Element)_copy.clone(); if(existJobname(target,
-     * Utils.getAttributeValue("name", _copy))) currCopy.setAttribute("name",
-     * append + ")of_" + Utils.getAttributeValue("name", _copy));
-     * target.addContent(currCopy); //_gui.updateJobChains();
-     * refreshTree("main"); //_gui.update(); _dom.setChanged(true); } } } }; }
-     */
     private MenuItem getItem(final String name) {
         MenuItem[] items = _menu.getItems();
         for (MenuItem item : items) {
@@ -170,20 +113,17 @@ public class ContextMenu {
 
     public static void goTo(final String name, com.sos.joe.xml.DomParser _dom, final int type) {
         try {
-            if (name == null || name.length() == 0) {
+            if (name == null || name.isEmpty()) {
                 return;
             }
-            if (_dom instanceof ActionsDom)
-                _dom = _dom;
-            else
-                _dom = _dom;
             if (type == JOEConstants.JOB) {
                 XPath x3 = XPath.newInstance("//job[@name='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     TreeItem tree = f.getTree().getItems()[0];
                     for (int i = 0; i < tree.getItemCount(); i++) {
                         TreeItem item = tree.getItem(i);
@@ -192,8 +132,6 @@ public class ContextMenu {
                             for (TreeItem jItem : jobsItem) {
                                 String strName = jItem.getText();
                                 strName = removeTitle(strName);
-                                // TODO get the name of the job from the
-                                // Element, not from the description
                                 if (strName.equals(name)) {
                                     tree.getParent().setSelection(new TreeItem[] { jItem });
                                     f.updateTreeItem(jItem.getText());
@@ -212,8 +150,9 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     Tree tree = f.getTree();
                     if (tree.getSelection()[0].getText().equals(SchedulerListener.MONITORS)) {
                         TreeItem[] monitorsItem = tree.getSelection()[0].getItems();
@@ -233,12 +172,10 @@ public class ContextMenu {
                             if (item.getText().equals(jobname)) {
                                 TreeItem[] jobsItem = item.getItems();
                                 for (TreeItem jItem : jobsItem) {
-                                    if (jItem.getText().equals("Monitor")) {
+                                    if ("Monitor".equals(jItem.getText())) {
                                         TreeItem[] monitorsItem = jItem.getItems();
                                         for (TreeItem monitor : monitorsItem) {
                                             if (monitor.getText().equals(monitorname)) {
-                                                // if(jItem.getText().endsWith("Job: "+
-                                                // name)){
                                                 tree.setSelection(new TreeItem[] { monitor });
                                                 f.updateTreeItem(monitorname);
                                                 f.updateTree("monitor");
@@ -256,13 +193,13 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     TreeItem tree = f.getTree().getItems()[0];
                     for (int i = 0; i < tree.getItemCount(); i++) {
                         TreeItem item = tree.getItem(i);
                         if (item.getText().equals(SchedulerListener.JOB_CHAINS)) {
-                            // if(item.getText().equals(SOSJOEMessageCodes.JOE_L_SchedulerListener_JobChains.label())){
                             TreeItem[] jobsItem = item.getItems();
                             for (TreeItem jItem : jobsItem) {
                                 String strName = jItem.getText();
@@ -283,12 +220,12 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     TreeItem tree = f.getTree().getItems()[0];
                     for (int i = 0; i < tree.getItemCount(); i++) {
                         TreeItem item = tree.getItem(i);
-                        // if(item.getText().equals("Process Classes")){
                         if (item.getText().endsWith("Process Classes")) {
                             tree.getParent().setSelection(new TreeItem[] { item });
                             f.updateTreeItem(item.getText());
@@ -302,8 +239,9 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     TreeItem tree = f.getTree().getItems()[0];
                     for (int i = 0; i < tree.getItemCount(); i++) {
                         TreeItem item = tree.getItem(i);
@@ -331,8 +269,9 @@ public class ContextMenu {
                 }
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     TreeItem tree = f.getTree().getItems()[0];
                     for (int i = 0; i < tree.getItemCount(); i++) {
                         TreeItem item = tree.getItem(i);
@@ -356,8 +295,9 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     Tree tree = f.getTree();
                     for (int i = 0; i < tree.getItemCount(); i++) {
                         TreeItem item = tree.getItem(i);
@@ -384,16 +324,15 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     Tree tree = f.getTree();
                     for (int i = 0; i < tree.getItemCount(); i++) {
                         TreeItem item = tree.getItem(i);
-                        if (item.getText().equals("Actions")) {
+                        if ("Actions".equals(item.getText())) {
                             TreeItem[] jobsItem = item.getItems();
                             for (TreeItem jItem : jobsItem) {
-                                // if(jItem.getText().equals("Job Chain: "+
-                                // name)){
                                 if (jItem.getText().endsWith(ActionsListener.ACTION_PREFIX + name)) {
                                     tree.setSelection(new TreeItem[] { jItem });
                                     f.updateTreeItem(jItem.getText());
@@ -405,13 +344,13 @@ public class ContextMenu {
                     }
                 }
             } else if (type == JOEConstants.EVENTS) {
-                // <event_group logic="or" group="1">
                 XPath x3 = XPath.newInstance("//event_group[@group='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     Tree tree = f.getTree();
                     if (tree.getSelectionCount() > 0) {
                         TreeItem itemp = tree.getSelection()[0];
@@ -431,8 +370,9 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     Tree tree = f.getTree();
                     if (tree.getSelectionCount() > 0) {
                         TreeItem itemp = tree.getSelection()[0];
@@ -462,8 +402,9 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     Tree tree = f.getTree();
                     if (tree.getSelectionCount() > 0) {
                         TreeItem itemp = tree.getSelection()[0];
@@ -493,8 +434,9 @@ public class ContextMenu {
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());
                 if (!listOfElement_3.isEmpty()) {
                     SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                    if (f == null)
+                    if (f == null) {
                         return;
+                    }
                     Tree tree = f.getTree();
                     if (tree.getSelectionCount() > 0) {
                         TreeItem itemp = tree.getSelection()[0];
@@ -511,8 +453,9 @@ public class ContextMenu {
                 }
             } else if (type == JOEConstants.JOB_COMMAND) {
                 SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-                if (f == null)
+                if (f == null) {
                     return;
+                }
                 Tree tree = f.getTree();
                 if (tree.getSelectionCount() > 0) {
                     TreeItem itemp = tree.getSelection()[0];
@@ -534,15 +477,16 @@ public class ContextMenu {
 
     public static void delete(final Combo combo, final com.sos.joe.xml.DomParser _dom, final int type) {
         try {
-            // favoriten löschen
-            if (combo.getData("favorites") == null)
+            if (combo.getData("favorites") == null) {
                 return;
+            }
             if (type == JOEConstants.SCRIPT) {
                 String prefix = "monitor_favorite_";
                 String name = combo.getText();
                 String lan = "";
-                if (combo.getData("favorites") != null)
+                if (combo.getData("favorites") != null) {
                     lan = ((HashMap) combo.getData("favorites")).get(name) + "_";
+                }
                 name = prefix + lan + name;
                 Options.removeProperty(name);
                 combo.remove(combo.getText());
@@ -551,4 +495,5 @@ public class ContextMenu {
             System.out.println(e.toString());
         }
     }
+
 }

@@ -33,24 +33,18 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
 
-    // private ResourcesListener listener = null;
-    // private DocumentationDom dom = null;
     private Group group = null;
     private Button cMemory = null;
     private Button cSpace = null;
     private Group group1 = null;
     private Group group2 = null;
-    @SuppressWarnings("unused")
     private Label label = null;
-    @SuppressWarnings("unused")
     private Label label1 = null;
     private Text tMemory = null;
     private Combo cbMemory = null;
     private Combo cbSpace = null;
     private Text tSpace = null;
-    @SuppressWarnings("unused")
     private Label label2 = null;
-    @SuppressWarnings("unused")
     private Label label3 = null;
     private Button bMemoryNotes = null;
     private Button bSpaceNotes = null;
@@ -70,15 +64,14 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         setMemoryStatus(listener.isMemory());
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData3 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
         GridData gridData2 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
         GridLayout gridLayout = new GridLayout(2, false);
         group = JOE_G_ResourcesForm_Resources.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gridLayout); // Generated
+        group.setLayout(gridLayout);
         cMemory = JOE_B_ResourcesForm_Memory.Control(new Button(group, SWT.CHECK));
-        cMemory.setLayoutData(gridData2); // Generated
+        cMemory.setLayoutData(gridData2);
         cMemory.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -89,7 +82,7 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         });
         createGroup1();
         cSpace = JOE_B_ResourcesForm_Space.Control(new Button(group, SWT.CHECK));
-        cSpace.setLayoutData(gridData3); // Generated
+        cSpace.setLayoutData(gridData3);
         cSpace.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -101,19 +94,18 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         createGroup2();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         GridData gridData10 = new GridData();
-        gridData10.widthHint = 150; // Generated
+        gridData10.widthHint = 150;
         GridLayout gridLayout1 = new GridLayout(5, false);
         GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
         group1 = JOE_G_ResourcesForm_Memory.Control(new SOSGroup(group, SWT.NONE));
-        group1.setLayoutData(gridData); // Generated
-        group1.setLayout(gridLayout1); // Generated
+        group1.setLayoutData(gridData);
+        group1.setLayout(gridLayout1);
         label = JOE_L_ResourcesForm_Minimum.Control(new SOSLabel(group1, SWT.NONE));
         tMemory = JOE_T_ResourcesForm_Memory.Control(new Text(group1, SWT.BORDER));
-        tMemory.setLayoutData(gridData11); // Generated
+        tMemory.setLayoutData(gridData11);
         tMemory.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -132,34 +124,29 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         label2 = JOE_L_ResourcesForm_Unit.Control(new SOSLabel(group1, SWT.NONE));
         createCbMemory();
         bMemoryNotes = JOE_B_ResourcesForm_MemoryNotes.Control(new Button(group1, SWT.NONE));
-        bMemoryNotes.setLayoutData(gridData10); // Generated
+        bMemoryNotes.setLayoutData(gridData10);
         bMemoryNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // String tip = Messages.getTooltip("doc.note.text.memory");
                 String tip = "";
-                // DocumentationForm.openNoteDialog(dom,
-                // listener.getMemoryElement(), "note", tip,
-                // true,"Memory Note");
                 DocumentationForm.openNoteDialog(dom, listener.getMemoryElement(), "note", tip, true, JOE_B_ResourcesForm_MemoryNotes.label());
             }
         });
     }
 
-    /** This method initializes group2 */
     private void createGroup2() {
         GridData gridData6 = new GridData();
-        gridData6.widthHint = 150; // Generated
+        gridData6.widthHint = 150;
         GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         GridLayout gridLayout2 = new GridLayout(5, false);
         GridData gridData1 = new GridData(GridData.FILL, GridData.FILL, true, false);
         group2 = JOE_G_ResourcesForm_Space.Control(new SOSGroup(group, SWT.NONE));
-        group2.setLayoutData(gridData1); // Generated
-        group2.setLayout(gridLayout2); // Generated
+        group2.setLayoutData(gridData1);
+        group2.setLayout(gridLayout2);
         label1 = JOE_L_ResourcesForm_Minimum.Control(new SOSLabel(group2, SWT.NONE));
         tSpace = JOE_T_ResourcesForm_Space.Control(new Text(group2, SWT.BORDER));
-        tSpace.setLayoutData(gridData9); // Generated
+        tSpace.setLayoutData(gridData9);
         tSpace.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -178,26 +165,22 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         label3 = JOE_L_ResourcesForm_Unit.Control(new SOSLabel(group2, SWT.NONE));
         createCbSpace();
         bSpaceNotes = JOE_B_ResourcesForm_SpaceNotes.Control(new Button(group2, SWT.NONE));
-        bSpaceNotes.setLayoutData(gridData6); // Generated
+        bSpaceNotes.setLayoutData(gridData6);
         bSpaceNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // String tip = Messages.getTooltip("doc.note.text.space");
                 String tip = "";
-                // DocumentationForm.openNoteDialog(dom,
-                // listener.getSpaceElement(), "note", tip, true,"Space Note");
                 DocumentationForm.openNoteDialog(dom, listener.getSpaceElement(), "note", tip, true, JOE_B_ResourcesForm_SpaceNotes.label());
             }
         });
     }
 
-    /** This method initializes cbMemory */
     private void createCbMemory() {
         GridData gridData4 = new GridData();
-        gridData4.widthHint = 90; // Generated
+        gridData4.widthHint = 90;
         cbMemory = JOE_Cbo_ResourcesForm_Memory.Control(new Combo(group1, SWT.NONE));
-        cbMemory.setLayoutData(gridData4); // Generated
+        cbMemory.setLayoutData(gridData4);
         cbMemory.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -211,12 +194,11 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         });
     }
 
-    /** This method initializes cbSpace */
     private void createCbSpace() {
         GridData gridData5 = new GridData();
-        gridData5.widthHint = 90; // Generated
+        gridData5.widthHint = 90;
         cbSpace = JOE_Cbo_ResourcesForm_Space.Control(new Combo(group2, SWT.NONE));
-        cbSpace.setLayoutData(gridData5); // Generated
+        cbSpace.setLayoutData(gridData5);
         cbSpace.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -244,8 +226,9 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         cbMemory.setEnabled(enabled);
         bMemoryNotes.setEnabled(enabled);
         if (enabled) {
-            if (tMemory.getText().length() > 0)
+            if (!tMemory.getText().isEmpty()) {
                 listener.setMemory(tMemory.getText());
+            }
             tMemory.setText(listener.getMemory());
             cbMemory.select(cbMemory.indexOf(listener.getMemoryUnit()));
             cMemory.setSelection(true);
@@ -259,8 +242,9 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         cbSpace.setEnabled(enabled);
         bSpaceNotes.setEnabled(enabled);
         if (enabled) {
-            if (tSpace.getText().length() > 0)
+            if (!tSpace.getText().isEmpty()) {
                 listener.setSpace(tSpace.getText());
+            }
             tSpace.setText(listener.getSpace());
             cbSpace.select(cbSpace.indexOf(listener.getSpaceUnit()));
             cSpace.setSelection(true);
@@ -271,19 +255,17 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
 
     @Override
     public void openBlank() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     protected void applySetting() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     public boolean applyChanges() {
-        // TODO Auto-generated method stub
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

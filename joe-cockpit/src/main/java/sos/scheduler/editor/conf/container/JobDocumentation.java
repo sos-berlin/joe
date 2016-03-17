@@ -64,11 +64,9 @@ public class JobDocumentation extends FormBaseClass {
     }
 
     private void initForm() {
-
         this.tFileName.setText(objJobDataProvider.getInclude());
-        butShow.setEnabled(tFileName.getText().trim().length() > 0);
-        butOpen.setEnabled(tFileName.getText().trim().length() > 0);
-
+        butShow.setEnabled(!tFileName.getText().trim().isEmpty());
+        butOpen.setEnabled(!tFileName.getText().trim().isEmpty());
         this.butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
     }
 
@@ -94,29 +92,23 @@ public class JobDocumentation extends FormBaseClass {
                 + (objJobDataProvider.isDisabled() ? SOSJOEMessageCodes.JOE_M_JobCommand_Disabled.label() : "");
         group.setText(strM);
         group.setLayout(gridLayout2);
-
         group.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         group.setLayout(gridLayout2);
-
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         gMain = SOSJOEMessageCodes.JOE_G_ConfigForm_Comment.Control(new Group(group, SWT.NONE));
         gMain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gMain.setLayout(gridLayout);
-
         TextArea txtAreaComment = new TextArea(gMain, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
         txtAreaComment.setDataProvider(objJobDataProvider, enuSourceTypes.xmlComment);
         tComment = txtAreaComment;
         GridLayout gridLayout3 = new GridLayout();
         gridLayout3.numColumns = 2;
-
         gDescription = SOSJOEMessageCodes.JOE_G_JobDocumentation_JobDescription.Control(new Group(group, SWT.NONE));
         gDescription.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gDescription.setLayout(gridLayout3);
-
         GridData gridData12 = new GridData(SWT.FILL, GridData.CENTER, true, false);
         gridData12.horizontalIndent = -1;
-
         tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new Text(gDescription, SWT.BORDER));
         tFileName.setLayoutData(gridData12);
         tFileName.addModifyListener(new ModifyListener() {
@@ -126,15 +118,15 @@ public class JobDocumentation extends FormBaseClass {
                 if (init) {
                     return;
                 }
-
                 showWaitCursor();
                 objJobDataProvider.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
-                if (tFileName.getText() != null && tFileName.getText().length() > 0) {
+                if (tFileName.getText() != null && !tFileName.getText().isEmpty()) {
                     butShow.setEnabled(true);
-                    if (tFileName.getText().endsWith(".xml"))
+                    if (tFileName.getText().endsWith(".xml")) {
                         butOpen.setEnabled(true);
-                    else
+                    } else {
                         butOpen.setEnabled(false);
+                    }
                 } else {
                     butShow.setEnabled(false);
                     butOpen.setEnabled(false);
@@ -142,7 +134,6 @@ public class JobDocumentation extends FormBaseClass {
                 restoreCursor();
             }
         });
-
         butIsLiveFile = SOSJOEMessageCodes.JOE_B_JobDocumentation_IsLiveFile.Control(new Button(gDescription, SWT.CHECK));
         butIsLiveFile.addSelectionListener(new SelectionAdapter() {
 
@@ -151,16 +142,16 @@ public class JobDocumentation extends FormBaseClass {
                 if (init) {
                     return;
                 }
-
                 showWaitCursor();
                 objJobDataProvider.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
 
-                if (tFileName.getText() != null && tFileName.getText().length() > 0) {
+                if (tFileName.getText() != null && !tFileName.getText().isEmpty()) {
                     butShow.setEnabled(true);
-                    if (tFileName.getText().endsWith(".xml"))
+                    if (tFileName.getText().endsWith(".xml")) {
                         butOpen.setEnabled(true);
-                    else
+                    } else {
                         butOpen.setEnabled(false);
+                    }
                 } else {
                     butShow.setEnabled(false);
                     butOpen.setEnabled(false);
@@ -168,10 +159,8 @@ public class JobDocumentation extends FormBaseClass {
                 restoreCursor();
             }
         });
-
         GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData14.horizontalIndent = -1;
-
         txtAreaDescription = new TextArea(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
         GridData gd_txtAreaDescription = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 3);
         gd_txtAreaDescription.heightHint = 91;
@@ -179,9 +168,7 @@ public class JobDocumentation extends FormBaseClass {
         tDescription = txtAreaDescription;
         txtAreaDescription.setDataProvider(objJobDataProvider, enuSourceTypes.JobDocu);
         tDescription.setToolTipText(SOSJOEMessageCodes.JOE_M_0050.label());
-
         tDescription.setText(objJobDataProvider.getDescription());
-
         butShow = SOSJOEMessageCodes.JOE_B_JobDocumentation_Show.Control(new Button(gDescription, SWT.NONE));
         butShow.setEnabled(false);
         butShow.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -189,14 +176,11 @@ public class JobDocumentation extends FormBaseClass {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-
                 try {
                     showWaitCursor();
-                    if (tFileName.getText() != null && tFileName.getText().length() > 0) {
+                    if (tFileName.getText() != null && !tFileName.getText().isEmpty()) {
                         String jobsDirectoryName = getJobsDirectoryName();
-
                         Program prog = Program.findProgram("html");
-
                         String strFileName = new File((jobsDirectoryName).concat(tFileName.getText())).toURI().toURL().toString();
                         if (prog != null) {
                             prog.execute(strFileName);
@@ -209,15 +193,14 @@ public class JobDocumentation extends FormBaseClass {
                         new ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), tFileName.getText(), ex));
                     } catch (Exception ee) {
                     }
-                    MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_0011.params("widgetSelected()", tFileName.getText(), ex.getMessage()), SWT.ICON_WARNING
-                            | SWT.OK);
+                    MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_0011.params("widgetSelected()", tFileName.getText(), ex.getMessage()), 
+                            SWT.ICON_WARNING | SWT.OK);
                 } finally {
                     restoreCursor();
                 }
             }
         });
-        butShow.setEnabled(tFileName.getText().trim().length() > 0);
-
+        butShow.setEnabled(!tFileName.getText().trim().isEmpty());
         butOpen = SOSJOEMessageCodes.JOE_B_JobDocumentation_Open.Control(new Button(gDescription, SWT.NONE));
         butOpen.setEnabled(false);
         butOpen.addSelectionListener(new SelectionAdapter() {
@@ -227,9 +210,8 @@ public class JobDocumentation extends FormBaseClass {
                 String jobsDirectoryName = "";
                 try {
                     showWaitCursor();
-                    if (tFileName.getText() != null && tFileName.getText().length() > 0) {
+                    if (tFileName.getText() != null && !tFileName.getText().isEmpty()) {
                         jobsDirectoryName = getJobsDirectoryName();
-
                         IContainer con = getContainer();
                         con.openDocumentation(jobsDirectoryName.concat(tFileName.getText()));
                         con.setStatusInTitle();
@@ -243,13 +225,10 @@ public class JobDocumentation extends FormBaseClass {
             }
         });
         butOpen.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-        butOpen.setEnabled(tFileName.getText().trim().length() > 0 && tFileName.getText().endsWith(".xml"));
-
+        butOpen.setEnabled(!tFileName.getText().trim().isEmpty() && tFileName.getText().endsWith(".xml"));
         tComment.setToolTipText(SOSJOEMessageCodes.JOE_M_0051.label());
-
         butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
         tFileName.setText(objJobDataProvider.getInclude());
-
         butWizard = SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard.Control(new Button(gDescription, SWT.NONE));
         butWizard.addSelectionListener(new SelectionAdapter() {
 
@@ -258,7 +237,6 @@ public class JobDocumentation extends FormBaseClass {
                 startWizzard(false);
             }
         });
-
         butWizard.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         tComment.setText(objJobDataProvider.getComment());
     }
@@ -266,14 +244,12 @@ public class JobDocumentation extends FormBaseClass {
     private void startWizzard(boolean onlyParams) {
         try {
             showWaitCursor();
-            if (objJobDataProvider.getInclude() != null && objJobDataProvider.getInclude().trim().length() > 0) {
-                JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(), objJobDataProvider, onlyParams ? JOEConstants.JOB
-                        : JOEConstants.JOB_WIZARD);
-
+            if (objJobDataProvider.getInclude() != null && !objJobDataProvider.getInclude().trim().isEmpty()) {
+                JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), 
+                        objJobDataProvider.get_main(), objJobDataProvider, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
                 paramsForm.showAllImportJobParams(objJobDataProvider.getInclude());
             } else {
                 JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, JOEConstants.JOB_WIZARD);
-
                 if (!onlyParams) {
                     importJobForms.setJobForm(this);
                 }
@@ -287,4 +263,4 @@ public class JobDocumentation extends FormBaseClass {
         }
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

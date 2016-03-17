@@ -72,9 +72,7 @@ public class MergeAllXMLinDirectory {
             addContains(jobChains, "job_chains", MASK_JOB_CHAIN);
             addContainsForOrder(orders, "commands", MASK_ORDER);
             addContains(monitors, "monitors", MASK_MONITOR);
-
             return Utils.getElementAsString(parentDoc.getRootElement());
-
         } catch (Exception e) {
             System.err.println("..error : " + e.getMessage());
             return null;
@@ -112,14 +110,13 @@ public class MergeAllXMLinDirectory {
                             parent = new Element(name);
                             config.addContent(parent);
                         }
-                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName()
-                                + ".xml"));
-                        if (Utils.getAttributeValue("name", xmlRoot).length() > 0
+                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
+                        if (!Utils.getAttributeValue("name", xmlRoot).isEmpty() 
                                 && !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
                             listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
                             xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
                         }
-                        if (Utils.getAttributeValue("name", xmlRoot).length() == 0) {
+                        if (Utils.getAttributeValue("name", xmlRoot).isEmpty()) {
                             xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
                         }
                         parent.addContent((Element) xmlRoot.clone());
@@ -149,7 +146,6 @@ public class MergeAllXMLinDirectory {
                 Element xmlRoot = currDocument.getRootElement();
                 if (xmlRoot != null) {
                     if (parent == null) {
-                        // config hat keinen Kindknoten {name}, also erzeugen
                         parent = new Element(name);
                         config.addContent(parent);
                     }
@@ -162,19 +158,19 @@ public class MergeAllXMLinDirectory {
                         jobChainname = splitNames[0];
                         orderId = splitNames[1];
                     }
-                    if (Utils.getAttributeValue("job_chain", xmlRoot).length() > 0
+                    if (!Utils.getAttributeValue("job_chain", xmlRoot).isEmpty()
                             && !jobChainname.equalsIgnoreCase(Utils.getAttributeValue("job_chain", xmlRoot))) {
                         listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
                         xmlRoot.setAttribute("job_chain", jobChainname);
                     }
-                    if (Utils.getAttributeValue("id", xmlRoot).length() > 0 && !orderId.equalsIgnoreCase(Utils.getAttributeValue("id", xmlRoot))) {
+                    if (!Utils.getAttributeValue("id", xmlRoot).isEmpty() && !orderId.equalsIgnoreCase(Utils.getAttributeValue("id", xmlRoot))) {
                         listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
                         xmlRoot.setAttribute("id", orderId);
                     }
-                    if (Utils.getAttributeValue("job_chain", xmlRoot).length() == 0) {
+                    if (Utils.getAttributeValue("job_chain", xmlRoot).isEmpty()) {
                         xmlRoot.setAttribute("job_chain", jobChainname);
                     }
-                    if (Utils.getAttributeValue("id", xmlRoot).length() == 0) {
+                    if (Utils.getAttributeValue("id", xmlRoot).isEmpty()) {
                         xmlRoot.setAttribute("id", orderId);
                     }
                     parent.addContent((Element) xmlRoot.clone());
@@ -190,13 +186,13 @@ public class MergeAllXMLinDirectory {
     }
 
     private String getChildElementName(final String pName) {
-        if (pName.equals("jobs")) {
+        if ("jobs".equals(pName)) {
             return "job";
-        } else if (pName.equals("process_classes")) {
+        } else if ("process_classes".equals(pName)) {
             return "process_class";
-        } else if (pName.equals("locks")) {
+        } else if ("locks".equals(pName)) {
             return "lock";
-        } else if (pName.equals("job_chains")) {
+        } else if ("job_chains".equals(pName)) {
             return "job_chain";
         } else {
             return pName;
@@ -257,7 +253,7 @@ public class MergeAllXMLinDirectory {
         if (elem != null) {
             list = elem.getChildren(name);
         }
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return;
         }
         for (int i = 0; i < list.size(); i++) {
@@ -275,9 +271,9 @@ public class MergeAllXMLinDirectory {
 
     public String saveAsLifeElement(String name, final Element e, String filename) {
         String attrName = "";
-        if (name.equals("add_order"))
+        if ("add_order".equals(name)) {
             name = "order";
-        if (name.equals("order")) {
+        } else if ("order".equals(name)) {
             if (!filename.endsWith(".order.xml")) {
                 if (new File(filename).renameTo(new File(filename + ".order.xml"))) {
                     new File(filename).deleteOnExit();
@@ -304,7 +300,7 @@ public class MergeAllXMLinDirectory {
             attrName = fname.substring(0, fname.indexOf("." + e.getName()));
         }
         Element _elem = e;
-        if (name.equals("order")) {
+        if ("order".equals(name)) {
             _elem.removeAttribute("job_chain");
             _elem.removeAttribute("id");
             _elem.removeAttribute("replace");
@@ -313,7 +309,7 @@ public class MergeAllXMLinDirectory {
         }
         String xml = Utils.getElementAsString(_elem);
         saveXML(xml, filename);
-        if (name.equals("order")) {
+        if ("order".equals(name)) {
             Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
             Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), e);
         } else {
@@ -326,27 +322,22 @@ public class MergeAllXMLinDirectory {
         String filename = " ";
         String attrName = "";
         boolean ok = false;
-
         if (isOrderTag(pstrCurrentTagName)) {
             pstrCurrentTagName = "order";
         }
-        if (pstrCurrentTagName.equals("order")) {
+        if ("order".equals(pstrCurrentTagName)) {
             attrName = Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e);
         } else {
             attrName = Utils.getAttributeValue("name", e);
         }
-        if (attrName != null && attrName.length() == 0) {
+        if (attrName != null && attrName.isEmpty()) {
             return "";
         }
-
         filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "."
                 + (pstrCurrentTagName.equalsIgnoreCase("add_order") ? "order" : pstrCurrentTagName) + ".xml";
-
         if (listOfChanges.containsKey(pstrCurrentTagName + "_" + attrName)) {
-            if (listOfChanges.get(pstrCurrentTagName + "_" + attrName).equals(SchedulerDom.DELETE)) {
-                if (!new File(filename).delete()) {
-                    ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-                }
+            if (listOfChanges.get(pstrCurrentTagName + "_" + attrName).equals(SchedulerDom.DELETE) && !new File(filename).delete()) {
+                ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             } else {
                 Element _elem = e;
                 if (isOrderTag(pstrCurrentTagName)) {
@@ -357,11 +348,7 @@ public class MergeAllXMLinDirectory {
                     _elem.removeAttribute("name");
                 }
                 if (isJobTag(pstrCurrentTagName)) {
-                    if (_elem.getChild("process") != null) { // this is just a
-                                                             // workaround to
-                                                             // avoid script and
-                                                             // process at the
-                                                             // same object
+                    if (_elem.getChild("process") != null) {
                         if (_elem.getChild("process").getAttribute("file") == null) {
                             _elem.removeChild("process");
                         } else {
@@ -389,11 +376,11 @@ public class MergeAllXMLinDirectory {
     }
 
     private boolean isJobTag(final String pstrTag) {
-        return pstrTag.equalsIgnoreCase("job");
+        return "job".equalsIgnoreCase(pstrTag);
     }
 
     private boolean isOrderTag(final String pstrTag) {
-        return pstrTag.equalsIgnoreCase("order") || pstrTag.equalsIgnoreCase("add_order");
+        return "order".equalsIgnoreCase(pstrTag) || "add_order".equalsIgnoreCase(pstrTag);
     }
 
     private boolean saveXML(final String xml, String filename) {
@@ -403,7 +390,6 @@ public class MergeAllXMLinDirectory {
         try {
             SAXBuilder builder2 = getBuilder(false);
             Document doc = builder2.build(new StringReader(xml));
-            // test
             SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
             new File(originalFilename).delete();
             saveFile = dom.writeElement(filename, doc);
@@ -411,10 +397,7 @@ public class MergeAllXMLinDirectory {
                 ErrorLog.message("could not rename file in " + filename, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             }
             return saveFile;
-        }
-
-        catch (Exception e) {
-
+        } catch (Exception e) {
             ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             return false;
         }
@@ -449,15 +432,12 @@ public class MergeAllXMLinDirectory {
                     prefix = "order_";
                 } else if (key.startsWith("schedule_")) {
                     prefix = "schedule_";
-                }
-                if (key.startsWith("monitor_")) {
+                } else if (key.startsWith("monitor_")) {
                     prefix = "monitor_";
                 }
-
                 filename = getFileName(key, prefix);
                 File f = new File(filename);
-
-                if (prefix.equals("job_chain_")) {
+                if ("job_chain_".equals(prefix)) {
                     String filenameNodeParameters = filename.replaceAll(".job_chain.xml", ".config.xml");
                     File fNodeParameters = new File(filenameNodeParameters);
                     if (fNodeParameters.exists()) {
@@ -474,10 +454,8 @@ public class MergeAllXMLinDirectory {
                         fGraphvizDiagramPng.delete();
                     }
                 }
-                if (f.exists()) {
-                    if (!f.delete()) {
-                        ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-                    }
+                if (f.exists() && !f.delete()) {
+                    ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                 }
             }
         }
@@ -500,18 +478,18 @@ public class MergeAllXMLinDirectory {
         Element elem = null;
         try {
             SAXBuilder builder = new SAXBuilder();
-            // String xml = createConfigurationFile();
             Document doc = builder.build(file);
             elem = doc.getRootElement();
             String name = file.getName().substring(0, file.getName().indexOf("."));
-            if (elem.getName().equals("order") || elem.getName().equals("add_order")) {
+            if ("order".equals(elem.getName()) || "add_order".equals(elem.getName())) {
                 String[] split = name.split(",");
                 String jobChain = split[0];
                 String id = split.length > 1 ? split[1] : "";
                 Utils.setAttribute("job_chain", jobChain, elem);
                 Utils.setAttribute("id", id, elem);
-            } else
+            } else {
                 Utils.setAttribute("name", name, elem);
+            }
         } catch (Exception e) {
             ErrorLog.message(".. could not read Element from " + file + " cause: " + e.getMessage(), SWT.ICON_ERROR);
         }

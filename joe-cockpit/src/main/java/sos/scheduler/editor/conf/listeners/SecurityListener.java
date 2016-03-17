@@ -26,8 +26,9 @@ public class SecurityListener {
         _dom = dom;
         _config = config;
         _security = _config.getChild("security");
-        if (_security != null)
+        if (_security != null) {
             _list = _security.getChildren("allowed_host");
+        }
     }
 
     private void initSecurity() {
@@ -56,10 +57,11 @@ public class SecurityListener {
     }
 
     public void selectHost(int index) {
-        if (_list != null && index >= 0 && index < _list.size())
+        if (_list != null && index >= 0 && index < _list.size()) {
             _host = (Element) _list.get(index);
-        else
+        } else {
             _host = null;
+        }
     }
 
     public String getHost() {
@@ -75,8 +77,9 @@ public class SecurityListener {
     }
 
     public void setIgnoreUnknownHosts(boolean ignore) {
-        if (_list == null)
+        if (_list == null) {
             initSecurity();
+        }
         Utils.setAttribute("ignore_unknown_hosts", ignore, _security, _dom);
     }
 
@@ -91,17 +94,19 @@ public class SecurityListener {
     public void applyHost(String host, String level) {
         _host.setAttribute("host", host);
         _host.setAttribute("level", level);
-        if (_list == null)
+        if (_list == null) {
             initSecurity();
-        if (!_list.contains(_host))
+        }
+        if (!_list.contains(_host)) {
             _list.add(_host);
+        }
         _dom.setChanged(true);
     }
 
     public void removeHost(int index) {
         if (index >= 0 && index < _list.size()) {
             _list.remove(index);
-            if (_list.size() == 0) {
+            if (_list.isEmpty()) {
                 _config.removeChild("security");
                 _security = null;
                 _list = null;
@@ -113,9 +118,11 @@ public class SecurityListener {
 
     public int getLevelIndex(String level) {
         for (int i = 0; i < _levels.length; i++) {
-            if (level.equalsIgnoreCase(_levels[i]))
+            if (level.equalsIgnoreCase(_levels[i])) {
                 return i;
+            }
         }
         return -1;
     }
+
 }

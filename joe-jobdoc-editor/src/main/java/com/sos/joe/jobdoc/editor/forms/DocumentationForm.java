@@ -28,14 +28,7 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-public class DocumentationForm extends JobDocBaseForm<DocumentationListener> implements IDocumentationUpdate /*
-                                                                                                              * extends
-                                                                                                              * SOSJOEMessageCodes
-                                                                                                              * implements
-                                                                                                              * IEditor
-                                                                                                              * ,
-                                                                                                              * IDocumentationUpdate
-                                                                                                              */{
+public class DocumentationForm extends JobDocBaseForm<DocumentationListener> implements IDocumentationUpdate {
 
     private SOSSashForm sashForm = null;
     private SOSGroup group = null;
@@ -54,11 +47,8 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 
     private void initialize() {
         createSashForm();
-        // setSize(new Point(724, 479));
-        // setLayout(new GridLayout());
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         sashForm = new SOSSashForm(this, SWT.NONE, "JobDocDocumentationForm");
         createGroup();
@@ -66,13 +56,11 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
         sashForm.restoreSize();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         group = new SOSMsgJOE("JOE_G_DocumentationForm_DocElements").Control(new SOSGroup(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
         docTree = new SOSTree(group, SWT.NONE);
         docTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         docTree.setBackground(Globals.getCompositeBackground());
-
         docTree.addListener(SWT.Selection, new Listener() {
 
             @Override
@@ -94,7 +82,6 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 
     private void createDocMainForm() {
         docMainForm = new SOSComposite(sashForm, SWT.NONE);
-        // docMainForm.setLayout(new FillLayout());
     }
 
     public boolean open(String filename, Collection files) {
@@ -121,8 +108,9 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
         if (docTree.getSelectionCount() > 0) {
             TreeItem item = docTree.getSelection()[0];
             TreeData data = (TreeData) item.getData();
-            if (data != null && data.getHelpKey() != null)
+            if (data != null && data.getHelpKey() != null) {
                 return data.getHelpKey();
+            }
         }
         return null;
     }
@@ -162,8 +150,6 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
             boolean changeStatus, String title, org.eclipse.swt.widgets.Text txt) {
         NoteDialog dialog = new NoteDialog(ErrorLog.getSShell(), title);
         dialog.setText("Note Editor");
-        // dialog.setUpdateText(txt); //Textfeld soll beim verlassen des Dialogs
-        // aktualisert werden
         dialog.setTooltip(tooltip);
         dialog.setParams(dom, parentElement, name, optional, changeStatus);
         dialog.open();
@@ -176,7 +162,6 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
             TreeData data = (TreeData) item.getData();
             org.jdom.Element elem = data.getElement();
             listener.treeFillReleases(item, elem);
-            // tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
         }
     }
 
@@ -186,14 +171,12 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
             TreeData data = (TreeData) item.getData();
             org.jdom.Element elem = data.getElement();
             listener.treeFillDatabaseResources(item, elem.getChild("resources", elem.getNamespace()));
-            // tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
         }
     }
 
     @Override
     public void updateTree(String which) {
-        if (which.equals("main")) {
-            // neu zeichnen und das erste Element markieren
+        if ("main".equals(which)) {
             listener.fillTree(docTree);
             docTree.setSelection(new TreeItem[] { docTree.getItem(0) });
         }
@@ -222,4 +205,4 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
         return res;
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

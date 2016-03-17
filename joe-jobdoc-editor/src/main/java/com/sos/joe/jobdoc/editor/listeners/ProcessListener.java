@@ -25,8 +25,9 @@ public class ProcessListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isProcess() {
         boolean script = _job.getChild("script", _dom.getNamespace()) != null;
         _process = _job.getChild("process", _dom.getNamespace());
-        if (!script && _process == null)
+        if (!script && _process == null) {
             setProcess();
+        }
         return _process != null;
     }
 
@@ -80,21 +81,25 @@ public class ProcessListener extends JobDocBaseListener<DocumentationDom> {
     private Element getVariable(String name, Element env) {
         for (Iterator it = env.getContent().iterator(); it.hasNext();) {
             Content o = (Content) it.next();
-            if (o instanceof Element && Utils.getAttributeValue("name", (Element) o).equals(name))
+            if (o instanceof Element && Utils.getAttributeValue("name", (Element) o).equals(name)) {
                 return (Element) o;
+            }
         }
         return null;
     }
 
     public void removeVariable(String name) {
         Element env = _process.getChild("environment", _dom.getNamespace());
-        if (env == null)
+        if (env == null) {
             return;
+        }
         Element var = getVariable(name, env);
-        if (var != null)
+        if (var != null) {
             var.detach();
-        if (env.getChildren().size() == 0)
+        }
+        if (env.getChildren().isEmpty()) {
             env.detach();
+        }
         _dom.setChanged(true);
     }
 
@@ -113,4 +118,5 @@ public class ProcessListener extends JobDocBaseListener<DocumentationDom> {
             }
         }
     }
+
 }

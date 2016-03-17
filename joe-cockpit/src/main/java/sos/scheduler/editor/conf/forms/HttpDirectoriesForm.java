@@ -50,17 +50,14 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
         tUrlPath.setFocus();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         httpDirectoriesGroup = JOE_G_HttpDirectoriesForm_DirectoriesGroup.Control(new Group(this, SWT.NONE));
-        // httpDirectoriesGroup.setText("HTTP Directories");
         createGroup1();
         GridLayout gridLayout = new GridLayout();
         httpDirectoriesGroup.setLayout(gridLayout);
         new Label(httpDirectoriesGroup, SWT.NONE);
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         final Group group_1 = JOE_G_HttpDirectoriesForm_Group1.Control(new Group(httpDirectoriesGroup, SWT.NONE));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
@@ -70,53 +67,41 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group_1.setLayout(gridLayout);
-        @SuppressWarnings("unused")
         final Label urlPathLabel = JOE_L_HttpDirectoriesForm_URLPath.Control(new Label(group_1, SWT.NONE));
-        // urlPathLabel.setText("Url Path");
         tUrlPath = JOE_T_HttpDirectoriesForm_URLPath.Control(new Text(group_1, SWT.BORDER));
-        // tUrlPath.addFocusListener(new FocusAdapter() {
-        // public void focusGained(final FocusEvent e) {
-        // tUrlPath.selectAll();
-        // }
-        // });
         tUrlPath.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if ((tUrlPath.getText().length() > 0) && (tUrlPath.getText().charAt(0) != '/')) {
+                if (!tUrlPath.getText().isEmpty() && (tUrlPath.getText().charAt(0) != '/')) {
                     tUrlPath.setText("/" + tUrlPath.getText());
                     tUrlPath.setSelection(2);
                 }
-                if (e.keyCode == SWT.CR && !tUrlPath.getText().equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(tUrlPath.getText())) {
                     applyHttpDirectory();
+                }
             }
         });
         tUrlPath.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                bApplyHttpDirectory.setEnabled(!tUrlPath.getText().equals(""));
+                bApplyHttpDirectory.setEnabled(!"".equals(tUrlPath.getText()));
             }
         });
         tUrlPath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        @SuppressWarnings("unused")
         final Label pathLabel = JOE_L_HttpDirectoriesForm_Path.Control(new Label(group_1, SWT.NONE));
-        // pathLabel.setText("Path");
         tPath = JOE_T_HttpDirectoriesForm_Path.Control(new Text(group_1, SWT.BORDER));
-        // tPath.addFocusListener(new FocusAdapter() {
-        // public void focusGained(final FocusEvent e) {
-        // tPath.selectAll();
-        // }
-        // });
         tPath.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tUrlPath.getText().equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(tUrlPath.getText())) {
                     applyHttpDirectory();
+                }
             }
         });
         tPath.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                bApplyHttpDirectory.setEnabled(!tPath.getText().equals(""));
+                bApplyHttpDirectory.setEnabled(!"".equals(tPath.getText()));
             }
         });
         tPath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -129,7 +114,6 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
             }
         });
         bApplyHttpDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        // bApplyHttpDirectory.setText("Apply");
         tHttpDirectory = JOE_Tbl_HttpDirectoriesForm_DirectoriesTable.Control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
         tHttpDirectory.addSelectionListener(new SelectionAdapter() {
 
@@ -152,10 +136,8 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
         tHttpDirectory.setLayoutData(gridData_1);
         final TableColumn urlPathTableColumn = JOE_TCl_HttpDirectoriesForm_URLPath.Control(new TableColumn(tHttpDirectory, SWT.NONE));
         urlPathTableColumn.setWidth(150);
-        // urlPathTableColumn.setText("Url Path");
         final TableColumn pathTableColumn = JOE_TCl_HttpDirectoriesForm_Path.Control(new TableColumn(tHttpDirectory, SWT.NONE));
         pathTableColumn.setWidth(250);
-        // pathTableColumn.setText("Path");
         bRemoveHttpDirectory = JOE_B_HttpDirectoriesForm_Remove.Control(new Button(group_1, SWT.NONE));
         bRemoveHttpDirectory.setEnabled(false);
         bRemoveHttpDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -171,10 +153,8 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
                     listener.applyHttpDirectory(tHttpDirectory.getItems());
                 }
                 bRemoveHttpDirectory.setEnabled(false);
-                ;
             }
         });
-        // bRemoveHttpDirectory.setText("Remove");
     }
 
     private void applyHttpDirectory() {
@@ -209,4 +189,4 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
         applyHttpDirectory();
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

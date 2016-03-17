@@ -14,12 +14,12 @@ import com.sos.joe.globals.options.Options;
 public class ErrorLog extends Exception {
 
     private static final long serialVersionUID = -4414810697191992062L;
-    private final Logger LOGGER = Logger.getLogger(this.getClass());
+    private static final Logger LOGGER = Logger.getLogger(ErrorLog.class);
+    private static Shell sShell = null;
 
     public ErrorLog(final String msg) {
         super();
         try {
-
             init();
             message(msg, SWT.ERROR);
             LOGGER.info(msg);
@@ -30,24 +30,20 @@ public class ErrorLog extends Exception {
 
     public ErrorLog(final String msg, final Exception e) {
         super();
-
         try {
             init();
             JobSchedulerException objJSE = new JobSchedulerException(msg, e);
             objJSE.setIntStatus(JobSchedulerException.NONE);
-
             String strMsg = msg + "\n" + objJSE.ExceptionText();
             message(strMsg, SWT.ERROR);
             LOGGER.error(strMsg, e);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 
     public ErrorLog(final String application, String msg, final Exception e) {
         super();
-
         try {
             init();
             JobSchedulerException objJSE = new JobSchedulerException(msg, e);
@@ -58,7 +54,6 @@ public class ErrorLog extends Exception {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 
     private void init() {
@@ -68,22 +63,18 @@ public class ErrorLog extends Exception {
                 return;
             }
             filename = Options.getSchedulerData();
-            if (filename.endsWith("/") || filename.endsWith("\\"))
+            if (filename.endsWith("/") || filename.endsWith("\\")) {
                 filename = filename + "logs";
-            else
+            } else {
                 filename = filename + "/logs";
-
-            if (!new java.io.File(filename).exists())
+            }
+            if (!new java.io.File(filename).exists()) {
                 new java.io.File(filename).mkdirs();
-
+            }
             filename = filename + "/scheduler_editor.log";
-
         } catch (Exception e) {
-            try {
-                if (LOGGER != null)
-                    LOGGER.debug("error in " + SOSClassUtil.getMethodName() + ", cause: " + e.getMessage());
-            } catch (Exception f) {
-
+            if (LOGGER != null) {
+                LOGGER.debug("error in " + SOSClassUtil.getMethodName() + ", cause: " + e.getMessage());
             }
         }
 
@@ -91,19 +82,17 @@ public class ErrorLog extends Exception {
 
     public String getErrorMessage(final Exception ex) {
         String s = "";
-
         try {
             Throwable tr = ex.getCause();
-
-            if (ex.toString() != null)
+            if (ex.toString() != null) {
                 s = ex.toString();
-
+            }
             while (tr != null) {
-                if (s.indexOf(tr.toString()) == -1)
+                if (s.indexOf(tr.toString()) == -1) {
                     s = (s.length() > 0 ? s + ", " : "") + tr.toString();
+                }
                 tr = tr.getCause();
             }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -113,8 +102,6 @@ public class ErrorLog extends Exception {
     public static SOSStandardLogger getLogger() {
         return null;
     }
-
-    private static Shell sShell = null;													// @jve:decl-index=0:visual-constraint="3,1"
 
     public static Shell getSShell() {
         return sShell;
@@ -138,15 +125,16 @@ public class ErrorLog extends Exception {
         }
         mb.setMessage(pstrMessage);
         String title = Messages.getLabel("message");
-        if ((style & SWT.ICON_ERROR) != 0)
+        if ((style & SWT.ICON_ERROR) != 0) {
             title = Messages.getLabel("error");
-        else {
-            if ((style & SWT.ICON_INFORMATION) != 0)
+        } else {
+            if ((style & SWT.ICON_INFORMATION) != 0) {
                 title = Messages.getLabel("information");
-            else if ((style & SWT.ICON_QUESTION) != 0)
+            } else if ((style & SWT.ICON_QUESTION) != 0) {
                 title = Messages.getLabel("question");
-            else if ((style & SWT.ICON_WARNING) != 0)
+            } else if ((style & SWT.ICON_WARNING) != 0) {
                 title = Messages.getLabel("warning");
+            }
         }
         mb.setText("JOE: " + title);
         return mb.open();
@@ -162,15 +150,16 @@ public class ErrorLog extends Exception {
         }
         mb.setMessage(pstrMessage);
         String title = Messages.getLabel("message");
-        if ((style & SWT.ICON_ERROR) != 0)
+        if ((style & SWT.ICON_ERROR) != 0) {
             title = Messages.getLabel("error");
-        else {
-            if ((style & SWT.ICON_INFORMATION) != 0)
+        } else {
+            if ((style & SWT.ICON_INFORMATION) != 0) {
                 title = Messages.getLabel("information");
-            else if ((style & SWT.ICON_QUESTION) != 0)
+            } else if ((style & SWT.ICON_QUESTION) != 0) {
                 title = Messages.getLabel("question");
-            else if ((style & SWT.ICON_WARNING) != 0)
+            } else if ((style & SWT.ICON_WARNING) != 0) {
                 title = Messages.getLabel("warning");
+            }
         }
         mb.setText(application + ": " + title);
         return mb.open();
@@ -178,7 +167,6 @@ public class ErrorLog extends Exception {
 
     public static void setSShell(Shell pobjShell) {
         sShell = pobjShell;
-
     }
 
 }

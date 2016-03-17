@@ -10,7 +10,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class SettingListener extends JobDocBaseListener<DocumentationDom> {
 
-    private final static Logger LOGGER = Logger.getLogger(SettingListener.class);
+    private static final Logger LOGGER = Logger.getLogger(SettingListener.class);
     private Element _setting;
     private boolean _newSetting;
     private static final String[] _types = { "", "integer", "double", "float", "string", "boolean", "clob", "blob" };
@@ -32,8 +32,9 @@ public class SettingListener extends JobDocBaseListener<DocumentationDom> {
             item.setText(3, getBooleanValue("required", setting) ? "yes" : "no");
             item.setText(4, getAttributeValue("reference", setting));
             item.setText(5, getAttributeValue("id", setting));
-            if (setting.equals(_setting))
+            if (setting.equals(_setting)) {
                 table.select(index);
+            }
             index++;
         }
     }
@@ -119,4 +120,5 @@ public class SettingListener extends JobDocBaseListener<DocumentationDom> {
             return false;
         }
     }
+    
 }

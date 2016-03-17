@@ -72,8 +72,9 @@ public class WebserviceListener {
     }
 
     public String[] getJobChains() {
-        if (_service == null || _service.getParentElement() == null || _service.getParentElement().getParentElement() == null)
+        if (_service == null || _service.getParentElement() == null || _service.getParentElement().getParentElement() == null) {
             return new String[0];
+        }
         Element _config = _service.getParentElement().getParentElement();
         Element element = _config.getChild("job_chains");
         if (element != null) {
@@ -85,15 +86,17 @@ public class WebserviceListener {
                 String name = ((Element) it.next()).getAttributeValue("name");
                 _chains[index++] = name != null ? name : "";
             }
-        } else
+        } else {
             _chains = new String[0];
+        }
         return _chains;
     }
 
     public int getChainIndex(String jobChain) {
         for (int i = 0; i < _chains.length; i++) {
-            if (_chains[i].equals(jobChain))
+            if (_chains[i].equals(jobChain)) {
                 return i;
+            }
         }
         return -1;
     }
@@ -118,10 +121,12 @@ public class WebserviceListener {
         if (_list != null) {
             for (Iterator it = _list.iterator(); it.hasNext();) {
                 Element e = (Element) it.next();
-                if (Utils.getAttributeValue("name", e).equals(name))
+                if (Utils.getAttributeValue("name", e).equals(name)) {
                     return false;
+                }
             }
         }
         return true;
     }
+
 }

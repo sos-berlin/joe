@@ -34,7 +34,6 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
 
     IUpdateTree treeHandler = null;
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label3 = null;
     private Text tName = null;
     private Button bNotes = null;
@@ -69,10 +68,10 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
         GridLayout gridLayout2 = new GridLayout(4, false);
         group = JOE_G_ProfilesForm_Profiles.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gridLayout2); // Generated
+        group.setLayout(gridLayout2);
         label3 = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
         tName = JOE_T_ProfilesForm_Name.Control(new Text(group, SWT.BORDER));
-        tName.setLayoutData(gridData); // Generated
+        tName.setLayoutData(gridData);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -86,12 +85,9 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // String tip = Messages.getTooltip("doc.note.text.profile");
                 String tip = "";
-                // DocumentationForm.openNoteDialog(dom,
-                // listener.getProfileElement(), "note", tip, true, !listener
-                // .isNewProfile(),"Profile Note");
-                DocumentationForm.openNoteDialog(dom, listener.getProfileElement(), "note", tip, true, !listener.isNewProfile(), JOE_B_ProfilesForm_ProfileNotes.label());
+                DocumentationForm.openNoteDialog(dom, listener.getProfileElement(), "note", tip, true, !listener.isNewProfile(), 
+                        JOE_B_ProfilesForm_ProfileNotes.label());
             }
         });
         bApply = JOE_B_ProfilesForm_ApplyProfile.Control(new Button(group, SWT.NONE));
@@ -104,12 +100,12 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
             }
         });
         label4 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label4.setText("Label"); // Generated
-        label4.setLayoutData(gridData1); // Generated
+        label4.setText("Label");
+        label4.setLayoutData(gridData1);
         tProfiles = JOE_Tbl_ProfilesForm_Profiles.Control(new Table(group, SWT.BORDER));
-        tProfiles.setHeaderVisible(true); // Generated
-        tProfiles.setLayoutData(gridData11); // Generated
-        tProfiles.setLinesVisible(true); // Generated
+        tProfiles.setHeaderVisible(true);
+        tProfiles.setLayoutData(gridData11);
+        tProfiles.setLinesVisible(true);
         tProfiles.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -123,9 +119,9 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
             }
         });
         TableColumn tableColumn = JOE_TCl_ProfilesForm_Name.Control(new TableColumn(tProfiles, SWT.NONE));
-        tableColumn.setWidth(450); // Generated
+        tableColumn.setWidth(450);
         bNew = JOE_B_ProfilesForm_NewProfile.Control(new Button(group, SWT.NONE));
-        bNew.setLayoutData(gridData4); // Generated
+        bNew.setLayoutData(gridData4);
         bNew.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -138,10 +134,10 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
             }
         });
         label5 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label5.setText("Label"); // Generated
-        label5.setLayoutData(gridData6); // Generated
+        label5.setText("Label");
+        label5.setLayoutData(gridData6);
         bRemove = JOE_B_ProfilesForm_RemoveProfile.Control(new Button(group, SWT.NONE));
-        bRemove.setLayoutData(gridData5); // Generated
+        bRemove.setLayoutData(gridData5);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -160,8 +156,9 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
 
     @Override
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyProfile();
+        }
     }
 
     @Override
@@ -189,8 +186,9 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
 
     private void fillProfiles() {
         listener.fillProfiles(tProfiles);
-        if (treeHandler != null)
+        if (treeHandler != null) {
             treeHandler.fillProfiles();
+        }
     }
 
     @Override
@@ -207,4 +205,5 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
         apply();
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+}

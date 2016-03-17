@@ -36,14 +36,12 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
 
     private ScriptListener listener = null;
     private Group group;
-    @SuppressWarnings("unused")
     private Label label = null;
     private Composite composite;
     private Button rbJava = null;
     private Button rbJavascript = null;
     private Button rbPerlscript = null;
     private Button rbVBScript = null;
-    @SuppressWarnings("unused")
     private Label label1 = null;
     private Text tJavaClass = null;
     private Label label3 = null;
@@ -60,7 +58,6 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
     public void setParams(DocumentationDom dom, Element parent, int type) {
         listener = new ScriptListener(dom, parent, type);
         includeFilesForm.setParams(dom, listener.getScript());
-        // cResource.setItems(listener.getResources(null));
     }
 
     public void setTitle(String title) {
@@ -73,25 +70,22 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
 
     private void initialize() {
         createGroup();
-        // setSize(new Point(743, 447));
-        // setLayout(new FillLayout());
         includeFilesForm.setSeparator(label3.getText());
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData1.horizontalIndent = 7; // Generated
+        gridData1.horizontalIndent = 7;
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData.horizontalIndent = 7; // Generated
+        gridData.horizontalIndent = 7;
         GridLayout gl_group = new GridLayout(2, false);
         group = JOE_G_ScriptForm_Script.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gl_group); // Generated
+        group.setLayout(gl_group);
         label = JOE_L_ScriptForm_Language.Control(new SOSLabel(group, SWT.NONE));
         createComposite();
         label1 = JOE_L_ScriptForm_JavaClass.Control(new SOSLabel(group, SWT.NONE));
         tJavaClass = JOE_T_ScriptForm_JavaClass.Control(new Text(group, SWT.BORDER));
-        tJavaClass.setLayoutData(gridData); // Generated
+        tJavaClass.setLayoutData(gridData);
         tJavaClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -104,11 +98,10 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
         createIncludeFilesForm();
     }
 
-    /** This method initializes composite */
     private void createComposite() {
         GridLayout gl_composite = new GridLayout(7, false);
         composite = new Composite(group, SWT.NONE);
-        composite.setLayout(gl_composite); // Generated
+        composite.setLayout(gl_composite);
         rbJava = JOE_B_ScriptForm_JavaRB.Control(new Button(composite, SWT.RADIO));
         rbJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -177,12 +170,11 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
         });
     }
 
-    /** This method initializes cResource */
     private void createCResource() {
         GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-        gridData2.horizontalIndent = 7; // Generated
+        gridData2.horizontalIndent = 7;
         cResource = JOE_Cbo_ScriptForm_Resource.Control(new Combo(group, SWT.NONE));
-        cResource.setLayoutData(gridData2); // Generated
+        cResource.setLayoutData(gridData2);
         cResource.addModifyListener(new ModifyListener() {
 
             @Override
@@ -192,27 +184,28 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
         });
     }
 
-    /** This method initializes includeFilesForm */
     private void createIncludeFilesForm() {
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         includeFilesForm = new IncludeFilesForm(group, SWT.NONE);
-        includeFilesForm.setLayoutData(gridData3); // Generated
+        includeFilesForm.setLayoutData(gridData3);
     }
 
     @Override
     public void apply() {
         includeFilesForm.apply();
-        if (listener != null)
+        if (listener != null) {
             listener.checkScript();
+        }
     }
 
     @Override
     public boolean isUnsaved() {
         boolean status = includeFilesForm.isUnsaved();
-        if (listener != null)
+        if (listener != null) {
             listener.checkScript();
+        }
         return status;
     }
 
@@ -244,8 +237,9 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
             rbJava.setSelection(true);
             tJavaClass.setEnabled(true);
             tJavaClass.setFocus();
-            if (!tJavaClass.getText().equals("") && listener.getJavaClass().equals(""))
+            if (!"".equals(tJavaClass.getText()) && "".equals(listener.getJavaClass())) {
                 listener.setJavaClass(tJavaClass.getText());
+            }
             tJavaClass.setText(listener.getJavaClass());
             break;
         case ScriptListener.JAVA_SCRIPT:
@@ -265,19 +259,18 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
 
     @Override
     public void openBlank() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     protected void applySetting() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     public boolean applyChanges() {
-        // TODO Auto-generated method stub
+        //
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

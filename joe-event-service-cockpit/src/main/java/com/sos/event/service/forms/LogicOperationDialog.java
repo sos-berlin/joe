@@ -43,12 +43,10 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
     }
 
     public Object open(final Text txt_, final ArrayList operator_) {
-
         txt = txt_;
         operator = operator_;
         Shell parent = getParent();
         final Shell newFolderShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-
         newFolderShell.addTraverseListener(new TraverseListener() {
 
             @Override
@@ -69,22 +67,20 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         gridLayout.numColumns = 2;
         newFolderShell.setLayout(gridLayout);
         newFolderShell.setText(SOSJOEMessageCodes.JOE_M_LogicOperationDialog_LogicalOperation.label());
-
         newFolderShell.pack();
-
         txtExpression = SOSJOEMessageCodes.JOE_T_LogicOperationDialog_Expression.Control(new Text(newFolderShell, SWT.MULTI | SWT.BORDER | SWT.WRAP));
         txtExpression.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR)
+                if (e.keyCode == SWT.CR) {
                     doSomethings();
+                }
             }
         });
         final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
         gridData.heightHint = 104;
         txtExpression.setLayoutData(gridData);
-
         list = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Operators.Control(new List(newFolderShell, SWT.BORDER));
         list.addMouseListener(new MouseAdapter() {
 
@@ -98,7 +94,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         });
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         list.setLayoutData(gridData_1);
-
         listOfIds = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Group.Control(new List(newFolderShell, SWT.BORDER));
         listOfIds.addMouseListener(new MouseAdapter() {
 
@@ -112,7 +107,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         });
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
         listOfIds.setLayoutData(gridData_2);
-
         final Composite composite_1 = new Composite(newFolderShell, SWT.NONE);
         composite_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
         final GridLayout gridLayout_2 = new GridLayout();
@@ -120,7 +114,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         gridLayout_2.marginWidth = 0;
         gridLayout_2.horizontalSpacing = 0;
         composite_1.setLayout(gridLayout_2);
-
         butCancel = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Cancel.Control(new Button(composite_1, SWT.NONE));
         butCancel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
         butCancel.addSelectionListener(new SelectionAdapter() {
@@ -130,7 +123,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
                 close();
             }
         });
-
         final Composite composite = new Composite(newFolderShell, SWT.NONE);
         final GridData gridData_3 = new GridData(GridData.END, GridData.FILL, true, false);
         composite.setLayoutData(gridData_3);
@@ -139,7 +131,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         gridLayout_1.marginWidth = 0;
         gridLayout_1.numColumns = 3;
         composite.setLayout(gridLayout_1);
-
         restoreButton = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Restore.Control(new Button(composite, SWT.NONE));
         restoreButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
         restoreButton.addSelectionListener(new SelectionAdapter() {
@@ -159,7 +150,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
                 }
             }
         });
-
         butClear = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Clear.Control(new Button(composite, SWT.NONE));
         butClear.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butClear.addSelectionListener(new SelectionAdapter() {
@@ -171,7 +161,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
                 txtExpression.setFocus();
             }
         });
-
         butApply = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Apply.Control(new Button(composite, SWT.NONE));
         butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butApply.addSelectionListener(new SelectionAdapter() {
@@ -182,42 +171,32 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
             }
         });
         newFolderShell.open();
-
-        // org.eclipse.swt.graphics.Rectangle rect = image.getBounds();
         newFolderShell.setSize(476, 406);
-
         init();
-
         org.eclipse.swt.widgets.Display display = parent.getDisplay();
         while (!newFolderShell.isDisposed()) {
-            if (!display.readAndDispatch())
+            if (!display.readAndDispatch()) {
                 display.sleep();
+            }
         }
-
         return result;
-
     }
 
     private void init() {
         try {
-
             txtExpression.setText(txt.getText());
-
             ArrayList _list = new ArrayList();
             _list.add("or ");
             _list.add("and ");
             _list.add("not ");
             _list.add("(<key1> or <key2>) and (<key3> or <key4>)");
-
             for (int i = 0; i < _list.size(); i++) {
                 list.add(sosString.parseToString(_list.get(i)));
             }
-
             for (int i = 0; i < operator.size(); i++) {
                 listOfIds.add(sosString.parseToString(operator.get(i)));
             }
             setToolTipText();
-
         } catch (Exception e) {
             new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
@@ -226,7 +205,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
     public static void main(final String[] args) {
         final Shell shell = new Shell();
         shell.pack();
-
         LogicOperationDialog logicOperationDialog = new LogicOperationDialog(SWT.NONE);
         Text text = new Text(shell, SWT.NONE);
         text.setText("1 or 2");

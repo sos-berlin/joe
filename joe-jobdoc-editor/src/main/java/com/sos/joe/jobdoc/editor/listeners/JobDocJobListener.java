@@ -14,9 +14,9 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
 
-    private final Element _job;
     private static final String[] _orderValues = { "yes", "no", "both" };
     private static final String[] _tasksValues = { "", "1", "unbounded" };
+    private final Element _job;
 
     public JobDocJobListener(final DocumentationDom dom, final Element job) {
         _dom = dom;
@@ -40,11 +40,11 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
         if (element != null) {
             try {
                 String filename = _dom.transform(element);
-                if (filename.length() > 0) {
+                if (!filename.isEmpty()) {
                     Program prog = Program.findProgram("html");
-                    if (prog != null)
+                    if (prog != null) {
                         prog.execute(filename);
-                    else {
+                    } else {
                         Runtime.getRuntime().exec(Options.getBrowserExec(filename, null));
                     }
                 }
@@ -84,13 +84,6 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
         return order == null ? false : order.equalsIgnoreCase("yes");
     }
 
-    // public String getOrder() {
-    // String order = getAttributeValue("order", _job);
-    // if (order.length() == 0)
-    // Utils.setAttribute("order", _orderValues[0], _job);
-    // return order.length() > 0 ? order : _orderValues[0];
-    // }
-    //
     public void setOrder(final String order) {
         Utils.setAttribute("order", order, _job, _dom);
     }
@@ -106,4 +99,5 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
     public void setTasks(final String tasks) {
         Utils.setAttribute("tasks", tasks, _job, _dom);
     }
+    
 }

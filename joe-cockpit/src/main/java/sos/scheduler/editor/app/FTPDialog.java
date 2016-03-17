@@ -38,16 +38,16 @@ import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public abstract class FTPDialog {
 
-    private static final Logger LOGGER = Logger.getLogger(FTPDialog.class);
-
     protected Button butExecute = null;
-    private Group schedulerGroup = null;
     protected Shell schedulerConfigurationShell = null;
     protected FTPDialogListener listener = null;
     protected Table directoryTable = null;
     protected Text txtDir = null;
     protected SOSString sosString = new SOSString();
     protected Text txtFilename = null;
+    protected FTPProfileJadeClient ftpProfileJadeClient = null;
+    private static final Logger LOGGER = Logger.getLogger(FTPDialog.class);
+    private Group schedulerGroup = null;
     private Text txtLog = null;
     private Button butChangeDir = null;
     private Button butRefresh = null;
@@ -58,7 +58,6 @@ public abstract class FTPDialog {
     private Button butClose = null;
     private FTPProfilePicker ftpProfilePicker = null;
     private TableColumn newColumnTableColumn_2 = null;
-    protected FTPProfileJadeClient ftpProfileJadeClient = null;
 
     abstract String getTitle();
 
@@ -100,267 +99,259 @@ public abstract class FTPDialog {
             schedulerConfigurationShell.setLayout(gridLayout);
             schedulerConfigurationShell.setSize(625, 486);
             schedulerConfigurationShell.setText(getTitle());
-            {
-                schedulerGroup = new Group(schedulerConfigurationShell, SWT.NONE);
-                schedulerGroup.setText("Open");
-                final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
-                gridData.widthHint = 581;
-                gridData.heightHint = 329;
-                schedulerGroup.setLayoutData(gridData);
-                final GridLayout gridLayout_1 = new GridLayout();
-                gridLayout_1.numColumns = 3;
-                gridLayout_1.marginTop = 5;
-                gridLayout_1.marginRight = 5;
-                gridLayout_1.marginLeft = 5;
-                gridLayout_1.marginBottom = 5;
-                schedulerGroup.setLayout(gridLayout_1);
-                ftpProfilePicker = new FTPProfilePicker(schedulerGroup, SWT.NONE, new File(Options.getSchedulerData(), "config/factory.ini"));
-
-                ftpProfilePicker.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+            schedulerGroup = new Group(schedulerConfigurationShell, SWT.NONE);
+            schedulerGroup.setText("Open");
+            final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
+            gridData.widthHint = 581;
+            gridData.heightHint = 329;
+            schedulerGroup.setLayoutData(gridData);
+            final GridLayout gridLayout_1 = new GridLayout();
+            gridLayout_1.numColumns = 3;
+            gridLayout_1.marginTop = 5;
+            gridLayout_1.marginRight = 5;
+            gridLayout_1.marginLeft = 5;
+            gridLayout_1.marginBottom = 5;
+            schedulerGroup.setLayout(gridLayout_1);
+            ftpProfilePicker = new FTPProfilePicker(schedulerGroup, SWT.NONE, new File(Options.getSchedulerData(), "config/factory.ini"));
+            ftpProfilePicker.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+            listener = ftpProfilePicker.getListener();
+            if (ftpProfilePicker.getSelectedProfilename() != null && !ftpProfilePicker.getSelectedProfilename().isEmpty()) {
+                ftpProfilePicker.getProfileByName(ftpProfilePicker.getSelectedProfilename());
                 listener = ftpProfilePicker.getListener();
-                if (ftpProfilePicker.getSelectedProfilename() != null && ftpProfilePicker.getSelectedProfilename().length() > 0) {
-                    ftpProfilePicker.getProfileByName(ftpProfilePicker.getSelectedProfilename());
-                    listener = ftpProfilePicker.getListener();
-                }
-                ftpProfilePicker.addSelectionListener((new SelectionAdapter() {
+            }
+            ftpProfilePicker.addSelectionListener((new SelectionAdapter() {
 
-                    public void widgetSelected(final SelectionEvent e) {
-                        try {
-                            txtDir.setText("");
-                            directoryTable.removeAll();
-                            txtFilename.setText("");
-                            listener.setCurrProfileName(ftpProfilePicker.getSelectedProfilename());
-                            ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
-                            initForm();
-                            butExecute.setEnabled(txtFilename.getText().length() > 0);
-                            _setEnabled(true);
-                        } catch (Exception r) {
-                            MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
-                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                        }
+                public void widgetSelected(final SelectionEvent e) {
+                    try {
+                        txtDir.setText("");
+                        directoryTable.removeAll();
+                        txtFilename.setText("");
+                        listener.setCurrProfileName(ftpProfilePicker.getSelectedProfilename());
+                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
+                        initForm();
+                        butExecute.setEnabled(txtFilename.getText().length() > 0);
+                        _setEnabled(true);
+                    } catch (Exception r) {
+                        MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
+                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                     }
-                }));
-                butSite = new Button(schedulerGroup, SWT.NONE);
-                butSite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-                butSite.addSelectionListener(new SelectionAdapter() {
+                }
+            }));
+            butSite = new Button(schedulerGroup, SWT.NONE);
+            butSite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+            butSite.addSelectionListener(new SelectionAdapter() {
 
-                    public void widgetSelected(final SelectionEvent e) {
+                public void widgetSelected(final SelectionEvent e) {
+                    Utils.startCursor(schedulerConfigurationShell);
+                    try {
+                        if (listener.getProfileNames().length == 0) {
+                            MainWindow.message("Please first define a Profile", SWT.ICON_WARNING);
+                            return;
+                        }
+                        disconnect();
+                        txtDir.setText(listener.getCurrProfile().getRoot());
+                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
+                        fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
+                        _setEnabled(true);
+                    } catch (Exception ex) {
+                        MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
+                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+                    }
+                    Utils.stopCursor(schedulerConfigurationShell);
+                }
+            });
+            butSite.setText("Connect");
+            txtDir = new Text(schedulerGroup, SWT.BORDER);
+            txtDir.addKeyListener(new KeyAdapter() {
+
+                public void keyPressed(final KeyEvent e) {
+                    try {
+                        if (e.keyCode == SWT.CR) {
+                            fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
+                        }
+                    } catch (Exception r) {
+                        MainWindow.message("error while reading directory: " + e.toString(), SWT.ICON_WARNING);
+                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                    }
+                }
+            });
+            txtDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+            butChangeDir = new Button(schedulerGroup, SWT.NONE);
+            butChangeDir.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    try {
+                        fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText() + "/" + txtFilename.getText()));
+                        txtDir.setText(txtDir.getText() + "/" + txtFilename.getText());
+                        txtFilename.setText("");
+                    } catch (Exception r) {
+                        MainWindow.message("error: " + e.toString(), SWT.ICON_WARNING);
+                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                    }
+                }
+            });
+            butChangeDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+            butChangeDir.setText("Change Directory ");
+            directoryTable = new Table(schedulerGroup, SWT.FULL_SELECTION | SWT.BORDER);
+            directoryTable.setSortDirection(SWT.DOWN);
+            directoryTable.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    try {
+                        if (directoryTable.getSelectionCount() > 0) {
+                            TableItem item = directoryTable.getSelection()[0];
+                            setTxtFilenameText(txtFilename, item);
+                        }
+                        butExecute.setEnabled(true);
+                    } catch (Exception ex) {
+                        LOGGER.error(ex.getMessage(), ex);
+                    }
+                }
+            });
+            directoryTable.addMouseListener(new MouseAdapter() {
+
+                public void mouseDoubleClick(final MouseEvent e) {
+                    try {
+                        if (directoryTable.getSelectionCount() > 0) {
+                            TableItem item = directoryTable.getSelection()[0];
+                            SOSFileEntry sosFileEntry = (SOSFileEntry) item.getData();
+                            if (sosFileEntry.isDirectory() && !sosFileEntry.isDirUp()) {
+                                txtDir.setText(sosFileEntry.getFullPath());
+                                txtFilename.setText("");
+                                fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
+                            } else if (sosFileEntry.isDirUp()) {
+                                String parentPath = sosFileEntry.getParentPath();
+                                txtDir.setText(parentPath);
+                                txtFilename.setText("");
+                                fillTable(ftpProfileJadeClient.getDirectoryContent(parentPath));
+                            } else {
+                                execute();
+                                disconnect();
+                            }
+                        }
+                    } catch (Exception r) {
+                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                    }
+                }
+            });
+            directoryTable.setHeaderVisible(true);
+            directoryTable.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3));
+            newColumnTableColumn_2 = new TableColumn(directoryTable, SWT.NONE);
+            newColumnTableColumn_2.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    sort(newColumnTableColumn_2);
+                }
+            });
+            directoryTable.setSortColumn(newColumnTableColumn_2);
+            newColumnTableColumn_2.setMoveable(true);
+            newColumnTableColumn_2.setWidth(176);
+            newColumnTableColumn_2.setText("Name");
+            final TableColumn newColumnTableColumn = new TableColumn(directoryTable, SWT.NONE);
+            newColumnTableColumn.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    sort(newColumnTableColumn);
+                }
+            });
+            newColumnTableColumn.setWidth(117);
+            newColumnTableColumn.setText("Size");
+            newColumnTableColumn_1 = new TableColumn(directoryTable, SWT.NONE);
+            newColumnTableColumn_1.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    sort(newColumnTableColumn_1);
+                }
+            });
+            newColumnTableColumn_1.setWidth(100);
+            newColumnTableColumn_1.setText("Type");
+            butRefresh = new Button(schedulerGroup, SWT.NONE);
+            butRefresh.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    refresh();
+                }
+            });
+            butRefresh.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+            butRefresh.setText("Refresh");
+            butNewFolder = new Button(schedulerGroup, SWT.NONE);
+            butNewFolder.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    openDialog();
+                }
+            });
+            butNewFolder.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+            butNewFolder.setText("New Folder");
+            butRemove = new Button(schedulerGroup, SWT.NONE);
+            butRemove.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    if (txtFilename.getText() != null) {
                         Utils.startCursor(schedulerConfigurationShell);
                         try {
-                            if (listener.getProfileNames().length == 0) {
-                                MainWindow.message("Please first define a Profile", SWT.ICON_WARNING);
-                                return;
-                            }
-
-                            disconnect();
-                            txtDir.setText(listener.getCurrProfile().getRoot());
-
-                            ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
-                            fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
-                            _setEnabled(true);
-                        } catch (Exception ex) {
-                            MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
-                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-                        }
-                        Utils.stopCursor(schedulerConfigurationShell);
-                    }
-                });
-                butSite.setText("Connect");
-
-                txtDir = new Text(schedulerGroup, SWT.BORDER);
-                txtDir.addKeyListener(new KeyAdapter() {
-
-                    public void keyPressed(final KeyEvent e) {
-                        try {
-                            if (e.keyCode == SWT.CR) {
+                            if (directoryTable.getSelection().length > 0) {
+                                ftpProfileJadeClient.removeFile((SOSFileEntry) directoryTable.getSelection()[0].getData());
                                 fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
                             }
                         } catch (Exception r) {
-                            MainWindow.message("error while reading directory: " + e.toString(), SWT.ICON_WARNING);
                             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
+                        Utils.stopCursor(schedulerConfigurationShell);
                     }
-                });
-                txtDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
-                butChangeDir = new Button(schedulerGroup, SWT.NONE);
-                butChangeDir.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        try {
-                            fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText() + "/" + txtFilename.getText()));
-                            txtDir.setText(txtDir.getText() + "/" + txtFilename.getText());
-                            txtFilename.setText("");
-                        } catch (Exception r) {
-                            MainWindow.message("error: " + e.toString(), SWT.ICON_WARNING);
-                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                        }
-                    }
-                });
-                butChangeDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-                butChangeDir.setText("Change Directory ");
-                directoryTable = new Table(schedulerGroup, SWT.FULL_SELECTION | SWT.BORDER);
-                directoryTable.setSortDirection(SWT.DOWN);
-                directoryTable.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        try {
-                            if (directoryTable.getSelectionCount() > 0) {
-                                TableItem item = directoryTable.getSelection()[0];
-                                setTxtFilenameText(txtFilename, item);
-                            }
-                            butExecute.setEnabled(true);
-                        } catch (Exception ex) {
-                            LOGGER.error(ex.getMessage(), ex);
-                        }
-                    }
-                });
-                directoryTable.addMouseListener(new MouseAdapter() {
-
-                    public void mouseDoubleClick(final MouseEvent e) {
-                        try {
-                            if (directoryTable.getSelectionCount() > 0) {
-                                TableItem item = directoryTable.getSelection()[0];
-                                SOSFileEntry sosFileEntry = (SOSFileEntry) item.getData();
-                                if (sosFileEntry.isDirectory() && !sosFileEntry.isDirUp()) {
-                                    txtDir.setText(sosFileEntry.getFullPath());
-                                    txtFilename.setText("");
-                                    fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
-                                } else if (sosFileEntry.isDirUp()) {
-                                    String parentPath = sosFileEntry.getParentPath();
-                                    txtDir.setText(parentPath);
-                                    txtFilename.setText("");
-                                    fillTable(ftpProfileJadeClient.getDirectoryContent(parentPath));
-                                } else {
-                                    execute();
-                                    disconnect();
-                                }
-                            }
-                        } catch (Exception r) {
-                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                        }
-                    }
-                });
-                directoryTable.setHeaderVisible(true);
-                directoryTable.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3));
-                newColumnTableColumn_2 = new TableColumn(directoryTable, SWT.NONE);
-                newColumnTableColumn_2.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        sort(newColumnTableColumn_2);
-                    }
-                });
-                directoryTable.setSortColumn(newColumnTableColumn_2);
-                newColumnTableColumn_2.setMoveable(true);
-                newColumnTableColumn_2.setWidth(176);
-                newColumnTableColumn_2.setText("Name");
-                final TableColumn newColumnTableColumn = new TableColumn(directoryTable, SWT.NONE);
-                newColumnTableColumn.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        sort(newColumnTableColumn);
-                    }
-                });
-                newColumnTableColumn.setWidth(117);
-                newColumnTableColumn.setText("Size");
-                newColumnTableColumn_1 = new TableColumn(directoryTable, SWT.NONE);
-                newColumnTableColumn_1.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        sort(newColumnTableColumn_1);
-                    }
-                });
-                newColumnTableColumn_1.setWidth(100);
-                newColumnTableColumn_1.setText("Type");
-                butRefresh = new Button(schedulerGroup, SWT.NONE);
-                butRefresh.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        refresh();
-                    }
-                });
-                butRefresh.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-                butRefresh.setText("Refresh");
-                butNewFolder = new Button(schedulerGroup, SWT.NONE);
-                butNewFolder.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        openDialog();
-                    }
-                });
-                butNewFolder.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-                butNewFolder.setText("New Folder");
-                butRemove = new Button(schedulerGroup, SWT.NONE);
-                butRemove.addSelectionListener(new SelectionAdapter() {
-
-                    public void widgetSelected(final SelectionEvent e) {
-                        if (txtFilename.getText() != null) {
-                            Utils.startCursor(schedulerConfigurationShell);
-                            try {
-                                if (directoryTable.getSelection().length > 0) {
-                                    ftpProfileJadeClient.removeFile((SOSFileEntry) directoryTable.getSelection()[0].getData());
-                                    fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
-                                }
-                            } catch (Exception r) {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                            }
-                            Utils.stopCursor(schedulerConfigurationShell);
-                        }
-                    }
-                });
-                butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-                butRemove.setText("Remove");
-                final Label filenameLabel = new Label(schedulerGroup, SWT.NONE);
-                filenameLabel.setText(getFilenameLabel());
-                txtFilename = new Text(schedulerGroup, SWT.BORDER);
-                txtFilename.addModifyListener(new ModifyListener() {
-
-                    public void modifyText(final ModifyEvent e) {
-                        if (listener == null)
-                            listener = ftpProfilePicker.getListener();
-                        butExecute.setEnabled(true);
-                    }
-                });
-                txtFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-                {
-                    butExecute = new Button(schedulerGroup, SWT.NONE);
-                    butExecute.setEnabled(false);
-                    butExecute.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-                    butExecute.addSelectionListener(new SelectionAdapter() {
-
-                        public void widgetSelected(final SelectionEvent e) {
-                            execute();
-                            try {
-                                disconnect();
-                            } catch (Exception e1) {
-                                LOGGER.error(e1.getMessage(), e1);
-                            }
-                        }
-                    });
-                    butExecute.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-                    butExecute.setText(getTitle());
                 }
-                new Label(schedulerGroup, SWT.NONE);
-                new Label(schedulerGroup, SWT.NONE);
-                butClose = new Button(schedulerGroup, SWT.NONE);
-                butClose.addSelectionListener(new SelectionAdapter() {
+            });
+            butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+            butRemove.setText("Remove");
+            final Label filenameLabel = new Label(schedulerGroup, SWT.NONE);
+            filenameLabel.setText(getFilenameLabel());
+            txtFilename = new Text(schedulerGroup, SWT.BORDER);
+            txtFilename.addModifyListener(new ModifyListener() {
 
-                    public void widgetSelected(final SelectionEvent e) {
-                        try {
-                            disconnect();
-                            schedulerConfigurationShell.dispose();
-                        } catch (Exception r) {
-                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                        }
+                public void modifyText(final ModifyEvent e) {
+                    if (listener == null) {
+                        listener = ftpProfilePicker.getListener();
                     }
-                });
-                butClose.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-                butClose.setText("Close");
-            }
+                    butExecute.setEnabled(true);
+                }
+            });
+            txtFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+            butExecute = new Button(schedulerGroup, SWT.NONE);
+            butExecute.setEnabled(false);
+            butExecute.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+            butExecute.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    execute();
+                    try {
+                        disconnect();
+                    } catch (Exception e1) {
+                        LOGGER.error(e1.getMessage(), e1);
+                    }
+                }
+            });
+            butExecute.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+            butExecute.setText(getTitle());
+            new Label(schedulerGroup, SWT.NONE);
+            new Label(schedulerGroup, SWT.NONE);
+            butClose = new Button(schedulerGroup, SWT.NONE);
+            butClose.addSelectionListener(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    try {
+                        disconnect();
+                        schedulerConfigurationShell.dispose();
+                    } catch (Exception r) {
+                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                    }
+                }
+            });
+            butClose.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+            butClose.setText("Close");
             txtLog = new Text(schedulerConfigurationShell, SWT.NONE);
             txtLog.setEditable(false);
             txtLog.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
             ftpProfilePicker.setLogText(txtLog);
-
             initForm();
             schedulerConfigurationShell.layout();
             schedulerConfigurationShell.open();
@@ -399,7 +390,6 @@ public abstract class FTPDialog {
         directoryTable.setSortDirection(SWT.UP);
         sort(newColumnTableColumn_2);
         Utils.stopCursor(schedulerConfigurationShell);
-
     }
 
     public FTPDialogListener getListener() {
@@ -441,41 +431,33 @@ public abstract class FTPDialog {
             } else {
                 directoryTable.setSortDirection(SWT.DOWN);
             }
-
             directoryTable.setSortColumn(col);
             ArrayList<HashMap<String, String>> listOfSortData = new ArrayList<HashMap<String, String>>();
             HashMap<String, SOSFileEntry> sosFileEntries = new HashMap<String, SOSFileEntry>();
             for (int i = 0; i < directoryTable.getItemCount(); i++) {
                 TableItem item = directoryTable.getItem(i);
                 HashMap<String, String> hash = new HashMap<String, String>();
-
                 for (int j = 0; j < directoryTable.getColumnCount(); j++) {
                     hash.put(directoryTable.getColumn(j).getText(), item.getText(j));
                 }
-
                 SOSFileEntry sosFileEntry = (SOSFileEntry) item.getData();
                 if (!sosFileEntry.isDirUp()) {
                     sosFileEntries.put(item.getText(0), sosFileEntry);
                     listOfSortData.add(hash);
                 }
-
             }
             listOfSortData = sos.util.SOSSort.sortArrayList(listOfSortData, col.getText());
             directoryTable.removeAll();
-
             SOSFileEntry sosFileEntryDirup = new SOSFileEntry();
             sosFileEntryDirup.setDirectory(true);
             sosFileEntryDirup.setFilename("..");
             sosFileEntryDirup.setFilesize(0);
             sosFileEntryDirup.setParentPath(new File(txtDir.getText()).getParent());
-
             TableItem item_ = new TableItem(directoryTable, SWT.NONE);
             item_.setData(sosFileEntryDirup);
             item_.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
-
             TableItem item = null;
             if (directoryTable.getSortDirection() == SWT.DOWN) {
-                // Verzeichnis
                 for (int i = 0; i < listOfSortData.size(); i++) {
                     HashMap<String, String> hash = listOfSortData.get(i);
                     SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
@@ -491,7 +473,6 @@ public abstract class FTPDialog {
                 for (int i = 0; i < listOfSortData.size(); i++) {
                     HashMap<String, String> hash = listOfSortData.get(i);
                     SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
-
                     if (!sosFileEntry.isDirectory()) {
                         item = new TableItem(directoryTable, SWT.NONE);
                         item.setData(sosFileEntry);
@@ -505,12 +486,12 @@ public abstract class FTPDialog {
                 for (int i = listOfSortData.size() - 1; i >= 0; i--) {
                     HashMap<String, String> hash = listOfSortData.get(i);
                     SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
-                    // Datei
                     if (!sosFileEntry.isDirectory()) {
                         item = new TableItem(directoryTable, SWT.NONE);
                         item.setData(sosFileEntry);
-                        if (!sosFileEntry.isDirectory())
+                        if (!sosFileEntry.isDirectory()) {
                             item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
+                        }
                         for (int j = 0; j < directoryTable.getColumnCount(); j++) {
                             item.setText(j, hash.get(directoryTable.getColumn(j).getText()));
                         }
@@ -519,7 +500,6 @@ public abstract class FTPDialog {
                 for (int i = listOfSortData.size() - 1; i >= 0; i--) {
                     HashMap<String, String> hash = listOfSortData.get(i);
                     SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
-
                     if (sosFileEntry.isDirectory()) {
                         item = new TableItem(directoryTable, SWT.NONE);
                         item.setData(sosFileEntry);
@@ -547,9 +527,7 @@ public abstract class FTPDialog {
     }
 
     public void setToolTipText() {
-
         setTooltip();
-
         directoryTable.setToolTipText(Messages.getTooltip("ftpdialog.table"));
         txtDir.setToolTipText(Messages.getTooltip("ftpdialog.directory"));
         txtLog.setToolTipText(Messages.getTooltip("ftpdialog.log"));
