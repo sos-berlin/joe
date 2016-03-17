@@ -202,7 +202,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private void addInclude() {
         listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == JOEConstants.JOB
-                || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
+                || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection()
+                : false);
         txtIncludeFilename.setText("");
         txtIncludeNode.setText("");
         butIncludesApply.setEnabled(false);
@@ -218,8 +219,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     public void initForm() {
         tParameter.removeAll();
         if (includeFile != null && !includeFile.trim().isEmpty()) {
-            if (new File(Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") 
-                    ? Options.getSchedulerData() : Options.getSchedulerData() + "/" + includeFile).exists()) {
+            if (new File(Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData()
+                    : Options.getSchedulerData() + "/" + includeFile).exists()) {
                 listener.getAllParameterDescription();
             }
         }
@@ -231,13 +232,11 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     private void startWizzard() {
         Utils.startCursor(getShell());
         if (includeFile != null && !includeFile.trim().isEmpty()) {
-            JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), 
-                    new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, JOEConstants.PARAMETER);
+            JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, JOEConstants.PARAMETER);
             paramsForm.showAllImportJobParams(includeFile);
             listener.fillIncludeParams(tableIncludeParams);
         } else {
-            JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(), listener.get_main()), 
-                    tParameter, JOEConstants.PARAMETER);
+            JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, JOEConstants.PARAMETER);
             importParameterForms.showAllImportJobs();
         }
         Utils.stopCursor(getShell());
@@ -391,8 +390,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 
                     @Override
                     public void widgetSelected(final SelectionEvent e) {
-                        JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(), 
-                                listener.get_main()), tableIncludeParameter, JOEConstants.JOB);
+                        JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(), listener.get_main()), tableIncludeParameter, JOEConstants.JOB);
                         importParameterForms.showAllImportJobs();
                     }
                 });
@@ -696,8 +694,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         if (type == JOEConstants.JOB) {
-            txtParameterDescription = JOE_T_ParameterForm_ParamDescription.Control(new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER
-                    | SWT.WRAP | SWT.H_SCROLL));
+            txtParameterDescription = JOE_T_ParameterForm_ParamDescription.Control(new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY
+                    | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
             final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
             gridData.minimumHeight = 100;
             txtParameterDescription.setLayoutData(gridData);

@@ -133,5 +133,5 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
         }
         close();
     }
-    
+
 }

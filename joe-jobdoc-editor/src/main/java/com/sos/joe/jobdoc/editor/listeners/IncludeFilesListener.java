@@ -58,5 +58,5 @@ public class IncludeFilesListener extends JobDocBaseListener<DocumentationDom> {
         _changes = changes;
         _dom.setChanged(true);
     }
-    
+
 }

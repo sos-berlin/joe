@@ -235,5 +235,5 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
     public boolean open(Collection files) {
         return false;
     }
-    
+
 }

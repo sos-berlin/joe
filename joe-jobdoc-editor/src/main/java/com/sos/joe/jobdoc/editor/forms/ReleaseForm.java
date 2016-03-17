@@ -204,5 +204,5 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
     public boolean applyChanges() {
         return false;
     }
-    
+
 }

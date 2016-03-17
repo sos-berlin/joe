@@ -135,8 +135,7 @@ public class JobAssistentRunOptionsForms {
         gridData_2.minimumHeight = 100;
         butDirectoryMonitoring.setLayoutData(gridData_2);
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) / 2, (screen.height - shellRunOptions.getBounds().height) / 2, 
-                shellRunOptions.getBounds().width, shellRunOptions.getBounds().height);
+        shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) / 2, (screen.height - shellRunOptions.getBounds().height) / 2, shellRunOptions.getBounds().width, shellRunOptions.getBounds().height);
         shellRunOptions.open();
         final Composite composite_1 = new Composite(shellRunOptions, SWT.NONE);
         final GridLayout gridLayout_2 = new GridLayout();
@@ -219,11 +218,12 @@ public class JobAssistentRunOptionsForms {
     }
 
     public void setToolTipText() {
-        // 
+        //
     }
 
     private void close() {
-        int cont = ErrorLog.message(shellRunOptions, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+        int cont = ErrorLog.message(shellRunOptions, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK
+                | SWT.CANCEL);
         if (cont == SWT.OK) {
             if (jobBackUp != null) {
                 job.setContent(jobBackUp.cloneContent());
@@ -254,8 +254,7 @@ public class JobAssistentRunOptionsForms {
             listener.newImportJob(job, assistentType);
         }
         if (Options.getPropertyBoolean("editor.job.show.wizard")) {
-            Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shellRunOptions, 
-                    false, null, false, null, true);
+            Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shellRunOptions, false, null, false, null, true);
         }
         closeDialog = true;
         shellRunOptions.dispose();

@@ -77,7 +77,8 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         if (!_isOpen) {
             _sb.append("</").append(qName).append(">").append(_doBreak ? "\n" + _indent : "");
         } else if (hasText) {
-            _sb.append(_doBreak ? _indent : "").append("</").append(qName).append(">").append(_doBreak ? "\n" + strRepeat(_indentStr, _level - 1) : "");
+            _sb.append(_doBreak ? _indent : "").append("</").append(qName).append(">").append(_doBreak ? "\n" + strRepeat(_indentStr, _level - 1)
+                    : "");
         }
         if ("div".equalsIgnoreCase(qName)) {
             _xhtml--;
@@ -113,8 +114,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
                 _xhtml = _level;
                 attributes.append(sep);
                 attributes.append("xmlns").append("=\"").append(namespaceURI).append("\"");
-            }
-            else if (!namespaceURI.equals(_ns) && !namespaceURI.equals(_xhtmlNs)) {
+            } else if (!namespaceURI.equals(_ns) && !namespaceURI.equals(_xhtmlNs)) {
                 attributes.append(sep);
                 attributes.append("xmlns").append("=\"").append(namespaceURI).append("\"");
             }
@@ -177,5 +177,5 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         sb.append(text);
         return sb;
     }
-    
+
 }

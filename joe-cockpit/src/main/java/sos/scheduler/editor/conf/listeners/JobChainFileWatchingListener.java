@@ -1,4 +1,5 @@
 package sos.scheduler.editor.conf.listeners;
+
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.IProcessClassDataProvider;
@@ -6,26 +7,24 @@ import sos.scheduler.editor.app.Utils;
 
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobChainFileWatchingListener  implements IProcessClassDataProvider{
- 
-    private JobChainListener   jobchainDataProvider        = null;
-  
-	public JobChainFileWatchingListener(JobChainListener jobchainDataProvider_) {
-	    jobchainDataProvider = jobchainDataProvider_;
-	}
+public class JobChainFileWatchingListener implements IProcessClassDataProvider {
 
-	@Override	 
+    private JobChainListener jobchainDataProvider = null;
+
+    public JobChainFileWatchingListener(JobChainListener jobchainDataProvider_) {
+        jobchainDataProvider = jobchainDataProvider_;
+    }
+
+    @Override
     public String getProcessClass() {
         return Utils.getAttributeValue("file_watching_process_class", jobchainDataProvider._chain);
     }
-	
- 
-	@Override
+
+    @Override
     public void setProcessClass(final String processClass) {
         if (processClass == "") {
             jobchainDataProvider._chain.removeAttribute("file_watching_process_class");
-        }
-        else {
+        } else {
             Utils.setAttribute("file_watching_process_class", processClass, jobchainDataProvider._chain);
         }
         jobchainDataProvider._dom.setChanged(true);
@@ -35,12 +34,12 @@ public class JobChainFileWatchingListener  implements IProcessClassDataProvider{
 
     @Override
     public void openXMLAttributeDoc(String pstrTagName, String pstrAttributeName) {
-        jobchainDataProvider.openXMLAttributeDoc(pstrTagName, pstrAttributeName);        
+        jobchainDataProvider.openXMLAttributeDoc(pstrTagName, pstrAttributeName);
     }
 
     @Override
     public void openXMLDoc(String pstrTagName) {
-        jobchainDataProvider.openXMLDoc(pstrTagName);        
+        jobchainDataProvider.openXMLDoc(pstrTagName);
     }
 
     @Override
@@ -52,7 +51,5 @@ public class JobChainFileWatchingListener  implements IProcessClassDataProvider{
     public String[] getProcessClasses() {
         return jobchainDataProvider.getProcessClasses();
     }
-	
-   
-	
+
 }

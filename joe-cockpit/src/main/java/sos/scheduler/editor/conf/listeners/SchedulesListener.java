@@ -27,7 +27,7 @@ public class SchedulesListener {
         if (!_dom.isLifeElement()) {
             _config = _dom.getRoot().getChild("config");
             _schedules = _config.getChild("schedules");
-            if (_schedules != null) { 
+            if (_schedules != null) {
                 _list = _schedules.getChildren("schedule");
             }
         }

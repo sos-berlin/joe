@@ -194,10 +194,12 @@ public class IOUtils {
                     file = new File(file.getAbsolutePath());
                 }
                 if (!file.exists()) {
-                    ErrorLog.message(Messages.getString("MainListener.fileNotFound", new String[] { file.getAbsolutePath() }), SWT.ICON_WARNING | SWT.OK);
+                    ErrorLog.message(Messages.getString("MainListener.fileNotFound", new String[] { file.getAbsolutePath() }), SWT.ICON_WARNING
+                            | SWT.OK);
                     return false;
                 } else if (!file.canRead()) {
-                    ErrorLog.message(Messages.getString("MainListener.fileReadProtected", new String[] { file.getAbsolutePath() }), SWT.ICON_WARNING | SWT.OK);
+                    ErrorLog.message(Messages.getString("MainListener.fileReadProtected", new String[] { file.getAbsolutePath() }), SWT.ICON_WARNING
+                            | SWT.OK);
                 } else {
                     int cont = SWT.NO;
                     try {
@@ -208,15 +210,15 @@ public class IOUtils {
                             dom.read(filename);
                         }
                     } catch (JDOMException e) {
-                        cont = ErrorLog.message(Messages.getString("MainListener.validationError", new String[] { file.getAbsolutePath(), e.getMessage() }), 
-                                SWT.ICON_WARNING | SWT.YES | SWT.NO);
+                        cont = ErrorLog.message(Messages.getString("MainListener.validationError", new String[] { file.getAbsolutePath(),
+                                e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
                         if (cont == SWT.NO) {
                             return false;
                         }
                     } catch (IOException e) {
                         new ErrorLog("error in " + getMethodName(), e);
-                        ErrorLog.message(Messages.getString("MainListener.errorReadingFile", new String[] { file.getAbsolutePath(), e.getMessage() }), 
-                                SWT.ICON_ERROR | SWT.OK);
+                        ErrorLog.message(Messages.getString("MainListener.errorReadingFile", new String[] { file.getAbsolutePath(), e.getMessage() }), SWT.ICON_ERROR
+                                | SWT.OK);
                         return false;
                     }
                     if (cont == SWT.YES) {

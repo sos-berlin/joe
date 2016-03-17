@@ -220,5 +220,5 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         TableColumn tableColumn6 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Regex.Control(new TableColumn(tDirectories, SWT.NONE));
         tableColumn6.setWidth(250);
     }
-    
+
 }

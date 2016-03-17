@@ -66,5 +66,5 @@ public class ReleaseListener extends JobDocBaseListener<DocumentationDom> {
         Utils.setElement("title", title, false, _release, _dom.getNamespace(), _dom);
         _dom.setChanged(true);
     }
-    
+
 }

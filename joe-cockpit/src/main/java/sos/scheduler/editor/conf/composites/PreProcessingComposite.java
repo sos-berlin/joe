@@ -125,5 +125,5 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
     public Text getTxtName() {
         return txtName;
     }
-    
+
 }

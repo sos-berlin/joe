@@ -22,12 +22,12 @@ import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.IOUtils;
 
-
- 
 public class FolderNameSelector extends Text {
 
-    @SuppressWarnings("unused") private final String conClassName = "FolderNameSelector";
-    @SuppressWarnings("unused") private final String conSVNVersion = "$Id$";
+    @SuppressWarnings("unused")
+    private final String conClassName = "FolderNameSelector";
+    @SuppressWarnings("unused")
+    private final String conSVNVersion = "$Id$";
 
     private JobListener objDataProvider = null;
     public boolean flgIsFileFromLiveFolder = false;
@@ -40,7 +40,7 @@ public class FolderNameSelector extends Text {
     public FolderNameSelector(Composite pobjComposite, int arg1) {
         super(pobjComposite, arg1);
 
-       addFocusListener(getFocusAdapter());
+        addFocusListener(getFocusAdapter());
         setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         addMouseListener(getMouseListener());
         addContextMenue();
@@ -105,6 +105,7 @@ public class FolderNameSelector extends Text {
     private Listener CopyToClipboardListener() {
 
         return new Listener() {
+
             public void handleEvent(Event e) {
             }
         };
@@ -113,6 +114,7 @@ public class FolderNameSelector extends Text {
     private Listener OpenListener() {
 
         return new Listener() {
+
             public void handleEvent(Event e) {
                 objParentForm.showWaitCursor();
                 String strLastFolderName = getText();
@@ -124,8 +126,7 @@ public class FolderNameSelector extends Text {
                 objParentForm.restoreCursor();
                 if (strT.trim().length() > 0) {
                     setText(strT);
-                }
-                else {
+                } else {
                     e.doit = false;
                 }
                 objParentForm.restoreCursor();
@@ -135,13 +136,16 @@ public class FolderNameSelector extends Text {
 
     private FocusAdapter getFocusAdapter() {
         return new FocusAdapter() {
-            @Override public void focusGained(final FocusEvent e) {
+
+            @Override
+            public void focusGained(final FocusEvent e) {
                 selectAll();
                 String strT = Messages.getTooltip(strI18NKey);
                 objParentForm.setStatusLine(strT);
             }
 
-            @Override public void focusLost(final FocusEvent e) {
+            @Override
+            public void focusLost(final FocusEvent e) {
 
             }
         };
@@ -149,15 +153,19 @@ public class FolderNameSelector extends Text {
 
     private MouseListener getMouseListener() {
         return (new MouseListener() {
-            @Override public void mouseUp(MouseEvent arg0) {
+
+            @Override
+            public void mouseUp(MouseEvent arg0) {
                 // TODO Auto-generated method stub
             }
 
-            @Override public void mouseDown(MouseEvent arg0) {
+            @Override
+            public void mouseDown(MouseEvent arg0) {
                 // TODO Auto-generated method stub
             }
 
-            @Override public void mouseDoubleClick(MouseEvent arg0) {
+            @Override
+            public void mouseDoubleClick(MouseEvent arg0) {
                 objParentForm.showWaitCursor();
                 String strT = "";
                 strFolderName = strT;
@@ -168,8 +176,7 @@ public class FolderNameSelector extends Text {
                         File objFile = new File(strLiveFolderName, strT);
                         setText(objFile.getName());
                     }
-                }
-                else {
+                } else {
                     String strLastFolderName = Options.getLastPropertyValue(strI18NKey);
                     strT = openDirectory(strLastFolderName);
 
@@ -185,8 +192,7 @@ public class FolderNameSelector extends Text {
                             // evtl. ein CallBack einbauen ...
                             // applyFile2Include();
                             objParentForm.setStatusLine(String.format("Directory '%1$s' selected", strT));
-                        }
-                        else {
+                        } else {
                             objParentForm.MsgWarning(String.format("Directory '%1$s' is not readable", strT));
                         }
                     }

@@ -113,8 +113,7 @@ public class ScriptsForm extends SOSJOEMessageCodes {
 
                 public void mouseDoubleClick(final MouseEvent e) {
                     if (table.getSelectionCount() > 0) {
-                        ContextMenu.goTo(Utils.getAttributeValue("name", listener.getParent()) + "_@_" + table.getSelection()[0].getText(0), dom, 
-                                JOEConstants.MONITOR);
+                        ContextMenu.goTo(Utils.getAttributeValue("name", listener.getParent()) + "_@_" + table.getSelection()[0].getText(0), dom, JOEConstants.MONITOR);
                     }
                 }
             });
@@ -173,5 +172,5 @@ public class ScriptsForm extends SOSJOEMessageCodes {
     public static Table getTable() {
         return table;
     }
-    
+
 }

@@ -31,106 +31,96 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainNodesForm extends Composite implements IUnsaved {
 
-	private final String conClassName = "JobChainNodesForm";
-	final String conMethodName = conClassName + "::enclosing_method";
-	@SuppressWarnings("unused")
-	private static final Logger LOGGER = Logger.getLogger(JobChainNodesForm.class);
-	private JobChainListener listener = null;
-	private SchedulerDom dom = null;
-	private CTabFolder mainTabFolder = null;
+    private final String conClassName = "JobChainNodesForm";
+    final String conMethodName = conClassName + "::enclosing_method";
+    @SuppressWarnings("unused")
+    private static final Logger LOGGER = Logger.getLogger(JobChainNodesForm.class);
+    private JobChainListener listener = null;
+    private SchedulerDom dom = null;
+    private CTabFolder mainTabFolder = null;
 
-	SOSTabJobChainNodes tbtmJobchainNode;
-	SOSTabFileOrderSource tbtmFileOrderSource;
-	SOSTabJobChainDiagram tbtmJobchainDiagram;
+    SOSTabJobChainNodes tbtmJobchainNode;
+    SOSTabFileOrderSource tbtmFileOrderSource;
+    SOSTabJobChainDiagram tbtmJobchainDiagram;
 
-	public JobChainNodesForm(Composite parent_, int style, SchedulerDom dom_,
-			Element jobChain) {
-		super(parent_, style);
-		dom = dom_;
-		listener = new JobChainListener(dom, jobChain);
-		initialize();
-	}
+    public JobChainNodesForm(Composite parent_, int style, SchedulerDom dom_, Element jobChain) {
+        super(parent_, style);
+        dom = dom_;
+        listener = new JobChainListener(dom, jobChain);
+        initialize();
+    }
 
-	@Override
-	public void apply() {
-		tbtmFileOrderSource.applyFileOrderSource();
-		tbtmJobchainNode.applyNode();
-	}
+    @Override
+    public void apply() {
+        tbtmFileOrderSource.applyFileOrderSource();
+        tbtmJobchainNode.applyNode();
+    }
 
-	@Override
-	public boolean isUnsaved() {
-		return false;
-	}
+    @Override
+    public boolean isUnsaved() {
+        return false;
+    }
 
-	private void initialize() {
-		this.setLayout(new GridLayout());
-		createGroup();
-		setSize(new Point(776, 664));
-	}
+    private void initialize() {
+        this.setLayout(new GridLayout());
+        createGroup();
+        setSize(new Point(776, 664));
+    }
 
-	private void createGroup() {
-		try {
+    private void createGroup() {
+        try {
 
-			mainTabFolder = new CTabFolder(this, SWT.NONE);
-			mainTabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-					true, 1, 1));
-			mainTabFolder.setSelectionBackground(Display.getCurrent()
-					.getSystemColor(
-							SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            mainTabFolder = new CTabFolder(this, SWT.NONE);
+            mainTabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+            mainTabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 
-			mainTabFolder.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+            mainTabFolder.addSelectionListener(new SelectionAdapter() {
 
-					int intIndex = mainTabFolder.getSelectionIndex();
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
 
-					switch (intIndex) {
-					case 0: //
-						tbtmJobchainNode.enableFileOrderSourceControls();
-						break;
-					case 2:
-						try {
-							String xml = Utils.getElementAsString(listener
-									.getChain());
-							File inputFile = new File(listener.getDom()
-									.getFilename(), listener.getChainName()
-									+ ".job_chain.xml~");
-							tbtmJobchainDiagram.jobChainDiagram(xml, inputFile);
-						} catch (Exception e1) {
-							LOGGER.error(e1.getMessage(), e1);
-						}
-						break;
+                    int intIndex = mainTabFolder.getSelectionIndex();
 
-					default:
-						break;
-					}
+                    switch (intIndex) {
+                    case 0: //
+                        tbtmJobchainNode.enableFileOrderSourceControls();
+                        break;
+                    case 2:
+                        try {
+                            String xml = Utils.getElementAsString(listener.getChain());
+                            File inputFile = new File(listener.getDom().getFilename(), listener.getChainName() + ".job_chain.xml~");
+                            tbtmJobchainDiagram.jobChainDiagram(xml, inputFile);
+                        } catch (Exception e1) {
+                            LOGGER.error(e1.getMessage(), e1);
+                        }
+                        break;
 
-				}
-			});
+                    default:
+                        break;
+                    }
 
-			tbtmJobchainNode = new SOSTabJobChainNodes("Nodes", mainTabFolder,
-					listener);
-			tbtmFileOrderSource = new SOSTabFileOrderSource(
-					"File Order Source", mainTabFolder, listener);
-			if (Options.isShowDiagram()) {
-				tbtmJobchainDiagram = new SOSTabJobChainDiagram("Diagram",
-						mainTabFolder);
-			}
+                }
+            });
 
-			mainTabFolder.setSelection(0);
-			tbtmJobchainNode.enableFileOrderSourceControls();
+            tbtmJobchainNode = new SOSTabJobChainNodes("Nodes", mainTabFolder, listener);
+            tbtmFileOrderSource = new SOSTabFileOrderSource("File Order Source", mainTabFolder, listener);
+            if (Options.isShowDiagram()) {
+                tbtmJobchainDiagram = new SOSTabJobChainDiagram("Diagram", mainTabFolder);
+            }
 
-		} catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil
-						.getMethodName()), e);
-			} catch (Exception ee) {
-			}
-		}
-	}
+            mainTabFolder.setSelection(0);
+            tbtmJobchainNode.enableFileOrderSourceControls();
 
-	public void setISchedulerUpdate(ISchedulerUpdate update_) {
-		listener.setISchedulerUpdate(update_);
-	}
+        } catch (Exception e) {
+            try {
+                new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+            } catch (Exception ee) {
+            }
+        }
+    }
+
+    public void setISchedulerUpdate(ISchedulerUpdate update_) {
+        listener.setISchedulerUpdate(update_);
+    }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

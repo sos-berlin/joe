@@ -81,5 +81,5 @@ public class NoteDialog extends Dialog {
     public void setTooltip(String string) {
         _fNote.setToolTipText(string);
     }
-    
+
 }

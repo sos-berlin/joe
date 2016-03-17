@@ -278,5 +278,5 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener> {
     public boolean applyChanges() {
         return false;
     }
-    
+
 }

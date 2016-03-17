@@ -46,8 +46,9 @@ public class SchedulerDom extends DomParser {
     private static final String[] HTTP_SERVER = { "web_service", "http.authentication", "http_directory" };
     private static final String[] COMMANDS_ELEMENTS = { "add_order", "order", "start_job" };
     private static final String[] ORDER_ELEMENTS = { "params", "environment" };
-    private static final String[] SETTINGS_ELEMENTS = { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process", "mail_on_delay_after_error",
-            "log_mail_to", "log_mail_cc", "log_mail_bcc", "log_level", "history", "history_on_process", "history_with_log" };
+    private static final String[] SETTINGS_ELEMENTS = { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process",
+            "mail_on_delay_after_error", "log_mail_to", "log_mail_cc", "log_mail_bcc", "log_level", "history", "history_on_process",
+            "history_with_log" };
     private static final String[] CONFIG_ELEMENTS_DIRECTORY = { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands", "monitors" };
     private String styleSheet = "";
     private ArrayList<String> listOfReadOnlyFiles = null;

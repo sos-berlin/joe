@@ -375,7 +375,8 @@ public class ParameterListener {
 
     public String getParameterDescription(String name) {
         return (parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get("parameter_description_"
-                + Options.getLanguage() + "_" + name).toString() : "");
+                + Options.getLanguage() + "_" + name).toString()
+                : "");
     }
 
     public String getParameterDescription(String name, String language) {

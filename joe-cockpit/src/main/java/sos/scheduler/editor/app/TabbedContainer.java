@@ -341,8 +341,8 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         CTabItem tab = getCurrentTab();
         TabData t = (TabData) tab.getData();
         String title = t.caption;
-        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty() && tab.getData("ftp_remote_directory") != null
-                && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
+        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty()
+                && tab.getData("ftp_remote_directory") != null && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
         }
         if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty()
@@ -360,8 +360,8 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         }
         TabData t = (TabData) tab.getData();
         String title = t.caption;
-        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty() && tab.getData("ftp_remote_directory") != null
-                && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
+        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty()
+                && tab.getData("ftp_remote_directory") != null && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
         }
         if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty()

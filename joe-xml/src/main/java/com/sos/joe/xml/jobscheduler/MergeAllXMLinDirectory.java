@@ -110,8 +110,9 @@ public class MergeAllXMLinDirectory {
                             parent = new Element(name);
                             config.addContent(parent);
                         }
-                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
-                        if (!Utils.getAttributeValue("name", xmlRoot).isEmpty() 
+                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName()
+                                + ".xml"));
+                        if (!Utils.getAttributeValue("name", xmlRoot).isEmpty()
                                 && !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
                             listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
                             xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);

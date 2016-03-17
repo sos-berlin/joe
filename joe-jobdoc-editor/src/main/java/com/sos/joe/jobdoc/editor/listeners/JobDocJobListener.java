@@ -99,5 +99,5 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
     public void setTasks(final String tasks) {
         Utils.setAttribute("tasks", tasks, _job, _dom);
     }
-    
+
 }

@@ -365,5 +365,5 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
     public void setApplyButton(Button b) {
         bApply = b;
     }
-    
+
 }

@@ -278,7 +278,8 @@ public class WebDavDialogListener {
             Options.saveProperties();
         } catch (Exception ex) {
             hasError = true;
-            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; error in webdav server init with [host=" + host + "], [port=" + port + "].", ex);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; error in webdav server init with [host=" + host + "], [port="
+                    + port + "].", ex);
             if (logtext != null) {
                 logtext.append("..error in webdav server init with [host=" + host + "], [port=" + port + "], cause: " + getErrorMessage(ex) + "\n");
             }
@@ -385,8 +386,8 @@ public class WebDavDialogListener {
                 hotElementname = new File(sourcefile).getName().substring(0, new File(sourcefile).getName().lastIndexOf(".xml"));
                 hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".") + 1);
                 attrname = new File(sourcefile).getName().substring(0, new File(sourcefile).getName().indexOf("." + hotElementname + ".xml"));
-                if (changes.containsKey(hotElementname + "_" + attrname) && ("modify".equals(changes.get(hotElementname + "_" + attrname)) 
-                        || "new".equals(changes.get(hotElementname + "_" + attrname)))) {
+                if (changes.containsKey(hotElementname + "_" + attrname)
+                        && ("modify".equals(changes.get(hotElementname + "_" + attrname)) || "new".equals(changes.get(hotElementname + "_" + attrname)))) {
                     saveAs(sourcefile, targetFile);
                 }
             }

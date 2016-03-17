@@ -120,5 +120,5 @@ public class SettingListener extends JobDocBaseListener<DocumentationDom> {
             return false;
         }
     }
-    
+
 }

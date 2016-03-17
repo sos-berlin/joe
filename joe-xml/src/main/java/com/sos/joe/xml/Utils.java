@@ -601,14 +601,18 @@ public class Utils {
         int counter = 0;
         while (loop) {
             if (elem != null && elem.getParentElement() != null && !"spooler".equalsIgnoreCase(elem.getParentElement().getName())) {
-                if ("job".equalsIgnoreCase(elem.getName()) || "job_chain".equalsIgnoreCase(elem.getName()) || "add_order".equalsIgnoreCase(elem.getName())
-                        || "order".equalsIgnoreCase(elem.getName()) || "process_class".equalsIgnoreCase(elem.getName())
-                        || "schedule".equalsIgnoreCase(elem.getName()) || "lock".equalsIgnoreCase(elem.getName())) {
+                if ("job".equalsIgnoreCase(elem.getName()) || "job_chain".equalsIgnoreCase(elem.getName())
+                        || "add_order".equalsIgnoreCase(elem.getName()) || "order".equalsIgnoreCase(elem.getName())
+                        || "process_class".equalsIgnoreCase(elem.getName()) || "schedule".equalsIgnoreCase(elem.getName())
+                        || "lock".equalsIgnoreCase(elem.getName())) {
                     return elem;
-                } else if ("job".equalsIgnoreCase(elem.getParentElement().getName()) || "job_chain".equalsIgnoreCase(elem.getParentElement().getName())
-                        || "add_order".equalsIgnoreCase(elem.getParentElement().getName()) || "order".equalsIgnoreCase(elem.getParentElement().getName())
+                } else if ("job".equalsIgnoreCase(elem.getParentElement().getName())
+                        || "job_chain".equalsIgnoreCase(elem.getParentElement().getName())
+                        || "add_order".equalsIgnoreCase(elem.getParentElement().getName())
+                        || "order".equalsIgnoreCase(elem.getParentElement().getName())
                         || "process_class".equalsIgnoreCase(elem.getParentElement().getName())
-                        || "schedule".equalsIgnoreCase(elem.getParentElement().getName()) || "lock".equalsIgnoreCase(elem.getParentElement().getName())) {
+                        || "schedule".equalsIgnoreCase(elem.getParentElement().getName())
+                        || "lock".equalsIgnoreCase(elem.getParentElement().getName())) {
                     return elem.getParentElement();
                 } else {
                     elem = elem.getParentElement();
@@ -667,8 +671,7 @@ public class Utils {
                 str.append("&quot;");
                 break;
             case '&':
-                if (!(s.substring(i).startsWith("&quot;") || s.substring(i).startsWith("&lt;") || s.substring(i).startsWith("&gt;") 
-                        || s.substring(i).startsWith("&amp;"))) {
+                if (!(s.substring(i).startsWith("&quot;") || s.substring(i).startsWith("&lt;") || s.substring(i).startsWith("&gt;") || s.substring(i).startsWith("&amp;"))) {
                     str.append("&amp;");
                 } else {
                     str.append(ch);

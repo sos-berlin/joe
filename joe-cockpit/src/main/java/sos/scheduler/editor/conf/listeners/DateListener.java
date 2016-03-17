@@ -227,7 +227,8 @@ public class DateListener implements Comparator {
                 if (e.getAttributeValue("at") != null) {
                     String sDate = e.getAttributeValue("at").split(" ")[0];
                     String[] splitDate = sDate.split("-");
-                    if (!exists(Utils.str2int(splitDate[0]), Utils.str2int(splitDate[1]), Utils.str2int(splitDate[2])) && !dateExistInList(parent, sDate)) {
+                    if (!exists(Utils.str2int(splitDate[0]), Utils.str2int(splitDate[1]), Utils.str2int(splitDate[2]))
+                            && !dateExistInList(parent, sDate)) {
                         Element a = new Element("date");
                         Utils.setAttribute("date", Utils.getAttributeValue("at", e).substring(0, 10), a);
                         l.add(a);
@@ -332,7 +333,7 @@ public class DateListener implements Comparator {
             _element.addContent(_parent);
         }
         if (_parent != null) {
-            if (Options.getHolidaysDescription().get(filename) != null 
+            if (Options.getHolidaysDescription().get(filename) != null
                     && Options.getHolidaysDescription().get("file_" + Options.getHolidaysDescription().get(filename)) != null
                     && !Options.getHolidaysDescription().get("file_" + Options.getHolidaysDescription().get(filename)).toString().isEmpty()) {
                 String home = Options.getSchedulerNormalizedHotFolder();

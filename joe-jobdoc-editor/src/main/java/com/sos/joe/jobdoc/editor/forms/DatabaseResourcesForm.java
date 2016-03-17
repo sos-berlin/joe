@@ -288,5 +288,5 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
     public boolean applyChanges() {
         return false;
     }
-    
+
 }

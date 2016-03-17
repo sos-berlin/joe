@@ -28,13 +28,14 @@ public class DaysListener {
     private static final String[] WEEKDAYS_GER_SHORT = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
     private static final String[] WEEKDAYS_GER = { "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag" };
     private static final String[] WEEKDAYS_ARRAY = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-    private static final String[] MONTHDAYS_ARRAY = { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th",
-            "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st" };
-    private static final String[] ULTIMOS_ARRAY = { "last day", "1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days",
-            "10 days", "11 days", "12 days", "13 days", "14 days", "15 days", "16 days", "17 days", "18 days", "19 days", "20 days", "21 days", "22 days",
-            "23 days", "24 days", "25 days", "26 days", "27 days", "28 days", "29 days", "30 days" };
-    private static final String[] MONTH = { "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november",
-            "december", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+    private static final String[] MONTHDAYS_ARRAY = { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th",
+            "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th",
+            "31st" };
+    private static final String[] ULTIMOS_ARRAY = { "last day", "1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days",
+            "9 days", "10 days", "11 days", "12 days", "13 days", "14 days", "15 days", "16 days", "17 days", "18 days", "19 days", "20 days",
+            "21 days", "22 days", "23 days", "24 days", "25 days", "26 days", "27 days", "28 days", "29 days", "30 days" };
+    private static final String[] MONTH = { "january", "february", "march", "april", "may", "june", "july", "august", "september", "october",
+            "november", "december", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
     private static final String[][] DAYS = { WEEKDAYS_ARRAY, MONTHDAYS_ARRAY, ULTIMOS_ARRAY, MONTH };
     private static final int[] OFFSET = { 1, 1, 0, 1 };
     private String[] usedDays = null;
@@ -579,8 +580,7 @@ public class DaysListener {
         if (tree != null && tree.getSelectionCount() > 0) {
             TreeItem item = f.getTree().getSelection()[0];
             if (item.getParentItem() != null
-                    && ("Holidays".equalsIgnoreCase(item.getParentItem().getText()) 
-                            || (item.getParentItem().getData("key") != null && "holidays".equals(item.getParentItem().getData("key"))))) {
+                    && ("Holidays".equalsIgnoreCase(item.getParentItem().getText()) || (item.getParentItem().getData("key") != null && "holidays".equals(item.getParentItem().getData("key"))))) {
                 if (runtime.getChild("holidays") != null) {
                     runtime = runtime.getChild("holidays");
                 } else {

@@ -131,5 +131,5 @@ public class SchedulesForm extends SOSJOEMessageCodes {
     public static Table getTable() {
         return table;
     }
-    
+
 }

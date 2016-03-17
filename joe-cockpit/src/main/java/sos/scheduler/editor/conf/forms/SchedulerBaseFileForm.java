@@ -238,7 +238,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 
             @Override
             public void keyReleased(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !"".equals(tFile.getText())){
+                if (e.keyCode == SWT.CR && !"".equals(tFile.getText())) {
                     applyFile();
                 }
             }

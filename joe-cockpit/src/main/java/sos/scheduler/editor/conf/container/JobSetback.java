@@ -345,8 +345,8 @@ public class JobSetback extends FormBaseClass {
                         MainWindow.message(SOSJOEMessageCodes.JOE_M_0034.label(), SWT.ICON_INFORMATION);
                         sSetBackCount.setFocus();
                     } else {
-                        if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText()) || maxSetback > Utils.str2int(sSetBackCount.getText())
-                                && bIsMaximum.getSelection()) {
+                        if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText())
+                                || maxSetback > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
                             MainWindow.message(SOSJOEMessageCodes.JOE_M_0035.label(), SWT.ICON_INFORMATION);
                             sSetBackCount.setFocus();
                         } else {

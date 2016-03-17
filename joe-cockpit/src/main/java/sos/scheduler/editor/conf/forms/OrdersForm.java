@@ -125,5 +125,5 @@ public class OrdersForm extends SOSJOEMessageCodes {
     public static Table getTable() {
         return table;
     }
-    
+
 }

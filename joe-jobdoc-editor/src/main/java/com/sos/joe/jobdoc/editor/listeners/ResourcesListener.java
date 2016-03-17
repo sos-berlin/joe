@@ -132,5 +132,5 @@ public class ResourcesListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isSpace() {
         return _space != null;
     }
-    
+
 }

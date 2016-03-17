@@ -369,8 +369,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                 if (tNodes.getSelectionCount() > 0) {
                     int index = tNodes.getSelectionIndex();
                     if (index > 0) {
-                        listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", 
-                                cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
+                        listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
                         selectNodes();
                     }
                 }
@@ -384,8 +383,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                 if (tNodes.getSelectionCount() > 0) {
                     int index = tNodes.getSelectionIndex();
                     if (index >= 0) {
-                        listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", 
-                                cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
+                        listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
                         selectNodes();
                     }
                 }
@@ -529,8 +527,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             if (isInsert) {
                 listener.applyInsertNode(tState.getText(), cJobChain.getText(), cNextState.getText(), cErrorState.getText(), bFullNode.getSelection());
             } else {
-                listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), cNextState.getText(), 
-                        cErrorState.getText(), bFullNode.getSelection());
+                listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), cNextState.getText(), cErrorState.getText(), bFullNode.getSelection());
             }
             isInsert = false;
             listener.fillChain(tNodes);
@@ -585,5 +582,5 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             return true;
         }
     }
-    
+
 }

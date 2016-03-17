@@ -232,8 +232,7 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
         txtStop.setLayoutData(gridData_3);
         new Label(jobGroup, SWT.NONE);
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        shellSetBack.setBounds((screen.width - shellSetBack.getBounds().width) / 2, (screen.height - shellSetBack.getBounds().height) / 2, 
-                shellSetBack.getBounds().width, shellSetBack.getBounds().height);
+        shellSetBack.setBounds((screen.width - shellSetBack.getBounds().width) / 2, (screen.height - shellSetBack.getBounds().height) / 2, shellSetBack.getBounds().width, shellSetBack.getBounds().height);
         shellSetBack.open();
         final Composite composite_1 = SOSJOEMessageCodes.JOE_Cmp_JobAssistent_Cancel.Control(new Composite(shellSetBack, SWT.NONE));
         final GridLayout gridLayout_3 = new GridLayout();
@@ -284,13 +283,11 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
                 refreshElement(true);
                 if ("yes".equalsIgnoreCase(Utils.getAttributeValue("order", job))) {
                     if (Options.getPropertyBoolean("editor.job.show.wizard")) {
-                        Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shellSetBack, 
-                                false, null, false, null, true);
+                        Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true);
                     }
                 } else {
                     if (Options.getPropertyBoolean("editor.job.show.wizard")) {
-                        Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_EndWizard.label() + "\n\n" + Utils.getElementAsString(job), shellSetBack, 
-                                false, null, false, null, true);
+                        Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_EndWizard.label() + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true);
                     }
                 }
                 closeDialog = true;
@@ -345,7 +342,7 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
     }
 
     public void setToolTipText() {
-        // 
+        //
     }
 
     private void refreshElement(boolean apply) {
@@ -376,9 +373,9 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
     }
 
     private boolean check() {
-        String sTime = (txtHour.getText() != null && !"00".equals(txtHour.getText()) ? txtHour.getText() : "")
-                .concat(txtMin.getText() != null && !"00".equals(txtMin.getText()) ? txtMin.getText() : "")
-                .concat(txtSecound.getText() != null && !"00".equals(txtSecound.getText()) ? txtSecound.getText() : "");
+        String sTime = (txtHour.getText() != null && !"00".equals(txtHour.getText()) ? txtHour.getText() : "").concat(txtMin.getText() != null
+                && !"00".equals(txtMin.getText()) ? txtMin.getText() : "").concat(txtSecound.getText() != null && !"00".equals(txtSecound.getText()) ? txtSecound.getText()
+                : "");
         String errorCount = txtErrorCount.getText() != null ? txtErrorCount.getText() : "";
         if (sTime.isEmpty() && !errorCount.isEmpty()) {
             ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_TimeMissing.label(), SWT.OK);

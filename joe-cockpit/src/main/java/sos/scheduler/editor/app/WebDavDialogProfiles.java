@@ -405,7 +405,8 @@ public class WebDavDialogProfiles {
             return;
         }
         if (butApply.getEnabled()) {
-            int cont = MainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+            int cont = MainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK
+                    | SWT.CANCEL);
             if (cont == SWT.OK) {
                 apply();
             }

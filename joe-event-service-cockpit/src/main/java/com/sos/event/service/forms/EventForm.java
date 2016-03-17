@@ -380,8 +380,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
     public void apply() {
         try {
             if (butApply.isEnabled()) {
-                listener.apply(txtEventName.getText(), txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), txtJobname.getText(), 
-                        txtJobChain.getText(), txtOrderId.getText(), txtComment.getText(), txtExitCode.getText(), getExpirationPeriod(), getExpirationCycle(), table);
+                listener.apply(txtEventName.getText(), txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), txtJobname.getText(), txtJobChain.getText(), txtOrderId.getText(), txtComment.getText(), txtExitCode.getText(), getExpirationPeriod(), getExpirationCycle(), table);
                 cboEventClass.setItems(listener.getEventClasses());
                 refresh();
             }

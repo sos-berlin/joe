@@ -53,7 +53,8 @@ public class WindowsSaver {
     }
 
     public void restoreWindow() {
-        shell.setSize(getInt(prefs.get("win:sizeX:" + className, String.valueOf(defaultSize.x)), defaultSize.x), getInt(prefs.get("win:sizeY:" + className, String.valueOf(defaultSize.y)), defaultSize.y));
+        shell.setSize(getInt(prefs.get("win:sizeX:" + className, String.valueOf(defaultSize.x)), defaultSize.x), getInt(prefs.get("win:sizeY:"
+                + className, String.valueOf(defaultSize.y)), defaultSize.y));
         shell.setLocation(getInt(prefs.get("win:locateX:" + className, String.valueOf(defaultLocation.x)), defaultLocation.x), getInt(prefs.get("win:locateY:"
                 + className, String.valueOf(defaultLocation.y)), defaultLocation.y));
     }
@@ -64,7 +65,8 @@ public class WindowsSaver {
     }
 
     public void restoreWindowSize() {
-        shell.setSize(getInt(prefs.get("win:sizeX:" + className, String.valueOf(defaultSize.x)), defaultSize.x), getInt(prefs.get("win:sizeY:" + className, String.valueOf(defaultSize.y)), defaultSize.y));
+        shell.setSize(getInt(prefs.get("win:sizeX:" + className, String.valueOf(defaultSize.x)), defaultSize.x), getInt(prefs.get("win:sizeY:"
+                + className, String.valueOf(defaultSize.y)), defaultSize.y));
     }
 
     public void saveWindow() {

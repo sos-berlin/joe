@@ -192,5 +192,5 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
         apply();
         return false;
     }
-    
+
 }

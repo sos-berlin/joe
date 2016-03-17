@@ -44,7 +44,8 @@ public class DetailXMLEditorDialogForm {
     private boolean isLifeElement = false;
     private String path = null;
 
-    public DetailXMLEditorDialogForm(String xmlFilename_, String jobChainname_, String state_, String orderId_, int type_, boolean isLifeElement_, String path_) {
+    public DetailXMLEditorDialogForm(String xmlFilename_, String jobChainname_, String state_, String orderId_, int type_, boolean isLifeElement_,
+            String path_) {
         jobChainname = jobChainname_;
         state = state_;
         xmlFilename = xmlFilename_;
@@ -81,8 +82,7 @@ public class DetailXMLEditorDialogForm {
         shell.setSize(693, 743);
         shell.setText(SOSJOEMessageCodes.JOE_M_0009.params(xmlFilename));
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width, 
-                shell.getBounds().height);
+        shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width, shell.getBounds().height);
         final Group jobGroup = SOSJOEMessageCodes.JOE_G_DetailXMLEditorDialogForm_JobGroup.Control(new Group(shell, SWT.NONE));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 2;
@@ -153,7 +153,7 @@ public class DetailXMLEditorDialogForm {
     }
 
     public void setToolTipText() {
-        // 
+        //
     }
 
     private boolean closeDialog() {
@@ -194,5 +194,5 @@ public class DetailXMLEditorDialogForm {
         tree = tree_;
         parent = parent_;
     }
-    
+
 }

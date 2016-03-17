@@ -205,8 +205,8 @@ public class ActionsListener implements IUpdateTree {
         for (int i = 0; i < cmdList.size(); i++) {
             Element cmdElem = (Element) cmdList.get(i);
             TreeItem item = new TreeItem(parent, SWT.NONE);
-            String name = Utils.getAttributeValue("job_chain", cmdElem) != null && Utils.getAttributeValue("job_chain", cmdElem).length() > 0 
-                    ? Utils.getAttributeValue("job_chain", cmdElem) : Utils.getAttributeValue("job", cmdElem);
+            String name = Utils.getAttributeValue("job_chain", cmdElem) != null && Utils.getAttributeValue("job_chain", cmdElem).length() > 0 ? Utils.getAttributeValue("job_chain", cmdElem)
+                    : Utils.getAttributeValue("job", cmdElem);
             item.setText(cmdElem.getName() + ": " + name);
             item.setData(new TreeData(JOEConstants.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
             item.setExpanded(false);
@@ -218,5 +218,5 @@ public class ActionsListener implements IUpdateTree {
             item.setText("Parameter");
         }
     }
-    
+
 }

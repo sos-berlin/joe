@@ -314,8 +314,8 @@ public class JobChainNestedListener {
         setStates();
     }
 
-    public void changeUp(Table table, boolean up, boolean isJobchainNode, String state, String job, String delay, String next, String error, int index,
-            boolean isFullNode, boolean reorder) {
+    public void changeUp(Table table, boolean up, boolean isJobchainNode, String state, String job, String delay, String next, String error,
+            int index, boolean isFullNode, boolean reorder) {
         try {
             Element node = null;
             if (reorder) {
@@ -329,7 +329,8 @@ public class JobChainNestedListener {
                         return;
                     }
                 } else {
-                    if (table.getSelectionIndex() < table.getItemCount() - 1 && "Endnode".equals(table.getItem(table.getSelectionIndex() + 1).getText(1))) {
+                    if (table.getSelectionIndex() < table.getItemCount() - 1
+                            && "Endnode".equals(table.getItem(table.getSelectionIndex() + 1).getText(1))) {
                         sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
                         return;
                     }

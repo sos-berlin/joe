@@ -89,7 +89,8 @@ public class PeriodsListener {
         if (job == null) {
             job = _parent;
         }
-        return Utils.isAttributeValue("order", job) && "job".equals(job.getName()) || Utils.isAttributeValue("id", job) && "add_order".equals(job.getName());
+        return Utils.isAttributeValue("order", job) && "job".equals(job.getName()) || Utils.isAttributeValue("id", job)
+                && "add_order".equals(job.getName());
     }
 
     public void fillTable(Table table) {
@@ -109,7 +110,8 @@ public class PeriodsListener {
                 item.setText(4, Utils.getAttributeValue("single_start", e));
                 item.setText(5, Utils.getAttributeValue("absolute_repeat", e));
                 item.setData(e);
-                String whenHoliday = Utils.getAttributeValue("when_holiday", e).isEmpty() ? "suppress execution" : Utils.getAttributeValue("when_holiday", e);
+                String whenHoliday = Utils.getAttributeValue("when_holiday", e).isEmpty() ? "suppress execution"
+                        : Utils.getAttributeValue("when_holiday", e);
                 item.setText(6, whenHoliday);
             }
         }

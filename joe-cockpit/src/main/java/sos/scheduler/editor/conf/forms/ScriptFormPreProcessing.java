@@ -137,10 +137,11 @@ public class ScriptFormPreProcessing extends ScriptForm {
     }
 
     private void getDataFromFavorite() {
-        if (!preProcessingHeader.getCboFavorite().getText().isEmpty() 
+        if (!preProcessingHeader.getCboFavorite().getText().isEmpty()
                 && Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()) != null) {
             if (this.getObjJobJAPI() != null && !this.getObjJobJAPI().getTbxClassName().getText().isEmpty() || this.getObjJobIncludeFile() != null
-                    && this.getObjJobIncludeFile().getTableIncludes().isEnabled() && this.getObjJobIncludeFile().getTableIncludes().getItemCount() > 0) {
+                    && this.getObjJobIncludeFile().getTableIncludes().isEnabled()
+                    && this.getObjJobIncludeFile().getTableIncludes().getItemCount() > 0) {
                 int c = MainWindow.message(getShell(), JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                 if (c != SWT.YES) {
                     return;

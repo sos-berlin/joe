@@ -243,5 +243,5 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             MainWindow.message(getShell(), JOE_M_0016.params(txtPassword.getText()), SWT.ICON_WARNING | SWT.OK);
         }
     }
-    
+
 }

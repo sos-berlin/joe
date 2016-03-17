@@ -60,7 +60,7 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
     }
 
     public void apply() {
-        // 
+        //
     }
 
     public boolean isUnsaved() {

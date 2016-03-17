@@ -88,5 +88,5 @@ public class ProfilesListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isNewProfile() {
         return _newProfile;
     }
-    
+
 }

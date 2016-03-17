@@ -195,17 +195,17 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
 
     @Override
     public void openBlank() {
-        // 
+        //
     }
 
     @Override
     protected void applySetting() {
-        // 
+        //
     }
 
     @Override
     public boolean applyChanges() {
         return false;
     }
-    
+
 }

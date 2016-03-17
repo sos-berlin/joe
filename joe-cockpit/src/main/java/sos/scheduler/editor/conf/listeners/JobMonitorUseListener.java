@@ -124,5 +124,5 @@ public class JobMonitorUseListener {
     public Element getJob() {
         return _job;
     }
-    
+
 }

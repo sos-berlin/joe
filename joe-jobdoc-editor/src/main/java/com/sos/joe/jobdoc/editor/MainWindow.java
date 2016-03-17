@@ -71,114 +71,83 @@ public class MainWindow implements IEditorAdapter {
     public static final String conIconICON_OPEN_GIF = "/sos/scheduler/editor/icon_open.gif";
     public static final String conIconEDITOR_PNG = "/sos/scheduler/editor/editor.png";
     public static final String JOE_I_0010 = "JOE_I_0010";
-    @I18NMessages(value = { @I18NMessage("Open"),
-            @I18NMessage(value = "Open", locale = "en_UK", explanation = "start the open dialog box ..."),
+    @I18NMessages(value = { @I18NMessage("Open"), @I18NMessage(value = "Open", locale = "en_UK", explanation = "start the open dialog box ..."),
             @I18NMessage(value = "Öffnen", locale = "de", explanation = "Den Dialog für das Öffnen einer Datei starten"),
-            @I18NMessage(value = "Open", locale = "es", explanation = "Open"),
-            @I18NMessage(value = "Open", locale = "fr", explanation = "Open"), 
-            @I18NMessage(value = "Open", locale = "it", explanation = "Open")}, msgnum = "MENU_OPEN", msgurl = "Menu-Open")
+            @I18NMessage(value = "Open", locale = "es", explanation = "Open"), @I18NMessage(value = "Open", locale = "fr", explanation = "Open"),
+            @I18NMessage(value = "Open", locale = "it", explanation = "Open") }, msgnum = "MENU_OPEN", msgurl = "Menu-Open")
     public static final String MENU_OPEN = "MENU_OPEN";
-    @I18NMessages(value = { @I18NMessage("Configuration"), 
-            @I18NMessage(value = "Configuration", locale = "en_UK", explanation = "Configuration"),
+    @I18NMessages(value = { @I18NMessage("Configuration"), @I18NMessage(value = "Configuration", locale = "en_UK", explanation = "Configuration"),
             @I18NMessage(value = "Konfiguration", locale = "de", explanation = "Configuration"),
             @I18NMessage(value = "Configuration", locale = "es", explanation = "Configuration"),
             @I18NMessage(value = "Configuration", locale = "fr", explanation = "Configuration"),
-            @I18NMessage(value = "Configuration", locale = "it", explanation = "Configuration")}, msgnum = "MENU_Configuration", msgurl = "Menu-Configuration")
+            @I18NMessage(value = "Configuration", locale = "it", explanation = "Configuration") }, msgnum = "MENU_Configuration", msgurl = "Menu-Configuration")
     public static final String MENU_Configuration = "MENU_Configuration";
-    @I18NMessages(value = { @I18NMessage("New"),
-            @I18NMessage(value = "New Object", locale = "en_UK", explanation = "New"),
+    @I18NMessages(value = { @I18NMessage("New"), @I18NMessage(value = "New Object", locale = "en_UK", explanation = "New"),
             @I18NMessage(value = "Neues Objekt erstellen", locale = "de", explanation = "New"),
-            @I18NMessage(value = "New", locale = "es", explanation = "New"),
-            @I18NMessage(value = "New", locale = "fr", explanation = "New"),
-            @I18NMessage(value = "New", locale = "it", explanation = "New")}, msgnum = "MENU_New", msgurl = "Menu-New")
+            @I18NMessage(value = "New", locale = "es", explanation = "New"), @I18NMessage(value = "New", locale = "fr", explanation = "New"),
+            @I18NMessage(value = "New", locale = "it", explanation = "New") }, msgnum = "MENU_New", msgurl = "Menu-New")
     public static final String MENU_New = "MENU_New";
     @I18NMessages(value = { @I18NMessage("Documentation"),
             @I18NMessage(value = "Modify Documentation", locale = "en_UK", explanation = "Modify Documentation of a job template"),
             @I18NMessage(value = "Dokumentation bearbeiten", locale = "de", explanation = "Dokumentation eines Job Templates bearbeiten"),
             @I18NMessage(value = "Modify Documentation", locale = "es", explanation = "Modify Documentation of a job template"),
             @I18NMessage(value = "Modify Documentation", locale = "fr", explanation = "Modify Documentation of a job template"),
-            @I18NMessage(value = "Modify Documentation", locale = "it", explanation = "Modify Documentation of a job template")}, 
-            msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
+            @I18NMessage(value = "Modify Documentation", locale = "it", explanation = "Modify Documentation of a job template") }, msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
     public static final String MENU_Documentation = "MENU_Documentation";
-    @I18NMessages(value = { @I18NMessage("EventHandler"),
-            @I18NMessage(value = "xEventHandler", locale = "en_UK", explanation = "EventHandler"),
+    @I18NMessages(value = { @I18NMessage("EventHandler"), @I18NMessage(value = "xEventHandler", locale = "en_UK", explanation = "EventHandler"),
             @I18NMessage(value = "Ereignis-Behandlung", locale = "de", explanation = "EventHandler"),
             @I18NMessage(value = "EventHandler", locale = "es", explanation = "EventHandler"),
             @I18NMessage(value = "EventHandler", locale = "fr", explanation = "EventHandler"),
-            @I18NMessage(value = "EventHandler", locale = "it", explanation = "EventHandler")}, 
-            msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")
+            @I18NMessage(value = "EventHandler", locale = "it", explanation = "EventHandler") }, msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")
     public static final String MENU_EventHandler = "MENU_EventHandler";
     @I18NMessages(value = { @I18NMessage("HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "en_UK", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolder-Objekt", locale = "de", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "es", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "fr", explanation = "HotFolderObject"),
-            @I18NMessage(value = "HotFolderObject", locale = "it", explanation = "HotFolderObject")}, 
-            msgnum = "MENU_HotFolderObject", msgurl = "Menu-HotFolderObject")
+            @I18NMessage(value = "HotFolderObject", locale = "it", explanation = "HotFolderObject") }, msgnum = "MENU_HotFolderObject", msgurl = "Menu-HotFolderObject")
     public static final String MENU_HotFolderObject = "MENU_HotFolderObject";
-    @I18NMessages(value = { @I18NMessage("Job"),
-            @I18NMessage(value = "Job", locale = "en_UK", explanation = "Job"),
-            @I18NMessage(value = "Job", locale = "de", explanation = "Job"),
-            @I18NMessage(value = "Job", locale = "es", explanation = "Job"),
-            @I18NMessage(value = "Job", locale = "fr", explanation = "Job"),
-            @I18NMessage(value = "Job", locale = "it", explanation = "Job")}, 
-            msgnum = "MENU_Job", msgurl = "Menu-Job")
+    @I18NMessages(value = { @I18NMessage("Job"), @I18NMessage(value = "Job", locale = "en_UK", explanation = "Job"),
+            @I18NMessage(value = "Job", locale = "de", explanation = "Job"), @I18NMessage(value = "Job", locale = "es", explanation = "Job"),
+            @I18NMessage(value = "Job", locale = "fr", explanation = "Job"), @I18NMessage(value = "Job", locale = "it", explanation = "Job") }, msgnum = "MENU_Job", msgurl = "Menu-Job")
     public static final String MENU_Job = "MENU_Job";
-    @I18NMessages(value = { @I18NMessage("JobChain"),
-            @I18NMessage(value = "JobChain", locale = "en_UK", explanation = "JobChain"),
+    @I18NMessages(value = { @I18NMessage("JobChain"), @I18NMessage(value = "JobChain", locale = "en_UK", explanation = "JobChain"),
             @I18NMessage(value = "Job-Kette", locale = "de", explanation = "Job-Kette"),
             @I18NMessage(value = "JobChain", locale = "es", explanation = "JobChain"),
             @I18NMessage(value = "JobChain", locale = "fr", explanation = "JobChain"),
-            @I18NMessage(value = "JobChain", locale = "it", explanation = "JobChain")}, 
-            msgnum = "MENU_JobChain", msgurl = "Menu-JobChain")
+            @I18NMessage(value = "JobChain", locale = "it", explanation = "JobChain") }, msgnum = "MENU_JobChain", msgurl = "Menu-JobChain")
     public static final String MENU_JobChain = "MENU_JobChain";
-    @I18NMessages(value = { @I18NMessage("ProcessClass"),
-            @I18NMessage(value = "ProcessClass", locale = "en_UK", explanation = "ProcessClass"),
+    @I18NMessages(value = { @I18NMessage("ProcessClass"), @I18NMessage(value = "ProcessClass", locale = "en_UK", explanation = "ProcessClass"),
             @I18NMessage(value = "Prozess Klasse", locale = "de", explanation = "ProcessClass"),
             @I18NMessage(value = "ProcessClass", locale = "es", explanation = "ProcessClass"),
             @I18NMessage(value = "ProcessClass", locale = "fr", explanation = "ProcessClass"),
-            @I18NMessage(value = "ProcessClass", locale = "it", explanation = "ProcessClass")}, 
-            msgnum = "MENU_ProcessClass", msgurl = "Menu-ProcessClass")
+            @I18NMessage(value = "ProcessClass", locale = "it", explanation = "ProcessClass") }, msgnum = "MENU_ProcessClass", msgurl = "Menu-ProcessClass")
     public static final String MENU_ProcessClass = "MENU_ProcessClass";
-    @I18NMessages(value = { @I18NMessage("Lock"),
-            @I18NMessage(value = "Lock", locale = "en_UK", explanation = "Lock"),
+    @I18NMessages(value = { @I18NMessage("Lock"), @I18NMessage(value = "Lock", locale = "en_UK", explanation = "Lock"),
             @I18NMessage(value = "Sperre", locale = "de", explanation = "Sperren verwalten bzw anlegen"),
-            @I18NMessage(value = "Lock", locale = "es", explanation = "Lock"),
-            @I18NMessage(value = "Lock", locale = "fr", explanation = "Lock"),
-            @I18NMessage(value = "Lock", locale = "it", explanation = "Lock")}, 
-            msgnum = "MENU_Lock", msgurl = "Menu-Lock")
+            @I18NMessage(value = "Lock", locale = "es", explanation = "Lock"), @I18NMessage(value = "Lock", locale = "fr", explanation = "Lock"),
+            @I18NMessage(value = "Lock", locale = "it", explanation = "Lock") }, msgnum = "MENU_Lock", msgurl = "Menu-Lock")
     public static final String MENU_Lock = "MENU_Lock";
-    @I18NMessages(value = { @I18NMessage("File"),
-            @I18NMessage(value = "File", locale = "en_UK", explanation = "File"),
+    @I18NMessages(value = { @I18NMessage("File"), @I18NMessage(value = "File", locale = "en_UK", explanation = "File"),
             @I18NMessage(value = "Datei", locale = "de", explanation = "Menü der Dateioperationen"),
-            @I18NMessage(value = "File", locale = "es", explanation = "File"),
-            @I18NMessage(value = "File", locale = "fr", explanation = "File"),
-            @I18NMessage(value = "File", locale = "it", explanation = "File")}, 
-            msgnum = "MENU_File", msgurl = "Menu-File")
+            @I18NMessage(value = "File", locale = "es", explanation = "File"), @I18NMessage(value = "File", locale = "fr", explanation = "File"),
+            @I18NMessage(value = "File", locale = "it", explanation = "File") }, msgnum = "MENU_File", msgurl = "Menu-File")
     public static final String MENU_File = "MENU_File";
-    @I18NMessages(value = { @I18NMessage("Options"),
-            @I18NMessage(value = "Options", locale = "en_UK", explanation = "Options"),
+    @I18NMessages(value = { @I18NMessage("Options"), @I18NMessage(value = "Options", locale = "en_UK", explanation = "Options"),
             @I18NMessage(value = "Einstellungen", locale = "de", explanation = "Einstellungen für JOE "),
             @I18NMessage(value = "Options", locale = "es", explanation = "Options"),
             @I18NMessage(value = "Options", locale = "fr", explanation = "Options"),
-            @I18NMessage(value = "Options", locale = "it", explanation = "Options")}, 
-            msgnum = "MENU_Options", msgurl = "Menu-Options")
+            @I18NMessage(value = "Options", locale = "it", explanation = "Options") }, msgnum = "MENU_Options", msgurl = "Menu-Options")
     public static final String MENU_Options = "MENU_Options";
-    @I18NMessages(value = { @I18NMessage("Help"),
-            @I18NMessage(value = "Help", locale = "en_UK", explanation = "Help"),
+    @I18NMessages(value = { @I18NMessage("Help"), @I18NMessage(value = "Help", locale = "en_UK", explanation = "Help"),
             @I18NMessage(value = "Hilfe", locale = "de", explanation = "Hilfe zu JOE"),
-            @I18NMessage(value = "Help", locale = "es", explanation = "Help"),
-            @I18NMessage(value = "Help", locale = "fr", explanation = "Help"),
-            @I18NMessage(value = "Help", locale = "it", explanation = "Help")}, 
-            msgnum = "MENU_Help", msgurl = "Menu-Help")
+            @I18NMessage(value = "Help", locale = "es", explanation = "Help"), @I18NMessage(value = "Help", locale = "fr", explanation = "Help"),
+            @I18NMessage(value = "Help", locale = "it", explanation = "Help") }, msgnum = "MENU_Help", msgurl = "Menu-Help")
     public static final String MENU_Help = "MENU_Help";
-    @I18NMessages(value = { @I18NMessage("About"),
-            @I18NMessage(value = "About", locale = "en_UK", explanation = "About"),
+    @I18NMessages(value = { @I18NMessage("About"), @I18NMessage(value = "About", locale = "en_UK", explanation = "About"),
             @I18NMessage(value = "Über", locale = "de", explanation = "Liefert Informationen über ..."),
-            @I18NMessage(value = "About", locale = "es", explanation = "About"),
-            @I18NMessage(value = "About", locale = "fr", explanation = "About"),
-            @I18NMessage(value = "About", locale = "it", explanation = "About")}, 
-            msgnum = "MENU_About", msgurl = "Menu-About")
+            @I18NMessage(value = "About", locale = "es", explanation = "About"), @I18NMessage(value = "About", locale = "fr", explanation = "About"),
+            @I18NMessage(value = "About", locale = "it", explanation = "About") }, msgnum = "MENU_About", msgurl = "Menu-About")
     public static final String MENU_About = "MENU_About";
     public static final String MENU_Reset_Dialog = "MENU_ResetDialog";
     public static final String MENU_Order = "MENU_Order";
@@ -266,7 +235,7 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetDisposed(final DisposeEvent e) {
-                // 
+                //
             }
         });
         objTabItem.setControl(control);
@@ -355,7 +324,7 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // 
+                //
             }
 
             @Override

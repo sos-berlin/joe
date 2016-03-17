@@ -49,8 +49,8 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
     private Button addOrderButton = null;
     private SchedulerDom _dom = null;
 
-    public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) 
-            throws JDOMException, TransformerException {
+    public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) throws JDOMException,
+            TransformerException {
         super(parent, style);
         _dom = dom;
         listener = new JobCommandExitCodesListener(dom, command, main);
@@ -126,9 +126,10 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
         gMain = JOE_G_JobCommands_Commands.Control(new Group(sashForm, SWT.NONE));
         gMain.setLayout(gridLayout);
         cExitcode = JOE_Cbo_JobCommands_Exitcode.Control(new Combo(gMain, SWT.NONE));
-        cExitcode.setItems(new String[] { "error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE",
-                "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP",
-                "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS" });
+        cExitcode.setItems(new String[] { "error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS",
+                "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP",
+                "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR",
+                "SIGSYS" });
         cExitcode.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {

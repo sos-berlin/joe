@@ -89,9 +89,7 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
                 listener.newRelease();
                 tReleases.deselectAll();
                 try {
-                    listener.applyRelease(JOE_B_ReleasesForm_NewRelease.label(), String.valueOf((listener.getRelease().getParentElement()
-                            .getChildren("release", dom.getNamespace()).size())), sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), 
-                            sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), null);
+                    listener.applyRelease(JOE_B_ReleasesForm_NewRelease.label(), String.valueOf((listener.getRelease().getParentElement().getChildren("release", dom.getNamespace()).size())), sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), null);
                     listener.fillReleases(tReleases);
                     _gui.updateReleases();
                 } catch (Exception ex) {
@@ -142,17 +140,17 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
 
     @Override
     public void openBlank() {
-        // 
+        //
     }
 
     @Override
     protected void applySetting() {
-        // 
+        //
     }
 
     @Override
     public boolean applyChanges() {
         return false;
     }
-    
+
 }

@@ -267,5 +267,5 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     public void updateTree(String arg0) {
         //
     }
-    
+
 }

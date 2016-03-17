@@ -88,5 +88,5 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
         apply();
         return false;
     }
-    
+
 }

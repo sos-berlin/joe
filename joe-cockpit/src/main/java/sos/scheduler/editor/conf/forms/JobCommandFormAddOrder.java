@@ -13,15 +13,15 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobCommandFormAddOrder extends JobCommandForm {
 
-    public JobCommandFormAddOrder(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) throws JDOMException, TransformerException {
+    public JobCommandFormAddOrder(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) throws JDOMException,
+            TransformerException {
         super(parent, style, dom, command, main);
     }
-    
-    protected void tJobModifyListener(){
+
+    protected void tJobModifyListener() {
         listener.setOrderId(tJob.getText());
     }
-    
-    
+
     protected void clearFields() {
         bBrowse.setVisible(false);
 
@@ -38,7 +38,7 @@ public class JobCommandFormAddOrder extends JobCommandForm {
         tTitle.setEnabled(true);
         bReplace.setEnabled(true);
     }
- 
+
     protected void fillCommand() {
         if (listener.getCommand() != null) {
             tStartAt.setText(Utils.getAttributeValue("at", listener.getCommand()));

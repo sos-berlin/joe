@@ -215,7 +215,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                // 
+                //
             }
         });
         table.addSelectionListener(new SelectionAdapter() {
@@ -259,5 +259,5 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         }
         butApply.setEnabled(false);
     }
-    
+
 }

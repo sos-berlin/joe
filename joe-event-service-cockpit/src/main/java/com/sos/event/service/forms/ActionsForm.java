@@ -263,5 +263,5 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
         }
         listener.treeSelection(tree, docMainForm);
     }
-    
+
 }

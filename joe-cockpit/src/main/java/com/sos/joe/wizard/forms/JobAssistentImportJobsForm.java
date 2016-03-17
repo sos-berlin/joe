@@ -476,14 +476,12 @@ public class JobAssistentImportJobsForm {
                     HashMap attr = getJobFromDescription();
                     if (assistentType == JOEConstants.JOB_WIZARD || assistentType == JOEConstants.JOB) {
                         Element job = listener.createJobElement(attr, joblistener.getJob());
-                        JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), 
-                                job, assistentType);
+                        JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), job, assistentType);
                         paramsForm.setBackUpJob(jobBackUp, jobForm);
                         paramsForm.setJobForm(jobForm);
                         paramsForm.showAllImportJobParams(txtPath.getText());
                     } else if (assistentType == JOEConstants.PARAMETER) {
-                        JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), 
-                                joblistener, tParameter, assistentType);
+                        JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, assistentType);
                         paramsForm.showAllImportJobParams(txtPath.getText());
                         paramsForm.setDetailForm(detailForm);
                     } else {
@@ -495,8 +493,8 @@ public class JobAssistentImportJobsForm {
                         Element job = null;
                         if (flagBackUpJob) {
                             if (jobBackUp != null && assistentType != JOEConstants.JOB_WIZARD) {
-                                int cont = ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION | SWT.YES
-                                        | SWT.NO | SWT.CANCEL);
+                                int cont = ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
+                                        | SWT.YES | SWT.NO | SWT.CANCEL);
                                 if (cont == SWT.CANCEL) {
                                     return;
                                 } else if (cont != SWT.YES) {
@@ -552,13 +550,13 @@ public class JobAssistentImportJobsForm {
                 butShow.setEnabled(true);
                 butBack.setEnabled(true);
             }
-            if (joblistener != null && ("start_job".equals(joblistener.getJob().getName()) || "process".equals(joblistener.getJob().getName())
-                    || "order".equals(joblistener.getJob().getName()) || "config".equals(joblistener.getJob().getName()))) {
+            if (joblistener != null
+                    && ("start_job".equals(joblistener.getJob().getName()) || "process".equals(joblistener.getJob().getName())
+                            || "order".equals(joblistener.getJob().getName()) || "config".equals(joblistener.getJob().getName()))) {
                 txtJobname.setEnabled(false);
             }
             java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width, 
-                    shell.getBounds().height);
+            shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width, shell.getBounds().height);
             final Group jobnamenGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobsGroup.Control(new Group(shell, SWT.NONE));
             final GridLayout gridLayout_1 = new GridLayout();
             gridLayout_1.marginTop = 5;

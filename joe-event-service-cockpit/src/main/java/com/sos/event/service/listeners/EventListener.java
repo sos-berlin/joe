@@ -65,8 +65,8 @@ public class EventListener {
         Element event = null;
         if (table.getSelectionCount() > 0) {
             event = (Element) table.getSelection()[0].getData();
-        } else if (table.getItemCount() > 0 && ((Element) table.getItem(0).getData() != null 
-                && ((Element) table.getItem(0).getData()).getAttributes().isEmpty())) {
+        } else if (table.getItemCount() > 0
+                && ((Element) table.getItem(0).getData() != null && ((Element) table.getItem(0).getData()).getAttributes().isEmpty())) {
             event = (Element) table.getItem(0).getData();
         } else {
             event = new Element("event");

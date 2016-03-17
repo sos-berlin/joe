@@ -390,8 +390,8 @@ public class WebDavDialog {
             listener.setLogText(txtLog);
             listener.setConnectionsname(cboConnectname);
             listener.setURL(txtUrl);
-            txtUrl.setText(listener.getCurrProfile() != null && listener.getCurrProfile().getProperty("url") != null 
-                    ? listener.getCurrProfile().getProperty("url") : "");
+            txtUrl.setText(listener.getCurrProfile() != null && listener.getCurrProfile().getProperty("url") != null ? listener.getCurrProfile().getProperty("url")
+                    : "");
             _setEnabled(false);
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
@@ -691,8 +691,8 @@ public class WebDavDialog {
     }
 
     private boolean isLifeElement(String filename) {
-        if (filename.endsWith(".job.xml") || filename.endsWith(".schedule.xml") || filename.endsWith(".job_chain.xml") || filename.endsWith(".lock.xml")
-                || filename.endsWith(".process_class.xml") || filename.endsWith(".order.xml")) {
+        if (filename.endsWith(".job.xml") || filename.endsWith(".schedule.xml") || filename.endsWith(".job_chain.xml")
+                || filename.endsWith(".lock.xml") || filename.endsWith(".process_class.xml") || filename.endsWith(".order.xml")) {
             return true;
         } else {
             return false;

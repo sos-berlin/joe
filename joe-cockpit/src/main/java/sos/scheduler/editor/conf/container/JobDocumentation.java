@@ -193,8 +193,8 @@ public class JobDocumentation extends FormBaseClass {
                         new ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), tFileName.getText(), ex));
                     } catch (Exception ee) {
                     }
-                    MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_0011.params("widgetSelected()", tFileName.getText(), ex.getMessage()), 
-                            SWT.ICON_WARNING | SWT.OK);
+                    MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_0011.params("widgetSelected()", tFileName.getText(), ex.getMessage()), SWT.ICON_WARNING
+                            | SWT.OK);
                 } finally {
                     restoreCursor();
                 }
@@ -245,8 +245,8 @@ public class JobDocumentation extends FormBaseClass {
         try {
             showWaitCursor();
             if (objJobDataProvider.getInclude() != null && !objJobDataProvider.getInclude().trim().isEmpty()) {
-                JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), 
-                        objJobDataProvider.get_main(), objJobDataProvider, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
+                JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(), objJobDataProvider, onlyParams ? JOEConstants.JOB
+                        : JOEConstants.JOB_WIZARD);
                 paramsForm.showAllImportJobParams(objJobDataProvider.getInclude());
             } else {
                 JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, JOEConstants.JOB_WIZARD);

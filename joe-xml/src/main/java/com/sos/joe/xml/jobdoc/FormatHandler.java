@@ -77,7 +77,8 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         if (!_isOpen) {
             _sb.append("</").append(qName).append(">").append((_doBreak ? "\n" + _indent : ""));
         } else if (hasText) {
-            _sb.append((_doBreak ? _indent : "")).append("</").append(qName).append(">").append((_doBreak ? "\n" + strRepeat(_indentStr, _level - 1) : ""));
+            _sb.append((_doBreak ? _indent : "")).append("</").append(qName).append(">").append((_doBreak ? "\n" + strRepeat(_indentStr, _level - 1)
+                    : ""));
         }
         if ("div".equalsIgnoreCase(qName)) {
             _xhtml--;

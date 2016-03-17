@@ -603,7 +603,8 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
     }
 
     private void addPeriod() {
-        if (optEveryDay.getSelection() && !txtDayAtHour.getText().concat(txtDayAtMinutes.getText()).concat(txtDayAtSecound.getText()).trim().isEmpty()) {
+        if (optEveryDay.getSelection()
+                && !txtDayAtHour.getText().concat(txtDayAtMinutes.getText()).concat(txtDayAtSecound.getText()).trim().isEmpty()) {
             String str = EVERY_DAY + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label() + " "
                     + Utils.getTime(23, txtDayAtHour.getText(), txtDayAtMinutes.getText(), txtDayAtSecound.getText(), false);
             if (!periodExist(str)) {
@@ -611,7 +612,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                 list.add(str);
             }
         }
-        if (optSpecificDay.getSelection() &&  txtSpeDay.getISODate() != null && !txtSpeDay.getISODate().trim().isEmpty()) {
+        if (optSpecificDay.getSelection() && txtSpeDay.getISODate() != null && !txtSpeDay.getISODate().trim().isEmpty()) {
             savePeriod(SPECIFIC_DAY);
             list.add(SPECIFIC_DAY + txtSpeDay.getISODate() + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label() + " "
                     + Utils.getTime(23, txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText(), false));
@@ -633,7 +634,8 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
         for (int i = 0; i < list.getItemCount(); i++) {
             String currStr = list.getItem(i);
             if (currStr.equalsIgnoreCase(str)) {
-                ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_PeriodExists.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_PeriodExists.label(), SWT.ICON_WARNING | SWT.OK
+                        | SWT.CANCEL);
                 return true;
             }
         }
@@ -736,8 +738,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                     Element period = (Element) periods.get(j);
                     PeriodListener p = new PeriodListener(dom);
                     p.setPeriod(period);
-                    if (selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), 
-                            p.getSingle()))) {
+                    if (selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()))) {
                         PeriodsListener _pl = new PeriodsListener(dom, speElem);
                         _pl.removePeriod(j);
                     }
@@ -911,5 +912,5 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             runTimeSingleShell.dispose();
         }
     }
-    
+
 }

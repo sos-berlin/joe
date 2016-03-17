@@ -153,7 +153,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private void addInclude() {
         listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == JOEConstants.JOB
-                || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
+                || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection()
+                : false);
         txtIncludeFilename.setText("");
         txtIncludeNode.setText("");
         butIncludesApply.setEnabled(false);
@@ -169,8 +170,9 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     public void initForm() {
         tParameter.removeAll();
         if (includeFile != null
-                && !includeFile.trim().isEmpty() && (new File(Options.getSchedulerData().endsWith("/") 
-                        || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData() : Options.getSchedulerData() + "/" + includeFile).exists())) {
+                && !includeFile.trim().isEmpty()
+                && (new File(Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData()
+                        : Options.getSchedulerData() + "/" + includeFile).exists())) {
             listener.getAllParameterDescription();
         }
         listener.fillParams(tParameter);

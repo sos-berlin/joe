@@ -142,8 +142,7 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
             });
             Utils.createHelpButton(composite, "JOE_M_JobAssistentTypeForms_Help.label", jobTypeShell);
             java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            jobTypeShell.setBounds((screen.width - jobTypeShell.getBounds().width) / 2, (screen.height - jobTypeShell.getBounds().height) / 2, 
-                    jobTypeShell.getBounds().width, jobTypeShell.getBounds().height);
+            jobTypeShell.setBounds((screen.width - jobTypeShell.getBounds().width) / 2, (screen.height - jobTypeShell.getBounds().height) / 2, jobTypeShell.getBounds().width, jobTypeShell.getBounds().height);
             jobTypeShell.open();
             jobTypeShell.layout();
             jobTypeShell.pack();
@@ -163,5 +162,5 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
             jobTypeShell.dispose();
         }
     }
-    
+
 }

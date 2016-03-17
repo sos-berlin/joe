@@ -89,5 +89,5 @@ public class ConnectionsListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isNewConnection() {
         return _newConn;
     }
-    
+
 }

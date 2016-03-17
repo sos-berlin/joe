@@ -29,5 +29,5 @@ public class JobScriptListener extends JobDocBaseListener<DocumentationDom> {
         _job.addContent(_script);
         _dom.setChanged(true);
     }
-    
+
 }

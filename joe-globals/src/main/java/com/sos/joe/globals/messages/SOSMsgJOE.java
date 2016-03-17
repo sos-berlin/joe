@@ -35,8 +35,6 @@ import com.sos.joe.globals.options.Options;
 
 public class SOSMsgJOE extends SOSMsgControl {
 
-//    private static String conClassName = "SOSMsgJOE";
-
     public SOSMsgJOE(String pstrMessageCode) {
         super(pstrMessageCode);
         if (this.Messages == null) {
@@ -45,7 +43,7 @@ public class SOSMsgJOE extends SOSMsgControl {
         } else {
             super.Messages = this.Messages;
         }
-    } // public SOSMsgJOE
+    }
 
     @Override
     public SOSMsgJOE newMsg(final String pstrMessageCode) {
@@ -72,9 +70,6 @@ public class SOSMsgJOE extends SOSMsgControl {
 
     @Override
     public IntegerField integerField(final IntegerField integerField) {
-        @SuppressWarnings("unused")
-        final String conMethodName = conClassName + "::Control";
-
         integerField.setToolTipText(tooltip());
         setKeyListener(integerField);
         integerField.addFocusListener(new FocusAdapter() {
@@ -90,7 +85,7 @@ public class SOSMsgJOE extends SOSMsgControl {
             }
         });
         return integerField;
-    } // public Text Control
+    }
 
     @Override
     public Label Control(final Label pobjC) {
@@ -253,8 +248,8 @@ public class SOSMsgJOE extends SOSMsgControl {
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
                     + com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
-            ErrorLog.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), 
-                    SWT.ICON_ERROR | SWT.OK);
+            ErrorLog.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang,
+                    e.getMessage() }), SWT.ICON_ERROR | SWT.OK);
         }
     }
 

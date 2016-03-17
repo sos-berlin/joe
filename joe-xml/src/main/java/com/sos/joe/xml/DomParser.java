@@ -376,5 +376,5 @@ public abstract class DomParser extends I18NBase {
     public void setLastModifiedFile(long lastModifiedFile) {
         _lastModifiedFile = lastModifiedFile;
     }
-    
+
 }

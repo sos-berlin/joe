@@ -108,7 +108,7 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         mailOnWarning.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                mailOnDelayAfterError.setEnabled("yes".equals(mailOnWarning.getText()) ||"yes".equals(mailOnWarning.getText()));
+                mailOnDelayAfterError.setEnabled("yes".equals(mailOnWarning.getText()) || "yes".equals(mailOnWarning.getText()));
                 listener.setValue("mail_on_warning", mailOnWarning.getText(), "no");
             }
         });
@@ -271,5 +271,5 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
             listener.setValue("history_on_process", cboHistoryOnProcess.getText());
         }
     }
-    
+
 }
