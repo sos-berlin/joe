@@ -36,7 +36,6 @@ public class FormBaseClass {
         objParent = pParentComposite;
         shell = pParentComposite.getShell();
         objJobDataProvider = pobjDataProvider;
-        GridLayout grdL = new GridLayout();
         pParentComposite.setLayout(new GridLayout());
         setResizableV(pParentComposite);
     }
@@ -72,12 +71,13 @@ public class FormBaseClass {
     }
 
     protected void restoreCursor() {
-        if (!shell.isDisposed())
+        if (!shell.isDisposed()) {
             if (objLastCursor == null) {
                 shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
             } else {
                 shell.setCursor(objLastCursor);
             }
+        }
     }
 
     protected IContainer getContainer() {

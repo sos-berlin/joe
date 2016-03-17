@@ -81,8 +81,9 @@ public class ProfilesListener extends JobDocBaseListener<DocumentationDom> {
             _profile = null;
             _dom.setChanged(true);
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     public boolean isNewProfile() {
