@@ -44,8 +44,9 @@ public class FilesListener extends JobDocBaseListener<DocumentationDom> {
                 item.setText(1, Utils.getAttributeValue("os", file));
                 item.setText(2, Utils.getAttributeValue("type", file));
                 item.setText(3, Utils.getAttributeValue("id", file));
-                if (file.equals(_file))
+                if (file.equals(_file)) {
                     table.select(index);
+                }
                 index++;
             }
         }
@@ -60,8 +61,9 @@ public class FilesListener extends JobDocBaseListener<DocumentationDom> {
             } catch (Exception e) {
                 return false;
             }
-        } else
+        } else {
             return false;
+        }
     }
 
     public void setNewFile() {
@@ -88,14 +90,16 @@ public class FilesListener extends JobDocBaseListener<DocumentationDom> {
     }
 
     public void applyFile(String file, String id, String os, String type) {
-        if (_resources == null)
+        if (_resources == null) {
             _resources = ResourcesListener.getResourcesElement(_dom, _parent);
+        }
         Utils.setAttribute("file", file, _file);
         Utils.setAttribute("id", id, _file);
         Utils.setAttribute("os", os, _file);
         Utils.setAttribute("type", type, _file);
-        if (_isNewFile)
+        if (_isNewFile) {
             _resources.addContent(_file);
+        }
         _isNewFile = false;
         _dom.setChanged(true);
     }
@@ -116,4 +120,5 @@ public class FilesListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isNewFile() {
         return _isNewFile;
     }
+
 }

@@ -30,7 +30,6 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
     private Button cIgnoreUnknownHosts = null;
     private Label lblHost = null;
     private Text tHost = null;
-    @SuppressWarnings("unused")
     private Label label4 = null;
     private Button bApply = null;
     private Button bRemove = null;
@@ -39,9 +38,6 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
     private Label label1 = null;
     private Label label2 = null;
 
-    /** @param parent
-     * @param style
-     * @throws JDOMException */
     public SecurityForm(Composite parent, int style, SchedulerDom dom, Element config) throws JDOMException {
         super(parent, style);
         listener = new SecurityListener(dom, config);
@@ -52,8 +48,9 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyHost();
+        }
     }
 
     public boolean isUnsaved() {
@@ -66,7 +63,6 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(611, 355));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData8 = new org.eclipse.swt.layout.GridData();
         gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -113,14 +109,15 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         tHost.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tHost.getText().equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(tHost.getText())) {
                     applyHost();
+                }
             }
         });
         tHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tHost.getText().equals(""));
+                bApply.setEnabled(!"".equals(tHost.getText()));
             }
         });
         label4 = JOE_L_SecurityForm_AccessLevel.Control(new Label(group, SWT.NONE));
@@ -131,14 +128,15 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         cLevel.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tHost.getText().equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(tHost.getText())) {
                     applyHost();
+                }
             }
         });
         cLevel.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tHost.getText().equals(""));
+                bApply.setEnabled(!"".equals(tHost.getText()));
             }
         });
         bApply = JOE_B_SecurityForm_ApplyHost.Control(new Button(group, SWT.NONE));
@@ -151,7 +149,6 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label1.setText("Label");
         label1.setLayoutData(gridData7);
         createTable();
         bNew = JOE_B_SecurityForm_NewHost.Control(new Button(group, SWT.NONE));
@@ -165,7 +162,6 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label2.setText("Label");
         label2.setLayoutData(gridData8);
         bRemove = JOE_B_SecurityForm_RemoveHost.Control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
@@ -177,21 +173,22 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = table.getSelectionIndex();
                     listener.removeHost(index);
                     table.remove(index);
-                    if (index >= table.getItemCount())
+                    if (index >= table.getItemCount()) {
                         index--;
+                    }
                     if (table.getItemCount() > 0) {
                         table.select(index);
                         listener.selectHost(index);
                         setInput(true);
-                    } else
+                    } else {
                         setInput(false);
+                    }
                 }
                 bRemove.setEnabled(table.getSelectionCount() > 0);
             }
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
         GridData gridData = new org.eclipse.swt.layout.GridData();
         gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -250,4 +247,4 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         bRemove.setEnabled(table.getSelectionCount() > 0);
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

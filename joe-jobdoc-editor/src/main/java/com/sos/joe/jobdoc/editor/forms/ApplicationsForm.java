@@ -43,13 +43,10 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
     private TreeItem tItem = null;
     private Element parentElement = null;
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label = null;
     private Text tName = null;
-    @SuppressWarnings("unused")
     private Label label1 = null;
     private Text tID = null;
-    @SuppressWarnings("unused")
     private Label label2 = null;
     private Combo cReference = null;
     private Label label3 = null;
@@ -75,52 +72,50 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
         fillTable();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData8 = new GridData();
-        gridData8.horizontalAlignment = GridData.FILL; // Generated
-        gridData8.verticalAlignment = GridData.BEGINNING; // Generated
+        gridData8.horizontalAlignment = GridData.FILL;
+        gridData8.verticalAlignment = GridData.BEGINNING;
         GridData gridData7 = new GridData();
-        gridData7.horizontalAlignment = GridData.FILL; // Generated
-        gridData7.verticalAlignment = GridData.CENTER; // Generated
+        gridData7.horizontalAlignment = GridData.FILL;
+        gridData7.verticalAlignment = GridData.CENTER;
         GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.verticalAlignment = GridData.CENTER; // Generated
+        gridData6.horizontalAlignment = GridData.FILL;
+        gridData6.verticalAlignment = GridData.CENTER;
         GridData gridData4 = new GridData();
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        gridData4.grabExcessHorizontalSpace = true; // Generated
-        gridData4.verticalAlignment = GridData.CENTER; // Generated
+        gridData4.horizontalAlignment = GridData.FILL;
+        gridData4.grabExcessHorizontalSpace = true;
+        gridData4.verticalAlignment = GridData.CENTER;
         GridData gridData3 = new GridData();
-        gridData3.horizontalSpan = 5; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
+        gridData3.horizontalSpan = 5;
+        gridData3.verticalAlignment = GridData.CENTER;
+        gridData3.horizontalAlignment = GridData.FILL;
         GridData gridData2 = new GridData();
-        gridData2.verticalSpan = 2; // Generated
-        gridData2.verticalAlignment = GridData.BEGINNING; // Generated
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
+        gridData2.verticalSpan = 2;
+        gridData2.verticalAlignment = GridData.BEGINNING;
+        gridData2.horizontalAlignment = GridData.FILL;
         GridData gridData1 = new GridData();
-        gridData1.horizontalSpan = 4; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.verticalAlignment = GridData.FILL; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.grabExcessVerticalSpace = true; // Generated
-        gridData1.verticalSpan = 3; // Generated
+        gridData1.horizontalSpan = 4;
+        gridData1.horizontalAlignment = GridData.FILL;
+        gridData1.verticalAlignment = GridData.FILL;
+        gridData1.grabExcessHorizontalSpace = true;
+        gridData1.grabExcessVerticalSpace = true;
+        gridData1.verticalSpan = 3;
         GridData gridData = new GridData();
-        gridData.horizontalSpan = 3; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
+        gridData.horizontalSpan = 3;
+        gridData.verticalAlignment = GridData.CENTER;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 5; // Generated
+        gridLayout.numColumns = 5;
         group = JOE_G_ApplicationsForm_Applications.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gridLayout); // Generated
+        group.setLayout(gridLayout);
         label = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
         tName = JOE_T_ApplicationsForm_Name.Control(new Text(group, SWT.BORDER));
-        tName.setLayoutData(gridData); // Generated
+        tName.setLayoutData(gridData);
         tName.addModifyListener(modifyTextListener);
-
         bApply = JOE_B_ApplicationsForm_ApplyApplication.Control(new Button(group, SWT.NONE));
-        bApply.setLayoutData(gridData2); // Generated
+        bApply.setLayoutData(gridData2);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -130,18 +125,16 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
         });
         label1 = JOE_L_ApplicationsForm_ID.Control(new SOSLabel(group, SWT.NONE));
         tID = JOE_T_ApplicationsForm_ID.Control(new Text(group, SWT.BORDER));
-        tID.setLayoutData(gridData4); // Generated
+        tID.setLayoutData(gridData4);
         tID.addModifyListener(modifyTextListener);
-
         label2 = JOE_L_ApplicationsForm_Reference.Control(new SOSLabel(group, SWT.NONE));
         createCReference();
         label3 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label3.setText("Label"); // Generated
-        label3.setLayoutData(gridData3); // Generated
+        label3.setLayoutData(gridData3);
         table = JOE_Tbl_ApplicationsForm_Applications.Control(new Table(group, SWT.BORDER));
-        table.setHeaderVisible(true); // Generated
-        table.setLayoutData(gridData1); // Generated
-        table.setLinesVisible(true); // Generated
+        table.setHeaderVisible(true);
+        table.setLayoutData(gridData1);
+        table.setLinesVisible(true);
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -155,13 +148,13 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
             }
         });
         TableColumn tableColumn = JOE_TCl_ApplicationsForm_Name.Control(new TableColumn(table, SWT.NONE));
-        tableColumn.setWidth(200); // Generated
+        tableColumn.setWidth(200);
         TableColumn tableColumn1 = JOE_TCl_ApplicationsForm_ID.Control(new TableColumn(table, SWT.NONE));
-        tableColumn1.setWidth(180); // Generated
+        tableColumn1.setWidth(180);
         TableColumn tableColumn2 = JOE_TCl_ApplicationsForm_Reference.Control(new TableColumn(table, SWT.NONE));
-        tableColumn2.setWidth(180); // Generated
+        tableColumn2.setWidth(180);
         bNew = JOE_B_ApplicationsForm_NewApplication.Control(new Button(group, SWT.NONE));
-        bNew.setLayoutData(gridData6); // Generated
+        bNew.setLayoutData(gridData6);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -173,10 +166,9 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
             }
         });
         label4 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label4.setText("Label"); // Generated
-        label4.setLayoutData(gridData7); // Generated
+        label4.setLayoutData(gridData7);
         bRemove = JOE_B_ApplicationsForm_RemoveApplication.Control(new Button(group, SWT.NONE));
-        bRemove.setLayoutData(gridData8); // Generated
+        bRemove.setLayoutData(gridData8);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -192,21 +184,21 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
         });
     }
 
-    /** This method initializes cReference */
     private void createCReference() {
         GridData gridData5 = new GridData();
-        gridData5.horizontalAlignment = GridData.FILL; // Generated
-        gridData5.grabExcessHorizontalSpace = true; // Generated
-        gridData5.verticalAlignment = GridData.CENTER; // Generated
+        gridData5.horizontalAlignment = GridData.FILL;
+        gridData5.grabExcessHorizontalSpace = true;
+        gridData5.verticalAlignment = GridData.CENTER;
         cReference = JOE_Cbo_ApplicationsForm_Reference.Control(new Combo(group, SWT.NONE));
-        cReference.setLayoutData(gridData5); // Generated
+        cReference.setLayoutData(gridData5);
         cReference.addModifyListener(modifyTextListener);
     }
 
     @Override
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyApp();
+        }
     }
 
     @Override
@@ -230,7 +222,7 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
 
     @Override
     protected void setApplyStatus() {
-        bApply.setEnabled(tName.getText().length() > 0);
+        bApply.setEnabled(!tName.getText().isEmpty());
         Utils.setBackground(tName, true);
     }
 
@@ -248,19 +240,17 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
 
     @Override
     public void openBlank() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     protected void applySetting() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     public boolean applyChanges() {
-        // TODO Auto-generated method stub
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

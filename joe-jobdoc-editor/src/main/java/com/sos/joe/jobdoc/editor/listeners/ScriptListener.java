@@ -20,8 +20,6 @@ public class ScriptListener extends JobDocBaseListener<DocumentationDom> {
     public final static int VB_SCRIPT = 4;
     public final static int SHELL = 5;
     public final static int COM = 99;
-    // public final static String[] _languages = { "", "java", "javascript",
-    // "perlscript", "vbscript", "shell", "" };
     public final static String[] _languages = LanguageDescriptorList.getLanguages4APIJobs();
 
     public ScriptListener(final DocumentationDom dom, final Element parent, final int type) {
@@ -64,27 +62,29 @@ public class ScriptListener extends JobDocBaseListener<DocumentationDom> {
             Attribute comClass = _script.getAttribute("com_class");
             Attribute resource = _script.getAttribute("resource");
             List includes = _script.getChildren("include");
-            if (language == null && javaClass == null && comClass == null && resource == null && includes.size() == 0) {
+            if (language == null && javaClass == null && comClass == null && resource == null && includes.isEmpty()) {
                 _parent.removeChild("monitor", _dom.getNamespace());
-                // _dom.setChanged(true);
             }
         }
     }
 
     public int getLanguage() {
-        if (_script != null)
+        if (_script != null) {
             return languageAsInt(_script.getAttributeValue("language"));
-        else
+        } else {
             return NONE;
+        }
     }
 
     private int languageAsInt(final String language) {
         for (int i = 0; i < _languages.length; i++) {
-            if (_languages[i].equalsIgnoreCase(language))
+            if (_languages[i].equalsIgnoreCase(language)) {
                 return i;
+            }
         }
-        if (_script != null && _script.getAttributeValue("com_class") != null)
+        if (_script != null && _script.getAttributeValue("com_class") != null) {
             return COM;
+        }
         return NONE;
     }
 
@@ -114,12 +114,12 @@ public class ScriptListener extends JobDocBaseListener<DocumentationDom> {
                 _script.removeAttribute("com_class");
                 break;
             case COM:
-                if (_script.getAttributeValue("com_class") == null)
+                if (_script.getAttributeValue("com_class") == null) {
                     _script.setAttribute("com_class", "");
+                }
                 _script.removeAttribute("java_class");
                 break;
             }
-            // if (language != NONE)
             setAttribute("language", languageAsString(language), _script, _dom);
             _dom.setChanged(true);
         }
@@ -155,4 +155,5 @@ public class ScriptListener extends JobDocBaseListener<DocumentationDom> {
         setScript();
         setAttribute("resource", DocumentationListener.getID(resource), _script, _dom);
     }
+
 }

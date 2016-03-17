@@ -16,8 +16,8 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
     private static final String[] _noLinebreaks = { "code", "strong" };
     private String _encoding = "utf-8";
     private ActionsDom _dom = null;
-    private StringBuffer _sb = new StringBuffer();
-    private StringBuffer _text = new StringBuffer();
+    private StringBuilder _sb = new StringBuilder();
+    private StringBuilder _text = new StringBuilder();
     private int _level = 0;
     private boolean _isOpen = false;
     private String _indentStr = "    ";
@@ -44,11 +44,11 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
     }
 
     public void startDocument() {
-        _sb.append("<?xml version=\"1.0\" encoding=\"" + _encoding + "\"?>\n");
+        _sb.append("<?xml version=\"1.0\" encoding=\"").append(_encoding).append("\"?>\n");
         List pis = _dom.getDoc().getContent(new ContentFilter(ContentFilter.PI));
         for (Iterator it = pis.iterator(); it.hasNext();) {
             ProcessingInstruction pi = (ProcessingInstruction) it.next();
-            _sb.append("<?" + pi.getTarget() + " " + pi.getValue() + "?>\n");
+            _sb.append("<?").append(pi.getTarget()).append(" ").append(pi.getValue()).append("?>\n");
         }
     }
 
@@ -60,27 +60,29 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         _doBreak = doLinebreak(qName);
         _level--;
         _indent = strRepeat(_indentStr, _level);
-        if (_xhtml == _level)
+        if (_xhtml == _level) {
             _xhtml = -1;
-        String text = _text.toString().trim();
-        _text = new StringBuffer();
-        boolean hasText = text.length() > 0;
-        if (_isOpen && !hasText)
-            _sb.append("/>" + (_doBreak ? "\n" + _indent : ""));
-        // _sb.append("/>\n");
-        else if (_isOpen)
-            _sb.append(">" + (_doBreak ? "\n" + _indent : ""));
-        // _sb.append(">\n");
-        if (hasText) {
-            _sb.append(formatText(text) + (_doBreak ? "\n" : ""));
         }
-        if (!_isOpen)
-            // _sb.append("</" + qName + ">" + (_doBreak ? "\n"+_indent : ""));
-            _sb.append("</" + qName + ">" + (_doBreak ? "\n" + _indent : ""));
-        else if (hasText)
-            _sb.append((_doBreak ? _indent : "") + "</" + qName + ">" + (_doBreak ? "\n" + strRepeat(_indentStr, _level - 1) : ""));
-        if (qName.equalsIgnoreCase("div"))
+        String text = _text.toString().trim();
+        _text = new StringBuilder();
+        boolean hasText = !text.isEmpty();
+        if (_isOpen && !hasText) {
+            _sb.append("/>").append(_doBreak ? "\n" + _indent : "");
+        } else if (_isOpen) {
+            _sb.append(">").append(_doBreak ? "\n" + _indent : "");
+        }
+        if (hasText) {
+            _sb.append(formatText(text)).append(_doBreak ? "\n" : "");
+        }
+        if (!_isOpen) {
+            _sb.append("</").append(qName).append(">").append(_doBreak ? "\n" + _indent : "");
+        } else if (hasText) {
+            _sb.append(_doBreak ? _indent : "").append("</").append(qName).append(">").append(_doBreak ? "\n" + strRepeat(_indentStr, _level - 1)
+                    : "");
+        }
+        if ("div".equalsIgnoreCase(qName)) {
             _xhtml--;
+        }
         _isOpen = false;
     }
 
@@ -88,68 +90,58 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         _indent = strRepeat(_indentStr, _level);
         if (_isOpen) {
             _sb.append(">");
-            _sb.append(breakline(_doBreak) + _indent);
+            _sb.append(breakline(_doBreak)).append(_indent);
         }
         _doBreak = doLinebreak(qName);
-        StringBuffer attributes = new StringBuffer();
+        StringBuilder attributes = new StringBuilder();
         String sep = " ";
         String sepStr = "\n" + _indent + strRepeat(" ", new String("<" + qName).length() + 1);
-        // iterate atributes
         for (int i = 0; i < atts.getLength(); i++) {
             String name = atts.getQName(i);
             String value = atts.getValue(i);
             String uri = atts.getURI(i);
-            // add attribute
-            if (!uri.equals("")) {
+            if (!"".equals(uri)) {
                 attributes.append(sep);
-                attributes.append("xmlns:xsi" + "=\"" + uri + "\"");
+                attributes.append("xmlns:xsi").append("=\"").append(uri).append("\"");
                 sep = sepStr;
             }
             attributes.append(sep);
-            attributes.append(name + "=\"" + value + "\"");
+            attributes.append(name).append("=\"").append(value).append("\"");
             sep = sepStr;
         }
-        // add namespace
-        if (namespaceURI != null && !namespaceURI.equals("")) {
-            // only first start of xhtml
+        if (namespaceURI != null && !"".equals(namespaceURI)) {
             if (_xhtml <= 0 && namespaceURI.equals(_xhtmlNs)) {
                 _xhtml = _level;
                 attributes.append(sep);
-                attributes.append("xmlns" + "=\"" + namespaceURI + "\"");
-            }
-            // always other namespaces
-            else if (!namespaceURI.equals(_ns) && !namespaceURI.equals(_xhtmlNs)) {
+                attributes.append("xmlns").append("=\"").append(namespaceURI).append("\"");
+            } else if (!namespaceURI.equals(_ns) && !namespaceURI.equals(_xhtmlNs)) {
                 attributes.append(sep);
-                attributes.append("xmlns" + "=\"" + namespaceURI + "\"");
+                attributes.append("xmlns").append("=\"").append(namespaceURI).append("\"");
             }
         }
-        // declare root element
         if (qName.equals(_root)) {
-            // main namespace
-            if (_ns != null && !_ns.equals("")) {
+            if (_ns != null && !"".equals(_ns)) {
                 attributes.append(sep);
-                attributes.append("xmlns" + "=\"" + _ns + "\"");
+                attributes.append("xmlns").append("=\"").append(_ns).append("\"");
             }
-            // additinal namespaces
             for (Iterator it = _dom.getAdditinalNamespaces().iterator(); it.hasNext();) {
                 Namespace ns = (Namespace) it.next();
-                if (!ns.getPrefix().equals("xsi")) {
+                if (!"xsi".equals(ns.getPrefix())) {
                     attributes.append(sep);
-                    attributes.append("xmlns:" + ns.getPrefix() + "=\"" + ns.getURI() + "\"");
+                    attributes.append("xmlns:").append(ns.getPrefix()).append("=\"").append(ns.getURI()).append("\"");
                 }
             }
         }
-        // _sb.append((doBreak ? _indent : "") + "<" + qName +
-        // attributes.toString());
-        _sb.append("<" + qName + attributes.toString());
+        _sb.append("<").append(qName).append(attributes.toString());
         _isOpen = true;
         _level++;
     }
 
     private String strRepeat(String str, int cnt) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < cnt; i++)
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < cnt; i++) {
             sb.append(str);
+        }
         return sb.toString();
     }
 
@@ -165,24 +157,25 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
             default:
                 return "\n";
             }
-        } else
+        } else {
             return "";
+        }
     }
 
     private boolean doLinebreak(String name) {
-        for (int i = 0; i < _noLinebreaks.length; i++)
-            if (_noLinebreaks[i].equals(name))
+        for (int i = 0; i < _noLinebreaks.length; i++) {
+            if (_noLinebreaks[i].equals(name)) {
                 return false;
+            }
+        }
         return true;
     }
 
-    private StringBuffer formatText(String text) {
-        StringBuffer sb = new StringBuffer(_indentStr);
+    private StringBuilder formatText(String text) {
+        StringBuilder sb = new StringBuilder(_indentStr);
         text = text.replaceAll("\\s{1,}", " ").trim();
-        // String replacement = "\n" + _indent + _indentStr;
-        // text = text.replaceAll("\n", replacement);
         sb.append(text);
-        // sb.append("\n");
         return sb;
     }
+
 }

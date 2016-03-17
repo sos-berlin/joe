@@ -11,7 +11,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ProfilesListener extends JobDocBaseListener<DocumentationDom> {
 
-    private final static Logger LOGGER = Logger.getLogger(ProfilesListener.class);
+    private static final Logger LOGGER = Logger.getLogger(ProfilesListener.class);
     private SettingsListener objSettingsListener;
     private Element _profile;
     private boolean _newProfile;
@@ -34,8 +34,9 @@ public class ProfilesListener extends JobDocBaseListener<DocumentationDom> {
             TableItem item = new TableItem(table, SWT.NONE);
             String name = Utils.getAttributeValue("name", profile);
             item.setText(name.length() > 0 ? name : defaultName);
-            if (profile.equals(_profile))
+            if (profile.equals(_profile)) {
                 table.select(index);
+            }
             index++;
         }
     }
@@ -58,7 +59,7 @@ public class ProfilesListener extends JobDocBaseListener<DocumentationDom> {
 
     public String getName() {
         String name = Utils.getAttributeValue("name", _profile);
-        return name.length() > 0 ? name : defaultName;
+        return !name.isEmpty() ? name : defaultName;
     }
 
     public Element getProfileElement() {
@@ -67,8 +68,9 @@ public class ProfilesListener extends JobDocBaseListener<DocumentationDom> {
 
     public void applyProfile(String name) {
         Utils.setAttribute("name", name, _profile);
-        if (_newProfile)
+        if (_newProfile) {
             objSettingsListener.getSettingsElement().addContent(_profile);
+        }
         _newProfile = false;
         _dom.setChanged(true);
     }
@@ -86,4 +88,5 @@ public class ProfilesListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isNewProfile() {
         return _newProfile;
     }
+
 }

@@ -34,13 +34,15 @@ public class ResourcesListener extends JobDocBaseListener<DocumentationDom> {
 
     public static void checkResources(DocumentationDom dom, Element parent) {
         Element res = parent.getChild("resources", dom.getNamespace());
-        if (res != null && res.getChildren().size() == 0)
+        if (res != null && res.getChildren().size() == 0) {
             res.detach();
+        }
     }
 
     public void setMemory(boolean enabled) {
-        if (_resources == null)
+        if (_resources == null) {
             _resources = getResourcesElement(_dom, _parent);
+        }
         _memory = _resources.getChild("memory", _dom.getNamespace());
         if (enabled && _memory == null) {
             _memory = new Element("memory", _dom.getNamespace());
@@ -67,7 +69,7 @@ public class ResourcesListener extends JobDocBaseListener<DocumentationDom> {
 
     public String getMemoryUnit() {
         String unit = Utils.getAttributeValue("unit", _memory);
-        if (unit.equals("")) {
+        if ("".equals(unit)) {
             unit = _units[1];
             Utils.setAttribute("unit", unit, _memory);
         }
@@ -87,8 +89,9 @@ public class ResourcesListener extends JobDocBaseListener<DocumentationDom> {
     }
 
     public void setSpace(boolean enabled) {
-        if (_resources == null)
+        if (_resources == null) {
             _resources = getResourcesElement(_dom, _parent);
+        }
         _space = _resources.getChild("space", _dom.getNamespace());
         if (enabled && _space == null) {
             _space = new Element("space", _dom.getNamespace());
@@ -111,7 +114,7 @@ public class ResourcesListener extends JobDocBaseListener<DocumentationDom> {
 
     public String getSpaceUnit() {
         String unit = Utils.getAttributeValue("unit", _space);
-        if (unit.equals("")) {
+        if ("".equals(unit)) {
             unit = _units[1];
             Utils.setAttribute("unit", unit, _space);
         }
@@ -129,4 +132,5 @@ public class ResourcesListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isSpace() {
         return _space != null;
     }
+
 }

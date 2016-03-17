@@ -41,17 +41,20 @@ public class JobMonitorUseListener {
     }
 
     public void selectMonitorUse(int index) {
-        if (index >= 0 && index < _monitorUseList.size())
+        if (index >= 0 && index < _monitorUseList.size()) {
             _monitorUse = _monitorUseList.get(index);
+        }
     }
 
     public void applyMonitorUse(String monitorUse, String ordering) {
-        if (_monitorUse == null)
+        if (_monitorUse == null) {
             newMonitorUse();
+        }
         Utils.setAttribute("monitor", monitorUse, _monitorUse, _dom);
         Utils.setAttribute("ordering", ordering, _monitorUse, _dom);
-        if (!_monitorUseList.contains(_monitorUse))
+        if (!_monitorUseList.contains(_monitorUse)) {
             _monitorUseList.add(_monitorUse);
+        }
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
     }
@@ -70,21 +73,23 @@ public class JobMonitorUseListener {
     }
 
     public String getOrdering() {
-        if (Utils.getAttributeValue("ordering", _monitorUse) == null || Utils.getAttributeValue("ordering", _monitorUse).length() == 0) {
+        if (Utils.getAttributeValue("ordering", _monitorUse) == null || Utils.getAttributeValue("ordering", _monitorUse).isEmpty()) {
             return "";
         } else {
-            return (Utils.getAttributeValue("ordering", _monitorUse));
+            return Utils.getAttributeValue("ordering", _monitorUse);
         }
     }
 
     public boolean isValidMonitor(String monitor) {
-        if (monitor.equals(""))
+        if ("".equals(monitor)) {
             return false;
+        }
         if (_monitorUseList != null) {
             for (Iterator<Element> it = _monitorUseList.iterator(); it.hasNext();) {
                 Element e = it.next();
-                if (Utils.getAttributeValue("monitor", e).equals(monitor))
+                if (Utils.getAttributeValue("monitor", e).equals(monitor)) {
                     return false;
+                }
             }
         }
         return true;
@@ -106,8 +111,9 @@ public class JobMonitorUseListener {
                 Object o = it.next();
                 if (o instanceof Element) {
                     String name = ((Element) o).getAttributeValue("name");
-                    if (name == null)
+                    if (name == null) {
                         name = "";
+                    }
                     names[i++] = name;
                 }
             }
@@ -118,4 +124,5 @@ public class JobMonitorUseListener {
     public Element getJob() {
         return _job;
     }
+
 }

@@ -44,18 +44,18 @@ import com.sos.resources.SOSProductionResource;
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public abstract class DomParser extends I18NBase {
 
+    protected static final String DEFAULT_ENCODING = "ISO-8859-1";
     public static final String conSchema_SCHEDULER_EDITOR_SCHEMA = "scheduler_editor_schema";
     public static final String conMessage_MAIN_LISTENER_OUTPUT_INVALID = "MainListener.outputInvalid";
-    protected static final String DEFAULT_ENCODING = "ISO-8859-1";
     private Document _doc;
     private boolean _changed = false;
     private boolean _init = false;
     private IDataChanged _changedListener;
     private final HashMap<String, String[]> _orders = new HashMap<String, String[]>();
-
     private String _xslt;
     private String _filename = null;
     private long _lastModifiedFile = 0;
+    private ClasspathResourceURIResolver objUriResolver = null;
 
     class ClasspathResourceURIResolver implements URIResolver {
 
@@ -70,17 +70,15 @@ public abstract class DomParser extends I18NBase {
         public Source resolve(String href, String base) throws TransformerException {
             String strH = href;
             StreamSource objSS = null;
-            if (strH.equalsIgnoreCase("jobdoc.languages.xml")) {
+            if ("jobdoc.languages.xml".equalsIgnoreCase(strH)) {
                 objSS = new StreamSource(this.getClass().getResourceAsStream("/com/sos/resources/xsl/" + href));
             } else {
                 if (strH.startsWith("../")) {
                     strH = strH.substring(3);
-                } else {
-                    if (strH.startsWith("./")) {
-                        strH = strH.substring(2);
-                        if (strH.startsWith("param_")) {
-                            strH = "params/" + strH;
-                        }
+                } else if (strH.startsWith("./")) {
+                    strH = strH.substring(2);
+                    if (strH.startsWith("param_")) {
+                        strH = "params/" + strH;
                     }
                 }
                 JSFile objF = new JSFile(strBasePath, strH);
@@ -98,7 +96,7 @@ public abstract class DomParser extends I18NBase {
     }
 
     public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
-        super("JOEMessages"); // , Options.getLanguage());
+        super("JOEMessages");
         _xslt = xslt;
     }
 
@@ -117,7 +115,6 @@ public abstract class DomParser extends I18NBase {
     public void setFilename(String filename) {
         _filename = filename;
         readFileLastModified();
-        // readFileMD5encrypt();
     }
 
     public String getFilename() {
@@ -182,9 +179,9 @@ public abstract class DomParser extends I18NBase {
         try {
             String[] s = new String[1];
             s[0] = "";
-            if (this instanceof ActionsDom)
+            if (this instanceof ActionsDom) {
                 s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.EVENT_SERVICE_XSD.getFullName()).toString();
-            else if (this instanceof DocumentationDom) {
+            } else if (this instanceof DocumentationDom) {
                 s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.JOB_DOC_XSD.getFullName()).toString();
             } else {
                 if (this instanceof SchedulerDom) {
@@ -233,32 +230,22 @@ public abstract class DomParser extends I18NBase {
     }
 
     protected void reorderDOM(Element element, Namespace ns) {
-        // escape element Attributes
         escape(element);
         String strT = "huhu";
-        // check if an order list exists for this element
         if (getDomOrders().containsKey(element.getName())) {
-            // get children names in right order of this element
             String[] order = getDomOrders().get(element.getName());
-            // iterate children names
             for (int i = 0; i < order.length; i++) {
-                // get _new_ list of the children
                 List list = new ArrayList(element.getChildren(order[i], ns));
-                if (list.size() > 0) {
-                    // remove them all
+                if (!list.isEmpty()) {
                     element.removeChildren(order[i], ns);
-                    // iterate children list
                     for (Iterator it2 = list.iterator(); it2.hasNext();) {
                         Element children = (Element) it2.next();
-                        // readd it at the end
                         element.addContent(children);
-                        // recursion
                         reorderDOM(children, ns);
                     }
                 }
             }
         } else {
-            // reorder the children
             List children = element.getChildren();
             for (Iterator it = children.iterator(); it.hasNext();) {
                 reorderDOM((Element) it.next(), ns);
@@ -275,31 +262,21 @@ public abstract class DomParser extends I18NBase {
     }
 
     protected void deorderDOM(Element element, Namespace ns) {
-        // escape element Attributes
         deEscape(element);
-        // check if an order list exists for this element
         if (getDomOrders().containsKey(element.getName())) {
-            // get children names in right order of this element
             String[] order = getDomOrders().get(element.getName());
-            // iterate children names
             for (int i = 0; i < order.length; i++) {
-                // get _new_ list of the children
                 List list = new ArrayList(element.getChildren(order[i], ns));
-                if (list.size() > 0) {
-                    // remove them all
+                if (!list.isEmpty()) {
                     element.removeChildren(order[i], ns);
-                    // iterate children list
                     for (Iterator it2 = list.iterator(); it2.hasNext();) {
                         Element children = (Element) it2.next();
-                        // readd it at the end
                         element.addContent(children);
-                        // recursion
                         deorderDOM(children, ns);
                     }
                 }
             }
         } else {
-            // reorder the children
             List children = element.getChildren();
             for (Iterator it = children.iterator(); it.hasNext();) {
                 deorderDOM((Element) it.next(), ns);
@@ -309,12 +286,10 @@ public abstract class DomParser extends I18NBase {
 
     public String transform(Element element, final String pstrFileName) {
         String strUserDir = System.getProperty("user.dir");
-
         String strPath = new File(pstrFileName).getParent();
         String strR = "";
         if (strPath != null) {
-            System.setProperty("user.dir", strPath);  // hat keinen Effekt auf
-                                                     // die Transformation ?
+            System.setProperty("user.dir", strPath);
         }
         try {
             objUriResolver = new ClasspathResourceURIResolver(strPath);
@@ -326,23 +301,17 @@ public abstract class DomParser extends I18NBase {
         return strR;
     }
 
-    private ClasspathResourceURIResolver objUriResolver = null;
-
     public String transform(Element element) throws TransformerFactoryConfigurationError, TransformerException, IOException {
         File tmp = null;
         try {
             Document doc = new Document((Element) element.clone());
             TransformErrorListener objEL = new TransformErrorListener();
             String strJobDocXslt = SOSProductionResource.JOB_DOC_XSLT.getFullName();
-
             StreamSource objSS = SOSProductionResource.JOB_DOC_XSLT.getAsStreamSource();
             Transformer transformer = TransformerFactory.newInstance().newTransformer(objSS);
             transformer.setErrorListener(objEL);
-
             JDOMSource in = new JDOMSource(doc);
             JDOMResult out = new JDOMResult();
-            // see:
-            // http://docs.oracle.com/javase/7/docs/api/javax/xml/transform/OutputKeys.html
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.transform(in, out);
@@ -353,7 +322,6 @@ public abstract class DomParser extends I18NBase {
             FileOutputStream objFOP = new FileOutputStream(tmp);
             OutputStreamWriter objOSW = new OutputStreamWriter(objFOP, Charset.forName("UTF-8"));
             outp.output(result, objOSW);
-
             return tmp.getAbsolutePath();
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
@@ -368,8 +336,9 @@ public abstract class DomParser extends I18NBase {
     public void setChanged(boolean changed) {
         if (!_init) {
             _changed = changed;
-            if (_changedListener != null)
+            if (_changedListener != null) {
                 _changedListener.dataChanged();
+            }
         }
     }
 
@@ -407,4 +376,5 @@ public abstract class DomParser extends I18NBase {
     public void setLastModifiedFile(long lastModifiedFile) {
         _lastModifiedFile = lastModifiedFile;
     }
+
 }

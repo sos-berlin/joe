@@ -19,15 +19,15 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ScriptListener extends JOEListener {
 
-    public final static int NONE = -1;
-    public final static String[] _languagesJob = { "shell", "java", "javascript", "VBScript", "perlScript", "" };
-    public final static String[] _languagesMonitor = { "java", "javascript", "VBScript", "perlScript", "" };
-    public String[] _languages = null;
     private SchedulerDom _dom = null;
     private Element _parent = null;
     private Element _script = null;
     private int _type = -1;
     private ISchedulerUpdate _update = null;
+    public final static int NONE = -1;
+    public final static String[] _languagesJob = { "shell", "java", "javascript", "VBScript", "perlScript", "" };
+    public final static String[] _languagesMonitor = { "java", "javascript", "VBScript", "perlScript", "" };
+    public String[] _languages = null;
 
     public ScriptListener(final SchedulerDom dom, final Element parent, final int type, final ISchedulerUpdate update) {
         _dom = dom;
@@ -44,23 +44,24 @@ public class ScriptListener extends JOEListener {
 
     private void setScript() {
         if (_type == JOEConstants.MONITOR) {
-            // Element monitor = _parent.getChild("monitor");
             Element monitor = _parent;
             if (monitor != null) {
                 _script = monitor.getChild("script");
-                // if (_script == null) monitor.detach();
             }
-        } else
+        } else {
             _script = _parent.getChild("script");
+        }
     }
 
     public int languageAsInt(final String language) {
         for (int i = 0; i < _languages.length; i++) {
-            if (_languages[i].equalsIgnoreCase(language))
+            if (_languages[i].equalsIgnoreCase(language)) {
                 return i;
+            }
         }
-        if (_script != null)
+        if (_script != null) {
             _script.setAttribute("language", "java");
+        }
         return 0;
     }
 
@@ -75,17 +76,18 @@ public class ScriptListener extends JOEListener {
 
     @Override
     public int getLanguage() {
-        if (_script != null)
+        if (_script != null) {
             return languageAsInt(_script.getAttributeValue("language"));
-        else
+        } else {
             return NONE;
+        }
     }
 
     @Override
     public String getLanguageAsString(final int language) {
-        if (_script != null)
+        if (_script != null) {
             return languageAsString(language);
-        else {
+        } else {
             return "";
         }
     }
@@ -98,26 +100,26 @@ public class ScriptListener extends JOEListener {
     public void setLanguage(final int language) {
         setScript();
         if (_script == null && language != NONE) {
-            // init script element
             _script = new Element("script");
             if (_type == JOEConstants.MONITOR) {
-                // Element monitor = _parent.getChild("monitor");
                 Element monitor = _parent;
                 if (monitor == null) {
                     monitor = new Element("monitor");
                     _parent.addContent(monitor);
                 }
                 monitor.addContent(_script);
-            } else
+            } else {
                 _parent.addContent(_script);
+            }
         }
         if (_script != null) {
             if (!isJava()) {
                 _script.removeAttribute("java_class");
                 _script.removeAttribute("java_class_path");
             }
-            if (language != NONE)
+            if (language != NONE) {
                 Utils.setAttribute("language", languageAsString(language), _script, _dom);
+            }
             _dom.setChanged(true);
             setChangedForDirectory();
         }
@@ -153,8 +155,7 @@ public class ScriptListener extends JOEListener {
     }
 
     public String getClasspath() {
-        String s = Utils.getAttributeValue("java_class_path", _script);
-        return s;
+        return Utils.getAttributeValue("java_class_path", _script);
     }
 
     public void fillTable(final Table table) {
@@ -180,8 +181,9 @@ public class ScriptListener extends JOEListener {
         String retVal = "";
         String[] inc = getIncludes();
         for (String element : inc) {
-            if (element != null)
+            if (element != null) {
                 retVal = element + ";" + retVal;
+            }
         }
         return retVal;
     }
@@ -195,24 +197,25 @@ public class ScriptListener extends JOEListener {
             while (it.hasNext()) {
                 Element include = (Element) it.next();
                 String file = "";
-                if (include.getAttribute("live_file") != null)
+                if (include.getAttribute("live_file") != null) {
                     file = include.getAttributeValue("live_file");
-                else
+                } else {
                     file = include.getAttributeValue("file");
+                }
                 includes[i++] = file == null ? "" : file;
             }
             return includes;
-        } else
+        } else {
             return new String[0];
+        }
     }
 
-    // Aus der Tabelle werden die includes für die Scripte generiert-
     public void addIncludesFromTable(final Table table, final java.util.HashMap inc) {
         if (_script != null) {
             Iterator it = inc.keySet().iterator();
             while (it.hasNext()) {
                 String key = it.next().toString();
-                String val = inc.get(key) != null && inc.get(key).equals("live_file") ? "live_file" : "file";
+                String val = inc.get(key) != null && "live_file".equals(inc.get(key)) ? "live_file" : "file";
                 Element include = new Element("include");
                 include.setAttribute(val, key);
                 _script.addContent(include);
@@ -250,11 +253,6 @@ public class ScriptListener extends JOEListener {
         }
     }
 
-    /*
-     * private void removeScriptSource() { String includes[] = getIncludes();
-     * _script.removeContent(); for (int i = 0; i < includes.length; i++) {
-     * addInclude(includes[i]); } }
-     */
     public void removeInclude(final int index) {
         if (_script != null) {
             List includeList = _script.getChildren("include");
@@ -262,8 +260,9 @@ public class ScriptListener extends JOEListener {
                 includeList.remove(index);
                 _dom.setChanged(true);
                 setChangedForDirectory();
-            } else
+            } else {
                 System.out.println("index " + index + " is out of range for include!");
+            }
         } else {
             MainWindow.message("No script element defined!", SWT.ICON_ERROR);
             System.out.println("no script element defined!");
@@ -280,24 +279,22 @@ public class ScriptListener extends JOEListener {
     public String getSource() {
         if (_script != null) {
             return _script.getTextTrim();
-        } else
+        } else {
             return "";
+        }
     }
 
-    /*
-     * public void deleteScript() { // if (_script != null)
-     * _script.removeContent(); if (_script != null) removeScriptSource(); }
-     */
     @Override
     public void setSource(final String source) {
         try {
             if (_script != null) {
                 List l = _script.getContent();
                 for (int i = 0; i < l.size(); i++) {
-                    if (l.get(i) instanceof CDATA)
+                    if (l.get(i) instanceof CDATA) {
                         l.remove(i);
+                    }
                 }
-                if (!source.equals("")) {
+                if (!"".equals(source)) {
                     _script.addContent(new CDATA(source));
                 }
                 _dom.setChanged(true);
@@ -310,14 +307,14 @@ public class ScriptListener extends JOEListener {
             try {
                 new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), jdom);
             } catch (Exception ee) {
-                // tu nichts
+                // do nothing
             }
             MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
         } catch (Exception e) {
             try {
                 new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             } catch (Exception ee) {
-                // tu nichts
+                // do nothing
             }
             MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
             System.out.println(e);
@@ -338,14 +335,14 @@ public class ScriptListener extends JOEListener {
 
     @Override
     public String getPrePostProcessingScriptSource() {
-        String strT = "";
-        return strT;
+        return "";
     }
 
     public void setName(final String name) {
         Utils.setAttribute("name", name, _parent);
-        if (_update != null)
+        if (_update != null) {
             _update.updateTreeItem(name);
+        }
         _dom.setChanged(true);
         setChangedForDirectory();
     }
@@ -363,19 +360,20 @@ public class ScriptListener extends JOEListener {
         if (_dom.isDirectory() || _dom.isLifeElement()) {
             if (_parent != null) {
                 Element job = _parent;
-                if (!job.getName().equals(_parent))
+                if (!job.getName().equals(_parent)) {
                     job = Utils.getJobElement(_parent);
+                }
                 _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
             }
         }
     }
 
-    /** @return the _dom */
     public SchedulerDom getDom() {
         return _dom;
     }
 
     public boolean isJava() {
-        return languageAsString(getLanguage()).equalsIgnoreCase("java");
+        return "java".equalsIgnoreCase(languageAsString(getLanguage()));
     }
+
 }

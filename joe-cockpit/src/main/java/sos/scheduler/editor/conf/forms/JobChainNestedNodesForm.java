@@ -83,14 +83,16 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         boolean existChainNodes = check();
         jobChainGroup.setEnabled(existChainNodes);
         bNewNode.setEnabled(existChainNodes);
-        if (existChainNodes)
+        if (existChainNodes) {
             fillChain(false, false);
+        }
         this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
     }
 
     public void apply() {
-        if (bApplyNode.isEnabled())
+        if (bApplyNode.isEnabled()) {
             applyNode();
+        }
     }
 
     public boolean isUnsaved() {
@@ -103,7 +105,6 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         setSize(new org.eclipse.swt.graphics.Point(676, 464));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         jobChainGroup = new Group(this, SWT.NONE);
         final GridLayout gridLayout = new GridLayout();
@@ -112,8 +113,6 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gridData_2.heightHint = 170;
         gNodes.setLayoutData(gridData_2);
-        // gNodes.setText(GROUP_NODES_TITLE + " for: " +
-        // listener.getChainName());
         gNodes.setText(JOE_M_JCNestedNodesForm_NestedNodes.params(listener.getChainName()));
         final GridLayout gridLayout_3 = new GridLayout();
         gridLayout_3.marginBottom = 5;
@@ -127,13 +126,15 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 
             public void modifyText(final ModifyEvent e) {
                 boolean valid = listener.isValidState(tState.getText());
-                if (!valid)
+                if (!valid) {
                     tState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-                else
+                } else {
                     tState.setBackground(null);
+                }
                 bApplyNode.setEnabled(isValidNode() && valid);
-                if (bApplyNode.getEnabled())
+                if (bApplyNode.getEnabled()) {
                     getShell().setDefaultButton(bApplyNode);
+                }
             }
         });
         final GridData gridData18 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -165,11 +166,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         cJobChain.addMouseListener(new MouseAdapter() {
 
             public void mouseDown(final MouseEvent e) {
-                if (refresh) {
-                    if (listener.getJobChains() != null) {
-                        cJobChain.setItems(listener.getJobChains());
-                        refresh = false;
-                    }
+                if (refresh && listener.getJobChains() != null) {
+                    cJobChain.setItems(listener.getJobChains());
+                    refresh = false;
                 }
             }
         });
@@ -177,8 +176,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 
             public void modifyText(final ModifyEvent e) {
                 bApplyNode.setEnabled(isValidNode());
-                if (bApplyNode.getEnabled())
+                if (bApplyNode.getEnabled()) {
                     getShell().setDefaultButton(bApplyNode);
+                }
             }
         });
         cJobChain.addKeyListener(new KeyAdapter() {
@@ -204,12 +204,11 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 
             public void widgetSelected(final SelectionEvent e) {
                 String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
-                if (jobname != null && jobname.length() > 0)
+                if (jobname != null && !jobname.isEmpty()) {
                     cJobChain.setText(jobname);
+                }
             }
         });
-        // if(!listener.get_dom().isLifeElement()) {
-        // }
         label8 = JOE_L_JobChainNodes_NextState.Control(new Label(gNodes, SWT.NONE));
         label8.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         cNextState = JOE_Cbo_JobChainNodes_NextState.Control(new Combo(gNodes, SWT.BORDER));
@@ -217,8 +216,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 
             public void modifyText(final ModifyEvent e) {
                 bApplyNode.setEnabled(isValidNode());
-                if (bApplyNode.getEnabled())
+                if (bApplyNode.getEnabled()) {
                     getShell().setDefaultButton(bApplyNode);
+                }
             }
         });
         cNextState.addKeyListener(new KeyAdapter() {
@@ -255,8 +255,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 
             public void modifyText(final ModifyEvent e) {
                 bApplyNode.setEnabled(isValidNode());
-                if (bApplyNode.getEnabled())
+                if (bApplyNode.getEnabled()) {
                     getShell().setDefaultButton(bApplyNode);
+                }
             }
         });
         cErrorState.addKeyListener(new KeyAdapter() {
@@ -277,18 +278,12 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                 isInsert = true;
                 String state = tState.getText();
                 tState.setText("");
-                // listener.selectNode(null);
-                // tDelay.setText("");
                 cErrorState.setText("");
-                // cOnError.setText("");
                 cJobChain.setText("");
-                // nächste status
                 cNextState.setText(state);
                 enableNode(true);
                 bFullNode.setSelection(true);
                 bEndNode.setSelection(false);
-                // System.out.println("state=" + state +
-                // " tNextstate.getText(): " + tNextState.getText());
             }
         });
         butInsert.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -334,7 +329,6 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                 bApplyNode.setEnabled(isValidNode());
             }
         });
-        // Format
         new Label(gNodes, SWT.NONE);
         tNodes = JOE_Tbl_JCNestedNodesForm_Nodes.Control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));
         tNodes.addSelectionListener(new SelectionAdapter() {
@@ -375,16 +369,6 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                 if (tNodes.getSelectionCount() > 0) {
                     int index = tNodes.getSelectionIndex();
                     if (index > 0) {
-                        // es ist nur erlaubt zwischen fullnode oder zwischen
-                        // endnode zu wechseln
-                        /*
-                         * if(tNodes.getItemCount() > index){ String select =
-                         * tNodes.getSelection()[0].getText(1); String up =
-                         * tNodes.getItem(index-1).getText(1);
-                         * if(!select.equals(up)) { return;
-                         * //System.out.println("up:    " +select + "   " + up);
-                         * } }
-                         */
                         listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
                         selectNodes();
                     }
@@ -398,16 +382,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             public void widgetSelected(final SelectionEvent e) {
                 if (tNodes.getSelectionCount() > 0) {
                     int index = tNodes.getSelectionIndex();
-                    if (index == tNodes.getItemCount() - 1) {
-                        // System.out.println("Datensatz ist bereits ganz unten.");
-                    } else if (index >= 0) {
-                        /*
-                         * String select = tNodes.getSelection()[0].getText(1);
-                         * String up = tNodes.getItem(index+1).getText(1);
-                         * if(!select.equals(up)) {
-                         * //System.out.println("down: " + select + "   " + up);
-                         * return; }
-                         */
+                    if (index >= 0) {
                         listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
                         selectNodes();
                     }
@@ -422,8 +397,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         butDetailsJob.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (tNodes.getSelectionCount() > 0)
+                if (tNodes.getSelectionCount() > 0) {
                     showDetails(tNodes.getSelection()[0].getText(0));
+                }
             }
         });
         butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -448,12 +424,6 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                         listener.selectNode(null);
                         fillNode(true);
                         enableNode(false);
-                        // listener.applyNode(bFullNode.getSelection() ||
-                        // bEndNode.getSelection(), tState.getText(),
-                        // cJob.getText(), tDelay.getText(),
-                        // cNextState.getText(),
-                        // cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(),
-                        // cOnError.getText());
                     }
                 } catch (Exception ex) {
                     new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
@@ -469,13 +439,15 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             public void widgetSelected(final SelectionEvent e) {
                 if (tNodes.getSelectionCount() > 0) {
                     int c = MainWindow.message(getShell(), JOE_M_JCNestedNodesForm_RemoveNode.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                    if (c != SWT.YES)
+                    if (c != SWT.YES) {
                         return;
+                    }
                     int index = tNodes.getSelectionIndex();
                     listener.deleteNode(tNodes);
                     tNodes.remove(index);
-                    if (index >= tNodes.getItemCount())
+                    if (index >= tNodes.getItemCount()) {
                         index--;
+                    }
                     boolean empty = tNodes.getItemCount() == 0;
                     fillNode(empty);
                     enableNode(!empty);
@@ -490,7 +462,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         bRemoveNode.setLayoutData(new GridData(GridData.FILL, GridData.END, false, false));
-    } // private void createGroup()
+    }
 
     private void fillChain(boolean enable, boolean isNew) {
         listener.fillChain(tNodes);
@@ -511,8 +483,6 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 
     private void fillNode(boolean clear) {
         boolean fullNode = listener.isFullNode();
-        // boolean fileSinkNode = listener.isFileSinkNode();
-        // boolean endNode = !fullNode && !fileSinkNode;
         boolean endNode = !fullNode;
         bFullNode.setSelection(clear || fullNode);
         bEndNode.setSelection(!clear && endNode);
@@ -521,44 +491,44 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         cJobChain.setEnabled(fullNode);
         tState.setText(clear ? "" : listener.getState());
         cJobChain.setItems(listener.getJobChains());
-        if (listener.getStates().length > 0)
+        if (listener.getStates().length > 0) {
             cNextState.setItems(listener.getStates());
-        if (listener.getStates().length > 0)
             cErrorState.setItems(listener.getStates());
+        }
         int job = cJobChain.indexOf(listener.getJobChain());
-        if (clear || job == -1)
+        if (clear || job == -1) {
             cJobChain.setText(listener.getJobChain());
-        else
+        } else {
             cJobChain.select(job);
+        }
         int next = cNextState.indexOf(listener.getNextState());
-        if (clear || !fullNode || next == -1)
+        if (clear || !fullNode || next == -1) {
             cNextState.setText(listener.getNextState());
-        else
+        } else {
             cNextState.select(next);
+        }
         int error = cErrorState.indexOf(listener.getErrorState());
-        if (clear || !fullNode || error == -1)
+        if (clear || !fullNode || error == -1) {
             cErrorState.setText(listener.getErrorState());
-        else
+        } else {
             cErrorState.select(error);
+        }
         bApplyNode.setEnabled(false);
     }
 
     private void applyNode() {
         String msg = "";
-        if (!listener.isValidState(tState.getText()))
+        if (!listener.isValidState(tState.getText())) {
             msg = JOE_M_JobChain_StateAlreadyDefined.label();
-        if (!msg.equals(""))
+        }
+        if (!"".equals(msg)) {
             MainWindow.message(msg, SWT.ICON_INFORMATION);
-        else {
-            // listener.applyNode(bFullNode.getSelection() ||
-            // bEndNode.getSelection(), tState.getText(), cJobChain.getText(),
-            // tDelay.getText(), cNextState.getText(),
-            // cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(),
-            // cOnError.getText());
-            if (isInsert)
+        } else {
+            if (isInsert) {
                 listener.applyInsertNode(tState.getText(), cJobChain.getText(), cNextState.getText(), cErrorState.getText(), bFullNode.getSelection());
-            else
+            } else {
                 listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), cNextState.getText(), cErrorState.getText(), bFullNode.getSelection());
+            }
             isInsert = false;
             listener.fillChain(tNodes);
             bApplyNode.setEnabled(false);
@@ -570,11 +540,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
     }
 
     private boolean isValidNode() {
-        if (tState.getText().equals("") || bFullNode.getSelection() && cJobChain.getText().equals("")) {
-            return false;
-        } else {
-            return true;
-        }
+        return !("".equals(tState.getText()) || bFullNode.getSelection() && "".equals(cJobChain.getText()));
     }
 
     public void setISchedulerUpdate(ISchedulerUpdate update_) {
@@ -582,17 +548,11 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
     }
 
     private void showDetails(String state) {
-        // OrdersListener ordersListener = new
-        // OrdersListener(listener.get_dom(), update);
-        // String[] listOfOrders = ordersListener.getOrderIds();
         boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
         if (state == null) {
             DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
             detail.showDetails();
         } else {
-            // DetailDialogForm detail = new
-            // DetailDialogForm(listener.getChainName(), state, listOfOrders,
-            // isLifeElement, listener.get_dom().getFilename());
             DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.get_dom().getFilename());
             detail.showDetails();
         }
@@ -604,26 +564,23 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             enableNode(true);
             fillNode(false);
             butDetailsJob.setEnabled(true);
-        } else
+        } else {
             butDetailsJob.setEnabled(false);
+        }
         bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
     }
 
-    // ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain
-    // Kindknoten.
     private boolean check() {
         try {
             XPath x3 = XPath.newInstance("//job_chain[@name='" + listener.getChainName() + "']/job_chain_node");
             List listOfElement_3 = x3.selectNodes(dom.getDoc());
             XPath x4 = XPath.newInstance("//job_chain[@name='" + listener.getChainName() + "']/file_order_sink");
             List listOfElement_4 = x4.selectNodes(dom.getDoc());
-            if (listOfElement_3.isEmpty() && listOfElement_4.isEmpty())
-                return true;
-            else
-                return false;
+            return listOfElement_3.isEmpty() && listOfElement_4.isEmpty();
         } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
             return true;
         }
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

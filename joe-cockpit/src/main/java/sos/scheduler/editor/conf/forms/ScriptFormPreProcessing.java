@@ -1,9 +1,7 @@
 package sos.scheduler.editor.conf.forms;
 
-// import org.eclipse.draw2d.*;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,19 +23,12 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ScriptFormPreProcessing extends ScriptForm {
 
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-    @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(ScriptJobMainForm.class);
-    @SuppressWarnings("unused")
-    private final String conClassName = "PreProcessingForm";
     private PreProcessingComposite preProcessingHeader = null;
     private HashMap<String, String> favorites = null;
 
     public ScriptFormPreProcessing(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
         super(parent, style, dom, job, main);
         objDataProvider._languages = objDataProvider._languagesMonitor;
-
         initialize();
     }
 
@@ -100,11 +91,13 @@ public class ScriptFormPreProcessing extends ScriptForm {
     }
 
     private String getPrefix() {
-        if (favorites != null && preProcessingHeader.getCboFavorite().getText().length() > 0
-                && favorites.get(preProcessingHeader.getCboFavorite().getText()) != null)
+        if (favorites != null && !preProcessingHeader.getCboFavorite().getText().isEmpty()
+                && favorites.get(preProcessingHeader.getCboFavorite().getText()) != null) {
             return "monitor_favorite_" + favorites.get(preProcessingHeader.getCboFavorite().getText()) + "_";
-        if (objDataProvider.getLanguage() == 0)
+        }
+        if (objDataProvider.getLanguage() == 0) {
             return "";
+        }
         return "monitor_favorite_" + objDataProvider.getLanguage(objDataProvider.getLanguage()) + "_";
     }
 
@@ -112,8 +105,9 @@ public class ScriptFormPreProcessing extends ScriptForm {
         String[] retVal = new String[] { "" };
         try {
             favorites = new HashMap<String, String>();
-            if (str == null)
+            if (str == null) {
                 return new String[0];
+            }
             String newstr = "";
             retVal = new String[str.length];
             for (int i = 0; i < str.length; i++) {
@@ -122,10 +116,11 @@ public class ScriptFormPreProcessing extends ScriptForm {
                 if (idx > -1) {
                     String lan = s.substring(0, idx);
                     String name = s.substring(idx + 1);
-                    if (name == null || lan == null)
+                    if (name == null || lan == null) {
                         System.out.println(name);
-                    else
+                    } else {
                         favorites.put(name, lan);
+                    }
                     newstr = name + ";" + newstr;
                 }
             }
@@ -142,40 +137,40 @@ public class ScriptFormPreProcessing extends ScriptForm {
     }
 
     private void getDataFromFavorite() {
-        if (preProcessingHeader.getCboFavorite().getText().length() > 0) {
-            if (Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()) != null) {
-                if (this.getObjJobJAPI() != null && this.getObjJobJAPI().getTbxClassName().getText().length() > 0 || this.getObjJobIncludeFile() != null
-                        && this.getObjJobIncludeFile().getTableIncludes().isEnabled() && this.getObjJobIncludeFile().getTableIncludes().getItemCount() > 0) {
-                    int c = MainWindow.message(getShell(), JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                    if (c != SWT.YES)
-                        return;
-                    else {
-                        if (this.getObjJobJAPI() != null) {
-                            this.getObjJobJAPI().getTbxClassName().setText("");
-                        }
-                        if (this.getObjJobIncludeFile() != null) {
-                            this.getObjJobIncludeFile().getTableIncludes().clearAll();
-                        }
-                        objDataProvider.removeIncludes();
+        if (!preProcessingHeader.getCboFavorite().getText().isEmpty()
+                && Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()) != null) {
+            if (this.getObjJobJAPI() != null && !this.getObjJobJAPI().getTbxClassName().getText().isEmpty() || this.getObjJobIncludeFile() != null
+                    && this.getObjJobIncludeFile().getTableIncludes().isEnabled()
+                    && this.getObjJobIncludeFile().getTableIncludes().getItemCount() > 0) {
+                int c = MainWindow.message(getShell(), JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                if (c != SWT.YES) {
+                    return;
+                } else {
+                    if (this.getObjJobJAPI() != null) {
+                        this.getObjJobJAPI().getTbxClassName().setText("");
+                    }
+                    if (this.getObjJobIncludeFile() != null) {
+                        this.getObjJobIncludeFile().getTableIncludes().clearAll();
+                    }
+                    objDataProvider.removeIncludes();
+                }
+            }
+            if (favorites != null && favorites.get(preProcessingHeader.getCboFavorite().getText()) != null
+                    && !favorites.get(preProcessingHeader.getCboFavorite().getText()).toString().isEmpty()) {
+                preProcessingHeader.getTxtName().setText(preProcessingHeader.getCboFavorite().getText());
+                objDataProvider.setMonitorName(preProcessingHeader.getCboFavorite().getText());
+                objDataProvider.setLanguage(objDataProvider.languageAsInt(favorites.get(preProcessingHeader.getCboFavorite().getText()).toString()));
+                languageSelector.setText(objDataProvider.getLanguageAsString(objDataProvider.getLanguage()));
+                if (objDataProvider.isJava()) {
+                    this.getObjJobJAPI().getTbxClassName().setText(Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()));
+                } else {
+                    tabFolder.setSelection(this.getTabItemIncludedFiles());
+                    String[] split = Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()).split(";");
+                    for (int i = 0; i < split.length; i++) {
+                        objDataProvider.addInclude(split[i]);
                     }
                 }
-                if (favorites != null && favorites.get(preProcessingHeader.getCboFavorite().getText()) != null
-                        && favorites.get(preProcessingHeader.getCboFavorite().getText()).toString().length() > 0) {
-                    preProcessingHeader.getTxtName().setText(preProcessingHeader.getCboFavorite().getText());
-                    objDataProvider.setMonitorName(preProcessingHeader.getCboFavorite().getText());
-                    objDataProvider.setLanguage(objDataProvider.languageAsInt(favorites.get(preProcessingHeader.getCboFavorite().getText()).toString()));
-                    languageSelector.setText(objDataProvider.getLanguageAsString(objDataProvider.getLanguage()));
-                    if (objDataProvider.isJava()) {
-                        this.getObjJobJAPI().getTbxClassName().setText(Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()));
-                    } else {
-                        tabFolder.setSelection(this.getTabItemIncludedFiles());
-                        String[] split = Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()).split(";");
-                        for (int i = 0; i < split.length; i++) {
-                            objDataProvider.addInclude(split[i]);
-                        }
-                    }
-                    fillForm();
-                }
+                fillForm();
             }
         }
     }
@@ -188,4 +183,5 @@ public class ScriptFormPreProcessing extends ScriptForm {
             preProcessingHeader.getCboFavorite().setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
         }
     }
+
 }

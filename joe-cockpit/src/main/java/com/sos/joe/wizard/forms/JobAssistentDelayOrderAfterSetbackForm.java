@@ -1,7 +1,3 @@
-/*
- * Created on 06.03.2007 TODO To change the template for this generated file go
- * to Window - Preferences - Java - Code Generation - Code and Comments
- */
 package com.sos.joe.wizard.forms;
 
 import java.util.List;
@@ -58,18 +54,14 @@ public class JobAssistentDelayOrderAfterSetbackForm {
     private JobOptionsListener optionlistener = null;
     private Button noButton = null;
     private Button yesButton = null;
-    /** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent */
     private int assistentType = -1;
     private Shell shellSetBack = null;
     private Combo jobname = null;
-    /** Hilfsvariable */
     private boolean modify = false;
     private int sizeOfSetbacks = 0;
     private Button butBack = null;
     private Element jobBackUp = null;
     private ScriptJobMainForm jobForm = null;
-    /** Hilsvariable für das Schliessen des Dialogs. Das wird gebraucht wenn das
-     * Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird . */
     private boolean closeDialog = false;
 
     public JobAssistentDelayOrderAfterSetbackForm(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
@@ -86,8 +78,9 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
             @Override
             public void shellClosed(final ShellEvent e) {
-                if (!closeDialog)
+                if (!closeDialog) {
                     close();
+                }
                 e.doit = shellSetBack.isDisposed();
             }
         });
@@ -97,12 +90,9 @@ public class JobAssistentDelayOrderAfterSetbackForm {
         shellSetBack.setLayout(gridLayout);
         shellSetBack.setSize(598, 217);
         String step = " ";
-        // step = step + " [Step 9 of 9]";
         step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step9of9.label();
-        // shellSetBack.setText("Delay Order After Setback" + step);
         shellSetBack.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_OrderAfterSetback.params(step));
         final Group jobGroup = new Group(shellSetBack, SWT.NONE);
-        // jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
         jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", job)));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, true, 2, 1);
         gridData_2.heightHint = 215;
@@ -124,7 +114,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
         int sec = 0;
         String setback = "";
         boolean ismax = false;
-        if (l.size() > 0) {
+        if (!l.isEmpty()) {
             Element e = (Element) l.get(l.size() - 1);
             ismax = Utils.isAttributeValue("is_maximum", e);
             setback = Utils.getAttributeValue("setback_count", e);
@@ -133,103 +123,82 @@ public class JobAssistentDelayOrderAfterSetbackForm {
             min = Utils.getMinutes(delay, -999);
             sec = Utils.getSeconds(delay, -999);
         }
-        {
-            lblLongWait = SOSJOEMessageCodes.JOE_L_JobAssistent_OrderWait.Control(new Label(jobGroup, SWT.NONE));
-            lblLongWait.setLayoutData(new GridData());
-            // lblLongWait.setText(Messages.getString("assistent.delay_order_after_setback.time"));
-        }
-        {
-            txtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_Hour.Control(new Text(jobGroup, SWT.BORDER));
-            txtHour.addVerifyListener(new VerifyListener() {
+        lblLongWait = SOSJOEMessageCodes.JOE_L_JobAssistent_OrderWait.Control(new Label(jobGroup, SWT.NONE));
+        lblLongWait.setLayoutData(new GridData());
+        txtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_Hour.Control(new Text(jobGroup, SWT.BORDER));
+        txtHour.addVerifyListener(new VerifyListener() {
 
-                @Override
-                public void verifyText(final VerifyEvent e) {
-                    e.doit = Utils.isOnlyDigits(e.text);
-                }
-            });
-            txtHour.setText(hour == 0 ? "" : Utils.getIntegerAsString(hour));
-            final GridData gridData = new GridData(17, SWT.DEFAULT);
-            gridData.minimumWidth = 17;
-            txtHour.setLayoutData(gridData);
-            txtHour.addModifyListener(new ModifyListener() {
+            @Override
+            public void verifyText(final VerifyEvent e) {
+                e.doit = Utils.isOnlyDigits(e.text);
+            }
+        });
+        txtHour.setText(hour == 0 ? "" : Utils.getIntegerAsString(hour));
+        final GridData newGridData = new GridData(17, SWT.DEFAULT);
+        newGridData.minimumWidth = 17;
+        txtHour.setLayoutData(newGridData);
+        txtHour.addModifyListener(new ModifyListener() {
 
-                @Override
-                public void modifyText(final ModifyEvent e) {
-                    Utils.setBackground(0, 23, txtHour);
-                    if (!Utils.isNumeric(txtHour.getText())) {
-                        // ErrorLog.message(shellSetBack,
-                        // Messages.getString("assistent.no_numeric"), SWT.OK );
-                        ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK);
-                    }
-                    modify = true;
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                Utils.setBackground(0, 23, txtHour);
+                if (!Utils.isNumeric(txtHour.getText())) {
+                    ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK);
                 }
-            });
-        }
-        {
-            txtMin = SOSJOEMessageCodes.JOE_T_JobAssistent_Min.Control(new Text(jobGroup, SWT.BORDER));
-            txtMin.addVerifyListener(new VerifyListener() {
+                modify = true;
+            }
+        });
+        txtMin = SOSJOEMessageCodes.JOE_T_JobAssistent_Min.Control(new Text(jobGroup, SWT.BORDER));
+        txtMin.addVerifyListener(new VerifyListener() {
 
-                @Override
-                public void verifyText(final VerifyEvent e) {
-                    e.doit = Utils.isOnlyDigits(e.text);
-                }
-            });
-            txtMin.setText(min == 0 ? "" : Utils.getIntegerAsString(min));
-            final GridData gridData = new GridData(17, SWT.DEFAULT);
-            gridData.minimumWidth = 17;
-            txtMin.setLayoutData(gridData);
-            txtMin.addModifyListener(new ModifyListener() {
+            @Override
+            public void verifyText(final VerifyEvent e) {
+                e.doit = Utils.isOnlyDigits(e.text);
+            }
+        });
+        txtMin.setText(min == 0 ? "" : Utils.getIntegerAsString(min));
+        final GridData anotherGridData = new GridData(17, SWT.DEFAULT);
+        anotherGridData.minimumWidth = 17;
+        txtMin.setLayoutData(anotherGridData);
+        txtMin.addModifyListener(new ModifyListener() {
 
-                @Override
-                public void modifyText(final ModifyEvent e) {
-                    Utils.setBackground(0, 59, txtMin);
-                    if (!Utils.isNumeric(txtMin.getText())) {
-                        // ErrorLog.message(shellSetBack,
-                        // Messages.getString("assistent.no_numeric"), SWT.OK );
-                        ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK);
-                    }
-                    modify = true;
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                Utils.setBackground(0, 59, txtMin);
+                if (!Utils.isNumeric(txtMin.getText())) {
+                    ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK);
                 }
-            });
-        }
-        {
-            txtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_Sec.Control(new Text(jobGroup, SWT.BORDER));
-            txtSecound.addVerifyListener(new VerifyListener() {
+                modify = true;
+            }
+        });
+        txtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_Sec.Control(new Text(jobGroup, SWT.BORDER));
+        txtSecound.addVerifyListener(new VerifyListener() {
 
-                @Override
-                public void verifyText(final VerifyEvent e) {
-                    e.doit = Utils.isOnlyDigits(e.text);
-                }
-            });
-            final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-            gridData.widthHint = 17;
-            gridData.minimumWidth = 17;
-            txtSecound.setLayoutData(gridData);
-            txtSecound.setText(sec == 0 ? "" : Utils.getIntegerAsString(sec));
-            txtSecound.addModifyListener(new ModifyListener() {
+            @Override
+            public void verifyText(final VerifyEvent e) {
+                e.doit = Utils.isOnlyDigits(e.text);
+            }
+        });
+        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData.widthHint = 17;
+        gridData.minimumWidth = 17;
+        txtSecound.setLayoutData(gridData);
+        txtSecound.setText(sec == 0 ? "" : Utils.getIntegerAsString(sec));
+        txtSecound.addModifyListener(new ModifyListener() {
 
-                @Override
-                public void modifyText(final ModifyEvent e) {
-                    Utils.setBackground(0, 59, txtSecound);
-                    if (!Utils.isNumeric(txtSecound.getText())) {
-                        // ErrorLog.message(shellSetBack,
-                        // Messages.getString("assistent.no_numeric"), SWT.OK );
-                        ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK);
-                    }
-                    modify = true;
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                Utils.setBackground(0, 59, txtSecound);
+                if (!Utils.isNumeric(txtSecound.getText())) {
+                    ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK);
                 }
-            });
-        }
-        {
-            final Label hhmmssLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
-            hhmmssLabel.setLayoutData(new GridData(57, SWT.DEFAULT));
-            // hhmmssLabel.setText("hh:mm:ss");
-        }
-        {
-            lblOftenSetBack = SOSJOEMessageCodes.JOE_L_JobAssistent_OftenSetback.Control(new Label(jobGroup, SWT.NONE));
-            lblOftenSetBack.setLayoutData(new GridData());
-            // lblOftenSetBack.setText(Messages.getString("assistent.delay_order_after_setback.setback_count"));
-        }
+                modify = true;
+            }
+        });
+        final Label hhmmssLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
+        hhmmssLabel.setLayoutData(new GridData(57, SWT.DEFAULT));
+        lblOftenSetBack = SOSJOEMessageCodes.JOE_L_JobAssistent_OftenSetback.Control(new Label(jobGroup, SWT.NONE));
+        lblOftenSetBack.setLayoutData(new GridData());
         txtSetBack = SOSJOEMessageCodes.JOE_T_JobAssistent_SetBack.Control(new Text(jobGroup, SWT.BORDER));
         txtSetBack.setText(setback != null ? setback : "");
         txtSetBack.addModifyListener(new ModifyListener() {
@@ -244,11 +213,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
         gridData_1.widthHint = 55;
         txtSetBack.setLayoutData(gridData_1);
         txtSetBack.setFocus();
-        {
-            @SuppressWarnings("unused")
-            final Label lblNumberOfSetBack = SOSJOEMessageCodes.JOE_L_JobAssistent_NumOfSetback.Control(new Label(jobGroup, SWT.NONE));
-            // lblNumberOfSetBack.setText(Messages.getString("assistent.delay_order_after_setback.is_maximum"));
-        }
+        final Label lblNumberOfSetBack = SOSJOEMessageCodes.JOE_L_JobAssistent_NumOfSetback.Control(new Label(jobGroup, SWT.NONE));
         noButton = SOSJOEMessageCodes.JOE_B_JobAssistent_No.Control(new Button(jobGroup, SWT.RADIO));
         noButton.setSelection(!ismax);
         noButton.addSelectionListener(new SelectionAdapter() {
@@ -259,7 +224,6 @@ public class JobAssistentDelayOrderAfterSetbackForm {
             }
         });
         noButton.setLayoutData(new GridData());
-        // noButton.setText("no");
         yesButton = SOSJOEMessageCodes.JOE_B_JobAssistent_Yes.Control(new Button(jobGroup, SWT.RADIO));
         yesButton.setSelection(ismax);
         yesButton.addSelectionListener(new SelectionAdapter() {
@@ -270,7 +234,6 @@ public class JobAssistentDelayOrderAfterSetbackForm {
             }
         });
         yesButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
-        // yesButton.setText("yes");
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         shellSetBack.setBounds((screen.width - shellSetBack.getBounds().width) / 2, (screen.height - shellSetBack.getBounds().height) / 2, shellSetBack.getBounds().width, shellSetBack.getBounds().height);
         shellSetBack.open();
@@ -279,17 +242,14 @@ public class JobAssistentDelayOrderAfterSetbackForm {
         final GridLayout gridLayout_3 = new GridLayout();
         gridLayout_3.marginWidth = 0;
         composite_1.setLayout(gridLayout_3);
-        {
-            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
-            butCancel.addSelectionListener(new SelectionAdapter() {
+        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
+        butCancel.addSelectionListener(new SelectionAdapter() {
 
-                @Override
-                public void widgetSelected(final SelectionEvent e) {
-                    close();
-                }
-            });
-            // butCancel.setText("Cancel");
-        }
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                close();
+            }
+        });
         final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(shellSetBack, SWT.NONE));
         final GridData gridData_3 = new GridData(GridData.END, GridData.CENTER, true, false);
         composite_2.setLayoutData(gridData_3);
@@ -297,36 +257,30 @@ public class JobAssistentDelayOrderAfterSetbackForm {
         gridLayout_4.marginWidth = 0;
         gridLayout_4.numColumns = 6;
         composite_2.setLayout(gridLayout_4);
-        {
-            butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
-            butShow.addSelectionListener(new SelectionAdapter() {
+        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
+        butShow.addSelectionListener(new SelectionAdapter() {
 
-                @Override
-                public void widgetSelected(final SelectionEvent e) {
-                    refreshElement(false);
-                    txtSetBack.setFocus();
-                    Utils.showClipboard(Utils.getElementAsString(job), shellSetBack, false, null, false, null, false);
-                }
-            });
-            // butShow.setText("Show");
-        }
-        {
-            butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
-            butNext.setVisible(false);
-            butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-            final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
-            gridData.widthHint = 3;
-            butNext.setLayoutData(gridData);
-            butNext.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                refreshElement(false);
+                txtSetBack.setFocus();
+                Utils.showClipboard(Utils.getElementAsString(job), shellSetBack, false, null, false, null, false);
+            }
+        });
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
+        butNext.setVisible(false);
+        butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+        final GridData nextGridData = new GridData(GridData.END, GridData.CENTER, false, false);
+        nextGridData.widthHint = 3;
+        butNext.setLayoutData(nextGridData);
+        butNext.addSelectionListener(new SelectionAdapter() {
 
-                @Override
-                public void widgetSelected(final SelectionEvent e) {
-                    refreshElement(false);
-                    shellSetBack.dispose();
-                }
-            });
-            // butNext.setText("Next");
-        }
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                refreshElement(false);
+                shellSetBack.dispose();
+            }
+        });
         butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
         butBack.addSelectionListener(new SelectionAdapter() {
 
@@ -335,14 +289,14 @@ public class JobAssistentDelayOrderAfterSetbackForm {
                 refreshElement(false);
                 JobAssistentDelayAfterErrorForm derror = new JobAssistentDelayAfterErrorForm(dom, update, job, assistentType);
                 derror.showDelayAfterErrorForm();
-                if (jobname != null)
+                if (jobname != null) {
                     derror.setJobname(jobname);
+                }
                 derror.setBackUpJob(jobBackUp, jobForm);
                 closeDialog = true;
                 shellSetBack.dispose();
             }
         });
-        // butBack.setText("Back");
         butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
         butFinish.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -352,43 +306,32 @@ public class JobAssistentDelayOrderAfterSetbackForm {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 refreshElement(true);
-                if (jobname != null)
+                if (jobname != null) {
                     jobname.setText(Utils.getAttributeValue("name", job));
-                if (Options.getPropertyBoolean("editor.job.show.wizard"))
+                }
+                if (Options.getPropertyBoolean("editor.job.show.wizard")) {
                     Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_EndWizard.label() + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true);
+                }
                 closeDialog = true;
                 shellSetBack.dispose();
             }
         });
-        // butFinish.setText("Finish");
-        // Utils.createHelpButton(composite_2,
-        // "assistent.delay_order_after_setback", shellSetBack);
         Utils.createHelpButton(composite_2, "JOE_M_JobAssistentDelayOrderAfterSetbackForm_Help.label", shellSetBack);
         setToolTipText();
         shellSetBack.layout();
     }
 
     public void setToolTipText() {
-        // butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-        // butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-        // butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-        // butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
-        // txtSetBack.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.setback_count"));
-        // txtHour.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.hours"));
-        // txtMin.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.minutes"));
-        // txtSecound.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.seconds"));
-        // butBack.setToolTipText(Messages.getTooltip("butBack"));
+        //
     }
 
     private void refreshElement(boolean apply) {
         Utils.startCursor(shellSetBack);
         if (modify) {
-            if (optionlistener.getSetbacks().size() > 0) {
-                if (sizeOfSetbacks != optionlistener.getSetbacks().size()) {
-                    optionlistener.deleteSetbackDelay(optionlistener.getSetbacks().size() - 1);
-                }
+            if (!optionlistener.getSetbacks().isEmpty() && sizeOfSetbacks != optionlistener.getSetbacks().size()) {
+                optionlistener.deleteSetbackDelay(optionlistener.getSetbacks().size() - 1);
             }
-            if (txtSetBack.getText() != null && txtSetBack.getText().trim().length() > 0) {
+            if (txtSetBack.getText() != null && !txtSetBack.getText().trim().isEmpty()) {
                 optionlistener.newSetbackDelay();
                 String delay = Utils.getTime(txtHour.getText(), txtMin.getText(), txtSecound.getText(), true);
                 optionlistener.applySetbackDelay(txtSetBack.getText(), yesButton.getSelection(), delay);
@@ -407,13 +350,11 @@ public class JobAssistentDelayOrderAfterSetbackForm {
     }
 
     private void close() {
-        // int cont = ErrorLog.message(shellSetBack,
-        // sos.scheduler.editor.app.Messages.getString("assistent.cancel"),
-        // SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
         int cont = ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
         if (cont == SWT.OK) {
-            if (jobBackUp != null)
+            if (jobBackUp != null) {
                 job.setContent(jobBackUp.cloneContent());
+            }
             shellSetBack.dispose();
         }
     }
@@ -422,14 +363,11 @@ public class JobAssistentDelayOrderAfterSetbackForm {
         this.jobname = jobname;
     }
 
-    /** Der Wizzard wurde für ein bestehende Job gestartet. Beim verlassen der
-     * Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder
-     * zurückgesetz werden.
-     * 
-     * @param backUpJob */
     public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
-        if (backUpJob != null)
+        if (backUpJob != null) {
             jobBackUp = (Element) backUpJob.clone();
+        }
         jobForm = jobForm_;
     }
+
 }

@@ -31,37 +31,37 @@ import com.sos.resources.SOSProductionResource;
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class Options extends JSToolBox {
 
-    private static final String conEnvVarSOS_JOE_HOME = "SOS_JOE_HOME";
-    private static final String conEnvVarSCHEDULER_HOME = "SCHEDULER_HOME";
+    private static final String ENV_VAR_SOS_JOE_HOME = "SOS_JOE_HOME";
+    private static final String ENV_VAR_SCHEDULER_HOME = "SCHEDULER_HOME";
+    private static final String LANGUAGE_EN = "en";
+    private static final String ENVIRONMENT_VARIABLE_SOS_LOCALE = "SOS_LOCALE";
+    private static final Logger LOGGER = Logger.getLogger(Options.class);
+    private static Properties JOESettingsDefaults = null;
+    private static Properties _properties = null;
+    private static boolean _changed = false;
+    private static boolean _showWizardInfo = true;
+    private static String[] jobTitleList = null;
+    private static HashMap holidaysDescription = null;
+    private static String strLastFolderName = "";
     public static final String conEnvVarSCHEDULER_DATA = "SCHEDULER_DATA";
-    private static final String conLanguageEN = "en";
-    private static final String conEnvironmentVariableSOS_LOCALE = "SOS_LOCALE";
     public static final String conPropertyEDITOR_OPTIONS_FILE = "editor.options.file";
     public static final String conPropertyEDITOR_LANGUAGE = "editor.language";
     public static final String conPropertyEDITOR_ShowSplashScreen = "editor.ShowSplashScreen";
     public static final String conPropertyEDITOR_OpenLastFolder = "editor.OpenLastFolder";
     public static final String conPropertyTEMPLATE_LANGUAGE = "template.language";
     public static final String conPropertyTEMPLATE_LANGUAGE_LIST = "template.language.list";
-    public static final String conPropertyEDITOR_ShowSplashScreenPicture = "editor.ShowSplashScreenPicture";					// "/SplashScreenJOE.bmp";
-    private final static String conClassName = "Options";
-    private static final Logger logger = Logger.getLogger(Options.class);
+    public static final String conPropertyEDITOR_ShowSplashScreenPicture = "editor.ShowSplashScreenPicture";
     public static final String DEFAULT_OPTIONS = "/sos/scheduler/editor/options.properties";
-    private static Properties JOESettingsDefaults = null;
-    private static Properties _properties = null;
-    private static boolean _changed = false;
-    private static boolean _showWizardInfo = true;
     private static boolean _showDiagram = false;
-    private static String[] jobTitleList = null;
-    private static HashMap holidaysDescription = null;
     public static String conJOEGreeting = "";
-    private static String strLastFolderName = "";
+    public static SOSPreferenceStore objPrefStore = new SOSPreferenceStore(getJOEHomeDir().replaceAll("\\\\", "_"));
 
     private Options() {
     }
 
     public static int getLastTabItemIndex() {
         String strR = getProperty("LastTabItemIndex");
-        if (strR == null || strR == "") {
+        if (strR == null || "".equalsIgnoreCase(strR)) {
             return -1;
         }
         return new Integer(strR);
@@ -71,11 +71,8 @@ public class Options extends JSToolBox {
         setProperty("LastTabItemIndex", String.valueOf(pintLastTabItemIndex));
     }
 
-    public static SOSPreferenceStore objPrefStore = new SOSPreferenceStore(getJOEHomeDir().replaceAll("\\\\", "_"));
-
     public static String getLastFolderName() {
-        String strT = getProperty("LastFolderName");
-        return strT;
+        return getProperty("LastFolderName");
     }
 
     public static void setLastFolderName(final String pstrLastFolderName) {
@@ -100,31 +97,26 @@ public class Options extends JSToolBox {
 
     public static String getDefaultOptionFilename() {
         getProperties();
-        // return
-        // getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}",
-        // getSchedulerHome());
         String strSD = getJOEHomeDir().replaceAll("\\\\", "/");
         String strKey = conPropertyEDITOR_OPTIONS_FILE;
         String strF = getDefault(strKey);
         String strRet = strF.replaceAll("\\{scheduler_data\\}", strSD);
         strRet = strRet.replaceAll("\\{joe_home_dir\\}", strSD);
-        logger.info("getDefaultOptionFilename = " + strRet);
+        LOGGER.info("getDefaultOptionFilename = " + strRet);
         return strRet;
     }
 
     private static void getProperties() {
-        @SuppressWarnings("unused")
-        final String conMethodName = conClassName + "::getProperties";
         if (_properties == null) {
             _properties = new Properties(JOESettingsDefaults);
         }
-    } // private void getProperties
+    }
 
     public static String loadOptions(final Class cl) {
         String fName = "";
         try {
             JOESettingsDefaults = new Properties();
-            logger.debug(String.format("load Options from file: %1$s", DEFAULT_OPTIONS));
+            LOGGER.debug(String.format("load Options from file: %1$s", DEFAULT_OPTIONS));
             JOESettingsDefaults.load(cl.getResourceAsStream(DEFAULT_OPTIONS));
             _properties = new Properties(JOESettingsDefaults);
         } catch (Exception e) {
@@ -148,7 +140,7 @@ public class Options extends JSToolBox {
         if (_properties != null && _changed) {
             try {
                 String strOptionsFileName = getDefaultOptionFilename();
-                if (strOptionsFileName.trim().length() > 0) {
+                if (!strOptionsFileName.trim().isEmpty()) {
                     FileOutputStream fo = new FileOutputStream(strOptionsFileName);
                     _properties.store(fo, conJOEGreeting + " - Options --");
                     fo.close();
@@ -178,7 +170,7 @@ public class Options extends JSToolBox {
 
     public static boolean checkBool(final String pstrText) {
         boolean flgR = false;
-        if (pstrText != null && pstrText.equalsIgnoreCase("true")) {
+        if (pstrText != null && "true".equalsIgnoreCase(pstrText)) {
             flgR = true;
         }
         return flgR;
@@ -186,25 +178,23 @@ public class Options extends JSToolBox {
 
     public static boolean getBoolOption(final String pstrPropertyName) {
         String strT = getProperty(pstrPropertyName);
-        boolean flgR = checkBool(strT);
-        return flgR;
+        return checkBool(strT);
     }
 
     public static String showSplashScreenPicture() {
-        String strT = getProperty(conPropertyEDITOR_ShowSplashScreenPicture, "/SplashScreenJOE.bmp");
-        return strT;
+        return getProperty(conPropertyEDITOR_ShowSplashScreenPicture, "/SplashScreenJOE.bmp");
     }
 
     public static String getLanguage() {
         getProperties();
         String strT = Locale.getDefault().getLanguage();
-        String strSOSLocale = System.getenv(conEnvironmentVariableSOS_LOCALE);
+        String strSOSLocale = System.getenv(ENVIRONMENT_VARIABLE_SOS_LOCALE);
         if (strSOSLocale != null) {
             strT = strSOSLocale;
         } else {
             strT = getProperty(conPropertyEDITOR_LANGUAGE);
-            if (strT == null || strT.trim().length() <= 0) {
-                strT = conLanguageEN;
+            if (strT == null || strT.trim().isEmpty()) {
+                strT = LANGUAGE_EN;
             }
         }
         SOSOptionLocale.i18nLocale = new Locale(strT);
@@ -214,14 +204,14 @@ public class Options extends JSToolBox {
     public static String getTemplateLanguage() {
         getProperties();
         String strT = Locale.getDefault().getLanguage();
-        String strSOSLocale = System.getenv(conEnvironmentVariableSOS_LOCALE);
+        String strSOSLocale = System.getenv(ENVIRONMENT_VARIABLE_SOS_LOCALE);
         if (strSOSLocale != null) {
             strT = strSOSLocale;
         } else {
             strSOSLocale = strT;
         }
         strT = getProperty(conPropertyTEMPLATE_LANGUAGE);
-        if (strT == null || strT.trim().length() <= 0) {
+        if (strT == null || strT.trim().isEmpty()) {
             strT = strSOSLocale;
             setTemplateLanguage(strT);
         }
@@ -232,7 +222,7 @@ public class Options extends JSToolBox {
         getProperties();
         String strLanguages = "de;en;fr;it;es";
         String strT = getProperty(conPropertyTEMPLATE_LANGUAGE_LIST);
-        if (strT == null || strT.trim().length() <= 0) {
+        if (strT == null || strT.trim().isEmpty()) {
             strT = strLanguages;
             setProperty(conPropertyTEMPLATE_LANGUAGE_LIST, strT);
         }
@@ -258,7 +248,7 @@ public class Options extends JSToolBox {
     private static String getHelp(final String key, final String prefix) {
         try {
             String url = getProperty(prefix + ".help.url." + key);
-            return url != null && !url.equals("") ? url : null;
+            return url != null && !"".equals(url) ? url : null;
         } catch (Exception e) {
             return null;
         }
@@ -268,10 +258,11 @@ public class Options extends JSToolBox {
         try {
             String helpKey = getHelp(key, prefix);
             String url = null;
-            if (helpKey == null)
+            if (helpKey == null) {
                 url = Options.getHelp("index", prefix).replaceAll("\\{lang\\}", getLanguage());
-            else
+            } else {
                 url = helpKey.replaceAll("\\{lang\\}}", getLanguage());
+            }
             return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\", "/")).replaceAll("\\{lang\\}", getLanguage());
         } catch (Exception e) {
             return null;
@@ -289,10 +280,11 @@ public class Options extends JSToolBox {
     public static String[] getBrowserExec(String url, final String lang) {
         String os = System.getProperty("os.name").toLowerCase();
         String value = "";
-        if (os.indexOf("windows") > -1)
+        if (os.indexOf("windows") > -1) {
             value = getProperty("editor.browser.windows");
-        else
+        } else {
             value = getProperty("editor.browser.unix");
+        }
         url = url.replaceAll("file:/", "file://");
         value = value.replaceAll("\\{file\\}", url);
         value = value.replaceAll("\\{lang\\}", lang);
@@ -300,13 +292,11 @@ public class Options extends JSToolBox {
     }
 
     public static String getSchemaVersion() {
-        // readSchemaVersion();// zum testen
         return getProperty("editor.schemaversion");
     }
 
     public static void readSchemaVersion() {
         try {
-            // String schema = getProperty("editor.xml.xsd");
             SAXBuilder builder = new SAXBuilder(false);
             Document doc = builder.build(System.class.getResource(Options.getSchema()).toString());
             XPath x = XPath.newInstance("//xsd:documentation");
@@ -338,26 +328,20 @@ public class Options extends JSToolBox {
     }
 
     public static String getXSLT() {
-        // return
-        // getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}",
-        // getSchedulerHome());
         return getProperty("editor.xml.xslt").replaceAll("\\{scheduler_data\\}", getSchedulerData().replaceAll("\\\\", "/"));
     }
 
     @Deprecated
     public static String getDocSchema() {
-        String strSchemaName = SOSProductionResource.JOB_DOC_XSD.getFullName();
-        return strSchemaName;
-        // return getProperty("documentation.xml.xsd");
+        return SOSProductionResource.JOB_DOC_XSD.getFullName();
     }
 
     public static String getActionsSchema() {
-        String strSchemaName = SOSProductionResource.EVENT_SERVICE_XSD.getFullName();
-        return strSchemaName;
+        return SOSProductionResource.EVENT_SERVICE_XSD.getFullName();
     }
 
     public static boolean isDocValidate() {
-        return getProperty("documentation.xml.validate", "true").equalsIgnoreCase("true");
+        return "true".equalsIgnoreCase(getProperty("documentation.xml.validate", "true"));
     }
 
     public static String getDocXSLT() {
@@ -390,19 +374,12 @@ public class Options extends JSToolBox {
 
     public static String getLastDirectory() {
         return getSchedulerHotFolder();
-        // return (getProperty("editor.file.lastopendir", ""));
     }
 
     @Deprecated
     public static void setLastDirectory(final File f, final Object dom) {
         if (f != null && f.getParent() != null) {
-            // if (dom instanceof sos.scheduler.editor.conf.SchedulerDom &&
-            // ((sos.scheduler.editor.conf.SchedulerDom) dom).isDirectory()) {
             setProperty("editor.file.lastopendir", f.getPath());
-            // }
-            // else {
-            // setProperty("editor.file.lastopendir", f.getParent());
-            // }
         }
     }
 
@@ -452,10 +429,12 @@ public class Options extends JSToolBox {
     public static boolean isNumeric(final String str) {
         boolean retVal = true;
         char[] c = null;
-        if (str == null)
+        if (str == null) {
             return false;
-        if (str.length() == 0)
+        }
+        if (str.isEmpty()) {
             return false;
+        }
         c = str.toCharArray();
         for (int i = 0; i < str.length(); i++) {
             if (!Character.isDigit(c[i])) {
@@ -474,7 +453,7 @@ public class Options extends JSToolBox {
     public static void loadSash(final String name, final SashForm sash) {
         try {
             String value = getProperty(name + ".sash.layout");
-            if (value != null && value.length() > 0) {
+            if (value != null && !value.isEmpty()) {
                 String[] values = value.split(",");
                 int[] weights = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
                 sash.setWeights(weights);
@@ -486,7 +465,7 @@ public class Options extends JSToolBox {
 
     private static String getSystemProperty(final String pstrPropertyName, final String pstrDefaultValue) {
         String strT = System.getProperty(pstrPropertyName);
-        if (strT != null && strT.length() > 0) {
+        if (strT != null && !strT.isEmpty()) {
             if (strT.startsWith("%") && strT.endsWith("%")) {
                 String strV = strT.substring(1, strT.length() - 1);
                 String strW = System.getenv(strV);
@@ -503,27 +482,25 @@ public class Options extends JSToolBox {
     }
 
     public static String getJOEHomeDir() {
-        String strT = getSystemProperty(conEnvVarSOS_JOE_HOME, "");
-        if (strT.length() <= 0) {
+        String strT = getSystemProperty(ENV_VAR_SOS_JOE_HOME, "");
+        if (strT.isEmpty()) {
             strT = getSystemProperty(conEnvVarSCHEDULER_DATA, "");
-            if (strT.length() <= 0) {
-                strT = getSystemProperty(conEnvVarSCHEDULER_HOME, "");
+            if (strT.isEmpty()) {
+                strT = getSystemProperty(ENV_VAR_SCHEDULER_HOME, "");
             }
         }
-        logger.debug("getJOEHomeDir = " + strT);
+        LOGGER.debug("getJOEHomeDir = " + strT);
         return strT;
     }
 
     public static String getSchedulerHome() {
-        String strT = getSystemProperty(conEnvVarSCHEDULER_HOME, "");
-        logger.trace("getSchedulerHome = " + strT);
-        return strT;
+        LOGGER.trace("getSchedulerHome = " + getSystemProperty(ENV_VAR_SCHEDULER_HOME, ""));
+        return getSystemProperty(ENV_VAR_SCHEDULER_HOME, "");
     }
 
     public static String getSchedulerData() {
-        String strT = getSystemProperty(conEnvVarSCHEDULER_DATA, getSchedulerHome());
-        logger.debug("getSchedulerData = " + strT);
-        return strT;
+        LOGGER.debug("getSchedulerData = " + getSystemProperty(conEnvVarSCHEDULER_DATA, getSchedulerHome()));
+        return getSystemProperty(conEnvVarSCHEDULER_DATA, getSchedulerHome());
     }
 
     public static String getSchedulerNormalizedHome() {
@@ -575,15 +552,7 @@ public class Options extends JSToolBox {
     }
 
     public static Color getLightYellow() {
-        try {
-            int r = 255;
-            int g = 255;
-            int b = 187;
-            return ResourceManager.getColor(r, g, b);
-        } catch (Exception e) {
-            new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-            return ResourceManager.getColor(255, 255, 187);
-        }
+        return ResourceManager.getColor(255, 255, 187);
     }
 
     public static Color getBlueColor() {
@@ -624,8 +593,8 @@ public class Options extends JSToolBox {
 
     public static boolean isShowWizardInfo() {
         String s = getProperty("editor.job.wizard.info.show");
-        if (s != null && s.trim().length() > 0) {
-            _showWizardInfo = s.equals("true");
+        if (s != null && !s.trim().isEmpty()) {
+            _showWizardInfo = "true".equals(s);
         }
         return _showWizardInfo;
     }
@@ -650,9 +619,10 @@ public class Options extends JSToolBox {
 
     public static boolean getPropertyBoolean(final String name) {
         String s = getProperty(name);
-        if (s == null)
+        if (s == null) {
             return true;
-        return s.equalsIgnoreCase("true");
+        }
+        return "true".equalsIgnoreCase(s);
     }
 
     public static void setPropertyBoolean(final String name, final boolean value) {
@@ -665,10 +635,10 @@ public class Options extends JSToolBox {
 
     public static String getProperty(final String key, final String pstrDefaultValue) {
         String strT = getProperty(key);
-        if (strT == null || strT.length() <= 0) {
+        if (strT == null || strT.isEmpty()) {
             strT = pstrDefaultValue;
         }
-        if (objPrefStore.getProperty(key).length() <= 0) {
+        if (objPrefStore.getProperty(key).isEmpty()) {
             objPrefStore.saveProperty(key, pstrDefaultValue);
         }
         return strT;
@@ -676,7 +646,7 @@ public class Options extends JSToolBox {
 
     public static String getProperty(final String key) {
         String strT = objPrefStore.getProperty(key);
-        if (strT.length() <= 0) {
+        if (strT.isEmpty()) {
             getProperties();
             strT = _properties.getProperty(key);
             if (strT == null) {
@@ -687,10 +657,11 @@ public class Options extends JSToolBox {
     }
 
     public static String[] getJobTitleList() {
-        if (jobTitleList != null)
+        if (jobTitleList != null) {
             return jobTitleList;
-        else
+        } else {
             return new String[] {};
+        }
     }
 
     public static void setJobTitleList(final String[] jobTitleList) {
@@ -698,10 +669,11 @@ public class Options extends JSToolBox {
     }
 
     public static HashMap getHolidaysDescription() {
-        if (holidaysDescription != null)
+        if (holidaysDescription != null) {
             return holidaysDescription;
-        else
+        } else {
             return new HashMap();
+        }
     }
 
     public static void setHolidaysDescription(final HashMap holidaysDescription) {
@@ -714,11 +686,6 @@ public class Options extends JSToolBox {
         Properties p = new Properties();
         p.putAll(JOESettingsDefaults);
         p.putAll(_properties);
-        // 9. Folgende Monitore sollen in der Auslieferung im Lieferumfang sein
-        // configuration_monitor
-        // -->sos.scheduler.managed.configuration.ConfigurationOrderMonitor
-        // create_event_monitor -->
-        // sos.scheduler.jobs.JobSchedulerSubmitEventMonitor
         if (prefix.equalsIgnoreCase("monitor_favorite_")) {
             if (!p.containsKey("monitor_favorite_java_configuration_monitor")) {
                 p.put("monitor_favorite_java_configuration_monitor", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor");
@@ -732,17 +699,19 @@ public class Options extends JSToolBox {
         java.util.Iterator keys = p.keySet().iterator();
         while (keys.hasNext()) {
             Object key = keys.next();
-            if (key != null && key.toString().length() > 0 && key.toString().startsWith(prefix))
+            if (key != null && !key.toString().isEmpty() && key.toString().startsWith(prefix)) {
                 s = key.toString().substring(prefix.length()) + ";" + s;
+            }
         }
         retVal = s.split(";");
         return retVal;
     }
 
     public static void removeProperty(final String name) {
-        if (name != null && name.length() > 0) {
+        if (name != null && !name.isEmpty()) {
             _properties.remove(name);
             saveProperties();
         }
     }
+
 }

@@ -35,8 +35,6 @@ public class WebservicesListener {
     }
 
     private void init() {
-        // if (_http_server == null && _config.getAttribute("http_server") ==
-        // null) {
         if (_http_server == null && _config.getChild("http_server") == null) {
             _http_server = new Element("http_server");
             _config.addContent(_http_server);
@@ -45,8 +43,9 @@ public class WebservicesListener {
             _http_server = _config.getChild("http_server");
             _list = _http_server.getChildren("web_service");
         }
-        if (_service != null && !_list.contains(_service))
+        if (_service != null && !_list.contains(_service)) {
             _list.add(_service);
+        }
         _dom.setChanged(true);
     }
 
@@ -62,10 +61,11 @@ public class WebservicesListener {
     }
 
     public void selectService(int index) {
-        if (index >= 0 && index < _list.size())
+        if (index >= 0 && index < _list.size()) {
             _service = (Element) _list.get(index);
-        else
+        } else {
             _service = null;
+        }
     }
 
     public boolean getDebug() {
@@ -104,7 +104,7 @@ public class WebservicesListener {
         if (index >= 0 && index < _list.size()) {
             _list.remove(index);
             _service = null;
-            if (_list.size() == 0) {
+            if (_list.isEmpty()) {
                 _config.removeChild("http_server");
                 _http_server = null;
                 _list = new ArrayList();
@@ -115,8 +115,9 @@ public class WebservicesListener {
     }
 
     public void newService(Table table) {
-        if (_http_server == null)
+        if (_http_server == null) {
             init();
+        }
         _service = new Element("web_service");
         String name = "web_service_" + (table.getItemCount() + 1);
         _service.setAttribute("name", name);
@@ -135,7 +136,6 @@ public class WebservicesListener {
         Utils.setAttribute("response_xslt_stylesheet", response, _service, _dom);
         Utils.setAttribute("timeout", timeout, _service, _dom);
         Utils.setAttribute("url_path", url, _service, _dom);
-        // params
         _service.removeChild("params");
         Element parameters = params.length > 0 ? new Element("params") : null;
         for (int i = 0; i < params.length; i++) {
@@ -144,16 +144,10 @@ public class WebservicesListener {
             Utils.setAttribute("value", params[i].getText(1), param);
             parameters.addContent(param);
         }
-        if (parameters != null)
+        if (parameters != null) {
             _service.addContent(parameters);
+        }
         init();
-        /*
-         * if (_http_server == null && _config.getAttribute("http_server") ==
-         * null) { _http_server = new Element("http_server");
-         * _config.addContent(_http_server); _list =
-         * _http_server.getChildren("web_service"); } if
-         * (!_list.contains(_service)) _list.add(_service);
-         */
         _dom.setChanged(true);
     }
 
@@ -168,15 +162,17 @@ public class WebservicesListener {
                 String name = ((Element) it.next()).getAttributeValue("name");
                 _chains[index++] = name != null ? name : "";
             }
-        } else
+        } else {
             _chains = new String[0];
+        }
         return _chains;
     }
 
     public int getChainIndex(String jobChain) {
         for (int i = 0; i < _chains.length; i++) {
-            if (_chains[i].equals(jobChain))
+            if (_chains[i].equals(jobChain)) {
                 return i;
+            }
         }
         return -1;
     }
@@ -200,10 +196,12 @@ public class WebservicesListener {
         if (_list != null) {
             for (Iterator it = _list.iterator(); it.hasNext();) {
                 Element e = (Element) it.next();
-                if (Utils.getAttributeValue("name", e).equals(name))
+                if (Utils.getAttributeValue("name", e).equals(name)) {
                     return false;
+                }
             }
         }
         return true;
     }
+
 }

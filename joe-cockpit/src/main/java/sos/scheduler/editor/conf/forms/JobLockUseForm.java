@@ -49,8 +49,9 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyLockUse();
+        }
     }
 
     public boolean isUnsaved() {
@@ -63,7 +64,6 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new org.eclipse.swt.graphics.Point(678, 425));
     }
 
-    /** This method initializes group1 */
     private void createGroup() {
         GridData gridData51 = new org.eclipse.swt.layout.GridData();
         gridData51.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -79,8 +79,9 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
         tLockUse.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (!tLockUse.getText().equals(""))
+                if (!"".equals(tLockUse.getText())) {
                     getShell().setDefaultButton(bApplyLockUse);
+                }
                 bApplyLockUse.setEnabled(listener.isValidLock(tLockUse.getText()));
             }
         });
@@ -117,8 +118,9 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
                 if (tLockUseTable.getSelectionCount() > 0) {
                     listener.selectLockUse(tLockUseTable.getSelectionIndex());
                     initLockUse(true);
-                } else
+                } else {
                     initLockUse(false);
+                }
                 bRemoveLockUse.setEnabled(tLockUseTable.getSelectionCount() > 0);
             }
         });
@@ -150,8 +152,9 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
                     int index = tLockUseTable.getSelectionIndex();
                     listener.deleteLockUse(index);
                     tLockUseTable.remove(index);
-                    if (index >= tLockUseTable.getItemCount())
+                    if (index >= tLockUseTable.getItemCount()) {
                         index--;
+                    }
                     if (tLockUseTable.getItemCount() > 0) {
                         tLockUseTable.setSelection(index);
                         listener.selectLockUse(index);
@@ -170,7 +173,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
             public void widgetSelected(final SelectionEvent e) {
                 String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_LOCK);
                 tLockUse.setEnabled(true);
-                if (name != null && name.length() > 0) {
+                if (name != null && !name.isEmpty()) {
                     tLockUseTable.deselectAll();
                     listener.newLockUse();
                     initLockUse(true);
@@ -182,15 +185,15 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
         butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
     }
 
-    // lock.use
     private void initLockUseTable(boolean enabled) {
         tLockUseTable.setEnabled(enabled);
         bNewLockUse.setEnabled(true);
         initLockUse(false);
         listener.fillLockUse(tLockUseTable);
         String[] locks = listener.getLocks();
-        if (locks != null)
+        if (locks != null) {
             tLockUse.setItems(locks);
+        }
     }
 
     private void initLockUse(boolean enabled) {
@@ -213,4 +216,4 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
         getShell().setDefaultButton(null);
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

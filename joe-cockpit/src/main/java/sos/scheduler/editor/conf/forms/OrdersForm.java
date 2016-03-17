@@ -12,7 +12,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.jdom.Attribute;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
@@ -25,11 +24,9 @@ import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-// import sos.scheduler.editor.conf.listeners.SchedulerListener;
 public class OrdersForm extends SOSJOEMessageCodes {
 
     private OrdersListener listener;
-    // private SchedulerListener mainListener;
     private Group ordersGroup = null;
     private static Table table = null;
     private Button bNewOrder = null;
@@ -37,8 +34,6 @@ public class OrdersForm extends SOSJOEMessageCodes {
     private Label label = null;
     private SchedulerDom _dom = null;
 
-    // public OrdersForm(Composite parent, int style, SchedulerDom dom,
-    // ISchedulerUpdate update, SchedulerListener mainListener) {
     public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update, Element selectedJobchain_) {
         super(parent, style);
         _dom = dom;
@@ -79,7 +74,6 @@ public class OrdersForm extends SOSJOEMessageCodes {
             }
         });
         label = new Label(ordersGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label.setText("Label");
         label.setLayoutData(gridData4);
         bRemoveOrder = JOE_B_OrdersForm_RemoveOrder.Control(new Button(ordersGroup, SWT.NONE));
         bRemoveOrder.setEnabled(false);
@@ -87,18 +81,15 @@ public class OrdersForm extends SOSJOEMessageCodes {
         bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // int c = MainWindow.message(getShell(),
-                // "Do you want to remove the order?", SWT.ICON_QUESTION |
-                // SWT.YES | SWT.NO);
                 int c = MainWindow.message(getShell(), JOE_M_OrdersForm_RemoveOrder.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                if (c != SWT.YES)
+                if (c != SWT.YES) {
                     return;
+                }
                 bRemoveOrder.setEnabled(listener.deleteCommands(table));
             }
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
@@ -106,8 +97,9 @@ public class OrdersForm extends SOSJOEMessageCodes {
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                if (table.getSelectionCount() > 0)
+                if (table.getSelectionCount() > 0) {
                     ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, JOEConstants.ORDER);
+                }
             }
         });
         table.setHeaderVisible(true);
@@ -133,4 +125,5 @@ public class OrdersForm extends SOSJOEMessageCodes {
     public static Table getTable() {
         return table;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

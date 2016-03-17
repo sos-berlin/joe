@@ -65,15 +65,15 @@ public class Application extends ApplicationWindow {
     private static final String conI18NKey_JOE_L_JOB_DOC_XML = "JOE_L_JobDoc.XML";
     private static final String conI18NKey_JOE_L_JOB_DOC_FORMAT = "JOE_L_JobDoc.Format";
     private static final String conI18NKey_JOE_L_JOB_DOC_DESIGN = "JOE_L_JobDoc.Design";
-    @SuppressWarnings("unused")
-    private final String conClassName = this.getClass().getSimpleName();
-    @SuppressWarnings("unused")
-    private static final String conSVNVersion = "$Id$";
-    @SuppressWarnings("unused")
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private static final Logger LOGGER = Logger.getLogger(Application.class);
     private WindowsSaver objPersistenceStore;
+    private String strBaseDir = "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
+    private SOSCTabFolder tabFolder = null;
+    private static MainWindow window = null;
+    private static Display display = null;
+    private final ArrayList<String> filelist = new ArrayList<String>();
+    private final String strTitleText = "";
 
-    /** Create the application window. */
     public Application() {
         super(null);
         createActions();
@@ -92,38 +92,13 @@ public class Application extends ApplicationWindow {
         Globals.stColorRegistry.put("IncludedOption", display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW).getRGB());
         Globals.stColorRegistry.put("MandatoryFieldColor", display.getSystemColor(SWT.COLOR_BLUE).getRGB());
         Globals.stColorRegistry.put("Color4FieldHasFocus", display.getSystemColor(SWT.COLOR_GREEN).getRGB());
-        // Colorschema
-        // Globals.stColorRegistry.put("FieldBackGround", new RGB(220, 249, 0));
-        // // var.
-        Globals.stColorRegistry.put("FieldBackGround", new RGB(242, 247, 247)); // var.
-                                                                                // 1
-                                                                                // =
-                                                                                // #DCF900
-                                                                                // =
-                                                                                // rgb(220,249,0)
-        Globals.stColorRegistry.put("Color4FieldHasFocus", new RGB(124, 231, 0)); // var.
-                                                                                  // 1
-                                                                                  // =
-                                                                                  // #7CE700
-                                                                                  // =
-                                                                                  // rgb(124,231,0)
-        Globals.stColorRegistry.put("Color4FieldInError", new RGB(255, 225, 0)); // var.
-                                                                                 // 1
-                                                                                 // =
-                                                                                 // #FFE100
-                                                                                 // =
-                                                                                 // rgb(255,225,0)
-        // Globals.stColorRegistry.put("CompositeBackGround", new
-        // RGB(236,252,113)); // var. 5 = #ECFC71 = rgb(236,252,113)
-        // var. 5 = #FFFFB0 = rgb(255,255,176)
-        Globals.stColorRegistry.put("CompositeBackGround", new RGB(242, 247, 247)); //
+        Globals.stColorRegistry.put("FieldBackGround", new RGB(242, 247, 247));
+        Globals.stColorRegistry.put("Color4FieldHasFocus", new RGB(124, 231, 0));
+        Globals.stColorRegistry.put("Color4FieldInError", new RGB(255, 225, 0));
+        Globals.stColorRegistry.put("CompositeBackGround", new RGB(242, 247, 247));
         Globals.setApplicationWindow(this);
-        // Globals.MsgHandler = new JADEMsg("init");
     }
 
-    /** Create contents of the application window.
-     * 
-     * @param parent */
     @Override
     protected Control createContents(final Composite parent) {
         Display display = parent.getDisplay();
@@ -133,25 +108,20 @@ public class Application extends ApplicationWindow {
         ErrorLog.setSShell(shell);
         objPersistenceStore = new WindowsSaver(this.getClass(), shell, 940, 600);
         objPersistenceStore.restoreWindow();
-
         Composite container = new Composite(parent, SWT.NONE);
         GridLayout gl_container = new GridLayout(1, true);
         container.setLayout(gl_container);
         final SOSSashForm sashForm = new SOSSashForm(container, SWT.BORDER | SWT.SMOOTH | SWT.HORIZONTAL, "JobDocApplication");
-
         parent.addControlListener(new ControlAdapter() {
 
             @Override
             public void controlResized(final ControlEvent e) {
-                logger.debug("control resized");
+                LOGGER.debug("control resized");
             }
         });
-
-        //
         TreeViewer treeViewer = new TreeViewer(sashForm, SWT.BORDER);
         Tree objTree = treeViewer.getTree();
         objTree.setBackground(Globals.getCompositeBackground());
-
         treeViewer.addTreeListener(new ITreeViewerListener() {
 
             @Override
@@ -182,12 +152,10 @@ public class Application extends ApplicationWindow {
                             }
                         }
                     }
-
                 } catch (Exception e) {
                 }
             }
         });
-        // Tree tree = treeViewer.getTree();
         FillTree(treeViewer);
         tabFolder = new SOSCTabFolder(sashForm, SWT.BORDER);
         tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
@@ -196,13 +164,6 @@ public class Application extends ApplicationWindow {
         return container;
     }
 
-    // private final String strBaseDir =
-    // "C:\\Program Files\\sos-berlin.com\\jobscheduler\\scheduler#4444\\scheduler_data\\jobs";
-    private String strBaseDir = "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
-    private SOSCTabFolder tabFolder = null;
-    private static MainWindow window = null;
-    private static Display display = null;
-
     private void createTabFolder(final TreeViewEntry objTVE) {
         String strFileName = objTVE.getFile().getAbsolutePath();
         openDocumentation(tabFolder, strFileName);
@@ -210,41 +171,36 @@ public class Application extends ApplicationWindow {
 
     private void openDocumentation(Composite objComposite, final String pstrFileName2Open) {
         try {
-            final SOSCTabFolder objTabFolder = new SOSCTabFolder(objComposite, SWT.BOTTOM /* TabItemPos */);
+            final SOSCTabFolder objTabFolder = new SOSCTabFolder(objComposite, SWT.BOTTOM);
             objTabFolder.ItemsHasClose = false;
             final SOSCTabItem objDesignTab = objTabFolder.getTabItem(conI18NKey_JOE_L_JOB_DOC_DESIGN);
             final SOSCTabItem objFormattedTab = objTabFolder.getTabItem(conI18NKey_JOE_L_JOB_DOC_FORMAT);
             final SOSCTabItem objXMLTab = objTabFolder.getTabItem(conI18NKey_JOE_L_JOB_DOC_XML);
             newItem(objTabFolder, pstrFileName2Open);
-
             final DocumentationForm objJobDocForm = new DocumentationForm(null, objTabFolder, SWT.NONE);
             if (objJobDocForm.open(pstrFileName2Open, filelist)) {
                 objDesignTab.setControl(objJobDocForm);
-            } else
+            } else {
                 return;
-            //
+            }
             objTabFolder.addSelectionListener(new SelectionAdapter() {
 
                 @Override
                 public void widgetSelected(final SelectionEvent event) {
                     try (WaitCursor objWC = new WaitCursor()) {
-                        logger.debug("CTabFolder Item selected");
+                        LOGGER.debug("CTabFolder Item selected");
                         CTabItem objSelectedItem = objTabFolder.getSelection();
-                        // TreeViewEntry objTVE = (TreeViewEntry)
-                        // objSelectedItem.getData();
                         String strI18NKey = (String) objSelectedItem.getData("key");
                         DocumentationDom objDom = objJobDocForm.getDom();
                         Element element = objDom.getRoot();
-
                         switch (strI18NKey) {
                         case conI18NKey_JOE_L_JOB_DOC_DESIGN:
                             break;
-
                         case conI18NKey_JOE_L_JOB_DOC_FORMAT:
                             if (element != null) {
                                 try {
                                     String filename = objDom.transform(element, pstrFileName2Open);
-                                    if (filename.length() > 0) {
+                                    if (!filename.isEmpty()) {
                                         URL objUrl = new File(filename).toURI().toURL();
                                         BrowserViewForm objBrowser = new BrowserViewForm(objTabFolder, SWT.NONE, objUrl.toString());
                                         objFormattedTab.setControl(objBrowser.getBrowser());
@@ -254,10 +210,8 @@ public class Application extends ApplicationWindow {
                                 }
                             }
                             break;
-
                         case conI18NKey_JOE_L_JOB_DOC_XML:
                             TextArea objTA = new TextArea(objTabFolder, "JobDoc.XMLSource");
-                            // objTA.setEditable(false);
                             try {
                                 String strXML = objDom.getXML(element);
                                 objTA.setXMLText(strXML);
@@ -267,7 +221,6 @@ public class Application extends ApplicationWindow {
                                 new ErrorLog("error in getxml.", e);
                             }
                             break;
-
                         default:
                             break;
                         }
@@ -281,9 +234,6 @@ public class Application extends ApplicationWindow {
         }
     }
 
-    private final ArrayList<String> filelist = new ArrayList<String>();
-    private final String strTitleText = "";
-
     private SOSCTabItem newItem(Control control, String filename) {
         SOSCTabItem objTabITem = new SOSCTabItem(tabFolder, SWT.CLOSE);
         objTabITem.addDisposeListener(new DisposeListener() {
@@ -295,11 +245,7 @@ public class Application extends ApplicationWindow {
         objTabITem.setControl(control);
         objTabITem.setShowClose(true);
         tabFolder.setSelection(tabFolder.indexOf(objTabITem));
-        // tab.setData(new TabData(filename, strTitleText));
-        // TreeViewItem t = (TreeViewItem) objTabITem.getData();
-        // t.caption = filename;
         objTabITem.setText(filename);
-        // filelist.add(filename);
         return objTabITem;
     }
 
@@ -310,38 +256,26 @@ public class Application extends ApplicationWindow {
         if (strT != null) {
             strBaseDir = strT;
         }
-        pobjTreeView.setInput(strBaseDir); // pass a non-null that will be
-                                           // ignored
+        pobjTreeView.setInput(strBaseDir);
     }
 
-    /** Return the initial size of the window. */
     @Override
     protected Point getInitialSize() {
         objPersistenceStore = new WindowsSaver(this.getClass(), this.getShell(), 940, 600);
         return objPersistenceStore.getWindowSize();
     }
 
-    /** This class provides the labels for the file tree */
     class FileTreeLabelProvider implements ILabelProvider {
 
-        // The listeners
         private final List listeners;
-        // Label provider state: preserve case of file names/directories
         boolean preserveCase = true;
 
-        /** Constructs a FileTreeLabelProvider */
         public FileTreeLabelProvider() {
-            // Create the list to hold the listeners
             listeners = new ArrayList();
         }
 
-        /** Sets the preserve case attribute
-         * 
-         * @param preserveCase the preserve case attribute */
         public void setPreserveCase(final boolean preserveCase) {
             this.preserveCase = preserveCase;
-            // Since this attribute affects how the labels are computed,
-            // notify all the listeners of the change.
             LabelProviderChangedEvent event = new LabelProviderChangedEvent(this);
             for (int i = 0, n = listeners.size(); i < n; i++) {
                 ILabelProviderListener ilpl = (ILabelProviderListener) listeners.get(i);
@@ -349,71 +283,42 @@ public class Application extends ApplicationWindow {
             }
         }
 
-        /** Gets the image to display for a node in the tree
-         * 
-         * @param arg0 the node
-         * @return Image */
         @Override
         public Image getImage(final Object arg0) {
             TreeViewEntry objTV = (TreeViewEntry) arg0;
             return objTV.getImage();
         }
 
-        /** Gets the text to display for a node in the tree
-         * 
-         * @param arg0 the node
-         * @return String */
         @Override
         public String getText(final Object arg0) {
-            // Get the name of the file
             TreeViewEntry objTV = (TreeViewEntry) arg0;
             String text = objTV.getName();
-            // If name is blank, get the path
-            // Check the case settings before returning the text
             return preserveCase ? text : text.toUpperCase();
         }
 
-        /** Adds a listener to this label provider
-         * 
-         * @param arg0 the listener */
         @Override
         public void addListener(final ILabelProviderListener arg0) {
             listeners.add(arg0);
         }
 
-        /** Called when this LabelProvider is being disposed */
         @Override
         public void dispose() {
             // Dispose the images
         }
 
-        /** Returns whether changes to the specified property on the specified
-         * element would affect the label for the element
-         * 
-         * @param arg0 the element
-         * @param arg1 the property
-         * @return boolean */
         @Override
         public boolean isLabelProperty(final Object arg0, final String arg1) {
             return false;
         }
 
-        /** Removes the listener
-         * 
-         * @param arg0 the listener to remove */
         @Override
         public void removeListener(final ILabelProviderListener arg0) {
             listeners.remove(arg0);
         }
     }
 
-    /** This class provides the content for the tree in FileTree */
     class FileTreeContentProvider implements ITreeContentProvider {
 
-        /** Gets the children of the specified object
-         * 
-         * @param arg0 the parent object
-         * @return Object[] */
         @Override
         public Object[] getChildren(final Object parentElement) {
             TreeViewEntry[] objO = new TreeViewEntry[] {};
@@ -424,7 +329,6 @@ public class Application extends ApplicationWindow {
                 case IsRoot:
                     break;
                 case isDirectory:
-                    // Return the files and subdirectories in this directory
                     Object[] objFiles = objTV.getFile().listFiles();
                     if (objFiles != null) {
                         for (Object objFle : objFiles) {
@@ -432,17 +336,11 @@ public class Application extends ApplicationWindow {
                             String strName = objFile.getName();
                             boolean flgDoAdd = false;
                             enuTreeItemType intType = TreeViewEntry.enuTreeItemType.isDirectory;
-                            if (objFile.isDirectory()) {
-                                if (strName.startsWith(".")) {
-
-                                } else {
-                                    flgDoAdd = true;
-                                }
-                            } else {
-                                if (strName.endsWith(".xml") || strName.endsWith(".sosdoc") || strName.endsWith(".jobdoc")) {
-                                    intType = TreeViewEntry.enuTreeItemType.isFile;
-                                    flgDoAdd = true;
-                                }
+                            if (objFile.isDirectory() && !strName.startsWith(".")) {
+                                flgDoAdd = true;
+                            } else if (strName.endsWith(".xml") || strName.endsWith(".sosdoc") || strName.endsWith(".jobdoc")) {
+                                intType = TreeViewEntry.enuTreeItemType.isFile;
+                                flgDoAdd = true;
                             }
                             if (flgDoAdd) {
                                 TreeViewEntry objE = new TreeViewEntry(intType);
@@ -452,9 +350,6 @@ public class Application extends ApplicationWindow {
                         }
                     }
                     break;
-                // case profiles_root:
-                // objO = model.getProfiles();
-                // break;
                 default:
                     break;
                 }
@@ -462,32 +357,17 @@ public class Application extends ApplicationWindow {
             return objV.toArray();
         }
 
-        /** Gets the parent of the specified object
-         * 
-         * @param arg0 the object
-         * @return Object */
         @Override
         public Object getParent(final Object arg0) {
-            // Return this file's parent file
             return ((File) arg0).getParentFile();
         }
 
-        /** Returns whether the passed object has children
-         * 
-         * @param arg0 the parent object
-         * @return boolean */
         @Override
         public boolean hasChildren(final Object arg0) {
-            // Get the children
             Object[] obj = getChildren(arg0);
-            // Return whether the parent has children
             return obj == null ? false : obj.length > 0;
         }
 
-        /** Gets the root element(s) of the tree
-         * 
-         * @param arg0 the input data
-         * @return Object[] */
         @Override
         public Object[] getElements(final Object arg0) {
             File objF;
@@ -509,11 +389,9 @@ public class Application extends ApplicationWindow {
                     enuTreeItemType intType = TreeViewEntry.enuTreeItemType.isDirectory;
                     if (objFile.isDirectory()) {
                         flgDoAdd = true;
-                    } else {
-                        if (objFile.getName().endsWith(".xml") || objFile.getName().endsWith(".sosdoc") || objFile.getName().endsWith(".jobdoc")) {
-                            intType = TreeViewEntry.enuTreeItemType.isFile;
-                            flgDoAdd = true;
-                        }
+                    } else if (objFile.getName().endsWith(".xml") || objFile.getName().endsWith(".sosdoc") || objFile.getName().endsWith(".jobdoc")) {
+                        intType = TreeViewEntry.enuTreeItemType.isFile;
+                        flgDoAdd = true;
                     }
                     if (flgDoAdd) {
                         TreeViewEntry objE = new TreeViewEntry(intType);
@@ -525,77 +403,51 @@ public class Application extends ApplicationWindow {
             return objV.toArray();
         }
 
-        /** Disposes any created resources */
         @Override
         public void dispose() {
             // Nothing to dispose
         }
 
-        /** Called when the input changes
-         * 
-         * @param arg0 the viewer
-         * @param arg1 the old input
-         * @param arg2 the new input */
         @Override
         public void inputChanged(final Viewer arg0, final Object arg1, final Object arg2) {
             // Nothing to change
         }
     }
 
-    /** Helper method for our maximize behavior. If the passed control is already
-     * maximized, restore it. Otherwise, maximize it
-     * 
-     * @param control the control to maximize or restore
-     * @param sashForm the parent SashForm */
     private void maximizeHelper(final Control control, final SashForm sashForm) {
-        // See if the control is already maximized
         if (control == sashForm.getMaximizedControl()) {
-            // Already maximized; restore it
             sashForm.setMaximizedControl(null);
         } else {
-            // Not yet maximized, so maximize it
             sashForm.setMaximizedControl(control);
         }
     }
 
-    /** Create the actions. */
     private void createActions() {
         // Create the actions
     }
 
-    /** Create the menu manager.
-     * 
-     * @return the menu manager */
     @Override
     protected MenuManager createMenuManager() {
         MenuManager menuManager = new MenuManager("menu");
         return menuManager;
     }
 
-    /** Create the toolbar manager.
-     * 
-     * @return the toolbar manager */
     @Override
     protected ToolBarManager createToolBarManager(final int style) {
         ToolBarManager toolBarManager = new ToolBarManager(style);
         return toolBarManager;
     }
 
-    /** Create the status line manager.
-     * 
-     * @return the status line manager */
     @Override
     protected StatusLineManager createStatusLineManager() {
         StatusLineManager statusLineManager = new StatusLineManager();
         return statusLineManager;
     }
 
-    /** Configure the shell.
-     * 
-     * @param newShell */
     @Override
     protected void configureShell(final Shell newShell) {
         super.configureShell(newShell);
         newShell.setText("SOS Documentation Editor");
     }
+
 }

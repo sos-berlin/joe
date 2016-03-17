@@ -15,6 +15,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ScriptsListener {
 
+    private final static String EMPTY_MONITOR_NAME = "<empty>";
     private SchedulerDom _dom = null;
     private ISchedulerUpdate _main = null;
     private List _list = null;
@@ -24,19 +25,15 @@ public class ScriptsListener {
     private Element _config = null;
     private Element _monitors = null;
 
-    private final static String EMPTY_MONITOR_NAME = "<empty>";
-
     public ScriptsListener(SchedulerDom dom, ISchedulerUpdate update, Element parent) {
         _dom = dom;
         _parent = parent;
         _main = update;
         isJob = true;
         objectName = "job";
-
-        // Parent can be <jobs> or <monitors>
         if (!_dom.isLifeElement()) {
             _config = _dom.getRoot().getChild("config");
-            if (!parent.getName().equals("job")) {    // named monitor.
+            if (!parent.getName().equals("job")) {
                 if (_config.getChild("monitors") == null) {
                     _monitors = new Element("monitors");
                     _config.addContent(_monitors);
@@ -48,10 +45,8 @@ public class ScriptsListener {
                 isJob = false;
                 objectName = "monitor";
             }
-
             _list = _parent.getChildren("monitor");
         }
-
     }
 
     private void initScripts() {
@@ -86,7 +81,7 @@ public class ScriptsListener {
             int index = 0;
             for (int i = 0; i < _list.size(); i++) {
                 e = (Element) _list.get(i);
-                if (name.equals(Utils.getAttributeValue("name", e)) || (name.equals("<empty>") && Utils.getAttributeValue("name", e).equals(""))) {
+                if (name.equals(Utils.getAttributeValue("name", e)) || ("<empty>".equals(name) && "".equals(Utils.getAttributeValue("name", e)))) {
                     if (newName != null) {
                         Utils.setAttribute("name", newName, e);
                         _main.updateScripts();
@@ -95,17 +90,17 @@ public class ScriptsListener {
                     found = true;
                     Utils.setAttribute("ordering", ordering, e);
                     _dom.setChanged(true);
-                    if (_dom.isLifeElement() || _dom.isDirectory())
+                    if (_dom.isLifeElement() || _dom.isDirectory()) {
                         _dom.setChangedForDirectory(objectName, name, SchedulerDom.MODIFY);
+                    }
                     table.getItem(index).setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name), ordering });
                 }
                 index++;
             }
         }
-
         if (!found) {
             e = new Element("monitor");
-            if (name.equals(EMPTY_MONITOR_NAME)) {
+            if (EMPTY_MONITOR_NAME.equals(name)) {
                 e.removeAttribute("name");
                 Utils.setAttribute("ordering", ordering, e);
             } else {
@@ -113,14 +108,17 @@ public class ScriptsListener {
                 Utils.setAttribute("ordering", ordering, e);
             }
             _dom.setChanged(true);
-            if (_dom.isLifeElement() || _dom.isDirectory())
+            if (_dom.isLifeElement() || _dom.isDirectory()) {
                 _dom.setChangedForDirectory(objectName, name, SchedulerDom.MODIFY);
-            if (_list == null)
+            }
+            if (_list == null) {
                 initScripts();
-            if (_list != null)
+            }
+            if (_list != null) {
                 _list.add(e);
+            }
             item = new TableItem(table, SWT.NONE);
-            item.setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name), ordering });
+            item.setText(new String[] { ("".equals(name) ? EMPTY_MONITOR_NAME : name), ordering });
             item.setData(e);
             _main.updateScripts();
         }
@@ -142,13 +140,15 @@ public class ScriptsListener {
             }
             table.remove(index);
             _main.updateScripts();
-            if (_list == null)
+            if (_list == null) {
                 initScripts();
-            if (_list.size() == 0) {
+            }
+            if (_list.isEmpty()) {
                 _list = null;
             }
-            if (index >= table.getItemCount())
+            if (index >= table.getItemCount()) {
                 index--;
+            }
             if (index >= 0) {
                 table.setSelection(index);
                 return true;
@@ -158,8 +158,9 @@ public class ScriptsListener {
     }
 
     public boolean existScriptname(String name) {
-        if (name == null || name.length() == 0)
+        if (name == null || name.isEmpty()) {
             return false;
+        }
         for (int i = 0; _list != null && i < _list.size(); i++) {
             Element currJob = (Element) _list.get(i);
             String jobName = Utils.getAttributeValue("name", currJob);
@@ -173,4 +174,5 @@ public class ScriptsListener {
     public Element getParent() {
         return _parent;
     }
+
 }

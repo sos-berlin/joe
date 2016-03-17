@@ -17,8 +17,9 @@ public class JobScriptListener extends JobDocBaseListener<DocumentationDom> {
     public boolean isScript() {
         boolean process = _job.getChild("process", _dom.getNamespace()) != null;
         _script = _job.getChild("script", _dom.getNamespace());
-        if (!process && _script == null)
+        if (!process && _script == null) {
             setScript();
+        }
         return _script != null;
     }
 
@@ -28,4 +29,5 @@ public class JobScriptListener extends JobDocBaseListener<DocumentationDom> {
         _job.addContent(_script);
         _dom.setChanged(true);
     }
+
 }

@@ -10,7 +10,7 @@ import com.sos.scheduler.model.objects.JSObjJobChain;
 import com.sos.scheduler.model.objects.JobChain;
 
 public class JobChainDiagramCreator {
-    
+
     private File jobChainFile;
     private File outputDirectory;
     private File outputFile;
@@ -30,15 +30,15 @@ public class JobChainDiagramCreator {
             schedulerObjectFactory.initMarshaller(JobChain.class);
             jobChain = schedulerObjectFactory.createJobChain();
             jobChain.loadObject(jobChainFile);
-            outputFile = new File(jobChain.createGraphVizImageFile(outputDirectory,showErrorNodes));
- 
+            outputFile = new File(jobChain.createGraphVizImageFile(outputDirectory, showErrorNodes));
+
         } catch (JAXBException e) {
-			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
 
     }
-    
-    public File getOutfile(){
+
+    public File getOutfile() {
         return outputFile;
     }
 

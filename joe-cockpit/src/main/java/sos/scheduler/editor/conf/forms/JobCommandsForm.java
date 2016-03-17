@@ -49,7 +49,6 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
         setSize(new org.eclipse.swt.graphics.Point(656, 400));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData4 = new org.eclipse.swt.layout.GridData();
         gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -88,7 +87,6 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
         });
     }
 
-    /** This method initializes table */
     private void createTable() {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
@@ -96,8 +94,9 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                if (table.getSelectionCount() > 0)
+                if (table.getSelectionCount() > 0) {
                     ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, JOEConstants.JOB_COMMAND);
+                }
             }
         });
         table.setHeaderVisible(true);
@@ -113,4 +112,4 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
         });
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -31,7 +31,7 @@ public class PeriodsListener {
         _dom = dom;
         _parent = parent;
         _main = main;
-        if (_parent.getName().equals("at")) {
+        if ("at".equals(_parent.getName())) {
             _list = getDateChildren();
         } else {
             _list = parent.getChildren("period");
@@ -62,7 +62,7 @@ public class PeriodsListener {
             List l = null;
             String date = "";
             l = _parent.getParentElement().getChildren("at");
-            if (_parent.getName().equals("at")) {
+            if ("at".equals(_parent.getName())) {
                 date = Utils.getAttributeValue("at", _parent).substring(0, 10);
             } else {
                 date = Utils.getAttributeValue("date", _parent);
@@ -79,15 +79,18 @@ public class PeriodsListener {
 
     public boolean isOnOrder() {
         Element job = _parent;
-        if (job.getParentElement() == null)
+        if (job.getParentElement() == null) {
             return false;
-        // mögliche Vaterknoten herausfinden
-        while (job != null && !job.getName().equals("job") && !job.getName().equals("add_order") && !job.getName().equals("order")
-                && !job.getName().equals("schedule") && !job.getName().equals("config"))
+        }
+        while (job != null && !"job".equals(job.getName()) && !"add_order".equals(job.getName()) && !"order".equals(job.getName())
+                && !"schedule".equals(job.getName()) && !"config".equals(job.getName())) {
             job = job.getParentElement();
-        if (job == null)
+        }
+        if (job == null) {
             job = _parent;
-        return Utils.isAttributeValue("order", job) && job.getName().equals("job") || Utils.isAttributeValue("id", job) && job.getName().equals("add_order");
+        }
+        return Utils.isAttributeValue("order", job) && "job".equals(job.getName()) || Utils.isAttributeValue("id", job)
+                && "add_order".equals(job.getName());
     }
 
     public void fillTable(Table table) {
@@ -96,17 +99,18 @@ public class PeriodsListener {
             for (Iterator it = _list.iterator(); it.hasNext();) {
                 Element e = (Element) it.next();
                 TableItem item = new TableItem(table, SWT.NONE);
-                if (Utils.getAttributeValue("single_start", e).length() > 0)
+                if (!Utils.getAttributeValue("single_start", e).isEmpty()) {
                     item.setText(0, "");
-                else
+                } else {
                     item.setText(0, Utils.isAttributeValue("let_run", e) ? "Yes" : "No");
+                }
                 item.setText(1, Utils.getAttributeValue("begin", e));
                 item.setText(2, Utils.getAttributeValue("end", e));
                 item.setText(3, Utils.getAttributeValue("repeat", e));
                 item.setText(4, Utils.getAttributeValue("single_start", e));
                 item.setText(5, Utils.getAttributeValue("absolute_repeat", e));
                 item.setData(e);
-                String whenHoliday = Utils.getAttributeValue("when_holiday", e).length() == 0 ? "suppress execution"
+                String whenHoliday = Utils.getAttributeValue("when_holiday", e).isEmpty() ? "suppress execution"
                         : Utils.getAttributeValue("when_holiday", e);
                 item.setText(6, whenHoliday);
             }
@@ -115,22 +119,19 @@ public class PeriodsListener {
         for (int i = 0; i < _listOfAt.size(); i++) {
             Element at = (Element) _listOfAt.get(i);
             String sAT = Utils.getAttributeValue("at", at);
-            if (sAT != null && sAT.length() > 0) {
+            if (sAT != null && !sAT.isEmpty()) {
                 String date = sAT.substring(0, 10);
-                String time = sAT.substring((sAT.indexOf(" ") > -1 ? sAT.indexOf(" ") + 1 : sAT.length()));
-                if (time.length() == 0) {
-                    // at ohne Zeitangabe werden gelöscht
+                String time = sAT.substring(sAT.indexOf(" ") > -1 ? sAT.indexOf(" ") + 1 : sAT.length());
+                if (time.isEmpty()) {
                     remList.add(at);
-                } else {
-                    if (date.equalsIgnoreCase(Utils.getAttributeValue("date", _parent)) || Utils.getAttributeValue("at", _parent).startsWith(date)) {
-                        TableItem item = new TableItem(table, SWT.NONE);
-                        item.setText(0, "No");
-                        item.setText(1, "");
-                        item.setText(2, "");
-                        item.setText(3, "");
-                        item.setText(4, time);
-                        item.setData(at);
-                    }
+                } else if (date.equalsIgnoreCase(Utils.getAttributeValue("date", _parent)) || Utils.getAttributeValue("at", _parent).startsWith(date)) {
+                    TableItem item = new TableItem(table, SWT.NONE);
+                    item.setText(0, "No");
+                    item.setText(1, "");
+                    item.setText(2, "");
+                    item.setText(3, "");
+                    item.setText(4, time);
+                    item.setData(at);
                 }
             }
         }
@@ -157,14 +158,13 @@ public class PeriodsListener {
             _list.remove(index);
             _period = -1;
         } else {
-            if (_parent.getName().equals("at") || _list.size() == 0 && _listOfAt.size() > 0) {
+            if ("at".equals(_parent.getName()) || _list.isEmpty() && !_listOfAt.isEmpty()) {
                 int i = _list.size() - (index);
-                if (i < 0)
+                if (i < 0) {
                     i = i * (-1);
+                }
                 Element el = (Element) (_listOfAt.get(i));
-                if (_list.size() == 0 && _listOfAt.size() == 1) {
-                    // das letzte at Element wird gelöscht. Das Datum steht auf
-                    // der Treeview
+                if (_list.isEmpty() && _listOfAt.size() == 1) {
                     String[] date = Utils.getAttributeValue("at", el).substring(0, 10).split("-");
                     DateListener dateListener = new DateListener(_dom, _parent.getParentElement(), 1);
                     if (!dateListener.exists(Utils.str2int(date[0]), Utils.str2int(date[1]), Utils.str2int(date[2]))) {
@@ -172,8 +172,9 @@ public class PeriodsListener {
                         _list = _parent.getChildren("period");
                     }
                 }
-                if (i + 1 < _listOfAt.size())
+                if (i + 1 < _listOfAt.size()) {
                     _parent = (Element) _listOfAt.get(i + 1);
+                }
                 el.getParentElement().getChildren("at").remove(_listOfAt.get(i));
                 _listOfAt.remove(i);
             } else {
@@ -197,13 +198,13 @@ public class PeriodsListener {
     public Element getPeriod(int index) {
         if (index >= 0 && index < _list.size()) {
             _period = index;
-            // return (Element) ((Element) _list.get(index)).clone();
             return (Element) _list.get(index);
         } else {
-            if (_parent.getName().equals("at") || _listOfAt.size() > 0) {
+            if ("at".equals(_parent.getName()) || !_listOfAt.isEmpty()) {
                 int i = _list.size() - (index);
-                if (i < 0)
+                if (i < 0) {
                     i = i * (-1);
+                }
                 Element el = (Element) (_listOfAt.get(i));
                 return el;
             }
@@ -213,17 +214,18 @@ public class PeriodsListener {
     }
 
     public void applyPeriod(Element period) {
-        if (!period.getName().equals("at")) {
+        if (!"at".equals(period.getName())) {
             if (_period == -1) {
-                if (!_list.contains(period))
+                if (!_list.contains(period)) {
                     _list.add(period);
+                }
             } else {
-                if (!_list.contains(period))
+                if (!_list.contains(period)) {
                     _list.set(_period, period);
+                }
             }
         }
         _dom.setChanged(true);
-        // Element job = getJobElement(_parent);
         _dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
         if (_main != null) {
             _main.updateFont();
@@ -236,7 +238,7 @@ public class PeriodsListener {
 
     public Element getAtElement(String at) {
         String date = "";
-        if (_parent.getName().equalsIgnoreCase("at")) {
+        if ("at".equalsIgnoreCase(_parent.getName())) {
             date = Utils.getAttributeValue("at", _parent);
             date = date.substring(0, date.indexOf(" "));
         } else {
@@ -254,16 +256,12 @@ public class PeriodsListener {
         return null;
     }
 
-    /** Überprüft, ob ein das Period Element absolute_repeat oder repeat
-     * Attribute har. Es ist nur eins erlaubt.
-     * 
-     * @return */
     public boolean hasRepeatTimes() {
         if (_parent != null) {
             java.util.List l = _parent.getChildren("period");
             for (int i = 0; i < l.size(); i++) {
                 Element p = (Element) l.get(i);
-                if (Utils.getAttributeValue("repeat", p).length() > 0 || Utils.getAttributeValue("absolute_repeat", p).length() > 0) {
+                if (!Utils.getAttributeValue("repeat", p).isEmpty() || !Utils.getAttributeValue("absolute_repeat", p).isEmpty()) {
                     return true;
                 }
             }
@@ -271,15 +269,8 @@ public class PeriodsListener {
         return false;
     }
 
-    /** Überprüft, ob Element p ein repeat bzw. absolute_repeat Attribut har
-     * 
-     * @param p
-     * @return */
     public boolean isRepeatElement(Element p) {
-        if (Utils.getAttributeValue("repeat", p).trim().length() > 0 || Utils.getAttributeValue("absolute_repeat", p).trim().length() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return !Utils.getAttributeValue("repeat", p).trim().isEmpty() || !Utils.getAttributeValue("absolute_repeat", p).trim().isEmpty();
     }
+
 }

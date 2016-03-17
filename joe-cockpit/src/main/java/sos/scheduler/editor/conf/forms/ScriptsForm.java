@@ -75,7 +75,6 @@ public class ScriptsForm extends SOSJOEMessageCodes {
                 scriptsGroup.setEnabled(false);
             }
             createTable();
-
             butNew = JOE_B_ScriptsForm_New.Control(new Button(scriptsGroup, SWT.NONE));
             butNew.addSelectionListener(new SelectionAdapter() {
 
@@ -84,18 +83,17 @@ public class ScriptsForm extends SOSJOEMessageCodes {
                 }
             });
             butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
             butRemove = JOE_B_ScriptsForm_Remove.Control(new Button(scriptsGroup, SWT.NONE));
             butRemove.setEnabled(false);
             butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
                 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                     int c = MainWindow.message(getShell(), JOE_M_ScriptsForm_RemoveMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                    if (c != SWT.YES)
+                    if (c != SWT.YES) {
                         return;
+                    }
                     butRemove.setEnabled(listener.delete(table));
                     table.deselectAll();
-
                 }
             });
             butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -114,8 +112,9 @@ public class ScriptsForm extends SOSJOEMessageCodes {
             table.addMouseListener(new MouseAdapter() {
 
                 public void mouseDoubleClick(final MouseEvent e) {
-                    if (table.getSelectionCount() > 0)
+                    if (table.getSelectionCount() > 0) {
                         ContextMenu.goTo(Utils.getAttributeValue("name", listener.getParent()) + "_@_" + table.getSelection()[0].getText(0), dom, JOEConstants.MONITOR);
+                    }
                 }
             });
             table.setHeaderVisible(true);
@@ -146,7 +145,6 @@ public class ScriptsForm extends SOSJOEMessageCodes {
 
                 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                     if (table.getSelectionCount() > 0) {
-
                         if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
                             butRemove.setEnabled(true);
                         } else {
@@ -160,21 +158,19 @@ public class ScriptsForm extends SOSJOEMessageCodes {
             tableColumn1.setWidth(280);
             TableColumn tableColumn2 = JOE_TCl_ScriptsForm_Ordering.Control(new TableColumn(table, SWT.NONE));
             tableColumn2.setWidth(280);
-
         } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
 
     private void addMonitor() {
-
         listener.save(table, MONITOR + table.getItemCount(), String.valueOf(table.getItemCount()), null);
         butRemove.setEnabled(false);
         table.deselectAll();
-
     }
 
     public static Table getTable() {
         return table;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

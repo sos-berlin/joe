@@ -16,9 +16,7 @@ import org.eclipse.swt.widgets.Text;
 class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 
     private Object result;
-
     private Object obj = null;
-
     private Text text = null;
 
     public FTPPopUpDialog(Shell parent, int style) {
@@ -37,7 +35,6 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
     public Object open() {
         Shell parent = getParent();
         final Shell newFolderShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-
         newFolderShell.addTraverseListener(new TraverseListener() {
 
             public void keyTraversed(final TraverseEvent e) {
@@ -58,29 +55,24 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         newFolderShell.setText("Create New Folder");
         newFolderShell.setText(getText());
         newFolderShell.pack();
-
         text = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
-
         text.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR)
+                if (e.keyCode == SWT.CR) {
                     doSomethings();
+                }
             }
         });
         text.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-
         final Button butOK = new Button(newFolderShell, SWT.NONE);
         butOK.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-
                 doSomethings();
-
             }
         });
         butOK.setText("OK");
-
         final Button butCancel = new Button(newFolderShell, SWT.NONE);
         butCancel.addSelectionListener(new SelectionAdapter() {
 
@@ -91,24 +83,20 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         butCancel.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
         butCancel.setText("Cancel");
         newFolderShell.open();
-
         newFolderShell.setSize(241, 107);
-
         org.eclipse.swt.widgets.Display display = parent.getDisplay();
         while (!newFolderShell.isDisposed()) {
-            if (!display.readAndDispatch())
+            if (!display.readAndDispatch()) {
                 display.sleep();
+            }
         }
         return result;
-
     }
 
     public static void main(String[] args) {
         final Shell shell = new Shell();
         shell.pack();
-
         FTPPopUpDialog fTPPopUpDialog = new FTPPopUpDialog(shell);
-
         fTPPopUpDialog.open();
     }
 
@@ -117,13 +105,11 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
     }
 
     public void doSomethings() {
-
         if (obj instanceof FTPProfile) {
-
             FTPProfile prof = (FTPProfile) obj;
             prof.setPassword(text.getText());
-
         }
         close();
     }
+
 }

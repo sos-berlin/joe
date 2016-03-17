@@ -9,7 +9,7 @@ import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
- 
+
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -34,33 +34,35 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainDiagramComposite extends Composite {
 
-	private static final Logger LOGGER = Logger.getLogger(JobChainDiagramComposite.class);
+    private static final Logger LOGGER = Logger.getLogger(JobChainDiagramComposite.class);
 
     private Group gJobchainDiagramm;
     private File inputFile;
     private File outputDir;
     private JobChainDiagramCreator jobChainDiagramCreator;
-    private String xml="";
-    private File diagramFile ;
+    private String xml = "";
+    private File diagramFile;
     private Display display;
     private Timer inputTimer;
-    private boolean fitToScreen=true;
-    private boolean showErrorNodes=true;
+    private boolean fitToScreen = true;
+    private boolean showErrorNodes = true;
     private Canvas canvas;
     private int headerHeight;
     private Menu contentMenu;
-    
+
     public class InputTask extends TimerTask {
+
         public void run() {
             if (display == null) {
                 display = Display.getDefault();
             }
             display.syncExec(new Runnable() {
+
                 public void run() {
                     try {
-                        jobChainDiagram(xml,inputFile);
+                        jobChainDiagram(xml, inputFile);
                     } catch (Exception e) {
-                        LOGGER.error(e.getMessage(),e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                     inputTimer.cancel();
                     inputTimer.purge();
@@ -68,17 +70,15 @@ public class JobChainDiagramComposite extends Composite {
             });
         }
     }
-    
-    public JobChainDiagramComposite(Composite parent_,int headerHeight_) {
+
+    public JobChainDiagramComposite(Composite parent_, int headerHeight_) {
         super(parent_, SWT.NONE);
         headerHeight = headerHeight_;
-     }
+    }
 
-    /**
-     * Create contents of the window
-     */
+    /** Create contents of the window */
     private void createContents() {
-        if (gJobchainDiagramm != null){
+        if (gJobchainDiagramm != null) {
             gJobchainDiagramm.dispose();
         }
         gJobchainDiagramm = new Group(this, SWT.NONE);
@@ -88,9 +88,9 @@ public class JobChainDiagramComposite extends Composite {
 
         gJobchainDiagramm.setLayoutData(gdJobchainDiagram);
         gJobchainDiagramm.setText("Jobchain Diagram");
-        
+
     }
-    
+
     private boolean saveXML(final String xml, String filename) {
         boolean saveFile = false;
         try {
@@ -100,89 +100,86 @@ public class JobChainDiagramComposite extends Composite {
             SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
             saveFile = dom.writeElement(filename, doc);
         }
-        
+
         catch (Exception e) {
             ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             saveFile = false;
         }
-        
+
         return saveFile;
     }
 
-    
     public void jobChainDiagram(String xml_, File inputFile_) throws Exception {
-        xml=xml_;
+        xml = xml_;
         inputFile = inputFile_;
         outputDir = inputFile_.getParentFile();
-        if (!xml_.contains("<job_chain_node")){
-        	return;
+        if (!xml_.contains("<job_chain_node")) {
+            return;
         }
         saveXML(xml, inputFile.getAbsolutePath());
-        
-        this.getShell().addListener (SWT.Resize,  new Listener () {
-            public void handleEvent (Event e) {
-                if (!gJobchainDiagramm.isDisposed()){
-                   resetInputTimer();
+
+        this.getShell().addListener(SWT.Resize, new Listener() {
+
+            public void handleEvent(Event e) {
+                if (!gJobchainDiagramm.isDisposed()) {
+                    resetInputTimer();
                 }
             }
-          });
-  
-      
-               
+        });
+
         GridLayout layout = new GridLayout(1, false);
         this.setLayout(layout);
         createContents();
- 
+
         createMenue();
-      
-        diagramFile = generateDiagram(inputFile,outputDir);
+
+        diagramFile = generateDiagram(inputFile, outputDir);
         showDiagram(diagramFile);
 
-        if (inputFile.getAbsolutePath().endsWith("~")){
+        if (inputFile.getAbsolutePath().endsWith("~")) {
             inputFile.delete();
         }
         this.layout();
     }
-    
-    private File generateDiagram(File inputFile, File outputDir) throws Exception{
-        jobChainDiagramCreator = new JobChainDiagramCreator(inputFile,outputDir);
+
+    private File generateDiagram(File inputFile, File outputDir) throws Exception {
+        jobChainDiagramCreator = new JobChainDiagramCreator(inputFile, outputDir);
         jobChainDiagramCreator.createGraphwizFile(showErrorNodes);
         return jobChainDiagramCreator.getOutfile();
     }
 
-   private void showDiagram(File diagramFile) throws Exception {
+    private void showDiagram(File diagramFile) throws Exception {
 
         Image originalImage = null;
         try {
-        	FileInputStream fis = new FileInputStream(diagramFile);
+            FileInputStream fis = new FileInputStream(diagramFile);
             originalImage = new Image(gJobchainDiagramm.getDisplay(), fis);
             fis.close();
-             
+
         } catch (FileNotFoundException e1) {
             new ErrorLog(e1.getLocalizedMessage(), e1);
         }
- 
+
         double scale = 1;
-        if (fitToScreen){
+        if (fitToScreen) {
             Rectangle rect = originalImage.getBounds();
-            double a =  this.getShell().getClientArea().height-headerHeight;
+            double a = this.getShell().getClientArea().height - headerHeight;
             double b = rect.height;
-            scale = a/b;
-            }
-            if (scale > 1){
-                scale = 1;
-            }
-           
-        
-        final Image image = new Image(gJobchainDiagramm.getDisplay(),
-                 originalImage.getImageData().scaledTo((int)(originalImage.getBounds().width*scale),(int)(originalImage.getBounds().height*scale)));
-        
+            scale = a / b;
+        }
+        if (scale > 1) {
+            scale = 1;
+        }
+
+        final Image image = new Image(gJobchainDiagramm.getDisplay(), originalImage.getImageData().scaledTo((int) (originalImage.getBounds().width * scale), (int) (originalImage.getBounds().height * scale)));
+
         final Point origin = new Point(0, 0);
         canvas = new Canvas(gJobchainDiagramm, SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL);
         canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         canvas.setMenu(contentMenu);
         final ScrollBar hBar = canvas.getHorizontalBar();
         hBar.addListener(SWT.Selection, new Listener() {
+
             @Override
             public void handleEvent(final Event e) {
                 int hSelection = hBar.getSelection();
@@ -194,6 +191,7 @@ public class JobChainDiagramComposite extends Composite {
         });
         final ScrollBar vBar = canvas.getVerticalBar();
         vBar.addListener(SWT.Selection, new Listener() {
+
             @Override
             public void handleEvent(final Event e) {
                 int vSelection = vBar.getSelection();
@@ -203,10 +201,9 @@ public class JobChainDiagramComposite extends Composite {
                 origin.y = -vSelection;
             }
         });
-        
-         
-        
+
         canvas.addListener(SWT.Resize, new Listener() {
+
             @Override
             public void handleEvent(final Event e) {
                 Rectangle rect = image.getBounds();
@@ -220,13 +217,13 @@ public class JobChainDiagramComposite extends Composite {
                 int hSelection = hBar.getSelection();
                 int vSelection = vBar.getSelection();
                 if (hSelection >= hPage) {
-                    if (hPage <= 0){
+                    if (hPage <= 0) {
                         hSelection = 0;
                     }
                     origin.x = -hSelection;
                 }
                 if (vSelection >= vPage) {
-                    if (vPage <= 0){
+                    if (vPage <= 0) {
                         vSelection = 0;
                     }
                     origin.y = -vSelection;
@@ -235,6 +232,7 @@ public class JobChainDiagramComposite extends Composite {
             }
         });
         canvas.addListener(SWT.Paint, new Listener() {
+
             @Override
             public void handleEvent(final Event e) {
                 GC gc = e.gc;
@@ -251,69 +249,68 @@ public class JobChainDiagramComposite extends Composite {
                 }
             }
         });
- 
-       this.layout();
+
+        this.layout();
     }
-   
-   public void createMenue() {
-       contentMenu = new Menu(gJobchainDiagramm);
-       gJobchainDiagramm.setMenu(contentMenu);
-       // =============================================================================================
-       final MenuItem showErrorMenuItem = new SOSMenuItem(contentMenu, SWT.CHECK,"showErrornodes","Show error nodes",true);
+
+    public void createMenue() {
+        contentMenu = new Menu(gJobchainDiagramm);
+        gJobchainDiagramm.setMenu(contentMenu);
+        // =============================================================================================
+        final MenuItem showErrorMenuItem = new SOSMenuItem(contentMenu, SWT.CHECK, "showErrornodes", "Show error nodes", true);
         showErrorNodes = showErrorMenuItem.getSelection();
         showErrorMenuItem.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-            
-           public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-               try {
-                   showErrorNodes = showErrorMenuItem.getSelection();
-                   jobChainDiagram(xml,inputFile);
+
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                try {
+                    showErrorNodes = showErrorMenuItem.getSelection();
+                    jobChainDiagram(xml, inputFile);
                 } catch (Exception e1) {
-                    LOGGER.error(e1.getMessage(),e1);
-               }
-           }
+                    LOGGER.error(e1.getMessage(), e1);
+                }
+            }
 
-           public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-           }
-       });
-       // =============================================================================================
-             
-       new MenuItem(contentMenu, SWT.SEPARATOR);
-       final SOSMenuItem fitToScreenMenuItem = new SOSMenuItem(contentMenu, SWT.CHECK,"fittoScreen","Fit to Screen",true);
-       fitToScreen = fitToScreenMenuItem.getSelection();
-       fitToScreenMenuItem.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-           public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-               try {
-                   fitToScreen = fitToScreenMenuItem.getSelection();
-                   jobChainDiagram(xml,inputFile);
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            }
+        });
+        // =============================================================================================
+
+        new MenuItem(contentMenu, SWT.SEPARATOR);
+        final SOSMenuItem fitToScreenMenuItem = new SOSMenuItem(contentMenu, SWT.CHECK, "fittoScreen", "Fit to Screen", true);
+        fitToScreen = fitToScreenMenuItem.getSelection();
+        fitToScreenMenuItem.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                try {
+                    fitToScreen = fitToScreenMenuItem.getSelection();
+                    jobChainDiagram(xml, inputFile);
                 } catch (Exception e1) {
-                    LOGGER.error(e1.getMessage(),e1);
-               }
-           }
+                    LOGGER.error(e1.getMessage(), e1);
+                }
+            }
 
-           public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-           }
-       });
-        
-       
-   }   
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            }
+        });
 
-   public void removeTimer(){
-	   if (inputTimer != null){
-		  inputTimer.cancel();
-          inputTimer.purge();
-          inputTimer = null;
-	   }
-   }
-  
-   
-   public void resetInputTimer() {
-       if (inputTimer != null){
-           inputTimer.cancel();
-           inputTimer.purge();
-       }
-       inputTimer = new Timer();
-       inputTimer.schedule(new InputTask(), 1 * 200, 1 * 200);
-       
-   }
+    }
+
+    public void removeTimer() {
+        if (inputTimer != null) {
+            inputTimer.cancel();
+            inputTimer.purge();
+            inputTimer = null;
+        }
+    }
+
+    public void resetInputTimer() {
+        if (inputTimer != null) {
+            inputTimer.cancel();
+            inputTimer.purge();
+        }
+        inputTimer = new Timer();
+        inputTimer.schedule(new InputTask(), 1 * 200, 1 * 200);
+
+    }
 
 }

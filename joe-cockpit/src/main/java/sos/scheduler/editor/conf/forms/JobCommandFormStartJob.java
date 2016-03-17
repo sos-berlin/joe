@@ -13,11 +13,12 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobCommandFormStartJob extends JobCommandForm {
 
-    public JobCommandFormStartJob(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) throws JDOMException, TransformerException {
+    public JobCommandFormStartJob(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main) throws JDOMException,
+            TransformerException {
         super(parent, style, dom, command, main);
     }
-    
-    protected void tJobModifyListener(){
+
+    protected void tJobModifyListener() {
         listener.setJob(tJob.getText());
     }
 
@@ -44,18 +45,17 @@ public class JobCommandFormStartJob extends JobCommandForm {
         endStateLabel.setVisible(false);
         replaceLabel.setVisible(false);
         bBrowseJobChain.setVisible(false);
-        
+
         tJob.setFocus();
         tJob.setVisible(true);
         tStartAt.setVisible(true);
     }
-    
+
     protected void fillCommand() {
         if (listener.getCommand() != null) {
             tStartAt.setText(Utils.getAttributeValue("at", listener.getCommand()));
             tJob.setText(Utils.getAttributeValue("job", listener.getCommand()));
         }
     }
-    
-    
+
 }

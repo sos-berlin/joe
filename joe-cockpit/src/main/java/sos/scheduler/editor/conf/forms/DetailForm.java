@@ -74,14 +74,9 @@ public class DetailForm extends SOSJOEMessageCodes {
     private Text txtParamNote = null;
     private Group parameterGroup = null;
     private Group jobChainGroup = null;
-    // private Button butOpen = null;
-    /** Hifsvariable, wann der butApply enabled bzw. disabled gesetzt werden soll */
     private boolean isEditable = false;
-    /** Hifsvariable, wann der butApplyParam enabled bzw. disabled gesetzt werden
-     * soll */
     private boolean isEditableParam = false;
     private Label statusBar = null;
-    /** wer hat ihn aufgerufen */
     private int type = -1;
     private Tree tree = null;
     private Composite parent = null;
@@ -96,10 +91,8 @@ public class DetailForm extends SOSJOEMessageCodes {
     private boolean isLifeElement = false;
     private String path = null;
     private String _orderId = null;
-    // wird nur für wizzard verwendet
     private ISchedulerUpdate update = null;
     private SchedulerDom schedulerDom = null;
-    // Verwendung in Wizzard
     private Text butRefreshWizzardNoteParam = null;
     private JobListener joblistener = null;
     private String jobname = "";
@@ -122,9 +115,8 @@ public class DetailForm extends SOSJOEMessageCodes {
         w.saveWindow();
     }
 
-    /** @wbp.parser.constructor */
-    public DetailForm(Composite parent_, int style, String jobChainname_, String state_, String orderId, int type_, DetailDom dom_, IDetailUpdate gui_,
-            boolean isLifeElement_, String path_) {
+    public DetailForm(Composite parent_, int style, String jobChainname_, String state_, String orderId, int type_, DetailDom dom_,
+            IDetailUpdate gui_, boolean isLifeElement_, String path_) {
         super(parent_, style);
         dom = dom_;
         gui = gui_;
@@ -178,7 +170,6 @@ public class DetailForm extends SOSJOEMessageCodes {
             composite.setLayoutData(gridData_6);
             parameterGroup = JOE_G_DetailForm_ParameterGroup.Control(new Group(composite, SWT.NONE));
             parameterGroup.setEnabled(false);
-            // parameterGroup.setText("Detail Parameter");
             final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
             gridData_3.heightHint = 239;
             parameterGroup.setLayoutData(gridData_3);
@@ -187,18 +178,12 @@ public class DetailForm extends SOSJOEMessageCodes {
             parameterGroup.setLayout(gridLayout_2);
             @SuppressWarnings("unused")
             final Label nameLabel = JOE_L_Name.Control(new Label(parameterGroup, SWT.NONE));
-            // nameLabel.setText("Name");
             txtName = JOE_T_DetailForm_Name.Control(new Text(parameterGroup, SWT.BORDER));
-            // txtName.addFocusListener(new FocusAdapter() {
-            // public void focusGained(final FocusEvent e) {
-            // txtName.selectAll();
-            // }
-            // });
             txtName.addModifyListener(new ModifyListener() {
 
                 @Override
                 public void modifyText(final ModifyEvent e) {
-                    if (!txtName.getText().equals("")
+                    if (!"".equals(txtName.getText())
                             && (tableParams.getSelectionCount() == 0 || (tableParams.getSelectionCount() > 0 && !tableParams.getSelection()[0].getText(0).equalsIgnoreCase(txtName.getText())))) {
                         isEditableParam = true;
                         butApplyParam.setEnabled(isEditableParam);
@@ -215,27 +200,20 @@ public class DetailForm extends SOSJOEMessageCodes {
 
                 @Override
                 public void keyPressed(final KeyEvent e) {
-                    if (e.keyCode == SWT.CR && !txtName.getText().equals("")) {
+                    if (e.keyCode == SWT.CR && !"".equals(txtName.getText())) {
                         addParam();
                     }
                 }
             });
             txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
             txtName.setFocus();
-            @SuppressWarnings("unused")
             final Label valueLabel = JOE_L_Value.Control(new Label(parameterGroup, SWT.NONE));
-            // valueLabel.setText("Value");
             txtValue = JOE_T_DetailForm_Value.Control(new Text(parameterGroup, SWT.BORDER));
-            // txtValue.addFocusListener(new FocusAdapter() {
-            // public void focusGained(final FocusEvent e) {
-            // txtValue.selectAll();
-            // }
-            // });
             txtValue.addKeyListener(new KeyAdapter() {
 
                 @Override
                 public void keyPressed(final KeyEvent e) {
-                    if (e.keyCode == SWT.CR && !txtName.getText().equals("")) {
+                    if (e.keyCode == SWT.CR && !"".equals(txtName.getText())) {
                         addParam();
                     }
                 }
@@ -244,14 +222,15 @@ public class DetailForm extends SOSJOEMessageCodes {
 
                 @Override
                 public void modifyText(final ModifyEvent e) {
-                    if (!txtName.getText().equals("")
+                    if (!"".equals(txtName.getText())
                             && (tableParams.getSelectionCount() == 0 || (tableParams.getSelectionCount() > 0 && !tableParams.getSelection()[0].getText(1).equalsIgnoreCase(txtValue.getText())))) {
                         isEditableParam = true;
                         butApplyParam.setEnabled(isEditableParam);
-                        if (txtValue.getText().trim().length() > 0)
+                        if (!txtValue.getText().trim().isEmpty()) {
                             butText.setEnabled(false);
-                        else
+                        } else {
                             butText.setEnabled(true);
+                        }
                     }
                 }
             });
@@ -284,7 +263,6 @@ public class DetailForm extends SOSJOEMessageCodes {
                     butApply.setEnabled(true);
                 }
             });
-            // butText.setText("Text");
             butApplyParam = JOE_B_DetailForm_ApplyParam.Control(new Button(parameterGroup, SWT.NONE));
             butApplyParam.setEnabled(isEditableParam);
             butApplyParam.addSelectionListener(new SelectionAdapter() {
@@ -296,7 +274,6 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             final GridData gridData_9 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
             butApplyParam.setLayoutData(gridData_9);
-            // butApplyParam.setText("Apply");
             tableParams = JOE_Tbl_DetailForm_Params.Control(new Table(parameterGroup, SWT.FULL_SELECTION | SWT.BORDER));
             tableParams.setEnabled(false);
             tableParams.addSelectionListener(new SelectionAdapter() {
@@ -306,21 +283,19 @@ public class DetailForm extends SOSJOEMessageCodes {
                     if (tableParams.getSelectionCount() > 0) {
                         TableItem item = tableParams.getSelection()[0];
                         txtName.setText(item.getText(0));
-                        // param value ist angegeben
-                        if (item.getText(1) != null && item.getText(1).trim().length() > 0) {
+                        if (item.getText(1) != null && !item.getText(1).trim().isEmpty()) {
                             paramText.setText("");
                             txtValue.setText(item.getText(1));
                             txtValue.setEnabled(true);
                             butText.setEnabled(false);
                         }
-                        // param Textknoten ist angegeben
-                        if (item.getText(2) != null && item.getText(2).trim().length() > 0) {
+                        if (item.getText(2) != null && !item.getText(2).trim().isEmpty()) {
                             paramText.setText(item.getText(2));
                             txtValue.setText("");
                             txtValue.setEnabled(false);
                             butText.setEnabled(true);
                         }
-                        if (item.getText(1).trim().equals("") && item.getText(2).trim().equals("")) {
+                        if ("".equals(item.getText(1).trim()) && "".equals(item.getText(2).trim())) {
                             paramText.setText("");
                             txtValue.setText("");
                             txtValue.setEnabled(true);
@@ -340,7 +315,6 @@ public class DetailForm extends SOSJOEMessageCodes {
             final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 7);
             tableParams.setLayoutData(gridData_4);
             final TableColumn newColumnTableColumn = JOE_TCl_DetailForm_NameColumn.Control(new TableColumn(tableParams, SWT.NONE));
-            // newColumnTableColumn.setText("Name");
             newColumnTableColumn.setWidth(118);
             newColumnTableColumn.addControlListener(new ControlAdapter() {
 
@@ -351,7 +325,6 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             w.restoreTableColumn("tableParams", newColumnTableColumn, 118);
             final TableColumn newColumnTableColumn_1 = JOE_TCl_DetailForm_ValueColumn.Control(new TableColumn(tableParams, SWT.NONE));
-            // newColumnTableColumn_1.setText("Value");
             newColumnTableColumn_1.setWidth(150);
             newColumnTableColumn_1.addControlListener(new ControlAdapter() {
 
@@ -362,7 +335,6 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             w.restoreTableColumn("tableParams", newColumnTableColumn_1, 150);
             final TableColumn newColumnTableColumn_2 = JOE_TCl_DetailForm_TextColumn.Control(new TableColumn(tableParams, SWT.NONE));
-            // newColumnTableColumn_2.setText("Text");
             newColumnTableColumn_2.setWidth(100);
             newColumnTableColumn_2.addControlListener(new ControlAdapter() {
 
@@ -387,7 +359,6 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            // butNew.setText("New");
             final Composite composite_2 = JOE_Composite1.Control(new Composite(parameterGroup, SWT.NONE));
             final GridData gridData_2_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
             gridData_2_1.heightHint = 67;
@@ -421,9 +392,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                     startWizzard();
                 }
             });
-            // parameterButton.setVisible(type != JOEConstants.DETAILS);
             parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            // parameterButton.setText("Wizard");
             butRemove = JOE_B_DetailForm_Remove.Control(new Button(parameterGroup, SWT.NONE));
             butRemove.addSelectionListener(new SelectionAdapter() {
 
@@ -441,8 +410,9 @@ public class DetailForm extends SOSJOEMessageCodes {
                         butApplyParam.setEnabled(isEditableParam);
                         butApply.setEnabled(true);
                         txtName.setFocus();
-                        if (gui != null)
+                        if (gui != null) {
                             gui.updateParam();
+                        }
                     }
                 }
             });
@@ -450,15 +420,13 @@ public class DetailForm extends SOSJOEMessageCodes {
             gridData_8.widthHint = 64;
             gridData_8.minimumWidth = 50;
             butRemove.setLayoutData(gridData_8);
-            // butRemove.setText("Remove");
             final Button butTemp = JOE_B_DetailForm_TempDocumentation.Control(new Button(parameterGroup, SWT.NONE));
             butTemp.setLayoutData(new GridData());
-            // butTemp.setText("Documentation");
             butTemp.setVisible(false);
             butApply = JOE_B_DetailForm_ApplyDetails.Control(new Button(parameterGroup, SWT.NONE));
             butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             butApply.setEnabled(isEditable);
-            FontData fontDatas[] = butApply.getFont().getFontData();
+            FontData[] fontDatas = butApply.getFont().getFontData();
             FontData data = fontDatas[0];
             butApply.setFont(new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.BOLD));
             butApply.addSelectionListener(new SelectionAdapter() {
@@ -468,7 +436,6 @@ public class DetailForm extends SOSJOEMessageCodes {
                     save();
                 }
             });
-            // butApply.setText("Apply Details");
             cancelButton = JOE_B_Cancel.Control(new Button(parameterGroup, SWT.NONE));
             cancelButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             cancelButton.addSelectionListener(new SelectionAdapter() {
@@ -477,9 +444,6 @@ public class DetailForm extends SOSJOEMessageCodes {
                 public void widgetSelected(final SelectionEvent e) {
                     saveWindowPosAndSize();
                     if (butApply.getEnabled()) {
-                        // int count = MainWindow.message(getShell(),
-                        // sos.scheduler.editor.app.Messages.getLabel("detailform.close"),
-                        // SWT.ICON_WARNING | SWT.OK
                         int count = MainWindow.message(getShell(), JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                         if (count != SWT.OK) {
                             return;
@@ -488,8 +452,8 @@ public class DetailForm extends SOSJOEMessageCodes {
                     getShell().dispose();
                 }
             });
-            // cancelButton.setText("Cancel");
-            txtParamNote = JOE_T_DetailForm_JobChainNote.Control(new Text(parameterGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
+            txtParamNote = JOE_T_DetailForm_JobChainNote.Control(new Text(parameterGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP
+                    | SWT.H_SCROLL));
             txtParamNote.setEnabled(false);
             txtParamNote.addVerifyListener(new VerifyListener() {
 
@@ -523,9 +487,9 @@ public class DetailForm extends SOSJOEMessageCodes {
                     if (tableParams.getSelectionCount() > 0) {
                         TableItem item = tableParams.getSelection()[0];
                         txtParamNote.setText(detailListener.getParamNote(item.getText(0), comboLanguage.getText()));
-                    } else if (txtName.getText() != null && txtName.getText().length() > 0) {
+                    } else if (txtName.getText() != null && !txtName.getText().isEmpty()) {
                         txtParamNote.setText(detailListener.getParamNote(txtName.getText(), comboLanguage.getText()));
-                    } else if (txtParamNote.getText() != null && txtParamNote.getText().length() > 0) {
+                    } else if (txtParamNote.getText() != null && !txtParamNote.getText().isEmpty()) {
                         txtParamNote.setText("");
                     }
                     isEditable = false;
@@ -552,22 +516,23 @@ public class DetailForm extends SOSJOEMessageCodes {
             paramText.setLayoutData(gridData_14);
             jobChainGroup = JOE_G_DetailForm_NoteGroup.Control(new Group(parameterGroup, SWT.NONE));
             jobChainGroup.setEnabled(false);
-            // jobChainGroup.setText("Note");
             final GridLayout gridLayout_1 = new GridLayout();
             gridLayout_1.numColumns = 2;
             jobChainGroup.setLayout(gridLayout_1);
             final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, false, 6, 1);
             gridData.horizontalIndent = -1;
             jobChainGroup.setLayoutData(gridData);
-            txtJobchainNote = JOE_T_DetailForm_JobChainNote.Control(new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
+            txtJobchainNote = JOE_T_DetailForm_JobChainNote.Control(new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP
+                    | SWT.H_SCROLL));
             txtJobchainNote.addModifyListener(new ModifyListener() {
 
                 @Override
                 public void modifyText(final ModifyEvent e) {
                     if (detailListener != null) {
                         isEditable = true;
-                        if (gui != null)
+                        if (gui != null) {
                             gui.updateNote();
+                        }
                         detailListener.setNote(txtJobchainNote.getText(), comboLanguage.getText());
                         butApply.setEnabled(isEditable);
                     }
@@ -584,32 +549,25 @@ public class DetailForm extends SOSJOEMessageCodes {
                 public void widgetSelected(final SelectionEvent e) {
                     try {
                         if (dom != null && dom.isChanged()) {
-                            // MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.",
-                            // SWT.ICON_ERROR);
                             MainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
                             return;
                         }
                         if (dom == null && butApply.isEnabled()) {
-                            // ungespeichert
-                            // int c =
-                            // MainWindow.message("Should the current values be saved?",
-                            // SWT.YES | SWT.NO | SWT.ICON_ERROR);
                             int c = MainWindow.message(JOE_M_0021.label(), SWT.YES | SWT.NO | SWT.ICON_ERROR);
-                            if (c == SWT.YES)
+                            if (c == SWT.YES) {
                                 detailListener.save();
+                            }
                         }
                         if (type == JOEConstants.JOB_CHAINS) {
                             DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, _orderId, type, isLifeElement, path);
                             dialog.showXMLEditor();
                             getShell().dispose();
                         } else {
-                            if (dom != null && dom.getFilename() != null && dom.getFilename().length() > 0) {
+                            if (dom != null && dom.getFilename() != null && !dom.getFilename().isEmpty()) {
                                 DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(dom, type, isLifeElement, path);
                                 dialog.setConfigurationData(confListener, tree, parent);
                                 dialog.showXMLEditor();
                             } else {
-                                // MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.",
-                                // SWT.ICON_ERROR);
                                 MainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
                             }
                         }
@@ -618,7 +576,6 @@ public class DetailForm extends SOSJOEMessageCodes {
                     }
                 }
             });
-
             butDocumentation = JOE_B_DetailForm_Documentation.Control(new Button(jobChainGroup, SWT.NONE));
             butDocumentation.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
             butDocumentation.addSelectionListener(new SelectionAdapter() {
@@ -629,15 +586,12 @@ public class DetailForm extends SOSJOEMessageCodes {
                     try {
                         if (type == JOEConstants.JOB_CHAINS) {
                             filename = detailListener.getConfigurationFilename();
-                        } else {
-                            if (dom != null) {
-                                filename = dom.getFilename();
-                            }
+                        } else if (dom != null) {
+                            filename = dom.getFilename();
                         }
-                        if (filename != null && filename.length() > 0) {
+                        if (filename != null && !filename.isEmpty()) {
                             File file = new File(filename);
                             if (file.exists()) {
-                                // Runtime.getRuntime().exec("cmd /C START iExplore ".concat(filename));
                                 Program prog = Program.findProgram("html");
                                 if (prog != null) {
                                     prog.execute(new File(filename).toURL().toString());
@@ -645,14 +599,12 @@ public class DetailForm extends SOSJOEMessageCodes {
                                     String[] split = Options.getBrowserExec(new File(filename).toURL().toString(), Options.getLanguage());
                                     Runtime.getRuntime().exec(split);
                                 }
-                            } else
+                            } else {
                                 MainWindow.message(JOE_M_0013.params(file.getCanonicalPath()), SWT.ICON_ERROR);
-                            // MainWindow.message("Missing documentation " +
-                            // file.getCanonicalPath(), SWT.ICON_ERROR);
-                        } else
+                            }
+                        } else {
                             MainWindow.message(JOE_M_0012.label(), SWT.ICON_ERROR);
-                        // MainWindow.message("Please save jobchain configuration before opening documentation.",
-                        // SWT.ICON_ERROR);
+                        }
                     } catch (Exception ex) {
                         new ErrorLog(JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), filename, ex.getMessage()));
                     }
@@ -666,8 +618,9 @@ public class DetailForm extends SOSJOEMessageCodes {
                 @Override
                 public void modifyText(final ModifyEvent e) {
                     detailListener.setParamsFileName(txtParamsFile.getText());
-                    if (gui != null)
+                    if (gui != null) {
                         gui.updateNote();
+                    }
                     butApply.setEnabled(isEditable);
                 }
             });
@@ -677,8 +630,9 @@ public class DetailForm extends SOSJOEMessageCodes {
             gridData_11.widthHint = 496;
             gridData_11.heightHint = 18;
             statusBar.setLayoutData(gridData_11);
-            if (type == JOEConstants.JOB_CHAINS)
+            if (type == JOEConstants.JOB_CHAINS) {
                 setEnabled_(false);
+            }
             setVisibility();
         } catch (Exception e) {
             new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.toString()), e);
@@ -694,7 +648,7 @@ public class DetailForm extends SOSJOEMessageCodes {
     }
 
     private void addParam() {
-        if (txtName.getText().length() > 0) {
+        if (!txtName.getText().isEmpty()) {
             detailListener.setParam(txtName.getText(), txtValue.getText(), txtParamNote.getText(), paramText.getText(), comboLanguage.getText());
             txtParamNote.setText(detailListener.getParamNote(txtName.getText(), comboLanguage.getText()));
             tableParams.removeAll();
@@ -705,13 +659,13 @@ public class DetailForm extends SOSJOEMessageCodes {
             isEditableParam = false;
             butApplyParam.setEnabled(isEditableParam);
             txtName.setFocus();
-
             isEditable = true;
             butApply.setEnabled(isEditable);
             butRemove.setEnabled(false);
             txtParamNote.setText("");
-            if (gui != null)
+            if (gui != null) {
                 gui.updateParam();
+            }
             paramText.setText("");
             txtParamNote.setEnabled(false);
         }
@@ -719,9 +673,6 @@ public class DetailForm extends SOSJOEMessageCodes {
 
     private boolean discardChanges() {
         if (butApply.getEnabled()) {
-            // int count = MainWindow.message(getShell(),
-            // sos.scheduler.editor.app.Messages.getString("detailform.open"),
-            // SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             int count = MainWindow.message(getShell(), JOE_M_0022.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             if (count != SWT.OK) {
                 return false;
@@ -736,18 +687,18 @@ public class DetailForm extends SOSJOEMessageCodes {
     }
 
     public void open() {
-        if (!discardChanges())
+        if (!discardChanges()) {
             return;
-        if (!initForm())
+        }
+        if (!initForm()) {
             return;
+        }
         isEditable = true;
         txtJobchainNote.setFocus();
         butXML.setEnabled(true);
         butApply.setEnabled(false);
         butApplyParam.setEnabled(false);
         if (detailListener != null && detailListener.getConfigurationFilename() != null) {
-            // statusBar.setText("Configurations File: " +
-            // detailListener.getConfigurationFilename());
             statusBar.setText(JOE_M_0023.params(detailListener.getConfigurationFilename()));
         }
         txtName.setFocus();
@@ -760,13 +711,15 @@ public class DetailForm extends SOSJOEMessageCodes {
         txtValue.setText("");
         detailListener = new DetailsListener(jobChainname, state, _orderId, type, dom, isLifeElement, path);
         if (detailListener != null && detailListener.hasError()) {
-            if (type == JOEConstants.DETAILS)
+            if (type == JOEConstants.DETAILS) {
                 dispose();
+            }
             getShell().dispose();
             return false;
         }
-        if (detailListener.getNote(comboLanguage.getText()).length() > 0)
+        if (!detailListener.getNote(comboLanguage.getText()).isEmpty()) {
             txtJobchainNote.setText(detailListener.getNote(comboLanguage.getText()));
+        }
         txtParamsFile.setText(detailListener.getParamsFileName());
         detailListener.fillParams(tableParams);
         butRemove.setEnabled(false);
@@ -801,15 +754,13 @@ public class DetailForm extends SOSJOEMessageCodes {
     }
 
     private void changeParameNote() {
-        if (detailListener == null)
+        if (detailListener == null) {
             return;
-        // Wert auf leer zurücksetzen
-        if (txtParamNote.getText() != null && txtParamNote.getText().length() == 0)
+        }
+        if (txtParamNote.getText() != null && txtParamNote.getText().isEmpty()) {
             return;
-        if (txtName.getText() != null && txtName.getText().length() == 0) {
-            // MainWindow.message(getShell(),
-            // sos.scheduler.editor.app.Messages.getString("tooltip.detail.param.missing_param_name_for_note"),
-            // SWT.ICON_WARNING
+        }
+        if (txtName.getText() != null && txtName.getText().isEmpty()) {
             MainWindow.message(getShell(), JOE_M_0024.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             return;
         }
@@ -820,8 +771,9 @@ public class DetailForm extends SOSJOEMessageCodes {
             butApplyParam.setEnabled(isEditableParam);
             isEditable = true;
             butApply.setEnabled(isEditable);
-            if (gui != null)
+            if (gui != null) {
                 gui.updateParamNote();
+            }
         }
     }
 
@@ -846,11 +798,9 @@ public class DetailForm extends SOSJOEMessageCodes {
         if (schedulerDom != null && state != null) {
             DetailsListener.addMonitoring2Job(jobChainname, state, schedulerDom, update);
             update.updateScripts();
-
             if (MainWindow.getContainer().getCurrentTab().getData("ftp_remote_directory") != null) {
                 schedulerDom.setChanged(true);
             }
-
         }
         if (type == JOEConstants.JOB_CHAINS) {
             isEditable = false;
@@ -875,34 +825,22 @@ public class DetailForm extends SOSJOEMessageCodes {
     }
 
     private void createTempSchedulerDom() {
-        if (schedulerDom == null)
+        if (schedulerDom == null) {
             schedulerDom = new SchedulerDom();
+        }
         CTabFolder folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
-        // Sonst Nullpointer Exception wenn Parameter aus Wizzard eingetragen
-        // werden.
-        // update = new SchedulerForm(MainWindow.getContainer(), folder,
-        // SWT.NONE);
         joblistener = new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
     }
 
     private void startWizzard() {
         Utils.startCursor(getShell());
         butApply.setEnabled(true);
-        // Liste aller Jobdokumentation
         try {
-            if (joblistener == null)
+            if (joblistener == null) {
                 createTempSchedulerDom();
+            }
             getJobDocumentation();
-            if (jobDocumentation != null && jobDocumentation.trim().length() > 0) {
-                // JobDokumentation ist bekannt -> d.h Parameter aus dieser
-                // Jobdoku extrahieren
-                // JobAssistentImportJobParamsForm paramsForm = new
-                // JobAssistentImportJobParamsForm(listener.get_dom(),
-                // listener.get_main(),
-                // new JobListener(dom, listener.getParent(),
-                // listener.get_main()), tParameter, onlyParams ?
-                // JOEConstants.JOB :
-                // JOEConstants.JOB_WIZARD);
+            if (jobDocumentation != null && !jobDocumentation.trim().isEmpty()) {
                 JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener, tableParams, JOEConstants.PARAMETER);
                 paramsForm.showAllImportJobParams(jobDocumentation);
             } else {
@@ -912,19 +850,15 @@ public class DetailForm extends SOSJOEMessageCodes {
                 importParameterForms.setDetailsRefresh(butRefreshWizzardNoteParam);
             }
             butApply.setEnabled(true);
-            if (dom != null)
+            if (dom != null) {
                 dom.setChanged(true);
+            }
         } catch (Exception e) {
             new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()), e);
         }
         Utils.stopCursor(getShell());
     }
 
-    /*
-     * Überprüft, ob der Import Knoten die Parameter verändert hat. Es geht um
-     * die Parameterbeschreibung. Die Parameter Beschreibung ist hier leider
-     * anders abgelegt als bei den anderen Parametern.
-     */
     private void refreshTable() {
         try {
             detailListener.refreshParams(tableParams);
@@ -935,7 +869,7 @@ public class DetailForm extends SOSJOEMessageCodes {
     }
 
     private void getJobDocumentation() {
-        if (jobname != null && jobname.length() > 0) {
+        if (jobname != null && !jobname.isEmpty()) {
             try {
                 XPath x = XPath.newInstance("//job[@name='" + jobname + "']/description/include");
                 List listOfElement = x.selectNodes(schedulerDom.getDoc());
@@ -945,7 +879,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                         jobDocumentation = Utils.getAttributeValue("file", include);
                     }
                 }
-                if (jobDocumentation != null && jobDocumentation.length() > 0 && txtParamsFile != null) {
+                if (jobDocumentation != null && !jobDocumentation.isEmpty() && txtParamsFile != null) {
                     txtParamsFile.setText(jobDocumentation);
                 }
             } catch (Exception e) {
@@ -953,4 +887,5 @@ public class DetailForm extends SOSJOEMessageCodes {
             }
         }
     }
+
 }

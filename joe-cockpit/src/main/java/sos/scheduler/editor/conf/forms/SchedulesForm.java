@@ -80,20 +80,17 @@ public class SchedulesForm extends SOSJOEMessageCodes {
 
                 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                     int c = MainWindow.message(getShell(), JOE_M_SchedulesForm_RemoveSchedule.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                    if (c != SWT.YES)
+                    if (c != SWT.YES) {
                         return;
-                    if (Utils.checkElement(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULES, null))// wird
-                                                                                                                  // der
-                                                                                                                  // Job
-                                                                                                                  // woandes
-                                                                                                                  // verwendet?
+                    }
+                    if (Utils.checkElement(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULES, null)) {
                         butRemove.setEnabled(listener.deleteSchedule(table));
+                    }
                 }
             });
             butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             label = new Label(schedulesGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
             label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-            // label.setText("Label");
         } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
@@ -106,8 +103,9 @@ public class SchedulesForm extends SOSJOEMessageCodes {
             table.addMouseListener(new MouseAdapter() {
 
                 public void mouseDoubleClick(final MouseEvent e) {
-                    if (table.getSelectionCount() > 0)
+                    if (table.getSelectionCount() > 0) {
                         ContextMenu.goTo(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULE);
+                    }
                 }
             });
             table.setHeaderVisible(true);
@@ -116,10 +114,11 @@ public class SchedulesForm extends SOSJOEMessageCodes {
             table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
                 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                    if (table.getSelectionCount() > 0)
+                    if (table.getSelectionCount() > 0) {
                         butRemove.setEnabled(true);
-                    else
+                    } else {
                         butRemove.setEnabled(false);
+                    }
                 }
             });
             TableColumn tableColumn = JOE_TCl_SchedulesForm_Name.Control(new TableColumn(table, SWT.NONE));
@@ -132,4 +131,5 @@ public class SchedulesForm extends SOSJOEMessageCodes {
     public static Table getTable() {
         return table;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

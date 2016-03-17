@@ -66,7 +66,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
             throws JDOMException, TransformerException {
         super(parent, style);
         listener = new JobCommandListener(dom, command, main);
-        if (command.getName().equalsIgnoreCase("start_job")) {
+        if ("start_job".equalsIgnoreCase(command.getName())) {
             type = JOEConstants.JOB;
         } else {
             type = JOEConstants.COMMANDS;
@@ -77,9 +77,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
     @Override
     public void apply() {
-        // if (isUnsaved())
-        // addParam();
-        // addCommand();
+        //
     }
 
     @Override
@@ -92,19 +90,15 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         createGroup();
         if (type == JOEConstants.JOB) {
             tJob.setFocus();
-        } else {
-            if (cJobchain != null)
-                cJobchain.setFocus();
+        } else if (cJobchain != null) {
+            cJobchain.setFocus();
         }
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 3;
         jobsAndOrdersGroup = new Group(this, SWT.NONE);
-        // jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName()
-        // ); //+ (listener.isDisabled() ? " (Disabled)" : ""));
         jobsAndOrdersGroup.setText(JOE_G_ActionsJobCommandForm_JobsOrders.params(listener.getCommandName()));
         jobsAndOrdersGroup.setLayout(gridLayout2);
         jobchainLabel = JOE_L_ActionsJobCommandForm_JobChain.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
@@ -117,8 +111,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 listener.setJobChain(cJobchain.getText());
                 String curstate = Utils.getAttributeValue("state", listener.getCommand());
                 tState.setItems(listener.getStates());
@@ -165,8 +160,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 setTime();
             }
         });
@@ -182,7 +178,6 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_7.widthHint = 40;
         txtYear.setLayoutData(gridData_7);
-        @SuppressWarnings("unused")
         final Label label = JOE_L_Hyphen.Control(new Label(composite, SWT.NONE));
         txtMonth = JOE_T_ActionsJobCommandForm_Year.Control(new Text(composite, SWT.BORDER));
         txtMonth.addFocusListener(new FocusAdapter() {
@@ -197,11 +192,13 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 Utils.setBackground(1, 12, txtMonth);
-                if (!txtMonth.getBackground().equals(Options.getRequiredColor()))
+                if (!txtMonth.getBackground().equals(Options.getRequiredColor())) {
                     setTime();
+                }
             }
         });
         txtMonth.addVerifyListener(new VerifyListener() {
@@ -215,7 +212,6 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_9.widthHint = 20;
         txtMonth.setLayoutData(gridData_9);
-        @SuppressWarnings("unused")
         final Label label_1 = JOE_L_Hyphen.Control(new Label(composite, SWT.NONE));
         txtDay = JOE_T_ActionsJobCommandForm_Day.Control(new Text(composite, SWT.BORDER));
         txtDay.addFocusListener(new FocusAdapter() {
@@ -230,11 +226,13 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 Utils.setBackground(1, 31, txtDay);
-                if (!txtDay.getBackground().equals(Options.getRequiredColor()))
+                if (!txtDay.getBackground().equals(Options.getRequiredColor())) {
                     setTime();
+                }
             }
         });
         txtDay.addVerifyListener(new VerifyListener() {
@@ -263,11 +261,13 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 Utils.setBackground(0, 24, txtHour);
-                if (!txtHour.getBackground().equals(Options.getRequiredColor()))
+                if (!txtHour.getBackground().equals(Options.getRequiredColor())) {
                     setTime();
+                }
             }
         });
         txtHour.addVerifyListener(new VerifyListener() {
@@ -281,7 +281,6 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_14 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_14.widthHint = 20;
         txtHour.setLayoutData(gridData_14);
-        @SuppressWarnings("unused")
         final Label label_3 = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
         txtMin = JOE_T_ActionsJobCommandForm_Min.Control(new Text(composite, SWT.BORDER));
         txtMin.addFocusListener(new FocusAdapter() {
@@ -296,11 +295,13 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 Utils.setBackground(0, 60, txtMin);
-                if (!txtMin.getBackground().equals(Options.getRequiredColor()))
+                if (!txtMin.getBackground().equals(Options.getRequiredColor())) {
                     setTime();
+                }
             }
         });
         txtMin.addVerifyListener(new VerifyListener() {
@@ -314,7 +315,6 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_1.widthHint = 20;
         txtMin.setLayoutData(gridData_1);
-        @SuppressWarnings("unused")
         final Label label_4 = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
         txtSec = JOE_T_ActionsJobCommandForm_Sec.Control(new Text(composite, SWT.BORDER));
         txtSec.addFocusListener(new FocusAdapter() {
@@ -329,11 +329,13 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (!event)
+                if (!event) {
                     return;
+                }
                 Utils.setBackground(0, 60, txtSec);
-                if (!txtSec.getBackground().equals(Options.getRequiredColor()))
+                if (!txtSec.getBackground().equals(Options.getRequiredColor())) {
                     setTime();
+                }
             }
         });
         txtSec.addVerifyListener(new VerifyListener() {
@@ -393,8 +395,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setState(tState.getText());
+                }
             }
         });
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
@@ -406,8 +409,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setEndState(cboEndstate.getText());
+                }
             }
         });
         cboEndstate.setEnabled(false);
@@ -430,12 +434,10 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         createSashForm();
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         createGroup2();
     }
 
-    /** This method initializes group2 */
     private void createGroup2() {
         if (type == JOEConstants.JOB) {
             setCommandsEnabled(false);
@@ -483,8 +485,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
     public void fillCommand() {
         if (listener.getCommand() != null) {
             String startAt = Utils.getAttributeValue("at", listener.getCommand());
-            if (startAt == null || startAt.length() == 0)
+            if (startAt == null || startAt.isEmpty()) {
                 startAt = "now";
+            }
             cboTimes.setItems(JobCommandListener.START_TIMES);
             initTimes(startAt);
             if (type == JOEConstants.COMMANDS) {
@@ -510,20 +513,14 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         String hour = txtHour.getText();
         String min = txtMin.getText();
         String sec = txtSec.getText();
-        // boolean havesec = false;
         boolean haveTime = false;
-        // boolean havenow = false;
-        // boolean haveperiod = false;
         int whichtime = 0;
-        if (startAt.equals("now")) {
-            // havenow = true;
+        if ("now".equals(startAt)) {
             whichtime = 0;
-        } else if (startAt.startsWith("period")) {
-            // haveperiod = true;
+        } else if ("period".startsWith(startAt)) {
             whichtime = 1;
-        } else if (startAt.startsWith("now")) {
+        } else if ("now".startsWith(startAt)) {
             startAt = startAt.trim();
-            // havenow = true;
             haveTime = true;
             String[] split = startAt.split("\\+");
             if (split.length == 2) {
@@ -533,19 +530,11 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
                     hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
                     min = time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
                     sec = time[2] != null && time[2].length() > 0 ? Utils.fill(2, time[2]) : "00";
-                    // havesec = true;
                 } else if (time.length == 2) {
-                    /*
-                     * hour = "00"; min = time[0] != null && time[0].length() >
-                     * 0 ? Utils.fill(2, time[0]) : "00"; sec = time[1] != null
-                     * && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
-                     */
                     whichtime = 4;
                     hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
                     min = time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
-                    // havesec = false;
                 } else if (time.length == 1) {
-                    // havesec = true;
                     whichtime = 5;
                     sec = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
                 }
@@ -553,9 +542,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         } else {
             whichtime = 6;
             haveTime = true;
-            // yyyy-MM-dd HH:mm:ss
             if (startAt.indexOf("-") > -1 && startAt.indexOf(":") > -1) {
-                // hat date und time
                 String[] dt = startAt.split(" ");
                 String[] date = dt[0].split("-");
                 String[] time = dt[1].split(":");
@@ -566,13 +553,11 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
                 min = time.length > 1 && time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
                 sec = time.length > 2 && time[2] != null && time[2].length() > 0 ? Utils.fill(2, time[2]) : "00";
             } else if (startAt.indexOf("-") > -1) {
-                // hat nur date
                 String[] date = startAt.split("-");
                 year = date[0] != null && date[0].length() > 0 ? Utils.fill(4, date[0]) : "";
                 month = date[1] != null && date[1].length() > 0 ? Utils.fill(2, date[1]) : "01";
                 day = date[2] != null && date[2].length() > 0 ? Utils.fill(2, date[2]) : "01";
             } else if (startAt.indexOf(":") > -1) {
-                // hat nur time
                 String[] time = startAt.split(";");
                 hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
                 min = time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
@@ -619,49 +604,34 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private String setTime() {
-        // event = false;
         String retVal = "";
-        if (cboTimes.getText().equals("period")) {
+        if ("period".equals(cboTimes.getText())) {
             retVal = "period";
-        } else if (cboTimes.getText().equals("now")) {
+        } else if ("now".equals(cboTimes.getText())) {
             retVal = "now";
         } else if (cboTimes.getText().startsWith("now ")) {
             retVal = "now + ";
             if (txtHour.getEnabled()) {
-                // retVal = retVal + Utils.fill(2, txtHour.getText().length() ==
-                // 0 ? "00" : txtHour.getText()) + ":";
                 retVal = retVal + Utils.fill(2, txtHour.getText()) + ":";
-                // retVal = retVal + "00" + ":";
             }
             if (txtMin.getEnabled()) {
-                // retVal = retVal + Utils.fill(2, txtMin.getText().length() ==
-                // 0 ? "00" : txtMin.getText());
                 retVal = retVal + Utils.fill(2, txtMin.getText());
-                // retVal = retVal + "00";
                 if (txtSec.getEnabled()) {
                     retVal = retVal + ":";
                 }
             }
             if (txtSec.getEnabled()) {
-                // retVal = retVal + Utils.fill(2, txtSec.getText().length() ==
-                // 0? "00" : txtSec.getText());
                 retVal = retVal + Utils.fill(2, txtSec.getText());
-                // retVal = retVal + "00";
             }
         } else {
             retVal = Utils.fill(4, txtYear.getText()) + "-" + Utils.fill(2, txtMonth.getText()) + "-" + Utils.fill(2, txtDay.getText()) + " "
                     + Utils.fill(2, txtHour.getText()) + ":" + Utils.fill(2, txtMin.getText()) + ":" + Utils.fill(2, txtSec.getText());
         }
         listener.setAt(retVal);
-        // event = false;
         return retVal;
     }
 
     private String normalized(final String format) {
-        // now + HH:MM
-        // now + HH:MM:SS
-        // now + SECOUNDS
-        // yyyy-MM-dd HH:mm:ss
         String retVal = format;
         try {
             txtYear.setBackground(null);
@@ -676,62 +646,48 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
             txtHour.setEnabled(false);
             txtMin.setEnabled(false);
             txtSec.setEnabled(false);
-            // if(format.equals("now + HH:MM")) {
             if (format.indexOf("yyyy") > -1) {
                 txtYear.setEnabled(true);
                 txtYear.setFocus();
-                if (txtYear.getText().length() == 0)
+                if (txtYear.getText().isEmpty()) {
                     txtYear.setText(String.valueOf(SOSDate.getCurrentDateAsString("yyyy")));
+                }
             }
             if (format.indexOf("MM") > -1) {
                 txtMonth.setEnabled(true);
-                if (txtMonth.getText().length() == 0)
+                if (txtMonth.getText().isEmpty()) {
                     txtMonth.setText(String.valueOf(SOSDate.getCurrentDateAsString("MM")));
+                }
             }
             if (format.indexOf("dd") > -1) {
                 txtDay.setEnabled(true);
-                if (txtDay.getText().length() == 0)
+                if (txtDay.getText().isEmpty()) {
                     txtDay.setText(String.valueOf(SOSDate.getCurrentDateAsString("dd")));
+                }
             }
             if (format.indexOf("HH") > -1) {
                 txtHour.setEnabled(true);
-                if (!txtYear.isEnabled())
+                if (!txtYear.isEnabled()) {
                     txtHour.setFocus();
+                }
             }
             if (format.indexOf("mm") > -1) {
                 txtMin.setEnabled(true);
             }
             if (format.indexOf("ss") > -1 || format.indexOf("SECONDS") > -1) {
-                if (!txtHour.isEnabled())
+                if (!txtHour.isEnabled()) {
                     txtSec.setFocus();
+                }
                 txtSec.setEnabled(true);
             }
-            /*
-             * if(format.indexOf("HH") > -1) { txtHour.setEnabled(true);
-             * if(!txtYear.isEnabled()) txtHour.setFocus();
-             * if(txtHour.getText().length() == 0) { if(txtYear.getEnabled())
-             * txtHour
-             * .setText(String.valueOf(SOSDate.getCurrentDateAsString("HH")));
-             * else { txtHour.setText("00"); } } if(format.indexOf("mm") > -1) {
-             * txtMin.setEnabled(true); if(txtMin.getText().length() == 0)
-             * if(txtYear.getEnabled())
-             * txtMin.setText(String.valueOf(SOSDate.getCurrentDateAsString
-             * ("mm"))); else txtMin.setText("00"); } if(format.indexOf("ss") >
-             * -1 || format.indexOf("SECOUNDS") > -1) { if(!txtHour.isEnabled())
-             * txtSec.setFocus(); txtSec.setEnabled(true);
-             * if(txtSec.getText().length() == 0) if(txtYear.getEnabled())
-             * txtSec
-             * .setText(String.valueOf(SOSDate.getCurrentDateAsString("ss")));
-             * else txtSec.setText("00"); }
-             */
         } catch (Exception e) {
             try {
                 new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
-                // tu nichts
+                // do nothing
             }
         }
         return retVal;
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -78,7 +78,7 @@ public class JobsForm extends SOSJOEMessageCodes {
                 @Override
                 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                     listener.newJob(table, false);
-                    bRemoveJob.setEnabled((table.getSelection().length > 0));
+                    bRemoveJob.setEnabled(table.getSelection().length > 0);
                 }
             });
             newOrderJob = JOE_B_JobsForm_NewOrderJob.Control(new Button(group, SWT.NONE));
@@ -87,7 +87,7 @@ public class JobsForm extends SOSJOEMessageCodes {
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
                     listener.newJob(table, true);
-                    bRemoveJob.setEnabled((table.getSelection().length > 0));
+                    bRemoveJob.setEnabled(table.getSelection().length > 0);
                 }
             });
             newOrderJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -118,8 +118,7 @@ public class JobsForm extends SOSJOEMessageCodes {
                     if (c != SWT.YES) {
                         return;
                     }
-                    if ((table.getSelection().length > 0) && (Utils.checkElement(table.getSelection()[0].getText(1), dom, JOEConstants.JOBS, null))) {
-                        // wird der Job woandes verwendet?
+                    if (table.getSelection().length > 0 && Utils.checkElement(table.getSelection()[0].getText(1), dom, JOEConstants.JOBS, null)) {
                         bRemoveJob.setEnabled(listener.deleteJob(table));
                     }
                 }
@@ -132,7 +131,6 @@ public class JobsForm extends SOSJOEMessageCodes {
         }
     }
 
-    /** This method initializes table */
     private void createTable() {
         try {
             table = JOE_Tbl_JobsForm_Table.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK));
@@ -140,8 +138,9 @@ public class JobsForm extends SOSJOEMessageCodes {
 
                 @Override
                 public void mouseDoubleClick(final MouseEvent e) {
-                    if (table.getSelectionCount() > 0)
+                    if (table.getSelectionCount() > 0) {
                         ContextMenu.goTo(table.getSelection()[0].getText(1), dom, JOEConstants.JOB);
+                    }
                 }
             });
             table.setHeaderVisible(true);
@@ -154,7 +153,7 @@ public class JobsForm extends SOSJOEMessageCodes {
                 @Override
                 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                     if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
-                        bRemoveJob.setEnabled((table.getSelection().length > 0));
+                        bRemoveJob.setEnabled(table.getSelection().length > 0);
                     } else {
                         bRemoveJob.setEnabled(false);
                         return;
@@ -162,7 +161,6 @@ public class JobsForm extends SOSJOEMessageCodes {
                     if (e.detail == SWT.CHECK) {
                         TableItem item = (TableItem) e.item;
                         listener.setJobEnabled((Element) item.getData(), !item.getChecked());
-
                     }
                 }
             });
@@ -184,4 +182,5 @@ public class JobsForm extends SOSJOEMessageCodes {
     public static Table getTable() {
         return table;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

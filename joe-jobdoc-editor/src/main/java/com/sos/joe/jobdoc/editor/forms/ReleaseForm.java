@@ -75,16 +75,15 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
         tTitle.setText(listener.getTitle());
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout(4, false);
         group = JOE_G_ReleaseForm_Releases.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gridLayout); // Generated
+        group.setLayout(gridLayout);
         label1 = JOE_L_ReleaseForm_ID.Control(new SOSLabel(group, SWT.NONE));
         label1.setLayoutData(new GridData());
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         tID = JOE_T_ReleaseForm_ID.Control(new Text(group, SWT.BORDER));
-        tID.setLayoutData(gridData3); // Generated
+        tID.setLayoutData(gridData3);
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -99,7 +98,7 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
         label.setLayoutData(new GridData());
         GridData gridData21 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         tTitle = JOE_T_ReleaseForm_Title.Control(new Text(group, SWT.BORDER));
-        tTitle.setLayoutData(gridData21); // Generated
+        tTitle.setLayoutData(gridData21);
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -111,16 +110,13 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
         label3 = JOE_L_ReleaseForm_Modified.Control(new SOSLabel(group, SWT.NONE));
         label3.setLayoutData(new GridData());
         createModified();
-        // Label filler = new Label(group, SWT.NONE);
         createComposite();
         createGroup1();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         GridData gridData5 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
         gridData5.widthHint = 486;
-        // GridLayout gridLayout1 = new GridLayout(5, false);
         final Composite composite = new Composite(group, SWT.NONE);
         composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1));
         final GridLayout gridLayout = new GridLayout();
@@ -128,18 +124,14 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
         fNote = new NoteForm(composite, SWT.NONE);
         fNote.setTitle(JOE_B_DBResources_Notes.label());
         fNote.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-
         fChanges = new NoteForm(composite, SWT.NONE);
         fChanges.setTitle(JOE_M_ReleaseForm_Changes.label());
         fChanges.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-
     }
 
-    /** This method initializes composite */
     private void createComposite() {
     }
 
-    /** This method initializes created */
     private void createCreated() {
         GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         created = JOE_ReleaseForm_Created.Control(new SOSDateTime(group, SWT.NONE));
@@ -150,10 +142,9 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
                 listener.setCreated(created.getISODate());
             }
         });
-        created.setLayoutData(gridData6); // Generated
+        created.setLayoutData(gridData6);
     }
 
-    /** This method initializes modified */
     private void createModified() {
         GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         modified = JOE_ReleaseForm_Modified.Control(new SOSDateTime(group, SWT.NONE));
@@ -164,7 +155,7 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
                 listener.setModified(modified.getISODate());
             }
         });
-        modified.setLayoutData(gridData13); // Generated
+        modified.setLayoutData(gridData13);
     }
 
     @Override
@@ -178,17 +169,18 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
     }
 
     private void setReleaseStatus(boolean enabled) throws ParseException {
-
         if (enabled) {
             tTitle.setText(listener.getTitle());
-            if (listener.getCreated().equals(""))
+            if ("".equals(listener.getCreated())) {
                 created.setDate(new Date());
-            else
+            } else {
                 created.setDate(listener.getCreated());
-            if (listener.getModified().equals(""))
+            }
+            if ("".equals(listener.getModified())) {
                 modified.setDate(new Date());
-            else
+            } else {
                 modified.setDate(listener.getModified());
+            }
             tID.setText(listener.getID());
             tID.setFocus();
         }
@@ -212,4 +204,5 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
     public boolean applyChanges() {
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

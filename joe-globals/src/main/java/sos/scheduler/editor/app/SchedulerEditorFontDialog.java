@@ -27,16 +27,15 @@ import com.sos.joe.globals.options.Options;
 
 public class SchedulerEditorFontDialog {
 
-    private static final String conDefaultfontName = "Courier New";
-    private static final String conSCRIPT_EDITOR_FONT_COLOR = "script_editor_font_color";
-    private static final String conSCRIPT_EDITOR_FONT = "script_editor_font";
+    private static final String DEFAULT_FONT_NAME = "Courier New";
+    private static final String SCRIPT_EDITOR_FONT_COLOR = "script_editor_font_color";
+    private static final String SCRIPT_EDITOR_FONT = "script_editor_font";
     private String context = "";
     private FontData fontData;
     private RGB foreGround;
     private Shell objParentShell = null;
 
     @Deprecated
-    // use setParent (shell)
     public SchedulerEditorFontDialog() {
         super();
     }
@@ -81,13 +80,13 @@ public class SchedulerEditorFontDialog {
     }
 
     public void readFontData() {
-        String s = Options.getProperty(conSCRIPT_EDITOR_FONT + context);
-        if (s == null || s.equals("")) {
-            fontData = new FontData(conDefaultfontName + context, 10, SWT.NORMAL);
+        String s = Options.getProperty(SCRIPT_EDITOR_FONT + context);
+        if (s == null || "".equals(s)) {
+            fontData = new FontData(DEFAULT_FONT_NAME + context, 10, SWT.NORMAL);
         } else {
             fontData = new FontData(s);
         }
-        s = Options.getProperty(conSCRIPT_EDITOR_FONT_COLOR + context);
+        s = Options.getProperty(SCRIPT_EDITOR_FONT_COLOR + context);
         if (s == null) {
             s = "";
         }
@@ -104,8 +103,8 @@ public class SchedulerEditorFontDialog {
     }
 
     private void saveFontData(final FontData f, final RGB foreGround) {
-        Options.setProperty(conSCRIPT_EDITOR_FONT + context, f.toString());
-        Options.setProperty(conSCRIPT_EDITOR_FONT_COLOR + context, foreGround.toString());
+        Options.setProperty(SCRIPT_EDITOR_FONT + context, f.toString());
+        Options.setProperty(SCRIPT_EDITOR_FONT_COLOR + context, foreGround.toString());
         Options.saveProperties();
         fontData = f;
         this.foreGround = foreGround;
@@ -133,11 +132,8 @@ public class SchedulerEditorFontDialog {
         s.setLayout(new GridLayout(11, false));
         new Label(s, SWT.NONE);
         final Text t = new Text(s, SWT.BORDER | SWT.WRAP | SWT.MULTI);
-        t.setText(SOSJOEMessageCodes.JOE_M_Blindtext.label()); // The quick
-                                                               // brown fox
-                                                               // jumps over the
-                                                               // lazy poddle.
-        t.setFont(com.sos.dialog.swtdesigner.SWTResourceManager.getFont(conDefaultfontName, 8, SWT.NORMAL));
+        t.setText(SOSJOEMessageCodes.JOE_M_Blindtext.label());
+        t.setFont(com.sos.dialog.swtdesigner.SWTResourceManager.getFont(DEFAULT_FONT_NAME, 8, SWT.NORMAL));
         t.setForeground(new Color(d, foreGround));
         t.setFont(new Font(d, fontData));
         t.setForeground(new Color(d, foreGround));
@@ -155,8 +151,9 @@ public class SchedulerEditorFontDialog {
                 fd.setRGB(t.getForeground().getRGB());
                 fd.setFontList(t.getFont().getFontData());
                 FontData newFont = fd.open();
-                if (newFont == null)
+                if (newFont == null) {
                     return;
+                }
                 t.setFont(new Font(d, newFont));
                 t.setForeground(new Color(d, fd.getRGB()));
             }
@@ -190,8 +187,9 @@ public class SchedulerEditorFontDialog {
         new Label(s, SWT.NONE);
         s.open();
         while (!s.isDisposed()) {
-            if (!d.readAndDispatch())
+            if (!d.readAndDispatch()) {
                 d.sleep();
+            }
         }
     }
 

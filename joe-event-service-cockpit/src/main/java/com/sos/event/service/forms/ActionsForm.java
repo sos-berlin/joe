@@ -44,7 +44,6 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
     public ActionsForm(IEditorAdapter container_, Composite parent, int style) {
         super(parent, style);
         this.container = container_;
-        // initialize();
         dom = new ActionsDom();
         dom.setDataChangedListener(this);
         listener = new ActionsListener(this, dom);
@@ -56,7 +55,6 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
         setLayout(new FillLayout());
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         sashForm = new SashForm(this, SWT.NONE);
         createGroup();
@@ -65,19 +63,18 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
         Options.loadSash("test", sashForm);
     }
 
-    /** This method initializes group */
     private void createGroup() {
         group = JOE_G_ActionsForm_ActionsElements.Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
-        group.setLayout(new FillLayout()); // Generated
+        group.setLayout(new FillLayout());
         tree = new Tree(group, SWT.NONE);
-        // tree.addListener(SWT.Selection, new Listener() {
         tree.addListener(SWT.Selection, new Listener() {
 
             @Override
             public void handleEvent(Event e) {
                 if (tree.getSelectionCount() > 0) {
-                    if (selection == null)
+                    if (selection == null) {
                         selection = tree.getItem(0);
+                    }
                     e.doit = listener.treeSelection(tree, docMainForm);
                     if (!e.doit) {
                         tree.setSelection(new TreeItem[] { selection });
@@ -90,8 +87,6 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
         });
     }
 
-    // Der SelectionListener gibt lediglich den auslösenden Event aus
-    /** This method initializes docMainForm */
     private void createDocMainForm() {
         docMainForm = new Composite(sashForm, SWT.NONE);
         docMainForm.setLayout(new FillLayout());
@@ -149,8 +144,9 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
         try {
             if (dom.getFilename() == null || saveas) {
                 SaveEventsDialogForm d = new SaveEventsDialogForm(dom);
-                if (dom.getFilename() == null)// Cancel
+                if (dom.getFilename() == null) {
                     return false;
+                }
             }
             IOUtils.saveFile(dom, false);
         } catch (Exception e) {
@@ -162,9 +158,6 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
     @Override
     public boolean save() {
         boolean res = save_Action(dom, false);
-        // TODO setNEwFilename
-        // if (res)
-        // container.setNewFilename(null);
         Utils.setResetElement(dom.getRoot());
         return res;
     }
@@ -173,8 +166,6 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
     public boolean saveAs() {
         String old = dom.getFilename();
         boolean res = save_Action(dom, true);
-        // if (res)
-        // container.setNewFilename(old);
         return res;
     }
 
@@ -183,8 +174,9 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
         if (tree.getSelectionCount() > 0) {
             TreeItem item = tree.getSelection()[0];
             TreeData data = (TreeData) item.getData();
-            if (data != null && data.getHelpKey() != null)
+            if (data != null && data.getHelpKey() != null) {
                 return data.getHelpKey();
+            }
         }
         return null;
     }
@@ -205,8 +197,9 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 
     @Override
     public void updateAction(String name) {
-        if (tree.getSelectionCount() > 0)
+        if (tree.getSelectionCount() > 0) {
             tree.getSelection()[0].setText(ActionsListener.ACTION_PREFIX + name);
+        }
     }
 
     @Override
@@ -219,7 +212,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
         for (int i = 0; i < item.getItemCount(); i++) {
             TreeItem it = item.getItem(i);
             if (it.getText().equals(ActionsListener.ACTION_PREFIX + Utils.getAttributeValue("name", action))) {
-                it = it.getItem(0);// events Knoten
+                it = it.getItem(0);
                 listener.fillEventGroup(it, action);
                 it.setExpanded(true);
                 break;
@@ -252,11 +245,9 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
             TreeData data = (TreeData) item.getData();
             listener.treeFillCommand(item, data.getElement(), true);
             item.setExpanded(true);
-            if (item.getItemCount() > 0)
+            if (item.getItemCount() > 0) {
                 item.getItems()[item.getItemCount() - 1].setExpanded(true);
-            // listener.treeFillCommands(tree.getSelection()[0],
-            // data.getElement(), true);
-            // hier einen neuen TreeItem aufbauen
+            }
         }
     }
 
@@ -266,11 +257,11 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 
     @Override
     public void updateTree(String which) {
-        if (which.equals("main")) {
-            // neu zeichnen und das erste Element markieren
+        if ("main".equals(which)) {
             listener.fillTree(tree);
             tree.setSelection(new TreeItem[] { tree.getItem(0) });
         }
         listener.treeSelection(tree, docMainForm);
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

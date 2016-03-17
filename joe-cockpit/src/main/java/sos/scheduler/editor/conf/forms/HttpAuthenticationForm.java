@@ -44,40 +44,28 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
     private Text txtMD5Password = null;
 
     public HttpAuthenticationForm(Composite parent, int style, SchedulerDom dom, Element config) {
-
         super(parent, style);
         listener = new HttpAuthenticationListener(dom, config);
         initialize();
         listener.fillHttpAuthenticationTable(tableHttpUsers);
-
     }
 
     private void initialize() {
-
         this.setLayout(new FillLayout());
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(653, 468));
         txtUsername.setFocus();
-
     }
 
-    /** This method initializes group */
     private void createGroup() {
-
         GridLayout gridLayout = new GridLayout();
         httpAuthenticationGroup = JOE_G_HttpAuthenticationForm_AuthGroup.Control(new Group(this, SWT.NONE));
-        // httpAuthenticationGroup.setText("HTTP Authentication");
         createGroup1();
-
         httpAuthenticationGroup.setLayout(gridLayout);
-
         new Label(httpAuthenticationGroup, SWT.NONE);
-
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
-
         final Group group_1 = JOE_G_HttpAuthenticationForm_Group.Control(new Group(httpAuthenticationGroup, SWT.NONE));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
         gridData_2.heightHint = 427;
@@ -86,11 +74,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group_1.setLayout(gridLayout);
-
-        @SuppressWarnings("unused")
         final Label lblUsername = JOE_L_HttpAuthenticationForm_UserName.Control(new Label(group_1, SWT.NONE));
-        // lblUsername.setText("User Name");
-
         txtUsername = JOE_T_HttpAuthenticationForm_UserName.Control(new Text(group_1, SWT.BORDER));
         txtUsername.addFocusListener(new FocusAdapter() {
 
@@ -101,96 +85,65 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         txtUsername.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                /*
-                 * if ((txtUsername.getText().length() > 0) ) {
-                 * txtUsername.setText(txtUsername.getText());
-                 * txtUsername.setSelection(2); }
-                 */
-                if (e.keyCode == SWT.CR && !txtUsername.getText().equals(""))
+                if (e.keyCode == SWT.CR && !"".equals(txtUsername.getText())) {
                     applyHttpUser();
+                }
             }
         });
         txtUsername.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                // butApplyHttpUser.setEnabled(!txtUsername.getText().equals(""));
-                // butEncrypt.setEnabled(!txtUsername.getText().equals(""));
-
+                //
             }
         });
         txtUsername.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
-        @SuppressWarnings("unused")
         final Label lblPassword = JOE_L_HttpAuthenticationForm_Password.Control(new Label(group_1, SWT.NONE));
-        // lblPassword.setText("Password");
-
         txtPassword = JOE_T_HttpAuthenticationForm_Password.Control(new Text(group_1, SWT.BORDER));
-        // txtPassword.addFocusListener(new FocusAdapter() {
-        // public void focusGained(final FocusEvent e) {
-        // txtPassword.selectAll();
-        // }
-        // });
         txtPassword.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !txtPassword.getText().equals("")) {
+                if (e.keyCode == SWT.CR && !"".equals(txtPassword.getText())) {
                     encrypt();
-
                 }
-
             }
         });
         txtPassword.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                // butApplyHttpUser.setEnabled(!txtPassword.getText().equals(""));
                 butEncrypt.setEnabled(!txtPassword.getText().equals(""));
             }
         });
         txtPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
         butEncrypt = JOE_B_HttpAuthenticationForm_Encrypt.Control(new Button(group_1, SWT.NONE));
         butEncrypt.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (txtPassword.getText() != null && txtPassword.getText().length() > 0) {
+                if (txtPassword.getText() != null && !txtPassword.getText().isEmpty()) {
                     encrypt();
                 }
-
             }
         });
         butEncrypt.setEnabled(false);
         butEncrypt.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        // butEncrypt.setText("Encrypt");
         new Label(group_1, SWT.NONE);
         new Label(group_1, SWT.NONE);
-
         final Label md5PasswordLabel = JOE_L_HttpAuthenticationForm_MD5PW.Control(new Label(group_1, SWT.NONE));
-        // md5PasswordLabel.setText("MD5 Password");
-
         txtMD5Password = JOE_T_HttpAuthenticationForm_MD5PW.Control(new Text(group_1, SWT.BORDER));
-        // txtMD5Password.addFocusListener(new FocusAdapter() {
-        // public void focusGained(final FocusEvent e) {
-        // txtMD5Password.selectAll();
-        // }
-        // });
         txtMD5Password.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR && !txtUsername.getText().equals("")) {
+                if (e.keyCode == SWT.CR && !"".equals(txtUsername.getText())) {
                     applyHttpUser();
                 }
-
             }
         });
         txtMD5Password.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                butApplyHttpUser.setEnabled(!txtMD5Password.getText().equals(""));
+                butApplyHttpUser.setEnabled(!"".equals(txtMD5Password.getText()));
             }
         });
         txtMD5Password.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
         butApplyHttpUser = JOE_B_HttpAuthenticationForm_Apply.Control(new Button(group_1, SWT.NONE));
         butApplyHttpUser.setEnabled(false);
         butApplyHttpUser.addSelectionListener(new SelectionAdapter() {
@@ -200,8 +153,6 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             }
         });
         butApplyHttpUser.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        // butApplyHttpUser.setText("Apply");
-
         tableHttpUsers = JOE_Tbl_HttpAuthenticationForm_Users.Control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
         tableHttpUsers.addSelectionListener(new SelectionAdapter() {
 
@@ -224,15 +175,10 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         gridData_1.minimumHeight = 100;
         gridData_1.horizontalIndent = 4;
         tableHttpUsers.setLayoutData(gridData_1);
-
         final TableColumn urlPathTableColumn = JOE_TCl_HttpAuthenticationForm_NameColumn.Control(new TableColumn(tableHttpUsers, SWT.NONE));
         urlPathTableColumn.setWidth(150);
-        // urlPathTableColumn.setText("Name");
-
         final TableColumn pathTableColumn = JOE_TCl_HttpAuthenticationForm_PWColumn.Control(new TableColumn(tableHttpUsers, SWT.NONE));
         pathTableColumn.setWidth(250);
-        // pathTableColumn.setText("Password");
-
         butRemoveHttpUser = JOE_B_HttpAuthenticationForm_Remove.Control(new Button(group_1, SWT.NONE));
         butRemoveHttpUser.setEnabled(false);
         butRemoveHttpUser.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -248,17 +194,14 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
                     butApplyHttpUser.setEnabled(false);
                     butEncrypt.setEnabled(false);
                     listener.applyHttpUser(tableHttpUsers.getItems());
-
                 }
                 butRemoveHttpUser.setEnabled(false);
-                ;
             }
         });
-        // butRemoveHttpUser.setText("Remove");
     }
 
     private void applyHttpUser() {
-        String passw = txtMD5Password.getText(); // txtPassword.getText();
+        String passw = txtMD5Password.getText();
         String name = txtUsername.getText();
         TableItem[] items = tableHttpUsers.getItems();
         boolean found = false;
@@ -272,7 +215,6 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             TableItem item = new TableItem(tableHttpUsers, SWT.NONE);
             item.setText(new String[] { name, passw });
         }
-
         tableHttpUsers.deselectAll();
         txtPassword.setText("");
         txtMD5Password.setText("");
@@ -282,7 +224,6 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         butEncrypt.setEnabled(false);
         txtPassword.setFocus();
         listener.applyHttpUser(tableHttpUsers.getItems());
-
     }
 
     public boolean isUnsaved() {
@@ -291,7 +232,6 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
 
     public void apply() {
         applyHttpUser();
-
     }
 
     private void encrypt() {
@@ -303,4 +243,5 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             MainWindow.message(getShell(), JOE_M_0016.params(txtPassword.getText()), SWT.ICON_WARNING | SWT.OK);
         }
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

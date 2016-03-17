@@ -26,9 +26,6 @@ import com.sos.joe.xml.DomParser;
 
 public class DetailDom extends DomParser {
 
-    @SuppressWarnings("unused")
-    private final static String conSVNVersion = "$Id: DetailDom.java 14983 2011-08-21 08:47:30Z kb $";
-
     public DetailDom() {
         super(new String[] {}, new String[] {}, Options.getDetailXSLT());
     }
@@ -48,7 +45,6 @@ public class DetailDom extends DomParser {
         Document doc = getBuilder(validate).build(sr);
         sr.close();
         setDoc(doc);
-        // set comments as attributes
         setComments(getDoc().getContent());
         setChanged(false);
         setFilename(filename);
@@ -60,7 +56,6 @@ public class DetailDom extends DomParser {
         Document doc = getBuilder(validate).build(sr);
         sr.close();
         setDoc(doc);
-        // set comments as attributes
         setComments(getDoc().getContent());
         setChanged(false);
         return true;
@@ -69,7 +64,7 @@ public class DetailDom extends DomParser {
     private String readFile(String filename) throws IOException {
         String encoding = DEFAULT_ENCODING;
         String line = null;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Pattern p3 = Pattern.compile("<?xml.+encoding\\s*=\\s*\"([^\"]+)\"");
         BufferedReader br = new BufferedReader(new FileReader(filename));
         try {
@@ -78,7 +73,6 @@ public class DetailDom extends DomParser {
                 if (m3.find()) {
                     encoding = m3.group(1);
                 }
-                // System.out.println(line);
                 sb.append(line + "\n");
             }
             String str = new String(sb.toString().getBytes(), encoding);
@@ -90,24 +84,11 @@ public class DetailDom extends DomParser {
         }
     }
 
-    /*
-     * public void write(String filename) throws IOException, JDOMException {
-     * File f = new File(filename); try { String encoding =
-     * JOEConstants.SCHEDULER_ENCODING; if (encoding.equals("")) encoding =
-     * DEFAULT_ENCODING; JDOMSource in = new JDOMSource(getDoc()); Format format
-     * = Format.getPrettyFormat(); format.setEncoding(encoding); XMLOutputter
-     * outp = new XMLOutputter(format); outp.output(in.getDocument(), new
-     * FileWriter(f)); } catch (Exception e) { int res =
-     * MainWindow.message(Messages.getString("MainListener.outputInvalid", new
-     * String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO); if
-     * (res == SWT.NO) return;
-     * System.out.println("..error in DetailDom.save. Could not save file " +
-     * e.getMessage()); } setFilename(filename); setChanged(false); }
-     */
     public void write(String filename) throws IOException, JDOMException {
         String encoding = JOEConstants.SCHEDULER_ENCODING;
-        if (encoding.equals(""))
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
+        }
         reorderDOM();
         FormatDetailHandler handler = new FormatDetailHandler(this);
         handler.setEnconding(encoding);
@@ -117,8 +98,9 @@ public class DetailDom extends DomParser {
             getBuilder(false).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
             int res = ErrorLog.message(Messages.getMsg("MainListener.outputInvalid", e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
+            if (res == SWT.NO) {
                 return;
+            }
         }
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
         writer.write(handler.getXML());
@@ -129,41 +111,28 @@ public class DetailDom extends DomParser {
 
     public void writeElement(String filename, Document doc) throws IOException, JDOMException {
         String encoding = JOEConstants.SCHEDULER_ENCODING;
-        if (encoding.equals(""))
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
+        }
         reorderDOM(doc.getRootElement());
         FormatDetailHandler handler = new FormatDetailHandler(this);
         handler.setEnconding(encoding);
         SAXOutputter saxo = new SAXOutputter(handler);
-        // saxo.output(getDoc());
         saxo.output(doc);
         try {
             getBuilder(false).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
             int res = ErrorLog.message(Messages.getMsg("MainListener.outputInvalid", e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
+            if (res == SWT.NO) {
                 return;
+            }
         }
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
         writer.write(handler.getXML());
         writer.close();
-        // FileOutputStream stream = new FileOutputStream(new File(filename));
-        // XMLOutputter out = new XMLOutputter(getFormat());
-        // out.output(_doc, stream);
-        // stream.close();
-        // setFilename(filename);
         setChanged(false);
-        // deorderDOM();
     }
 
-    /*
-     * public String getXML(Element element) throws JDOMException { String
-     * encoding = JOEConstants.SCHEDULER_ENCODING; if (encoding.equals(""))
-     * encoding = DEFAULT_ENCODING; JDOMSource in = new JDOMSource(element);
-     * Format format = Format.getPrettyFormat(); format.setEncoding(encoding);
-     * XMLOutputter outp = new XMLOutputter(format); String _xML =
-     * outp.outputString(getDoc()); return _xML; }
-     */
     public String getXML(Element element) throws JDOMException {
         reorderDOM(element);
         FormatDetailHandler handler = new FormatDetailHandler(this);
@@ -182,15 +151,16 @@ public class DetailDom extends DomParser {
                     comment = ((Comment) o).getText();
                 } else if (o instanceof Element) {
                     Element e = (Element) o;
-                    if (comment != null) { // set comment as value
+                    if (comment != null) {
                         e.setAttribute("__comment__", comment.trim());
                         comment = null;
                     }
-                    setComments(e.getContent()); // recursion
+                    setComments(e.getContent());
                 } else if (!(o instanceof Text)) {
                     comment = null;
                 }
             }
         }
     }
+
 }

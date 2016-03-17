@@ -47,7 +47,7 @@ public class JobChainConfigurationListener {
         }
         TreeItem item = new TreeItem(tree, SWT.NONE);
         treeFillState(item);
-        item.setText((jobChainname != null ? jobChainname : ""));
+        item.setText(jobChainname != null ? jobChainname : "");
         item.setExpanded(true);
         tree.setSelection(new TreeItem[] { tree.getItem(0) });
         treeSelection(tree, c);
@@ -76,8 +76,9 @@ public class JobChainConfigurationListener {
         try {
             SAXBuilder builder = new SAXBuilder();
             filename = _dom.getFilename();
-            if (filename == null || filename.length() == 0)
+            if (filename == null || filename.isEmpty()) {
                 return list;
+            }
             Document doc = builder.build(new File(filename));
             root = doc.getRootElement();
             Element application = root.getChild("job_chain");
@@ -85,8 +86,9 @@ public class JobChainConfigurationListener {
                 application = root.getChild("application");
             }
             jobChainname = Utils.getAttributeValue("name", application);
-            if (application != null)
+            if (application != null) {
                 order = application.getChild("order");
+            }
             if (order != null) {
                 process = order.getChildren("process");
             }
@@ -101,22 +103,23 @@ public class JobChainConfigurationListener {
     }
 
     public void treeExpandJob(TreeItem parent, String job) {
-        if (parent.getText().equals("Jobs")) {
-            for (int i = 0; i < parent.getItemCount(); i++)
+        if ("Jobs".equals(parent.getText())) {
+            for (int i = 0; i < parent.getItemCount(); i++) {
                 if (parent.getItem(i).getText().equals(job)) {
                     parent.getItem(i).setExpanded(true);
                 }
+            }
         }
     }
 
     public boolean treeSelection(Tree tree, Composite c) {
         try {
             if (tree.getSelectionCount() > 0) {
-                // dispose the old form
                 Control[] children = c.getChildren();
                 for (int i = 0; i < children.length; i++) {
-                    if (!Utils.applyFormChanges(children[i]))
+                    if (!Utils.applyFormChanges(children[i])) {
                         return false;
+                    }
                     children[i].dispose();
                 }
                 TreeItem item = tree.getSelection()[0];
@@ -189,4 +192,5 @@ public class JobChainConfigurationListener {
         }
         parent.setExpanded(true);
     }
+
 }

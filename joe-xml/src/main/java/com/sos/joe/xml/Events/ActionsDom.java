@@ -21,20 +21,18 @@ import com.sos.joe.xml.DomParser;
 public class ActionsDom extends DomParser {
 
     private static final Logger LOGGER = Logger.getLogger(ActionsDom.class);
+    private static final String[] ACTION = { "events", "commands" };
     public static final String conTemplate_ACTIONS_TEMPLATE_XML = "/sos/scheduler/editor/actions-template.xml";
-    private static final String[] _action = { "events", "commands" };
 
     public ActionsDom() {
         super(new String[] { conSchema_SCHEDULER_EDITOR_SCHEMA }, new String[] { Options.getActionSchema() }, "");
-        putDomOrder("action", _action);
+        putDomOrder("action", ACTION);
         initActions();
     }
 
     public void initActions() {
-        // open a template
         try {
             Document doc = getBuilder(false).build(getClass().getResource(conTemplate_ACTIONS_TEMPLATE_XML));
-
             setDoc(doc);
             setChanged(false);
         } catch (Exception e) {
@@ -48,7 +46,6 @@ public class ActionsDom extends DomParser {
 
     public boolean read(String filename, boolean validate) throws JDOMException, IOException {
         Document doc = getBuilder(true).build(filename);
-
         setDoc(doc);
         setChanged(false);
         setFilename(filename);
@@ -58,22 +55,22 @@ public class ActionsDom extends DomParser {
     public boolean readString(String str, boolean validate) throws JDOMException, IOException {
         StringReader sr = new StringReader(str);
         Document doc = getBuilder(true).build(sr);
-        // Document doc = getBuilder(validate).build(filename);
-        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
+        if (!validate && (!doc.hasRootElement() || !"description".equals(doc.getRootElement().getName()))) {
             return false;
-        else if (!validate) {
-            // try to avoid the worst
+        } else if (!validate) {
             Element description = doc.getRootElement();
-            if (description.getChild("job", getNamespace()) == null)
+            if (description.getChild("job", getNamespace()) == null) {
                 description.addContent(new Element("job", getNamespace()));
-            if (description.getChild("releases", getNamespace()) == null)
+            }
+            if (description.getChild("releases", getNamespace()) == null) {
                 description.addContent(new Element("releases", getNamespace()));
-            if (description.getChild("configuration", getNamespace()) == null)
+            }
+            if (description.getChild("configuration", getNamespace()) == null) {
                 description.addContent(new Element("configuration", getNamespace()));
+            }
         }
         setDoc(doc);
         setChanged(false);
-        // setFilename(filename);
         return true;
     }
 
@@ -83,11 +80,11 @@ public class ActionsDom extends DomParser {
 
     public void writeWithDom(String filename) throws IOException, JDOMException {
         String encoding = JOEConstants.SCHEDULER_ENCODING;
-        if (encoding.equals(""))
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
+        }
         reorderDOM(getDoc().getRootElement(), getNamespace());
         StringWriter stream = new StringWriter();
-        // FileOutputStream stream = new FileOutputStream(new File(filename));
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         out.output(getDoc(), stream);
         stream.close();
@@ -97,8 +94,9 @@ public class ActionsDom extends DomParser {
             getBuilder(true).build(new StringReader(s));
         } catch (JDOMException e) {
             int res = ErrorLog.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
+            if (res == SWT.NO) {
                 return;
+            }
         }
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
         writer.write(s);
@@ -109,8 +107,9 @@ public class ActionsDom extends DomParser {
 
     public void writeWithHandler(String filename) throws IOException, JDOMException {
         String encoding = JOEConstants.SCHEDULER_ENCODING;
-        if (encoding.equals(""))
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
+        }
         reorderDOM(getDoc().getRootElement(), getNamespace());
         FormatHandler handler = new FormatHandler(this);
         handler.setEnconding(encoding);
@@ -120,8 +119,9 @@ public class ActionsDom extends DomParser {
             getBuilder(true).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
             int res = ErrorLog.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
+            if (res == SWT.NO) {
                 return;
+            }
         }
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
         writer.write(handler.getXML());
@@ -132,8 +132,9 @@ public class ActionsDom extends DomParser {
 
     public String getXML(Element element) throws JDOMException {
         String encoding = JOEConstants.SCHEDULER_ENCODING;
-        if (encoding.equals(""))
+        if ("".equals(encoding)) {
             encoding = DEFAULT_ENCODING;
+        }
         reorderDOM(element, getNamespace());
         FormatHandler handler = new FormatHandler(this);
         handler.setEnconding(encoding);
@@ -171,4 +172,5 @@ public class ActionsDom extends DomParser {
         str = str.replaceAll("<pre space=\"preserve\">", "<pre>");
         return str;
     }
+
 }

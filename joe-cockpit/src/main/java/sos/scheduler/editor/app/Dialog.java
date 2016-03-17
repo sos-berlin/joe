@@ -20,11 +20,9 @@ import com.sos.joe.globals.misc.ResourceManager;
 
 class Dialog extends org.eclipse.swt.widgets.Dialog {
 
-    Object result;
-
     private Object obj = null;
-
     private Text text = null;
+    Object result;
 
     public Dialog(Shell parent, int style) {
         super(parent, style);
@@ -42,7 +40,6 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
     public Object open() {
         Shell parent = getParent();
         final Shell newFolderShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-
         newFolderShell.addTraverseListener(new TraverseListener() {
 
             public void keyTraversed(final TraverseEvent e) {
@@ -51,7 +48,6 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
                 }
             }
         });
-
         newFolderShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = 10;
@@ -64,17 +60,16 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
         newFolderShell.setText("Create New Folder");
         newFolderShell.setText(getText());
         newFolderShell.pack();
-
         text = new Text(newFolderShell, SWT.BORDER);
         text.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR)
+                if (e.keyCode == SWT.CR) {
                     doSomethings();
+                }
             }
         });
         text.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-
         final Button butOK = new Button(newFolderShell, SWT.NONE);
         butOK.addSelectionListener(new SelectionAdapter() {
 
@@ -83,7 +78,6 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
             }
         });
         butOK.setText("OK");
-
         final Button butCancel = new Button(newFolderShell, SWT.NONE);
         butCancel.addSelectionListener(new SelectionAdapter() {
 
@@ -94,23 +88,20 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
         butCancel.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
         butCancel.setText("Cancel");
         newFolderShell.open();
-
         newFolderShell.setSize(241, 107);
         org.eclipse.swt.widgets.Display display = parent.getDisplay();
         while (!newFolderShell.isDisposed()) {
-            if (!display.readAndDispatch())
+            if (!display.readAndDispatch()) {
                 display.sleep();
+            }
         }
         return result;
-
     }
 
     public static void main(String[] args) {
         final Shell shell = new Shell();
         shell.pack();
-
         Dialog dialog = new Dialog(shell);
-
         dialog.open();
     }
 
@@ -121,32 +112,26 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
     public void doSomethings() {
         try {
             if (obj instanceof FTPDialog) {
-
                 FTPDialog ftpDialog = (FTPDialog) obj;
-
                 FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpDialog.getListener().getCurrProfile());
                 ftpProfileJadeClient.mkdir(ftpDialog.txtDir.getText(), text.getText());
                 ftpDialog.refresh();
-
             } else if (obj instanceof WebDavDialog) {
-
                 WebDavDialog webdavDialog = (WebDavDialog) obj;
                 String parentPath = webdavDialog.getTxtUrl().getText();
-                if (!parentPath.endsWith("/"))
+                if (!parentPath.endsWith("/")) {
                     parentPath = parentPath + "/";
-
+                }
                 webdavDialog.getListener().mkDirs(parentPath + text.getText());
                 webdavDialog.refresh();
-
             } else if (obj instanceof WebDavDialogListener) {
-
                 WebDavDialogListener listener = (WebDavDialogListener) obj;
                 listener.setPassword(text.getText());
-
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
         close();
     }
+
 }

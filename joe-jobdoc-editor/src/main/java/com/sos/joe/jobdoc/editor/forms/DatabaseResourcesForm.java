@@ -37,7 +37,6 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListener> {
 
     private Group group1 = null;
-    @SuppressWarnings("unused")
     private Label label1 = null;
     private Text tName = null;
     private Label label2 = null;
@@ -56,56 +55,45 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         this.dom = dom;
         listener = new DatabaseResourceListener(dom, parentElement);
         initialize();
-        // listener.fillDatabases(tDatabases);
     }
 
     private void initialize() {
         createGroup();
-        // setSize(new Point(636, 477));
-        // setLayout(new FillLayout());
-        // sashForm.setWeights(new int[] { 65, 35 });
-        // Options.loadSash("databases", sashForm);
         cType.setItems(listener.getTypes());
-        // bRemove.setEnabled(false);
         setDatabaseStatus(true);
     }
 
-    /** This method initializes group */
     private void createGroup() {
-        // group = new SOSGroup(this, SWT.NONE);
-        // group.setText("Databases"); // Generated
-        // group.setLayout(new FillLayout()); // Generated
         createSashForm();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         GridData gridData14 = new GridData();
-        gridData14.horizontalAlignment = GridData.FILL; // Generated
-        gridData14.verticalAlignment = GridData.BEGINNING; // Generated
+        gridData14.horizontalAlignment = GridData.FILL;
+        gridData14.verticalAlignment = GridData.BEGINNING;
         GridData gridData13 = new GridData();
-        gridData13.horizontalAlignment = GridData.FILL; // Generated
-        gridData13.verticalAlignment = GridData.CENTER; // Generated
+        gridData13.horizontalAlignment = GridData.FILL;
+        gridData13.verticalAlignment = GridData.CENTER;
         GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         gridData12.widthHint = 90;
         GridData gridData10 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4);
         GridData gridData9 = new GridData();
-        gridData9.horizontalAlignment = GridData.FILL; // Generated
-        gridData9.verticalAlignment = GridData.CENTER; // Generated
+        gridData9.horizontalAlignment = GridData.FILL;
+        gridData9.verticalAlignment = GridData.CENTER;
         GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
         GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true);
         GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        gridData3.grabExcessHorizontalSpace = true; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
+        gridData3.horizontalAlignment = GridData.FILL;
+        gridData3.grabExcessHorizontalSpace = true;
+        gridData3.verticalAlignment = GridData.CENTER;
         GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5; // Generated
+        gridLayout1.numColumns = 5;
         group1 = JOE_G_DBResources_Resources.Control(new SOSGroup(this, SWT.NONE));
-        group1.setLayout(gridLayout1); // Generated
-        group1.setLayoutData(gridData11); // Generated
+        group1.setLayout(gridLayout1);
+        group1.setLayoutData(gridData11);
         label1 = JOE_L_Name.Control(new SOSLabel(group1, SWT.NONE));
         tName = JOE_T_DBResources_Name.Control(new Text(group1, SWT.BORDER));
-        tName.setLayoutData(gridData3); // Generated
+        tName.setLayoutData(gridData3);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -116,7 +104,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         });
         createCType();
         bApply = JOE_B_DBResources_Apply.Control(new Button(group1, SWT.NONE));
-        bApply.setLayoutData(gridData12); // Generated
+        bApply.setLayoutData(gridData12);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -125,12 +113,11 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
             }
         });
         label5 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label5.setText("Label"); // Generated
-        label5.setLayoutData(gridData5); // Generated
+        label5.setLayoutData(gridData5);
         tResources = JOE_Tbl_DBResources_Resources.Control(new Table(group1, SWT.FULL_SELECTION | SWT.BORDER));
-        tResources.setHeaderVisible(true); // Generated
-        tResources.setLayoutData(gridData10); // Generated
-        tResources.setLinesVisible(true); // Generated
+        tResources.setHeaderVisible(true);
+        tResources.setLayoutData(gridData10);
+        tResources.setLinesVisible(true);
         tResources.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -138,15 +125,14 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
                 if (tResources.getSelectionCount() > 0) {
                     listener.setResource(tResources.getSelectionIndex());
                     if (fNote.isUnsaved()) {
-                        int ok = ErrorLog.message(JOE_M_ApplyChanges.label(), //$NON-NLS-1$
-                                SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
-                        if (ok == SWT.CANCEL)
+                        int ok = ErrorLog.message(JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+                        if (ok == SWT.CANCEL) {
                             return;
-                        if (ok == SWT.NO)
-                            return;// return false;
-                        else if (ok == SWT.YES) {
+                        }
+                        if (ok == SWT.NO) {
+                            return;
+                        } else if (ok == SWT.YES) {
                             fNote.apply();
-                            // return false;
                         }
                     }
                     fNote.setEnabled(true);
@@ -162,7 +148,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         TableColumn tableColumn1 = JOE_TCl_DBResources_Type.Control(new TableColumn(tResources, SWT.NONE));
         tableColumn1.setWidth(60);
         bNewRes = JOE_B_DBResources_New.Control(new Button(group1, SWT.NONE));
-        bNewRes.setLayoutData(gridData13); // Generated
+        bNewRes.setLayoutData(gridData13);
         bNewRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -176,10 +162,9 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
             }
         });
         label4 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label4.setText("Label"); // Generated
-        label4.setLayoutData(gridData9); // Generated
+        label4.setLayoutData(gridData9);
         bRemoveRes = JOE_B_DBResources_Remove.Control(new Button(group1, SWT.NONE));
-        bRemoveRes.setLayoutData(gridData14); // Generated
+        bRemoveRes.setLayoutData(gridData14);
         bRemoveRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -198,28 +183,22 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // String tip = Messages.getTooltip("doc.note.text.databases");
-                // DocumentationForm.openNoteDialog(dom, listener.getResource(),
-                // "note", tip, true, !listener
-                // .isNewDatabase(),"Resource Note");
                 DocumentationForm.openNoteDialog(dom, listener.getResource(), "note", null, true, !listener.isNewDatabase(), JOE_B_DBResources_Notes.label());
             }
         });
         fNote = new NoteForm(group1, SWT.NONE);
-        // fNote.setTitle("Note");
         fNote.setTitle(JOE_B_DBResources_Notes.label());
         fNote.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1));
         fNote.setEnabled(false);
     }
 
-    /** This method initializes cType */
     private void createCType() {
         GridData gridData4 = new GridData();
-        gridData4.widthHint = 100; // Generated
+        gridData4.widthHint = 100;
         label2 = JOE_L_DBResources_Type.Control(new SOSLabel(group1, SWT.NONE));
         label2.setLayoutData(new GridData());
         cType = JOE_Cbo_DBResources_Type.Control(new Combo(group1, SWT.READ_ONLY));
-        cType.setLayoutData(gridData4); // Generated
+        cType.setLayoutData(gridData4);
         cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -233,25 +212,23 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         });
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         createComposite();
         createComposite1();
     }
 
-    /** This method initializes composite */
     private void createComposite() {
         createGroup1();
     }
 
-    /** This method initializes composite1 */
     private void createComposite1() {
     }
 
     @Override
     public void apply() {
-        if (bApply.isEnabled())
+        if (bApply.isEnabled()) {
             applyResource();
+        }
     }
 
     @Override
@@ -282,7 +259,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
     }
 
     private void setApplyResStatus() {
-        bApply.setEnabled(tName.getText().length() > 0);
+        bApply.setEnabled(!tName.getText().isEmpty());
         getShell().setDefaultButton(bApply);
     }
 
@@ -297,25 +274,19 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         fNote.setTitle("Note");
     }
 
-    /*
-     * private void applyDatabase() { }
-     */
-
     @Override
     public void openBlank() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     protected void applySetting() {
-        // TODO Auto-generated method stub
-
+        //
     }
 
     @Override
     public boolean applyChanges() {
-        // TODO Auto-generated method stub
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

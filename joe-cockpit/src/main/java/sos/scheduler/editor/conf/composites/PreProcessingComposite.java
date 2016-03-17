@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.composites;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -17,29 +16,19 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.conf.listeners.JobListener;
+
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 public class PreProcessingComposite extends SOSJOEMessageCodes {
 
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-    @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(PreProcessingComposite.class);
-    @SuppressWarnings("unused")
-    private final String conClassName = "PreProcessingComposite";
     private JobListener objDataProvider = null;
     private Button butFavorite = null;
-    // private String groupTitle = "Script";
     private Group gMain;
     private Text txtName = null;
     private Spinner spinner = null;
     private boolean init = false;
     private Combo cboFavorite = null;
 
-    /** Create the composite.
-     * 
-     * @param parent
-     * @param style */
     public PreProcessingComposite(Group parent, int style, JobListener objDataProvider_) {
         super(parent, style);
         objDataProvider = objDataProvider_;
@@ -72,11 +61,11 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
         txtName.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (!init)
+                if (!init) {
                     objDataProvider.setMonitorName(txtName.getText());
+                }
             }
         });
-        @SuppressWarnings("unused")
         final Label orderingLabel = JOE_L_PreProcessingComposite_Ordering.Control(new Label(scriptcom, SWT.NONE));
         GridData gd_orderingLabel = new GridData(SWT.CENTER, SWT.CENTER, true, false);
         gd_orderingLabel.widthHint = 60;
@@ -88,8 +77,9 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
         spinner.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (!init)
+                if (!init) {
                     objDataProvider.setOrdering(String.valueOf(spinner.getSelection()));
+                }
             }
         });
         spinner.setSelection(-1);
@@ -135,4 +125,5 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
     public Text getTxtName() {
         return txtName;
     }
+
 }

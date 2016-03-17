@@ -33,7 +33,6 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
     private IUpdateTree treeHandler = null;
     private DocumentationDom dom = null;
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label = null;
     private Text tName = null;
     private Button bNotes = null;
@@ -53,49 +52,46 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 
     private void initialize() {
         createGroup();
-        // setSize(new Point(619, 458));
-        // setLayout(new FillLayout());
         setConnectionStatus(false);
         bRemove.setEnabled(false);
         fillTable();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData1 = new GridData();
-        gridData1.horizontalSpan = 3; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.verticalAlignment = GridData.FILL; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.grabExcessVerticalSpace = true; // Generated
-        gridData1.verticalSpan = 3; // Generated
+        gridData1.horizontalSpan = 3;
+        gridData1.horizontalAlignment = GridData.FILL;
+        gridData1.verticalAlignment = GridData.FILL;
+        gridData1.grabExcessHorizontalSpace = true;
+        gridData1.grabExcessVerticalSpace = true;
+        gridData1.verticalSpan = 3;
         GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.verticalAlignment = GridData.BEGINNING; // Generated
+        gridData6.horizontalAlignment = GridData.FILL;
+        gridData6.verticalAlignment = GridData.BEGINNING;
         GridData gridData5 = new GridData();
-        gridData5.horizontalAlignment = GridData.FILL; // Generated
-        gridData5.verticalAlignment = GridData.CENTER; // Generated
+        gridData5.horizontalAlignment = GridData.FILL;
+        gridData5.verticalAlignment = GridData.CENTER;
         GridData gridData4 = new GridData();
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        gridData4.verticalAlignment = GridData.CENTER; // Generated
+        gridData4.horizontalAlignment = GridData.FILL;
+        gridData4.verticalAlignment = GridData.CENTER;
         GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        gridData3.horizontalSpan = 4; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
+        gridData3.horizontalAlignment = GridData.FILL;
+        gridData3.horizontalSpan = 4;
+        gridData3.verticalAlignment = GridData.CENTER;
         GridData gridData2 = new GridData();
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
-        gridData2.verticalAlignment = GridData.CENTER; // Generated
+        gridData2.horizontalAlignment = GridData.FILL;
+        gridData2.verticalAlignment = GridData.CENTER;
         GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.verticalAlignment = GridData.CENTER;
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 4; // Generated
+        gridLayout.numColumns = 4;
         group = JOE_G_ConnectionsForm_Connections.Control(new SOSGroup(this, SWT.NONE));
-        group.setLayout(gridLayout); // Generated
+        group.setLayout(gridLayout);
         label = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
         tName = JOE_T_ConnectionsForm_Name.Control(new Text(group, SWT.BORDER));
-        tName.setLayoutData(gridData); // Generated
+        tName.setLayoutData(gridData);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -113,7 +109,7 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
             }
         });
         bApply = JOE_B_ConnectionsForm_Apply.Control(new Button(group, SWT.NONE));
-        bApply.setLayoutData(gridData2); // Generated
+        bApply.setLayoutData(gridData2);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -122,12 +118,11 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
             }
         });
         label1 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label1.setText("Label"); // Generated
-        label1.setLayoutData(gridData3); // Generated
+        label1.setLayoutData(gridData3);
         tConnections = JOE_Tbl_ConnectionsForm_Connections.Control(new Table(group, SWT.BORDER));
-        tConnections.setHeaderVisible(true); // Generated
-        tConnections.setLayoutData(gridData1); // Generated
-        tConnections.setLinesVisible(true); // Generated
+        tConnections.setHeaderVisible(true);
+        tConnections.setLayoutData(gridData1);
+        tConnections.setLinesVisible(true);
         tConnections.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -141,9 +136,9 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
             }
         });
         TableColumn tableColumn = JOE_TCl_ConnectionsForm_Name.Control(new TableColumn(tConnections, SWT.NONE));
-        tableColumn.setWidth(400); // Generated
+        tableColumn.setWidth(400);
         bNew = JOE_B_ConnectionsForm_New.Control(new Button(group, SWT.NONE));
-        bNew.setLayoutData(gridData4); // Generated
+        bNew.setLayoutData(gridData4);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -156,10 +151,9 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
             }
         });
         label2 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        // label2.setText("Label"); // Generated
-        label2.setLayoutData(gridData5); // Generated
+        label2.setLayoutData(gridData5);
         bRemove = JOE_B_ConnectionsForm_Remove.Control(new Button(group, SWT.NONE));
-        bRemove.setLayoutData(gridData6); // Generated
+        bRemove.setLayoutData(gridData6);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -178,8 +172,9 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 
     @Override
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyConnection();
+        }
     }
 
     @Override
@@ -207,8 +202,9 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 
     private void fillTable() {
         listener.fillConnections(tConnections);
-        if (treeHandler != null)
+        if (treeHandler != null) {
             treeHandler.fillConnections();
+        }
     }
 
     @Override
@@ -226,4 +222,5 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
         apply();
         return true;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}
