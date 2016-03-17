@@ -155,8 +155,7 @@ public class JobAssistentProcessForms {
             txtLog.setEnabled(true);
         }
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        processShell.setBounds((screen.width - processShell.getBounds().width) / 2, (screen.height - processShell.getBounds().height) / 2, 
-                processShell.getBounds().width, processShell.getBounds().height);
+        processShell.setBounds((screen.width - processShell.getBounds().width) / 2, (screen.height - processShell.getBounds().height) / 2, processShell.getBounds().width, processShell.getBounds().height);
         processShell.open();
         final Composite composite = new Composite(processShell, SWT.NONE);
         composite.setLayoutData(new GridData());
@@ -219,8 +218,9 @@ public class JobAssistentProcessForms {
                 if (Utils.getAttributeValue("order", executeListener.getJob()).equals("yes")) {
                     JobAssistentTimeoutOrderForms timeout = new JobAssistentTimeoutOrderForms(dom, update, executeListener.getJob(), assistentType);
                     timeout.showTimeOutForm();
-                    if (jobname != null)
+                    if (jobname != null) {
                         timeout.setJobname(jobname);
+                    }
                     timeout.setBackUpJob(jobBackUp, jobForm);
                 } else {
                     JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, executeListener.getJob(), assistentType);
@@ -237,7 +237,7 @@ public class JobAssistentProcessForms {
     }
 
     public void setToolTipText() {
-        // 
+        //
     }
 
     private void close() {
@@ -289,8 +289,7 @@ public class JobAssistentProcessForms {
             listener.newImportJob(executeListener.getJob(), assistentType);
         }
         if (Options.getPropertyBoolean("editor.job.show.wizard")) {
-            Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(executeListener.getJob()), 
-                    processShell, false, null, false, null, true);
+            Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, true);
         }
         if (jobname != null) {
             jobname.setText(Utils.getAttributeValue("name", executeListener.getJob()));

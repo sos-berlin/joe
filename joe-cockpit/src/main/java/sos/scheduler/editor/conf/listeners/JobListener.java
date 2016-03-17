@@ -630,8 +630,9 @@ public class JobListener extends JOEListener {
                 intT = 0;
             }
             return intT;
-        } else
+        } else {
             return NONE;
+        }
     }
 
     @Override

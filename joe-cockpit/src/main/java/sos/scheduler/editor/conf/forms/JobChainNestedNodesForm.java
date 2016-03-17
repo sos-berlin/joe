@@ -323,8 +323,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                     cNextState.setEnabled(true);
                     cErrorState.setEnabled(true);
                     cJobChain.setEnabled(true);
-                    if (bApplyNode.getEnabled())
+                    if (bApplyNode.getEnabled()) {
                         getShell().setDefaultButton(bApplyNode);
+                    }
                 }
                 bApplyNode.setEnabled(isValidNode());
             }

@@ -110,7 +110,7 @@ public class DaysListener {
             String[] groupUsedDay = used[i].split(" ");
             if (groupUsedDay.length == 1) {
                 a = groupUsedDay[0];
-            } else
+            } else {
                 for (int j = 0; j < groupUsedDay.length; j++) {
                     try {
                         a = (a.length() == 0 ? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j]) - OFFSET[type]];
@@ -118,6 +118,7 @@ public class DaysListener {
                         a = (a.length() == 0 ? a : a + " ") + groupUsedDay[j];
                     }
                 }
+            }
             used[i] = a;
         }
         return used;
@@ -579,8 +580,7 @@ public class DaysListener {
         if (tree != null && tree.getSelectionCount() > 0) {
             TreeItem item = f.getTree().getSelection()[0];
             if (item.getParentItem() != null
-                    && ("Holidays".equalsIgnoreCase(item.getParentItem().getText()) 
-                            || (item.getParentItem().getData("key") != null && "holidays".equals(item.getParentItem().getData("key"))))) {
+                    && ("Holidays".equalsIgnoreCase(item.getParentItem().getText()) || (item.getParentItem().getData("key") != null && "holidays".equals(item.getParentItem().getData("key"))))) {
                 if (runtime.getChild("holidays") != null) {
                     runtime = runtime.getChild("holidays");
                 } else {

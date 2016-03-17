@@ -47,8 +47,9 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 
     public void startDocument() {
         _sb.append("<?xml version=\"1.0\" encoding=\"").append(_encoding).append("\"?>\n\n");
-        if (_stylesheet != null && _stylesheet.length() > 0)
+        if (_stylesheet != null && !_stylesheet.isEmpty()) {
             _sb.append(_stylesheet).append("\n");
+        }
     }
 
     public void characters(char[] ch, int start, int length) throws SAXException {
