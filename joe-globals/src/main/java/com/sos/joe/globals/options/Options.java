@@ -32,6 +32,8 @@ import com.sos.resources.SOSProductionResource;
 public class Options extends JSToolBox {
 
     private static final String ENV_VAR_SOS_JOE_HOME = "SOS_JOE_HOME";
+    private static final String ENV_VAR_SCHEDULER_ID = "SCHEDULER_ID";
+    private static final String ENV_VAR_SCHEDULER_PORT = "SCHEDULER_PORT";
     private static final String ENV_VAR_SCHEDULER_HOME = "SCHEDULER_HOME";
     private static final String LANGUAGE_EN = "en";
     private static final String ENVIRONMENT_VARIABLE_SOS_LOCALE = "SOS_LOCALE";
@@ -53,7 +55,7 @@ public class Options extends JSToolBox {
     public static final String conPropertyEDITOR_ShowSplashScreenPicture = "editor.ShowSplashScreenPicture";
     public static final String DEFAULT_OPTIONS = "/sos/scheduler/editor/options.properties";
     public static String conJOEGreeting = "";
-    public static SOSPreferenceStore objPrefStore = new SOSPreferenceStore(getJOEHomeDir().replaceAll("\\\\", "_"));
+    public static SOSPreferenceStore objPrefStore = new SOSPreferenceStore(getNormalizedJobSchedulerIdWithPort());
 
     private Options() {
     }
@@ -479,6 +481,14 @@ public class Options extends JSToolBox {
         }
         return strT;
     }
+    
+    private static String getEnv(String envName, String defaultValue){
+        String envVar = System.getenv(envName);
+        if (envVar.isEmpty()){
+            envVar = defaultValue;
+        }
+        return envVar;
+    }
 
     public static String getJOEHomeDir() {
         String strT = getSystemProperty(ENV_VAR_SOS_JOE_HOME, "");
@@ -492,6 +502,29 @@ public class Options extends JSToolBox {
         return strT;
     }
 
+    private static String getNormalizedJobSchedulerIdWithPort() {
+        
+        
+        
+        String schedulerId = getEnv(ENV_VAR_SCHEDULER_ID, "");
+        String schedulerPort = getEnv(ENV_VAR_SCHEDULER_PORT, "");
+        
+        if (schedulerId.isEmpty()) {
+            schedulerId = new File(getJOEHomeDir()).getName();
+        }
+        
+        String schedulerIdWithPort = schedulerId + "_" + schedulerPort;
+        schedulerIdWithPort = schedulerIdWithPort.replaceAll("\\\\","/");
+        schedulerIdWithPort = schedulerIdWithPort.replaceAll("/","_");
+        
+        if (schedulerIdWithPort.length() > 69){
+            schedulerIdWithPort = "_" + schedulerPort;
+        }
+        
+        LOGGER.debug("getNormalizedJobSchedulerIdWithPort = " + schedulerIdWithPort);
+        return schedulerIdWithPort;
+    }
+ 
     public static String getSchedulerHome() {
         LOGGER.trace("getSchedulerHome = " + getSystemProperty(ENV_VAR_SCHEDULER_HOME, ""));
         return getSystemProperty(ENV_VAR_SCHEDULER_HOME, "");
