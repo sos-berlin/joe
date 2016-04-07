@@ -42,7 +42,7 @@ public class SchedulerDom extends DomParser {
             "file_order_sink" };
     private static final String[] MONITOR_ELEMENTS = { "script" };
     private static final String[] HOLIDAYS_ELEMENTS = { "include", "weekdays", "holiday" };
-    private static final String[] PARAMS_ELEMENTS = { "param", "copy_params", "include" };
+    private static final String[] PARAMS_ELEMENTS = { "include","copy_params","param" };
     private static final String[] HTTP_SERVER = { "web_service", "http.authentication", "http_directory" };
     private static final String[] COMMANDS_ELEMENTS = { "add_order", "order", "start_job" };
     private static final String[] ORDER_ELEMENTS = { "params", "environment" };
