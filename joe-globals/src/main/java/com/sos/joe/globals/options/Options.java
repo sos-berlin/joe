@@ -484,7 +484,7 @@ public class Options extends JSToolBox {
     
     private static String getEnv(String envName, String defaultValue){
         String envVar = System.getenv(envName);
-        if (envVar.isEmpty()){
+        if (envVar != null && envVar.isEmpty()){
             envVar = defaultValue;
         }
         return envVar;
