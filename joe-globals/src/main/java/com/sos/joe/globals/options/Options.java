@@ -509,7 +509,7 @@ public class Options extends JSToolBox {
         String schedulerId = getEnv(ENV_VAR_SCHEDULER_ID, "");
         String schedulerPort = getEnv(ENV_VAR_SCHEDULER_PORT, "");
         
-        if (schedulerId.isEmpty()) {
+        if (schedulerId != null && schedulerId.isEmpty()) {
             schedulerId = new File(getJOEHomeDir()).getName();
         }
         
