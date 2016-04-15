@@ -705,7 +705,7 @@ public class DetailsListener {
      * Node Parameter Datei der Attribut job chainname angepasst */
     public static void changeDetailsJobChainname(String newJobChainName, String oldJobchainName, SchedulerDom _dom) {
         try {
-            DetailsListener detailListener = new DetailsListener(newJobChainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
+            DetailsListener detailListener = new DetailsListener(oldJobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
                     || _dom.isDirectory(), _dom.getFilename());
             XPath x = XPath.newInstance("settings/job_chain[@name='" + oldJobchainName + "']");
             List listOfElement = x.selectNodes(detailListener.getDoc());
