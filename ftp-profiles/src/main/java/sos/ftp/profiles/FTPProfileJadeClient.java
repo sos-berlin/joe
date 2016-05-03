@@ -24,7 +24,7 @@ public class FTPProfileJadeClient {
         return ftpClient;
     }
 
-    private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS = "^.*\\.((job|job_chain|order|process_class|schedule|lock|config)\\.xml|(png|dot))$";
+    private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS = "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
 
     protected ISOSVFSHandler objVFS = null;
     protected ISOSVfsFileTransfer ftpClient = null;
