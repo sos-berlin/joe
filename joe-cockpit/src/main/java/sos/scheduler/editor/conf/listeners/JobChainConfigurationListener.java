@@ -132,8 +132,10 @@ public class JobChainConfigurationListener {
                     } else {
                         Composite composite = new Composite(c.getShell(), SWT.NONE);
                         composite.setLayout(new org.eclipse.swt.layout.FillLayout());
-                        df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null
-                                && !(item.getData() instanceof com.sos.joe.globals.misc.TreeData) ? item.getData().toString() : null, null, JOEConstants.DETAILS, _dom, _gui, false, null);
+                        df =
+                                new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null
+                                        && !(item.getData() instanceof com.sos.joe.globals.misc.TreeData) ? item.getData().toString() : null, null,
+                                        JOEConstants.DETAILS, _dom, _gui, false, null);
                         df.setLayout(new org.eclipse.swt.layout.FillLayout());
                     }
                     df.setTree(tree);

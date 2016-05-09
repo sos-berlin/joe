@@ -265,7 +265,8 @@ public class Options extends JSToolBox {
             } else {
                 url = helpKey.replaceAll("\\{lang\\}}", getLanguage());
             }
-            return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\", "/")).replaceAll("\\{lang\\}", getLanguage());
+            return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\", "/")).replaceAll(
+                    "\\{lang\\}", getLanguage());
         } catch (Exception e) {
             return null;
         }
@@ -482,10 +483,10 @@ public class Options extends JSToolBox {
         }
         return strT;
     }
-    
-    private static String getEnv(String envName, String defaultValue){
+
+    private static String getEnv(String envName, String defaultValue) {
         String envVar = System.getenv(envName);
-        if (envVar != null && envVar.isEmpty()){
+        if (envVar != null && envVar.isEmpty()) {
             envVar = defaultValue;
         }
         return envVar;
@@ -504,28 +505,26 @@ public class Options extends JSToolBox {
     }
 
     private static String getNormalizedJobSchedulerIdWithPort() {
-        
-        
-        
+
         String schedulerId = getEnv(ENV_VAR_SCHEDULER_ID, "");
         String schedulerPort = getEnv(ENV_VAR_SCHEDULER_PORT, "");
-        
+
         if (schedulerId != null && schedulerId.isEmpty()) {
             schedulerId = new File(getJOEHomeDir()).getName();
         }
-        
+
         String schedulerIdWithPort = schedulerId + "_" + schedulerPort;
-        schedulerIdWithPort = schedulerIdWithPort.replaceAll("\\\\","/");
-        schedulerIdWithPort = schedulerIdWithPort.replaceAll("/","_");
-        
-        if (schedulerIdWithPort.length() > 69){
+        schedulerIdWithPort = schedulerIdWithPort.replaceAll("\\\\", "/");
+        schedulerIdWithPort = schedulerIdWithPort.replaceAll("/", "_");
+
+        if (schedulerIdWithPort.length() > 69) {
             schedulerIdWithPort = "_" + schedulerPort;
         }
-        
+
         LOGGER.debug("getNormalizedJobSchedulerIdWithPort = " + schedulerIdWithPort);
         return schedulerIdWithPort;
     }
- 
+
     public static String getSchedulerHome() {
         LOGGER.trace("getSchedulerHome = " + getSystemProperty(ENV_VAR_SCHEDULER_HOME, ""));
         return getSystemProperty(ENV_VAR_SCHEDULER_HOME, "");

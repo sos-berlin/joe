@@ -52,11 +52,9 @@ public class FTPProfilePicker extends Composite {
         try {
             FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
             FTPProfile.log("Configuration File: " + (configFile != null ? configFile.getCanonicalPath() : ""), SOSLogger.DEBUG9);
-            if (!configFile.exists()) {
-                if (!configFile.createNewFile()) {
-                    FTPProfileDialog.message("Could not create config file: " + configFile, SWT.ICON_WARNING);
-                    throw new Exception("Could not create config file: " + configFile);
-                }
+            if (!configFile.exists() && !configFile.createNewFile()) {
+                FTPProfileDialog.message("Could not create config file: " + configFile, SWT.ICON_WARNING);
+                throw new Exception("Could not create config file: " + configFile);
             }
             profileDialog = new FTPProfileDialog(configFile);
             profileDialog.fillCombo(cboProfile);

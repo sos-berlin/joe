@@ -17,8 +17,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JOEListener extends JSToolBox {
 
-    @SuppressWarnings("unused")
-    private final String conClassName = "JOEListener";
     protected com.sos.joe.xml.jobscheduler.SchedulerDom _dom = null;
     protected ISchedulerUpdate _main = null;
     protected Element _job = null;
@@ -55,20 +53,23 @@ public class JOEListener extends JSToolBox {
     }
 
     public String getPrePostProcessingScriptSource() {
-        String strT = "";
-        return strT;
+        return "";
     }
 
     public void setSource(final String pstrS) {
+        //
     }
 
     public void setComment(final String pstrS) {
+        //
     }
 
     public void setDescription(final String pstrD) {
+        //
     }
 
     public void setLanguage(final String pstrLanguage) {
+        //
     }
 
     public String getJobName() {
@@ -112,35 +113,32 @@ public class JOEListener extends JSToolBox {
     }
 
     private boolean isHelpKey(final int pintKeyCode) {
-        boolean flgRet = (pintKeyCode == SWT.F1);
-        return flgRet;
+        return pintKeyCode == SWT.F1;
     }
 
     public boolean isGlobalHelpKey(final int pintKeyCode) {
-        boolean flgRet = (pintKeyCode == SWT.F10);
-        return flgRet;
+        return pintKeyCode == SWT.F10;
     }
 
     public void openHelp(String helpKey) {
         String lang = Options.getLanguage();
         String url = helpKey;
         try {
-            // TODO: überprüfen, ob Datei wirklich existiert
-            if (url.contains("http:")) {
-            } else {
+            if (!url.contains("http:")) {
                 url = new File(url).toURL().toString();
             }
             Program prog = Program.findProgram("html");
-            if (prog != null)
+            if (prog != null) {
                 prog.execute(url);
-            else {
+            } else {
                 Runtime.getRuntime().exec(Options.getBrowserExec(url, lang));
             }
         } catch (Exception e) {
             new ErrorLog("error in " + getMethodName() + "; "
                     + com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
-            MainWindow.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang,
-                    e.getMessage() }), SWT.ICON_ERROR | SWT.OK);
+            MainWindow.message(
+                    com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
+                    SWT.ICON_ERROR | SWT.OK);
         }
     }
 
@@ -148,7 +146,6 @@ public class JOEListener extends JSToolBox {
         String strXmlText = "";
         if (objElement != null) {
             strXmlText = getXML(objElement);
-
         }
         return strXmlText;
     }

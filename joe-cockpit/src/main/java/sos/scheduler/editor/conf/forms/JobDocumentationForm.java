@@ -25,6 +25,7 @@ public class JobDocumentationForm extends Composite {
     }
 
     public void apply() {
+        //
     }
 
     public boolean isUnsaved() {
@@ -38,6 +39,7 @@ public class JobDocumentationForm extends Composite {
     }
 
     public void initForm() {
+        //
     }
 
 }

@@ -34,7 +34,7 @@ public class ResourcesListener extends JobDocBaseListener<DocumentationDom> {
 
     public static void checkResources(DocumentationDom dom, Element parent) {
         Element res = parent.getChild("resources", dom.getNamespace());
-        if (res != null && res.getChildren().size() == 0) {
+        if (res != null && res.getChildren().isEmpty()) {
             res.detach();
         }
     }

@@ -190,6 +190,7 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
     }
@@ -208,12 +209,14 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
     }
 
     @Override
     public void apply() {
+        //
     }
 
     @Override

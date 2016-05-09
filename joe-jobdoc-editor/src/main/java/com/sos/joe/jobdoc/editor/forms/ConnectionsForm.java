@@ -105,7 +105,8 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                DocumentationForm.openNoteDialog(dom, listener.getConnectionElement(), "note", null, true, !listener.isNewConnection(), JOE_B_ConnectionsForm_Notes.label());
+                DocumentationForm.openNoteDialog(dom, listener.getConnectionElement(), "note", null, true, !listener.isNewConnection(),
+                        JOE_B_ConnectionsForm_Notes.label());
             }
         });
         bApply = JOE_B_ConnectionsForm_Apply.Control(new Button(group, SWT.NONE));
@@ -158,13 +159,11 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tConnections.getSelectionCount() > 0) {
-                    if (listener.removeConnection(tConnections.getSelectionIndex())) {
-                        setConnectionStatus(false);
-                        bRemove.setEnabled(false);
-                        bApply.setEnabled(false);
-                        fillTable();
-                    }
+                if (tConnections.getSelectionCount() > 0 && listener.removeConnection(tConnections.getSelectionIndex())) {
+                    setConnectionStatus(false);
+                    bRemove.setEnabled(false);
+                    bApply.setEnabled(false);
+                    fillTable();
                 }
             }
         });
@@ -209,12 +208,12 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 
     @Override
     public void openBlank() {
-
+        //
     }
 
     @Override
     protected void applySetting() {
-
+        //
     }
 
     @Override

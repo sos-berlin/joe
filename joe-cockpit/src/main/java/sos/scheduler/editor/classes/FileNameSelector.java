@@ -25,9 +25,8 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 public class FileNameSelector extends Text {
 
     private JobListener objDataProvider = null;
-    private boolean flgInit = false;
-    public boolean flgIsFileFromLiveFolder = false;
     private String strFileName = "";
+    public boolean flgIsFileFromLiveFolder = false;
 
     public String getFileName() {
         return strFileName;
@@ -49,6 +48,7 @@ public class FileNameSelector extends Text {
         return new Listener() {
 
             public void handleEvent(Event e) {
+                //
             }
         };
     }
@@ -63,21 +63,22 @@ public class FileNameSelector extends Text {
 
             @Override
             public void focusLost(final FocusEvent e) {
+                //
             }
         };
     }
 
     private MouseListener getMouseListener() {
-        return (new MouseListener() {
+        return new MouseListener() {
 
             @Override
             public void mouseUp(MouseEvent arg0) {
-                // TODO Auto-generated method stub
+                // TO DO Auto-generated method stub
             }
 
             @Override
             public void mouseDown(MouseEvent arg0) {
-                // TODO Auto-generated method stub
+                // TO DO Auto-generated method stub
             }
 
             @Override
@@ -103,32 +104,17 @@ public class FileNameSelector extends Text {
                             }
                             strFileName = strT;
                             setText(objFile.getName());
-                            // evtl. ein CallBack einbauen ...
-                            // applyFile2Include();
                         } else {
                             MainWindow.ErrMsg(String.format("File '%1$s' not found or is not readable", strT));
                         }
                     }
                 }
             }
-        });
+        };
     }
 
     public void refreshContent() {
-        flgInit = true;
-        // switch (enuWhatSourceType) {
-        // case ScriptSource:
-        // setText(objDataProvider.getSource());
-        // break;
         //
-        // case xmlSource:
-        // setText(objDataProvider.getXML());
-        // break;
-        //
-        // default:
-        // break;
-        // }
-        flgInit = false;
     }
 
     public FileNameSelector(Composite pobjComposite, int arg1) {
@@ -141,4 +127,5 @@ public class FileNameSelector extends Text {
     protected void checkSubclass() {
         // Disable the check that prevents subclassing of SWT components
     }
+
 }

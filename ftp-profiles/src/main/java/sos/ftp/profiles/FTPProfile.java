@@ -42,8 +42,9 @@ public class FTPProfile {
             host = sosString.parseToString(prop, "host");
             port = sosString.parseToString(prop, "port");
             user = sosString.parseToString(prop, "user");
-            savePassword = sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true"
-                    : sosString.parseToString(prop, "save_password"));
+            savePassword =
+                    sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true" : sosString.parseToString(prop,
+                            "save_password"));
             password = sosString.parseToString(prop, "password");
             root = sosString.parseToString(prop, "root");
             localdirectory = sosString.parseToString(prop, "localdirectory");

@@ -110,8 +110,8 @@ public class PeriodsListener {
                 item.setText(4, Utils.getAttributeValue("single_start", e));
                 item.setText(5, Utils.getAttributeValue("absolute_repeat", e));
                 item.setData(e);
-                String whenHoliday = Utils.getAttributeValue("when_holiday", e).isEmpty() ? "suppress execution"
-                        : Utils.getAttributeValue("when_holiday", e);
+                String whenHoliday =
+                        Utils.getAttributeValue("when_holiday", e).isEmpty() ? "suppress execution" : Utils.getAttributeValue("when_holiday", e);
                 item.setText(6, whenHoliday);
             }
         }

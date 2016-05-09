@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
@@ -59,7 +58,6 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         dom.setInit(true);
         this.setEnabled(Utils.isElementEnabled("job", dom, job));
         listener = new JobListener(dom, job, main);
-
         initialize();
         updateTree = false;
         initForm();
@@ -68,12 +66,10 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
     }
 
     public void apply() {
-        // if (isUnsaved())
-        // addParam();
+        //
     }
 
     public boolean isUnsaved() {
-        // return bApply.isEnabled();
         return false;
     }
 
@@ -81,20 +77,21 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         this.setLayout(new FillLayout());
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(723, 566));
-        if (tSpoolerID.isVisible())
+        if (tSpoolerID.isVisible()) {
             tSpoolerID.setFocus();
-        else
+        } else {
             txtJavaOptions.setFocus();
+        }
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 1;
         group = new Group(this, SWT.NONE);
         String strT = JOE_M_JobAssistent_JobGroup.params(listener.getJobName());
-        if (listener.isDisabled())
+        if (listener.isDisabled()) {
             strT += " " + JOE_M_JobCommand_Disabled.label();
+        }
         group.setText(strT);
         group.setLayout(gridLayout2);
         GridLayout gridLayout = new GridLayout();
@@ -113,8 +110,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setSpoolerID(tSpoolerID.getText());
             }
         });
@@ -125,8 +123,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         txtJavaOptions.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setJavaOptions(txtJavaOptions.getText());
             }
         });
@@ -137,20 +136,21 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         tIgnoreSignals.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setIgnoreSignal(tIgnoreSignals.getText());
             }
         });
-        // gridData_3.widthHint = 48;
         tIgnoreSignals.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
         addButton = JOE_B_JobMainOptionForm_Add.Control(new Button(gMain, SWT.NONE));
         addButton.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (init)
+                if (init) {
                     return;
-                if (tIgnoreSignals.getText().equals("")) {
+                }
+                if ("".equals(tIgnoreSignals.getText())) {
                     tIgnoreSignals.setText(cSignals.getText());
                 } else {
                     tIgnoreSignals.setText(tIgnoreSignals.getText() + " " + cSignals.getText());
@@ -172,8 +172,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         sPriority.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
-                e.doit = (Utils.isOnlyDigits(e.text) || e.text.equals("idle") || e.text.equals("below_normal") || e.text.equals("normal")
-                        || e.text.equals("above_normal") || e.text.equals("high"));
+                e.doit =
+                        (Utils.isOnlyDigits(e.text) || "idle".equals(e.text) || "below_normal".equals(e.text) || "normal".equals(e.text)
+                                || "above_normal".equals(e.text) || "high".equals(e.text));
             }
         });
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -182,8 +183,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         sPriority.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 Utils.setBackground(-20, 20, sPriority);
                 listener.setPriority(sPriority.getText());
             }
@@ -198,8 +200,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         comVisible.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setVisible(comVisible.getText());
             }
         });
@@ -218,8 +221,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         tMintasks.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setMintasks(tMintasks.getText());
             }
         });
@@ -239,13 +243,15 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         sTasks.addSelectionListener(new SelectionAdapter() {
 
             public void widgetDefaultSelected(final SelectionEvent e) {
+                //
             }
         });
         sTasks.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setTasks(sTasks.getText());
             }
         });
@@ -257,18 +263,18 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         sTimeout.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
-                // e.doit = Utils.isOnlyDigits(e.text);
+                //
             }
         });
         sTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setTimeout(sTimeout.getText());
             }
         });
-        // gridData_9.widthHint = 75;
         sTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         final Label hhmmssLabel = JOE_L_JobAssistent_TimeFormat.Control(new Label(gMain, SWT.NONE));
         hhmmssLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -279,46 +285,48 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         sIdleTimeout.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
-                // e.doit = Utils.isOnlyDigits(e.text);
+                //
             }
         });
         sIdleTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setIdleTimeout(sIdleTimeout.getText());
             }
         });
         final Label hhmmssLabel_1 = JOE_L_JobMainOptionForm_IdleTimeoutFormat.Control(new Label(gMain, SWT.NONE));
         hhmmssLabel_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        @SuppressWarnings("unused")
         final Label warnIfLongerLabel = JOE_L_JobMainOptionForm_WarnIfLonger.Control(new Label(gMain, SWT.NONE));
         txtWarnIfLongerThan = JOE_T_JobMainOptionForm_WarnIfLonger.Control(new Text(gMain, SWT.BORDER));
         txtWarnIfLongerThan.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
+                //
             }
         });
         txtWarnIfLongerThan.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setWarnIfLongerThan(txtWarnIfLongerThan.getText());
             }
         });
         txtWarnIfLongerThan.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         final Label hhmmssLabel_1_1 = JOE_L_JobMainOptionForm_WarnIfLongerFormat.Control(new Label(gMain, SWT.NONE));
         hhmmssLabel_1_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        @SuppressWarnings("unused")
         final Label warnIfShorterLabel = JOE_L_JobMainOptionForm_WarnIfShorter.Control(new Label(gMain, SWT.NONE));
         txtWarnIfShorterThan = JOE_T_JobMainOptionForm_WarnIfShorter.Control(new Text(gMain, SWT.BORDER));
         txtWarnIfShorterThan.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setWarnIfShorterThan(txtWarnIfShorterThan.getText());
             }
         });
@@ -332,8 +340,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (init)
+                if (init) {
                     return;
+                }
                 listener.setForceIdletimeout(bForceIdletimeout.getSelection());
             }
         });
@@ -345,9 +354,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         int index = 0;
         bForceIdletimeout.setSelection(listener.getForceIdletimeout());
         index = sPriority.indexOf(listener.getPriority());
-        if (index >= 0)
+        if (index >= 0) {
             sPriority.select(index);
-        else {
+        } else {
             int p = Utils.str2int(listener.getPriority(), 20);
             if (p == -999) {
                 sPriority.setText("");
@@ -359,10 +368,12 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         }
         sTasks.setText(listener.getTasks());
-        if (listener.getMintasks() != null)
+        if (listener.getMintasks() != null) {
             tMintasks.setText(listener.getMintasks());
-        if (listener.getPriority() != null)
+        }
+        if (listener.getPriority() != null) {
             sPriority.setText(listener.getPriority());
+        }
         tIgnoreSignals.setText(listener.getIgnoreSignal());
         sTimeout.setText(listener.getTimeout());
         sIdleTimeout.setText(listener.getIdleTimeout());
@@ -372,4 +383,4 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         txtJavaOptions.setText(listener.getJavaOptions());
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

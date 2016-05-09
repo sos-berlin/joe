@@ -1,6 +1,7 @@
 package sos.scheduler.editor.conf.listeners;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Button;
 import org.jdom.Element;
@@ -15,7 +16,6 @@ public class PeriodListener {
     private Element _period = null;
     private Element _at = null;
     private String[] _whenHolidays = { "previous non holiday", "next non holiday", "suppress execution", "ignore holiday" };
-
     private HashMap _realNameWhenHolidays = null;
 
     public PeriodListener(SchedulerDom dom) {
@@ -25,18 +25,14 @@ public class PeriodListener {
 
     private void notifyChange(Element el) {
         _dom.setChanged(true);
-
         Element parent = Utils.getRunTimeParentElement(el);
-
         String name = "";
-        if (parent.getName().equals("order")) {
+        if ("order".equals(parent.getName())) {
             name = Utils.getAttributeValue("job_chain", parent) + "," + Utils.getAttributeValue("id", parent);
         } else {
             name = Utils.getAttributeValue("name", parent);
         }
-
         _dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
-
     }
 
     private void initWhenHolidays() {
@@ -52,8 +48,9 @@ public class PeriodListener {
     }
 
     public void setPeriod(Element period) {
-        if (period != null && period.getName().equals("at"))
+        if (period != null && "at".equals(period.getName())) {
             _at = period;
+        }
         _period = period;
     }
 
@@ -84,13 +81,12 @@ public class PeriodListener {
     public void setPeriodTime(int maxHour, Button bApply, String node, String hours, String minutes, String seconds) {
         maxHour = 24;
         if (_period != null) {
-            if (node.equals("single_start") && _period.getName().equals("at")) {
+            if ("single_start".equals(node) && "at".equals(_period.getName())) {
                 Utils.setAttribute("at", Utils.getAttributeValue("at", _period).substring(0, 10) + " "
                         + Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
-            } else if (!node.equals("single_start") && _period.getName().equals("at") && Utils.getAttributeValue("at", _period).length() < 11) {
-                // getDatePeriod();
+            } else if (!"single_start".equals(node) && "at".equals(_period.getName()) && Utils.getAttributeValue("at", _period).length() < 11) {
                 if (_period.getParentElement() != null) {
-                    java.util.List rt = _period.getParentElement().getChildren("date");
+                    List rt = _period.getParentElement().getChildren("date");
                     String sDate = Utils.getAttributeValue("at", _period).substring(0, 10);
                     for (int i = 0; i < rt.size(); i++) {
                         Element el = (Element) rt.get(i);
@@ -107,8 +103,6 @@ public class PeriodListener {
                     }
                 }
             } else {
-                // Utils.setAttribute(node, Utils.getTime(maxHour, hours,
-                // minutes, seconds, false), _period, _dom);
                 Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period);
                 notifyChange(_period);
             }
@@ -170,32 +164,35 @@ public class PeriodListener {
     }
 
     public String getSingleHours() {
-        if (_period != null && _period.getName().equals("at"))
+        if (_period != null && "at".equals(_period.getName())) {
             return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("at") != null ? _period.getAttributeValue("at").split(" ")[1]
                     : "0", -999));
-        else
+        } else {
             return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("single_start"), -999));
+        }
     }
 
     public String getSingleMinutes() {
-        if (_period != null && _period.getName().equals("at"))
+        if (_period != null && "at".equals(_period.getName())) {
             return Utils.getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("at") != null ? _period.getAttributeValue("at").split(" ")[1]
                     : "0", -999));
-        else
+        } else {
             return Utils.getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("single_start"), -999));
+        }
     }
 
     public String getSingleSeconds() {
-        if (_period != null && _period.getName().equals("at"))
+        if (_period != null && "at".equals(_period.getName())) {
             return Utils.getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("at") != null ? _period.getAttributeValue("at").split(" ")[1]
                     : "0", -999));
-        else
+        } else {
             return Utils.getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("single_start"), -999));
+        }
     }
 
     public boolean getLetRun() {
         String letrun = _period.getAttributeValue("let_run");
-        return letrun == null ? false : letrun.equalsIgnoreCase("yes");
+        return letrun == null ? false : "yes".equalsIgnoreCase(letrun);
     }
 
     public void setLetRun(boolean letrun) {
@@ -222,8 +219,8 @@ public class PeriodListener {
     }
 
     private void removeAtElement(String date) {
-        if (_period.getName().equals("at") && _period.getParentElement() != null) {
-            java.util.List rt = _period.getParentElement().getChildren("at");
+        if ("at".equals(_period.getName()) && _period.getParentElement() != null) {
+            List rt = _period.getParentElement().getChildren("at");
             for (int i = 0; i < rt.size(); i++) {
                 Element el = (Element) rt.get(i);
                 if (Utils.getAttributeValue("at", el).equals(date)) {
@@ -239,29 +236,31 @@ public class PeriodListener {
     }
 
     public String getWhenHoliday() {
-        if (Utils.getAttributeValue("when_holiday", _period).length() == 0)
+        if (Utils.getAttributeValue("when_holiday", _period).isEmpty()) {
             return "suppress execution";
-        if (_realNameWhenHolidays.get(Utils.getAttributeValue("when_holiday", _period)) == null)
+        }
+        if (_realNameWhenHolidays.get(Utils.getAttributeValue("when_holiday", _period)) == null) {
             return Utils.getAttributeValue("when_holiday", _period);
-        else
+        } else {
             return _realNameWhenHolidays.get(Utils.getAttributeValue("when_holiday", _period)).toString();
+        }
     }
 
     public void setWhenHoliday(String whenHoliday, Button bApply) {
         notifyChange(_period);
-
-        if (whenHoliday == null || whenHoliday.length() == 0) {
+        if (whenHoliday == null || whenHoliday.isEmpty()) {
             Utils.setAttribute("when_holiday", "suppress", "suppress", _period);
             return;
         }
-        if (_realNameWhenHolidays.get(whenHoliday) == null || _realNameWhenHolidays.get(whenHoliday).toString().length() == 0) {
+        if (_realNameWhenHolidays.get(whenHoliday) == null || _realNameWhenHolidays.get(whenHoliday).toString().isEmpty()) {
             Utils.setAttribute("when_holiday", whenHoliday, "suppress", _period);
         }
         Utils.setAttribute("when_holiday", _realNameWhenHolidays.get(whenHoliday).toString(), "suppress", _period);
-        if (bApply != null)
+        if (bApply != null) {
             bApply.setEnabled(true);
-        else
+        } else {
             _dom.setChanged(true);
+        }
     }
 
     public SchedulerDom get_dom() {
@@ -282,4 +281,5 @@ public class PeriodListener {
             _period.removeAttribute("single_start");
         }
     }
+
 }

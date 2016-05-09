@@ -38,14 +38,11 @@ public class CommandsForm extends SOSJOEMessageCodes {
         setSize(new org.eclipse.swt.graphics.Point(656, 400));
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         commandsGroup = JOE_G_CommandsForm_Commands.Control(new Group(this, SWT.NONE));
-        // commandsGroup.setText("Commands");
         commandsGroup.setLayout(gridLayout);
-
         tCommands = JOE_T_CommandsForm_Commands.Control(new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL));
         tCommands.addKeyListener(new KeyAdapter() {
 
@@ -58,10 +55,8 @@ public class CommandsForm extends SOSJOEMessageCodes {
         tCommands.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         final GridData gridData4_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         tCommands.setLayoutData(gridData4_1);
-
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
         bSave = JOE_B_CommandsForm_Apply.Control(new Button(commandsGroup, SWT.NONE));
-        // bSave.setText("&Apply");
         bSave.setLayoutData(gridData);
         getShell().setDefaultButton(bSave);
         bSave.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -72,4 +67,4 @@ public class CommandsForm extends SOSJOEMessageCodes {
         });
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -1,6 +1,5 @@
 package com.sos.joe.globals.misc;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -16,10 +15,6 @@ import com.sos.scheduler.model.objects.JSObjJob;
 
 public class TreeData {
 
-    @SuppressWarnings("unused")
-    private final String conClassName = this.getClass().getSimpleName();
-    @SuppressWarnings("unused")
-    private final Logger LOGGER = Logger.getLogger(this.getClass());
     private int _type;
     private Element _element;
     private String _helpKey;
@@ -89,15 +84,11 @@ public class TreeData {
     }
 
     public boolean isFolder() {
-        boolean flgR = false;
-        flgR = (objHotFolderObject instanceof SchedulerHotFolder) || _type == JOEConstants.ROOT_FOLDER || _type == JOEConstants.SUB_FOLDER;
-        return flgR;
+        return objHotFolderObject instanceof SchedulerHotFolder || _type == JOEConstants.ROOT_FOLDER || _type == JOEConstants.SUB_FOLDER;
     }
 
     public boolean isInternalNode() {
-        boolean flgR = false;
-        flgR = (isFolder() == false && objHotFolderObject == null);
-        return flgR;
+        return !isFolder() && objHotFolderObject == null;
     }
 
     public int getType() {
@@ -149,17 +140,14 @@ public class TreeData {
 
     public boolean NameEqualTo(final String pstrName) {
         return pstrName.equalsIgnoreCase(getName());
-        // return false;
     }
 
     public void deleteTreeItem() {
-        Tree objTr = objTreeItem.getParent();
         objTreeItem.dispose();
     }
 
     public JSObjBase getLiveObject() {
-        JSObjBase objO = (JSObjBase) objHotFolderObject;
-        return objO;
+        return (JSObjBase) objHotFolderObject;
     }
 
     public String getName() {
@@ -170,4 +158,5 @@ public class TreeData {
             return "";
         }
     }
+
 }

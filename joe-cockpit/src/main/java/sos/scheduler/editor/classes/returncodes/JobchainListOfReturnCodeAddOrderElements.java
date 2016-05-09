@@ -33,7 +33,7 @@ public class JobchainListOfReturnCodeAddOrderElements {
         if (it == null) {
             it = jobchainListOfReturnCodeElements.listIterator();
         }
-        return (it.hasNext());
+        return it.hasNext();
     }
 
     public int size() {
@@ -41,7 +41,6 @@ public class JobchainListOfReturnCodeAddOrderElements {
     }
 
     public JobchainReturnCodeAddOrderElement getNext() {
-
         if (it.hasNext()) {
             return it.next();
         } else {

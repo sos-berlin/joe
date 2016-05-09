@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class JobCommandExitCodesListener {
 
     public void fillCommands(Element job, TreeItem parent, boolean expand) {
         List commands = job.getChildren("commands");
-        java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
+        ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
         if (commands != null) {
             Iterator it = commands.iterator();
             parent.removeAll();
@@ -58,8 +59,7 @@ public class JobCommandExitCodesListener {
     }
 
     public boolean isDisabled() {
-        boolean disabled = (Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("no"));
-        return disabled;
+        return "no".equalsIgnoreCase(Utils.getAttributeValue("enabled", _job));
     }
 
     public String getName() {
@@ -153,4 +153,5 @@ public class JobCommandExitCodesListener {
             }
         }
     }
+
 }

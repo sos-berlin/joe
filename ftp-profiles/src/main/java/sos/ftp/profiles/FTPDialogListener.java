@@ -66,8 +66,9 @@ public class FTPDialogListener {
             }
         } catch (Exception e) {
             hasError = true;
-            FTPProfile.log("error in " + sos.util.SOSClassUtil.getMethodName() + "could not read Profiles from " + configFile + ", cause: "
-                    + e.toString(), SOSLogger.WARN);
+            FTPProfile.log(
+                    "error in " + sos.util.SOSClassUtil.getMethodName() + "could not read Profiles from " + configFile + ", cause: " + e.toString(),
+                    SOSLogger.WARN);
             FTPProfileDialog.message("could not read Profiles from " + configFile, SWT.ICON_WARNING);
         }
     }

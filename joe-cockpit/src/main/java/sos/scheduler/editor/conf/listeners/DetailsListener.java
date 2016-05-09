@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.listeners;
 import java.io.File;
 import java.io.StringReader;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -10,9 +12,11 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
@@ -23,6 +27,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class DetailsListener {
 
+    private static final Logger LOGGER = Logger.getLogger(DetailsListener.class);
     private String jobChainname = null;
     private String state = null;
     private Element noteEN = null;
@@ -42,8 +47,9 @@ public class DetailsListener {
 
     public DetailsListener(String jobChainname_, String state_, String orderId_, int type_, DetailDom dom_, boolean isLifeElement_, String path_) {
         dom = dom_;
-        if (dom != null)
+        if (dom != null) {
             doc = dom.getDoc();
+        }
         jobChainname = jobChainname_;
         state = state_;
         orderId = orderId_;
@@ -64,46 +70,45 @@ public class DetailsListener {
         String xmlPaths = "";
         try {
             if (isLifeElement
-                    || (MainWindow.getContainer().getCurrentTab().getData("ftp_title") != null && MainWindow.getContainer().getCurrentTab().getData("ftp_title").toString().length() > 0)) {
-                if (path != null && path.length() > 0) {
+                    || (MainWindow.getContainer().getCurrentTab().getData("ftp_title") != null && !MainWindow.getContainer().getCurrentTab().getData(
+                            "ftp_title").toString().isEmpty())) {
+                if (path != null && !path.isEmpty()) {
                     File f = new File(path);
-                    if (f.isFile())
+                    if (f.isFile()) {
                         xmlPaths = f.getParent();
-                    else
+                    } else {
                         xmlPaths = path;
+                    }
                 } else {
                     xmlPaths = Options.getSchedulerHotFolder();
                 }
                 xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\")) ? xmlPaths : xmlPaths + "/";
             } else {
-                if (path != null && path.length() > 0) {
+                if (path != null && !path.isEmpty()) {
                     File f = new File(path);
-                    if (f.isFile())
+                    if (f.isFile()) {
                         xmlPaths = f.getParent();
-                    else
+                    } else {
                         xmlPaths = path;
+                    }
                 } else {
                     xmlPaths = Options.getSchedulerData();
                     xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths + "config/" : xmlPaths.concat("/config/"));
                 }
             }
-            String _currOrderId = orderId != null && orderId.length() > 0 ? "," + orderId : "";
+            String _currOrderId = orderId != null && !orderId.isEmpty() ? "," + orderId : "";
             xmlFilename = new File(xmlPaths, jobChainname + _currOrderId + ".config.xml").getCanonicalPath();
-            if (_currOrderId != null && _currOrderId.length() > 0) {
+            if (_currOrderId != null && !_currOrderId.isEmpty()) {
                 File jobChainConfig = new File(xmlPaths + jobChainname + ".config.xml");
                 if (jobChainConfig.exists() && !new File(xmlFilename).exists()) {
-                    // int c =
-                    // MainWindow.message("Es gibt bereits eine Konfiguration für die Jobkette. Soll diese für den Auftrag übernommen werden?",
-                    // SWT.ICON_QUESTION | SWT.YES | SWT.NO );
-                    int c = MainWindow.message("A configuration already exists for this job chain. Should this configuration be used for the order?", SWT.ICON_QUESTION
-                            | SWT.YES | SWT.NO);
-                    if (c == SWT.YES) {
-                        if (!sos.util.SOSFile.copyFile(jobChainConfig.getAbsolutePath(), xmlFilename))
-                            MainWindow.message("Could not copy configuration File?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                    int c =
+                            MainWindow.message("A configuration already exists for this job chain. Should this configuration be used for the order?",
+                                    SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                    if (c == SWT.YES && !sos.util.SOSFile.copyFile(jobChainConfig.getAbsolutePath(), xmlFilename)) {
+                        MainWindow.message("Could not copy configuration File?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                     }
                 }
             }
-
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             hasError = true;
@@ -114,14 +119,16 @@ public class DetailsListener {
             SAXBuilder builder = new SAXBuilder();
             if (doc == null) {
                 File f = null;
-                if (xmlFilename != null)
+                if (xmlFilename != null) {
                     f = new File(xmlFilename);
+                }
                 if (f == null || !f.exists()) {
                     String xml = createConfigurationFile();
                     doc = builder.build(new StringReader(xml));
                     if (type == JOEConstants.DETAILS) {
-                        if (f != null)
+                        if (f != null) {
                             f.deleteOnExit();
+                        }
                         dom.setDoc(doc);
                     }
                 } else {
@@ -138,23 +145,21 @@ public class DetailsListener {
             }
             if (application == null) {
                 MainWindow.message(new org.eclipse.swt.widgets.Shell(SWT.NONE), Messages.getString("details.listener.missing_job_chain_node"), SWT.OK);
-                System.out.println("error: " + Messages.getString("details.listener.missing_job_chain_node"));
+                LOGGER.info("error: " + Messages.getString("details.listener.missing_job_chain_node"));
                 hasError = true;
                 return;
             }
-            // globale Detail note
-            if (state == null || state.length() == 0) {
+            if (state == null || state.isEmpty()) {
                 List note = application.getChildren("note");
                 setGlobaleNote(note);
             }
-            if (application != null)
+            if (application != null) {
                 order = application.getChild("order");
+            }
             if (order != null) {
-                if (state != null && state.length() > 0) {
-                    // Parameter der Job mit der state.. bestimmen
+                if (state != null && !state.isEmpty()) {
                     params_ = getStateParams(order);
                 } else {
-                    // globale parameter
                     params_ = order.getChild("params");
                 }
             }
@@ -174,7 +179,7 @@ public class DetailsListener {
         if (language == null) {
             return getNoteText(noteEN);
         }
-        if (language.equalsIgnoreCase("de")) {
+        if ("de".equalsIgnoreCase(language)) {
             return getNoteText(noteDE);
         } else {
             return getNoteText(noteEN);
@@ -182,7 +187,7 @@ public class DetailsListener {
     }
 
     public void setNote(String noteText, String language) {
-        if (language.equalsIgnoreCase("de")) {
+        if ("de".equalsIgnoreCase(language)) {
             if (noteDE == null) {
                 noteDE = createNote(language);
             }
@@ -202,7 +207,6 @@ public class DetailsListener {
         return n;
     }
 
-    // mo
     private Element createNote(Element elem, String language) {
         Element n = new Element("note");
         Utils.setAttribute("language", language, n);
@@ -233,7 +237,6 @@ public class DetailsListener {
         if (text.indexOf("<") == -1) {
             div.setText(text);
         } else {
-            // x-element wird temporär gebildet.
             Element newNote = createNewNoteElement("<x>" + text + "</x>");
             if (newNote != null) {
                 div.removeContent();
@@ -259,7 +262,7 @@ public class DetailsListener {
         String text = "";
         for (int i = 0; i < params.size(); i++) {
             Element param = (Element) (params.get(i));
-            if (param.getName().equalsIgnoreCase("param")) {
+            if ("param".equalsIgnoreCase(param.getName())) {
                 TableItem item = new TableItem(tableParams, SWT.NONE);
                 name = (param.getAttributeValue("name") != null ? param.getAttributeValue("name") : "");
                 value = param.getAttributeValue("value") != null ? param.getAttributeValue("value") : "";
@@ -279,7 +282,6 @@ public class DetailsListener {
                 dom = new DetailDom();
             }
             dom.writeElement(xmlFilename, doc);
-
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             MainWindow.message("Could not save file, cause: " + e.toString(), SWT.ICON_WARNING);
@@ -287,24 +289,19 @@ public class DetailsListener {
         return f.getAbsolutePath();
     }
 
-    /** liefert den Parametername
-     * 
-     * @param paramname_language */
     public String getParamNote(String name, String language) {
         for (int i = 0; i < params.size(); i++) {
             Element param = (Element) params.get(i);
-            if (param.getName().equals("param") && Utils.getAttributeValue("name", param).equalsIgnoreCase(name)) {
+            if ("param".equals(param.getName()) && Utils.getAttributeValue("name", param).equalsIgnoreCase(name)) {
                 for (int j = 1; j < 3; j++) {
-                    if (params.size() <= i + j)
+                    if (params.size() <= i + j) {
                         return "";
-                    // nur zweimal durchlaufen, weil die nächsten beiden
-                    // Elemente note Knoten sein können
-                    Element note = (Element) params.get(i + j);
-                    if (note.getName().equals("param")) {
-                        break;// die nächsten beiden Knoten der param Elemente
-                              // sind nicht die note Elemente
                     }
-                    if (note.getName().equals("note") && Utils.getAttributeValue("language", note).equals(language)) {
+                    Element note = (Element) params.get(i + j);
+                    if ("param".equals(note.getName())) {
+                        break;
+                    }
+                    if ("note".equals(note.getName()) && Utils.getAttributeValue("language", note).equals(language)) {
                         return getNoteText(note);
                     }
                 }
@@ -314,15 +311,17 @@ public class DetailsListener {
     }
 
     public String getParamsFileName() {
-        if (params_ != null)
+        if (params_ != null) {
             return Utils.getAttributeValue("file", params_);
-        else
+        } else {
             return "";
+        }
     }
 
     public void setParamsFileName(String filename) {
-        if (params_ != null)
+        if (params_ != null) {
             Utils.setAttribute("file", filename, params_);
+        }
     }
 
     public void setParam(String name, String value, String note, String noteText, String language) {
@@ -333,10 +332,11 @@ public class DetailsListener {
                 String pName = Utils.getAttributeValue("name", param);
                 if (name.equalsIgnoreCase(pName)) {
                     Utils.setAttribute("value", value, param);
-                    if (noteText != null && noteText.trim().length() > 0) {
+                    if (noteText != null && !noteText.trim().isEmpty()) {
                         while (!param.getContent().isEmpty()) {
-                            if (param.getContent().get(0) instanceof org.jdom.Text)
+                            if (param.getContent().get(0) instanceof org.jdom.Text) {
                                 param.getContent().remove(0);
+                            }
                         }
                         org.jdom.Text txt = new org.jdom.Text(noteText);
                         param.addContent(txt);
@@ -344,12 +344,11 @@ public class DetailsListener {
                     if (params.size() > i + 1) {
                         for (int j = 1; j < 3; j++) {
                             Element elNote = (Element) params.get(i + j);
-                            if (elNote.getName().equals("param")) {
+                            if ("param".equals(elNote.getName())) {
                                 noNote = true;
-                                break;// die nächsten beiden Knoten der param
-                                      // Elemente sind nicht die note Elemente
+                                break;
                             }
-                            if (note != null && elNote.getName().equalsIgnoreCase("note")
+                            if (note != null && "note".equalsIgnoreCase(elNote.getName())
                                     && Utils.getAttributeValue("language", elNote).equalsIgnoreCase(language)) {
                                 setNoteText(elNote, note);
                             }
@@ -362,7 +361,6 @@ public class DetailsListener {
                         Utils.setAttribute("language", "de", newNoteDE);
                         Element newNoteEN = new Element("note");
                         Utils.setAttribute("language", "en", newNoteEN);
-                        // Reihenfolge ist wichtig
                         params.add(params.indexOf(param) + 1, newNoteDE);
                         params.add(params.indexOf(param) + 2, newNoteEN);
                         return;
@@ -370,13 +368,10 @@ public class DetailsListener {
                     return;
                 }
             }
-            // neues Element
-            // setParam(name, value, note, noteText, language);
             Element param = new Element("param");
             Utils.setAttribute("name", name, param);
             Utils.setAttribute("value", value, param);
-            if (noteText != null && noteText.trim().length() > 0) {
-                // org.jdom.CDATA txt = new org.jdom.CDATA(noteText);
+            if (noteText != null && !noteText.trim().isEmpty()) {
                 org.jdom.Text txt = new org.jdom.Text(noteText);
                 param.addContent(txt);
             }
@@ -384,24 +379,20 @@ public class DetailsListener {
             Utils.setAttribute("language", "de", newNoteDE);
             Element newNoteEN = new Element("note");
             Utils.setAttribute("language", "en", newNoteEN);
-            // Reihenfolge ist wichtig
             params.add(param);
             params.add(newNoteDE);
             params.add(newNoteEN);
-            if (language.equals("de"))
+            if ("de".equals(language)) {
                 setNoteText(newNoteDE, note);
-            else
+            } else {
                 setNoteText(newNoteEN, note);
+            }
         } catch (Exception e) {
             MainWindow.message("Could not add Params cause: " + e.toString(), SWT.ICON_WARNING);
         }
     }
 
-    /*
-     * Vom Wizzard generierte Parameter
-     */
     public void refreshParams(Table table) {
-        // params.clear();
         try {
             java.util.ArrayList list = new java.util.ArrayList();
             for (int i = 0; i < table.getItemCount(); i++) {
@@ -422,27 +413,24 @@ public class DetailsListener {
                     String paramNoteEN = item.getData("parameter_description_en") != null ? item.getData("parameter_description_en").toString() : "";
                     setNoteText(noteen, paramNoteEN);
                     list.add(noteen);
-                    // params.set(i, param);
-                    // params.set(i+1, notede);
-                    // params.set(i+2, noteen);
                 } else {
                     list.add(param);
                     int index = params.indexOf(param);
                     if (params.size() > index + 1) {
                         Element notede = (Element) params.get(index + 1);
-                        if (notede.getName().equals("note") && Utils.getAttributeValue("language", notede).equals("de"))
+                        if ("note".equals(notede.getName()) && "de".equals(Utils.getAttributeValue("language", notede))) {
                             list.add(notede);
+                        }
                     }
                     if (params.size() > index + 2) {
                         Element noteen = (Element) params.get(index + 2);
-                        if (noteen.getName().equals("note") && Utils.getAttributeValue("language", noteen).equals("en"))
+                        if ("note".equals(noteen.getName()) && "en".equals(Utils.getAttributeValue("language", noteen))) {
                             list.add(noteen);
+                        }
                     }
                 }
-
             }
             params.removeAll(params);
-            // params.addAll(list);
             params.addAll((java.util.ArrayList) list.clone());
             table.removeAll();
             fillParams(table);
@@ -457,19 +445,18 @@ public class DetailsListener {
             Element p = (Element) params.get(i);
             if (Utils.getAttributeValue("name", p).equalsIgnoreCase(name)) {
                 params.remove(i);
-                if (i == params.size())// i ist der letze Element un hat keinen
-                                       // node knoten
+                if (i == params.size()) {
                     break;
+                }
                 Element pnde = (Element) params.get(i);
-                if (pnde.getName().equals("note")) {
-                    params.remove(i);// note de
+                if ("note".equals(pnde.getName())) {
+                    params.remove(i);
                 } else {
-                    break;// das nächste Element ist param, daher abbrechen->
-                          // dh. es ex. kein engl. Note
+                    break;
                 }
                 Element pnen = (Element) params.get(i);
-                if (pnen.getName().equals("note")) {
-                    params.remove(i);// note en
+                if ("note".equals(pnen.getName())) {
+                    params.remove(i);
                 }
             }
         }
@@ -479,21 +466,24 @@ public class DetailsListener {
     private void setGlobaleNote(List note) {
         for (int i = 0; i < note.size(); i++) {
             Element n = (Element) note.get(i);
-            if (n.getAttributeValue("language").equals("de"))
+            if ("de".equals(n.getAttributeValue("language"))) {
                 noteDE = n;
-            else if (n.getAttributeValue("language").equals("en"))
+            } else if ("en".equals(n.getAttributeValue("language"))) {
                 noteEN = n;
+            }
         }
     }
 
     private String createConfigurationFile() {
         String xml = "<?xml version=\"1.0\" encoding=\"" + encoding + "\"?> ";
         try {
-            if (Options.getDetailXSLT() != null && Options.getDetailXSLT().length() > 0) {
+            if (Options.getDetailXSLT() != null && !Options.getDetailXSLT().isEmpty()) {
                 xml = xml + "<?xml-stylesheet type=\"text/xsl\" href=\"" + Options.getDetailXSLT() + "\"?> ";
             }
-            xml = xml + "<settings>" + "  <job_chain name=\"" + jobChainname + "\"> " + "    <note language=\"de\"/> "
-                    + "    <note language=\"en\"/> " + "    <order> " + "      <params/> " + "    </order> " + "  </job_chain> " + "</settings> ";
+            xml =
+                    xml + "<settings>" + "  <job_chain name=\"" + jobChainname + "\"> " + "    <note language=\"de\"/> "
+                            + "    <note language=\"en\"/> " + "    <order> " + "      <params/> " + "    </order> " + "  </job_chain> "
+                            + "</settings> ";
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
@@ -502,13 +492,12 @@ public class DetailsListener {
 
     private Element getStateParams(Element order) {
         Element params_ = null;
-        // Parameter der Job mit der state.. bestimmen
         List processList = order.getChildren("process");
         for (int i = 0; i < processList.size(); i++) {
             Element process = (Element) processList.get(i);
             if (Utils.getAttributeValue("state", process).equalsIgnoreCase(state)) {
                 List note = process.getChildren("note");
-                if (note.size() == 0) {
+                if (note.isEmpty()) {
                     noteDE = createNote(process, "DE");
                     noteEN = createNote(process, "EN");
                 } else {
@@ -518,7 +507,6 @@ public class DetailsListener {
             }
         }
         if (params_ == null) {
-            // configurationsdatei hat keinen process element mit dieser Zustand
             Element process = new Element("process");
             Utils.setAttribute("state", state, process);
             Element notede = new Element("note");
@@ -542,8 +530,9 @@ public class DetailsListener {
 
     public void setJobChainname(String jobChainname) {
         this.jobChainname = jobChainname;
-        if (application != null)
+        if (application != null) {
             Utils.setAttribute("name", jobChainname, application);
+        }
     }
 
     public Document getDoc() {
@@ -614,28 +603,28 @@ public class DetailsListener {
     }
 
     public Element getParentElement() {
-        if (params_ != null && params_.getParentElement() != null)
+        if (params_ != null && params_.getParentElement() != null) {
             return this.params_.getParentElement();
-        else
+        } else {
             return null;
+        }
     }
 
-    /** Wird nur in Wizzard aufgerufen
-     * 
-     * @return the params_ */
     public Element getParams() {
-        if (params_ == null)
+        if (params_ == null) {
             params_ = new Element("params");
+        }
         return params_;
     }
 
-    // selektierte Datensatz wird eine Zeile nach oben verschoben
     public void changeUp(Table table) {
         int index = table.getSelectionIndex();
-        if (index < 0)// nichts ist selektiert
+        if (index < 0) {
             return;
-        if (index == 0)// ist bereits ganz oben
+        }
+        if (index == 0) {
             return;
+        }
         TableItem item = table.getSelection()[0];
         String name = item.getText(0);
         String value = item.getText(1);
@@ -651,13 +640,14 @@ public class DetailsListener {
         table.select(index - 1);
     }
 
-    // selektierte Datensatz wird eine Zeile unten verschoben
     public void changeDown(Table table) {
         int index = table.getSelectionIndex();
-        if (index < 0)// nichts ist selektiert
+        if (index < 0) {
             return;
-        if (index == table.getItemCount() - 1)// ist bereits ganz oben
+        }
+        if (index == table.getItemCount() - 1) {
             return;
+        }
         TableItem item = table.getSelection()[0];
         String name = item.getText(0);
         String value = item.getText(1);
@@ -673,27 +663,19 @@ public class DetailsListener {
         table.select(index + 1);
     }
 
-    // ////////////////////////////////////////////////////////ab hier Aufrufe
-    // von Job Chain
-    /** Wenn der State vom Details sich ändert, dann wird ggf. auch in der
-     * Details der state geändert. */
     public static void changeDetailsState(String oldstate, String newstate, String jobchainname, SchedulerDom _dom) {
         try {
-            DetailsListener detailListener = new DetailsListener(jobchainname, oldstate, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
-                    || _dom.isDirectory(), _dom.getFilename());
-            // Document d = detailListener.getDoc();
+            DetailsListener detailListener =
+                    new DetailsListener(jobchainname, oldstate, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement() || _dom.isDirectory(),
+                            _dom.getFilename());
             XPath x = XPath.newInstance("//process[@state='" + oldstate + "']");
             List listOfElement = x.selectNodes(detailListener.getDoc());
             XPath xnew = XPath.newInstance("//process[@state='" + newstate + "']");
             List listOfElementnew = xnew.selectNodes(detailListener.getDoc());
-            if (listOfElementnew.isEmpty()) {
-                if (!listOfElement.isEmpty()) {
-                    // System.out.println("hier ändern");
-                    Element process = (Element) listOfElement.get(0);
-                    process.setAttribute("state", newstate);
-                    detailListener.save();
-
-                }
+            if (listOfElementnew.isEmpty() && !listOfElement.isEmpty()) {
+                Element process = (Element) listOfElement.get(0);
+                process.setAttribute("state", newstate);
+                detailListener.save();
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
@@ -701,12 +683,11 @@ public class DetailsListener {
         }
     }
 
-    /** Wenn der Jobname vom Details sich ändert, dann wird auch in der Job Chain
-     * Node Parameter Datei der Attribut job chainname angepasst */
     public static void changeDetailsJobChainname(String newJobChainName, String oldJobchainName, SchedulerDom _dom) {
         try {
-            DetailsListener detailListener = new DetailsListener(oldJobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
-                    || _dom.isDirectory(), _dom.getFilename());
+            DetailsListener detailListener =
+                    new DetailsListener(oldJobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement() || _dom.isDirectory(),
+                            _dom.getFilename());
             XPath x = XPath.newInstance("settings/job_chain[@name='" + oldJobchainName + "']");
             List listOfElement = x.selectNodes(detailListener.getDoc());
             if (!listOfElement.isEmpty()) {
@@ -714,7 +695,6 @@ public class DetailsListener {
                 jobchain.setAttribute("name", newJobChainName);
             }
             detailListener.save();
-
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             sos.scheduler.editor.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
@@ -725,18 +705,23 @@ public class DetailsListener {
         try {
             String parent = "";
             if (dom.isDirectory()) {
-                parent = dom.getFilename() != null && new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent()
-                        : Options.getSchedulerHotFolder() + "/config";
+                parent =
+                        dom.getFilename() != null && new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent()
+                                : Options.getSchedulerHotFolder() + "/config";
             } else {
-                parent = dom.getFilename() != null && new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent()
-                        : Options.getSchedulerData() + "/config";
+                parent =
+                        dom.getFilename() != null && new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent()
+                                : Options.getSchedulerData() + "/config";
             }
-            if (!new File(parent, jobchainname + ".config.xml").exists())
+            if (!new File(parent, jobchainname + ".config.xml").exists()) {
                 return;
-            if (state == null || state.length() == 0)
+            }
+            if (state == null || state.isEmpty()) {
                 return;
-            DetailsListener detailListener = new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement()
-                    || dom.isDirectory(), dom.getFilename());
+            }
+            DetailsListener detailListener =
+                    new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement() || dom.isDirectory(),
+                            dom.getFilename());
             XPath x = XPath.newInstance("//process[@state='" + state + "']");
             List listOfElement = x.selectNodes(detailListener.getDoc());
             if (!listOfElement.isEmpty()) {
@@ -751,8 +736,9 @@ public class DetailsListener {
     }
 
     private static void addMonitoring(Element job, SchedulerDom dom) {
-        if (job == null)
+        if (job == null) {
             return;
+        }
         Element monitor = new Element("monitor");
         Utils.setAttribute("name", "configuration_monitor", monitor);
         Utils.setAttribute("ordering", "0", monitor);
@@ -762,7 +748,6 @@ public class DetailsListener {
         monitor.addContent(script);
         job.addContent(monitor);
         dom.setChanged(true);
-
         if (dom.isDirectory() || dom.isLifeElement()) {
             dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
         }
@@ -770,12 +755,8 @@ public class DetailsListener {
 
     public static void addMonitoring2Job(String jobChainname, String state, SchedulerDom dom, ISchedulerUpdate update) {
         try {
-            // FAll 1: Es existiert eine globale Details Parameter. D.h. alle
-            // jobs in der Jobkette bekommen einen Monitoring
             String sel = "//job_chain[@name='" + jobChainname + "']/job_chain_node[@job!='']";
             if (state != null) {
-                // FAll 2: Es gibt eine Details Parameter. D.h. nur der eine job
-                // in der Jobkette mit der state bekommt einen Monitoring
                 sel = "//job_chain[@name='" + jobChainname + "']/job_chain_node[@state='" + state + "']";
             }
             XPath x = XPath.newInstance(sel);
@@ -783,7 +764,6 @@ public class DetailsListener {
             if (!listOfElement.isEmpty()) {
                 for (int i = 0; i < listOfElement.size(); i++) {
                     Element jobChainNode = (Element) listOfElement.get(i);
-                    // jobname in der Jobkette ermitteln
                     String jobname = Utils.getAttributeValue("job", jobChainNode);
                     String hotFolderfilename = "";
                     File hotFolderfile = null;
@@ -793,41 +773,33 @@ public class DetailsListener {
                         hotFolderfile = new File(new File(dom.getFilename()), new File(jobname).getName() + ".job.xml");
                     }
                     hotFolderfilename = hotFolderfile.getCanonicalPath();
-                    // Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot
-                    // Folder Datei öffnen. Wenn das Hot Folder Element bereits
-                    // offen ist, dann verändern
                     List listOfElement2 = null;
                     if (new File(dom.getFilename()).getAbsolutePath().equals(hotFolderfile.getParent())) {
                         jobname = new File(jobname).getName();
                     }
-                    if ((dom.isLifeElement() || (new File(jobname).getParent() != null))) {
-                        if (!hotFolderfile.exists()) {
-                            if (!new File(hotFolderfilename).exists()) {
-                                sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File "
-                                        + hotFolderfilename + " not exist.", SWT.ICON_WARNING);
-                                continue;
-                            }
+                    if (dom.isLifeElement() || (new File(jobname).getParent() != null)) {
+                        if (!hotFolderfile.exists() && !new File(hotFolderfilename).exists()) {
+                            sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename
+                                    + " not exist.", SWT.ICON_WARNING);
+                            continue;
                         }
                         XPath x2 = null;
-                        // Es ist ein Hot Folder oder der Job ist woanders
-                        // abgelegt
-                        sos.scheduler.editor.app.TabbedContainer tab = ((sos.scheduler.editor.app.TabbedContainer) MainWindow.getContainer());
+                        sos.scheduler.editor.app.TabbedContainer tab = (sos.scheduler.editor.app.TabbedContainer) MainWindow.getContainer();
                         String pathFromHotFolderDirectory = new File(hotFolderfilename).getParent();
                         if (tab.getFilelist() != null
                                 && (tab.getFilelist().contains(hotFolderfilename) || tab.getFilelist().contains(pathFromHotFolderDirectory))) {
-                            // Hot Folder oder Hot Folder Element ist in einem
-                            // Tabraiter offen oder
                             SchedulerForm form = null;
                             if (tab.getFilelist().contains(hotFolderfilename)) {
-                                form = (SchedulerForm) tab.getEditor(hotFolderfilename);// hot
-                                                                                        // folder
-                                                                                        // element
-                                x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                                form = (SchedulerForm) tab.getEditor(hotFolderfilename);
+                                x2 =
+                                        XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
+                                                + "ConfigurationOrderMonitor']");
                             } else {
-                                form = (SchedulerForm) tab.getEditor(pathFromHotFolderDirectory);// hot
-                                                                                                 // folder
-                                x2 = XPath.newInstance("//job[@name='" + new File(jobname).getName()
-                                        + "']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                                form = (SchedulerForm) tab.getEditor(pathFromHotFolderDirectory);
+                                x2 =
+                                        XPath.newInstance("//job[@name='" + new File(jobname).getName()
+                                                + "']/monitor/script[@java_class='sos.scheduler."
+                                                + "managed.configuration.ConfigurationOrderMonitor']");
                             }
                             SchedulerDom currdom = (SchedulerDom) form.getDom();
                             listOfElement2 = x2.selectNodes(currdom.getDoc());
@@ -835,12 +807,14 @@ public class DetailsListener {
                                 XPath x3 = null;
                                 XPath x4 = null;
                                 if (tab.getFilelist().contains(hotFolderfilename)) {
-                                    x3 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                                    x3 =
+                                            XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
+                                                    + "ConfigurationOrderMonitor']");
                                     x4 = XPath.newInstance("//job");
-                                    ;
                                 } else {
-                                    x3 = XPath.newInstance("//job[@name='" + new File(jobname).getName()
-                                            + "']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                                    x3 =
+                                            XPath.newInstance("//job[@name='" + new File(jobname).getName() + "']/monitor/script[@java_class="
+                                                    + "'sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
                                     x4 = XPath.newInstance("//job[@name='" + new File(jobname).getName() + "']");
                                 }
                                 List listOfElement3 = x3.selectNodes(currdom.getDoc());
@@ -848,9 +822,9 @@ public class DetailsListener {
                                     List listOfElement4 = x4.selectNodes(currdom.getDoc());
                                     Element job = (Element) listOfElement4.get(0);
                                     addMonitoring(job, currdom);
-                                    if (currdom.isLifeElement())
+                                    if (currdom.isLifeElement()) {
                                         form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
-                                    else if (currdom.isDirectory()) {
+                                    } else if (currdom.isDirectory()) {
                                         form.selectTreeItem(SchedulerListener.JOBS, new File(jobname).getName());
                                     }
                                     currdom.setChanged(true);
@@ -870,12 +844,13 @@ public class DetailsListener {
                                 }
                             }
                         } else {
-                            // Hot Folder Element ist nicht offen in einem
-                            // Tabraiter
                             SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIVE_JOB);
                             currDom.read(hotFolderfilename);
-                            if (x2 == null)
-                                x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                            if (x2 == null) {
+                                x2 =
+                                        XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
+                                                + "ConfigurationOrderMonitor']");
+                            }
                             listOfElement2 = x2.selectNodes(currDom.getDoc());
                             if (listOfElement2.isEmpty()) {
                                 XPath x3 = XPath.newInstance("//job");
@@ -888,8 +863,9 @@ public class DetailsListener {
                             }
                         }
                     } else {
-                        XPath x2 = XPath.newInstance("//job[@name='" + jobname
-                                + "']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                        XPath x2 =
+                                XPath.newInstance("//job[@name='" + jobname + "']/monitor/script[@java_class='sos.scheduler.managed.configuration."
+                                        + "ConfigurationOrderMonitor']");
                         listOfElement2 = x2.selectNodes(dom.getDoc());
                         if (listOfElement2.isEmpty()) {
                             XPath x3 = XPath.newInstance("//jobs/job[@name='" + jobname + "']");
@@ -899,7 +875,6 @@ public class DetailsListener {
                                 addMonitoring(job, dom);
                                 if (update != null) {
                                     update.updateJobs();
-                                    // update.updateJob(jobname);
                                 }
                                 dom.setChanged(true);
                             }
@@ -909,25 +884,23 @@ public class DetailsListener {
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            sos.scheduler.editor.app.MainWindow.message("Could not to be add Monitoring Job to Jobchain " + jobChainname + ", cause: "
-                    + e.getMessage(), SWT.ICON_ERROR);
+            sos.scheduler.editor.app.MainWindow.message(
+                    "Could not to be add Monitoring Job to Jobchain " + jobChainname + ", cause: " + e.getMessage(), SWT.ICON_ERROR);
         }
     }
 
-    /** Ein neuer Job wurde den Jobkette hinzugefügt. Es wird jetzt überprüft, ob
-     * die Details Konfigurationsdatei globale Parameter hat. Wenn ja, dann wird
-     * diesem Job monitoring hinzugefügt Details der state geändert. */
     public static boolean existDetailsParameter(String state, String jobchainname, String jobname, SchedulerDom dom, ISchedulerUpdate update,
             boolean global, String orderid) {
         try {
-            DetailsListener detailListener = new DetailsListener(jobchainname, state, orderid, JOEConstants.JOB_CHAINS, null, dom.isLifeElement()
-                    || dom.isDirectory(), dom.getFilename());
-            // Document d = detailListener.getDoc();
+            DetailsListener detailListener =
+                    new DetailsListener(jobchainname, state, orderid, JOEConstants.JOB_CHAINS, null, dom.isLifeElement() || dom.isDirectory(),
+                            dom.getFilename());
             XPath x = null;
-            if (global)
+            if (global) {
                 x = XPath.newInstance("//order/params/param");
-            else
+            } else {
                 x = XPath.newInstance("//process[@state='" + state + "']/params/param");
+            }
             List listOfElement = x.selectNodes(detailListener.getDoc());
             return !listOfElement.isEmpty();
         } catch (Exception e) {
@@ -937,21 +910,15 @@ public class DetailsListener {
         }
     }
 
-    /** Ein neuer Job wurde den Jobkette hinzugefügt. Es wird jetzt überprüft, ob
-     * die Details Konfigurationsdatei globale Parameter hat. Wenn ja, dann wird
-     * diesem Job monitoring hinzugefügt Details der state geändert. */
     public static void checkDetailsParameter(String state, String jobchainname, String jobname, SchedulerDom dom, ISchedulerUpdate update) {
         try {
-            DetailsListener detailListener = new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement()
-                    || dom.isDirectory(), dom.getFilename());
-            // Document d = detailListener.getDoc();
+            DetailsListener detailListener =
+                    new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement() || dom.isDirectory(),
+                            dom.getFilename());
             XPath x = XPath.newInstance("//order/params/param");
             List listOfElement = x.selectNodes(detailListener.getDoc());
             if (!listOfElement.isEmpty()) {
                 String hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
-                // Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot
-                // Folder Datei öffnen. Wenn der Hot Folder Element bereits
-                // offen ist, dann verändern
                 List listOfElement2 = null;
                 if (dom.isLifeElement() || new File(jobname).getParent() != null) {
                     if (!new File(hotFolderfilename).exists()) {
@@ -960,17 +927,15 @@ public class DetailsListener {
                         return;
                     }
                     XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
-                    // Es ist ein Hot Folder oder der Job ist woanders abgelegt
-                    sos.scheduler.editor.app.TabbedContainer tab = ((sos.scheduler.editor.app.TabbedContainer) MainWindow.getContainer());
+                    sos.scheduler.editor.app.TabbedContainer tab = (sos.scheduler.editor.app.TabbedContainer) MainWindow.getContainer();
                     if (tab.getFilelist() != null && tab.getFilelist().contains(hotFolderfilename)) {
-                        // Hot Folder Element ist in einem Tabraiter offen
-                        // org.eclipse.swt.custom.CTabItem f =
-                        // tab.getFolderTab(hotFolderfilename);
                         SchedulerForm form = (SchedulerForm) tab.getEditor(hotFolderfilename);
                         SchedulerDom currdom = (SchedulerDom) form.getDom();
                         listOfElement2 = x2.selectNodes(currdom.getDoc());
                         if (listOfElement2.isEmpty()) {
-                            XPath x3 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                            XPath x3 =
+                                    XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
+                                            + "ConfigurationOrderMonitor']");
                             List listOfElement3 = x3.selectNodes(currdom.getDoc());
                             if (listOfElement3.isEmpty()) {
                                 x3 = XPath.newInstance("//job");
@@ -990,16 +955,10 @@ public class DetailsListener {
                             }
                         }
                     } else {
-                        // Hot Folder Element ist nicht offen in einem Tabraiter
                         SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIVE_JOB);
                         currDom.read(hotFolderfilename);
                         listOfElement2 = x2.selectNodes(currDom.getDoc());
                         if (listOfElement2.isEmpty()) {
-                            // XPath x3 =
-                            // XPath.newInstance("//jobs/job[@name='"+ jobname +
-                            // "']");
-                            // XPath x3 = XPath.newInstance("//job[@name='"+
-                            // jobname + "']");
                             XPath x3 = XPath.newInstance("//job");
                             List listOfElement3 = x3.selectNodes(currDom.getDoc());
                             if (!listOfElement3.isEmpty()) {
@@ -1010,8 +969,9 @@ public class DetailsListener {
                         }
                     }
                 } else {
-                    XPath x2 = XPath.newInstance("//job[@name='" + jobname
-                            + "']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                    XPath x2 =
+                            XPath.newInstance("//job[@name='" + jobname + "']/monitor/script[@java_class='sos.scheduler.managed.configuration."
+                                    + "ConfigurationOrderMonitor']");
                     listOfElement2 = x2.selectNodes(dom.getDoc());
                     if (listOfElement2.isEmpty()) {
                         XPath x3 = XPath.newInstance("//jobs/job[@name='" + jobname + "']");
@@ -1019,8 +979,9 @@ public class DetailsListener {
                         if (!listOfElement3.isEmpty()) {
                             Element job = (Element) listOfElement3.get(0);
                             addMonitoring(job, dom);
-                            if (update != null)
+                            if (update != null) {
                                 update.updateJobs();
+                            }
                         }
                     }
                 }
@@ -1030,4 +991,5 @@ public class DetailsListener {
             sos.scheduler.editor.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
         }
     }
+
 }

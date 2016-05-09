@@ -1,8 +1,5 @@
 package com.sos.joe.jobdoc.editor;
 
-/**
- * 
- */
 import java.io.File;
 
 import org.eclipse.swt.graphics.Image;
@@ -13,16 +10,13 @@ import com.sos.joe.globals.misc.ResourceManager;
 
 public class TreeViewEntry {
 
-    // @SuppressWarnings("unused")
-    // private final Logger logger = Logger.getLogger(TreeViewEntry.class);
-    public final String conSVNVersion = "$Id: JadeTreeViewEntry.java 22824 2014-03-10 14:40:40Z kb $";
     private enuTreeItemType enuType = enuTreeItemType.IsRoot;
+    private File objFile = null;
+    TreeItem objTreeItem = null;
 
     public enum enuTreeItemType {
         IsRoot, isDirectory, isFile;
     }
-
-    private File objFile = null;
 
     public void setFile(final File objF) {
         objFile = objF;
@@ -36,7 +30,6 @@ public class TreeViewEntry {
         return enuType;
     }
 
-    // private final SectionsHandler group;
     public TreeViewEntry(final enuTreeItemType iType) {
         enuType = iType;
     }
@@ -63,11 +56,7 @@ public class TreeViewEntry {
     }
 
     public String getTitle() {
-        String strT = this.getName();
-        // if (strT2.length() > 0) {
-        // strT = strT + " - " + strT2;
-        // }
-        return strT;
+        return this.getName();
     }
 
     public Image getImage() {
@@ -96,9 +85,8 @@ public class TreeViewEntry {
         }
     }
 
-    TreeItem objTreeItem = null;
-
     public void setTreeItem(final TreeItem pobjTreeItem) {
         objTreeItem = pobjTreeItem;
     }
+
 }

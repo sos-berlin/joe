@@ -32,8 +32,6 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
 
-    @SuppressWarnings("unused")
-    private final static String conSVNVersion = "$Id: AuthorsForm.java 25898 2014-06-20 14:36:54Z kb $";
     private Group authorsGroup = null;
     private Label label4 = null;
     private Text tName = null;
@@ -55,36 +53,34 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
         listener.fillAuthors(tAuthors);
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 5; // Generated
+        gridLayout.numColumns = 5;
         authorsGroup = JOE_G_AuthorsForm_Authors.Control(new SOSGroup(this, SWT.NONE));
-        authorsGroup.setLayout(gridLayout); // Generated
+        authorsGroup.setLayout(gridLayout);
         createCreated();
         createModified();
         createComposite();
         createGroup1();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
         GridData gridData5 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
         gridData5.widthHint = 486;
         GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5; // Generated
+        gridLayout1.numColumns = 5;
         label4 = JOE_L_Name.Control(new SOSLabel(authorsGroup, SWT.NONE));
         label4.setLayoutData(new GridData());
         GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData7.widthHint = 121;
         tName = JOE_T_AuthorsForm_Name.Control(new Text(authorsGroup, SWT.BORDER));
-        tName.setLayoutData(gridData7); // Generated
+        tName.setLayoutData(gridData7);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (tName.getText().length() > 0 && tEmail.getText().length() > 0) {
+                if (!tName.getText().isEmpty() && !tEmail.getText().isEmpty()) {
                     bApply.setEnabled(true);
                     getShell().setDefaultButton(bApply);
                 }
@@ -96,12 +92,12 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
         GridData gridData8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData8.widthHint = 183;
         tEmail = JOE_T_AuthorsForm_EMail.Control(new Text(authorsGroup, SWT.BORDER));
-        tEmail.setLayoutData(gridData8); // Generated
+        tEmail.setLayoutData(gridData8);
         tEmail.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (tName.getText().length() > 0 && tEmail.getText().length() > 0) {
+                if (!tName.getText().isEmpty() && !tEmail.getText().isEmpty()) {
                     bApply.setEnabled(true);
                     getShell().setDefaultButton(bApply);
                 }
@@ -110,7 +106,7 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
         });
         GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         bApply = JOE_B_AuthorsForm_Apply.Control(new Button(authorsGroup, SWT.NONE));
-        bApply.setLayoutData(gridData9); // Generated
+        bApply.setLayoutData(gridData9);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -125,9 +121,9 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
         });
         GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
         tAuthors = JOE_Tbl_AuthorsForm_Authors.Control(new Table(authorsGroup, SWT.FULL_SELECTION | SWT.BORDER));
-        tAuthors.setHeaderVisible(true); // Generated
-        tAuthors.setLinesVisible(true); // Generated
-        tAuthors.setLayoutData(gridData11); // Generated
+        tAuthors.setHeaderVisible(true);
+        tAuthors.setLinesVisible(true);
+        tAuthors.setLayoutData(gridData11);
         tAuthors.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -143,17 +139,16 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
             }
         });
         TableColumn tableColumn2 = JOE_TCl_AuthorsForm_Name.Control(new TableColumn(tAuthors, SWT.NONE));
-        tableColumn2.setWidth(250); // Generated
+        tableColumn2.setWidth(250);
         TableColumn tableColumn11 = JOE_TCl_AuthorsForm_EMail.Control(new TableColumn(tAuthors, SWT.NONE));
-        tableColumn11.setWidth(60); // Generated
+        tableColumn11.setWidth(60);
         bRemoveAutho = JOE_B_AuthorsForm_Remove.Control(new Button(authorsGroup, SWT.NONE));
-        bRemoveAutho.setLayoutData(gridData12); // Generated
+        bRemoveAutho.setLayoutData(gridData12);
         bRemoveAutho.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (tAuthors.getSelectionCount() > 0) {
-                    // tAuthors.remove(tAuthors.getSelectionIndex());
                     listener.removeAuthor((Element) tAuthors.getSelection()[0].getData());
                     listener.fillAuthors(tAuthors);
                     tName.setText("");
@@ -167,16 +162,16 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
         });
     }
 
-    /** This method initializes composite */
     private void createComposite() {
+        //
     }
 
-    /** This method initializes created */
     private void createCreated() {
+        //
     }
 
-    /** This method initializes modified */
     private void createModified() {
+        //
     }
 
     @Override
@@ -209,7 +204,6 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
                 return;
             }
         }
-        // else new item
         TableItem author = new TableItem(tAuthors, SWT.NONE);
         author.setText(0, name);
         author.setText(1, email);
@@ -224,20 +218,19 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
 
     @Override
     public void openBlank() {
-        // TODO Auto-generated method stub
+        // TO DO Auto-generated method stub
 
     }
 
     @Override
     protected void applySetting() {
-        // TODO Auto-generated method stub
+        // TO DO Auto-generated method stub
 
     }
 
     @Override
     public boolean applyChanges() {
-        // TODO Auto-generated method stub
         return false;
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -126,10 +126,12 @@ public class Application extends ApplicationWindow {
 
             @Override
             public void treeCollapsed(final TreeExpansionEvent event) {
+                //
             }
 
             @Override
             public void treeExpanded(final TreeExpansionEvent event) {
+                //
             }
         });
         treeViewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -153,6 +155,7 @@ public class Application extends ApplicationWindow {
                         }
                     }
                 } catch (Exception e) {
+                    //
                 }
             }
         });
@@ -240,6 +243,7 @@ public class Application extends ApplicationWindow {
 
             @Override
             public void widgetDisposed(final DisposeEvent e) {
+                //
             }
         });
         objTabITem.setControl(control);

@@ -113,8 +113,8 @@ public class Utils {
                 dom.setChanged(true);
                 if (dom instanceof SchedulerDom) {
                     if ("order".equals(element.getName())) {
-                        ((SchedulerDom) dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain", element) + ","
-                                + Utils.getAttributeValue("id", element), SchedulerDom.MODIFY);
+                        ((SchedulerDom) dom).setChangedForDirectory("order",
+                                Utils.getAttributeValue("job_chain", element) + "," + Utils.getAttributeValue("id", element), SchedulerDom.MODIFY);
                     } else {
                         ((SchedulerDom) dom).setChangedForDirectory("job", Utils.getAttributeValue("name", element), SchedulerDom.MODIFY);
                     }
@@ -517,8 +517,8 @@ public class Utils {
 
     public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr, boolean showFunction, String scriptLanguage,
             boolean showWizzardInfo) {
-        TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL
-                | SWT.V_SCROLL);
+        TextDialog dialog =
+                new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         dialog.setSize(new Point(500, 400));
         if (selectStr != null && !selectStr.trim().isEmpty()) {
             dialog.setContent(xml, selectStr);
@@ -671,7 +671,8 @@ public class Utils {
                 str.append("&quot;");
                 break;
             case '&':
-                if (!(s.substring(i).startsWith("&quot;") || s.substring(i).startsWith("&lt;") || s.substring(i).startsWith("&gt;") || s.substring(i).startsWith("&amp;"))) {
+                if (!(s.substring(i).startsWith("&quot;") || s.substring(i).startsWith("&lt;") || s.substring(i).startsWith("&gt;") || s.substring(i).startsWith(
+                        "&amp;"))) {
                     str.append("&amp;");
                 } else {
                     str.append(ch);
@@ -871,7 +872,8 @@ public class Utils {
                 if ("job".equals(getJobElement(e).getName())) {
                     dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name", Utils.getJobElement(e)), SchedulerDom.MODIFY);
                 } else {
-                    dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e), SchedulerDom.MODIFY);
+                    dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e),
+                            SchedulerDom.MODIFY);
                 }
             } else {
                 dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name", e), SchedulerDom.MODIFY);

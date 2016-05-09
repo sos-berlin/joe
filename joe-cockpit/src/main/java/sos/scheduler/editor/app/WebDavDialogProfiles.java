@@ -198,6 +198,7 @@ public class WebDavDialogProfiles {
         butSavePassword.addSelectionListener(new SelectionAdapter() {
 
             public void widgetDefaultSelected(final SelectionEvent e) {
+                //
             }
 
             public void widgetSelected(final SelectionEvent e) {
@@ -319,8 +320,9 @@ public class WebDavDialogProfiles {
             String s = cboConnectname.getText();
             cboConnectname.setItems(listener.getProfileNames());
             cboConnectname.setText(s);
-            currProfile = listener.getProfiles().get(cboConnectname.getText()) != null ? (Properties) listener.getProfiles().get(cboConnectname.getText())
-                    : new Properties();
+            currProfile =
+                    listener.getProfiles().get(cboConnectname.getText()) != null ? (Properties) listener.getProfiles().get(cboConnectname.getText())
+                            : new Properties();
             listener.setCurrProfile(currProfile);
             listener.setCurrProfileName(cboConnectname.getText());
             txtUsername.setText(currProfile.get("user") != null ? currProfile.get("user").toString() : "");
@@ -372,7 +374,7 @@ public class WebDavDialogProfiles {
                 new java.io.File(txtLocalDirectory.getText()).mkdirs();
             }
             prop.put("localdirectory", txtLocalDirectory.getText());
-            prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
+            prop.put("save_password", butSavePassword.getSelection() ? "yes" : "no");
             prop.put("protocol", cboProtokol.getText());
             if (useProxyButton.getSelection()) {
                 prop.put("use_proxy", "yes");
@@ -405,8 +407,9 @@ public class WebDavDialogProfiles {
             return;
         }
         if (butApply.getEnabled()) {
-            int cont = MainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK
-                    | SWT.CANCEL);
+            int cont =
+                    MainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK
+                            | SWT.CANCEL);
             if (cont == SWT.OK) {
                 apply();
             }

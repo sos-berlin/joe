@@ -33,7 +33,7 @@ public class ScriptsListener {
         objectName = "job";
         if (!_dom.isLifeElement()) {
             _config = _dom.getRoot().getChild("config");
-            if (!parent.getName().equals("job")) {
+            if (!"job".equals(parent.getName())) {
                 if (_config.getChild("monitors") == null) {
                     _monitors = new Element("monitors");
                     _config.addContent(_monitors);
@@ -93,7 +93,7 @@ public class ScriptsListener {
                     if (_dom.isLifeElement() || _dom.isDirectory()) {
                         _dom.setChangedForDirectory(objectName, name, SchedulerDom.MODIFY);
                     }
-                    table.getItem(index).setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name), ordering });
+                    table.getItem(index).setText(new String[] { "".equals(name) ? EMPTY_MONITOR_NAME : name, ordering });
                 }
                 index++;
             }
@@ -118,7 +118,7 @@ public class ScriptsListener {
                 _list.add(e);
             }
             item = new TableItem(table, SWT.NONE);
-            item.setText(new String[] { ("".equals(name) ? EMPTY_MONITOR_NAME : name), ordering });
+            item.setText(new String[] { "".equals(name) ? EMPTY_MONITOR_NAME : name, ordering });
             item.setData(e);
             _main.updateScripts();
         }

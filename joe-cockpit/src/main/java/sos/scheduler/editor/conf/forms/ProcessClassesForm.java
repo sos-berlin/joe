@@ -3,13 +3,7 @@
  */
 package sos.scheduler.editor.conf.forms;
 
-import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_OnError;
-import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNodesForm_Setback;
-import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNodesForm_Suspend;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.TraverseEvent;
@@ -71,8 +65,9 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-        if (isUnsaved())
+        if (isUnsaved()) {
             applyClass();
+        }
     }
 
     public boolean isUnsaved() {
@@ -84,8 +79,9 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(694, 294));
         if (dom.isLifeElement()) {
-            if (tableProcessClasses.getItemCount() > 0)
+            if (tableProcessClasses.getItemCount() > 0) {
                 tableProcessClasses.setSelection(0);
+            }
             listener.selectProcessClass(0);
             setInput(true);
             tProcessClass.setBackground(null);
@@ -96,25 +92,20 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         }
         listener.fillProcessClassesTable(tableProcessClasses);
         new Label(group, SWT.NONE);
-
     }
 
     private void createGroup() {
-
         group = JOE_G_ProcessClassesForm_ProcessClasses.Control(new Group(this, SWT.NONE));
         group.setLayout(new GridLayout(5, false));
-
         Label lbProcessClass = JOE_L_ProcessClassesForm_ProcessClass.Control(new Label(group, SWT.NONE));
         lbProcessClass.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
         tProcessClass = JOE_T_ProcessClassesForm_ProcessClass.Control(new Text(group, SWT.BORDER));
         tProcessClass.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));
         tProcessClass.setEnabled(false);
-
         tProcessClass.addTraverseListener(new TraverseListener() {
 
             public void keyTraversed(final TraverseEvent e) {
@@ -137,7 +128,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btApply.setEnabled(valid);
             }
         });
-
         btApply = JOE_B_ProcessClassesForm_Apply.Control(new Button(group, SWT.NONE));
         btApply.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btApply.setEnabled(false);
@@ -147,20 +137,16 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 applyClass();
             }
         });
-
         Label lbMaxProcesses = JOE_L_ProcessClassesForm_MaxProcesses.Control(new Label(group, SWT.NONE));
         lbMaxProcesses.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-
         final Label lbUrl = new Label(group, SWT.NONE);
         lbUrl.setText("Url");
         lbUrl.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
         final Label lbSelect = new Label(group, SWT.NONE);
         lbSelect.setText("Select");
         lbSelect.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
         tMaxProcesses = JOE_T_ProcessClassesForm_MaxProcesses.integerField(new IntegerField(group, SWT.BORDER));
         tMaxProcesses.setLayoutData(new GridData(GridData.FILL, SWT.CENTER, true, false, 1, 1));
         tMaxProcesses.addModifyListener(new ModifyListener() {
@@ -185,11 +171,9 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-
         tRemoteUrl = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
         tRemoteUrl.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         tRemoteUrl.setEnabled(false);
-
         tRemoteUrl.addTraverseListener(new TraverseListener() {
 
             public void keyTraversed(final TraverseEvent e) {
@@ -202,7 +186,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btApply.setEnabled(true);
             }
         });
-
         cSelect = JOE_Cbo_JCNodesForm_OnError.Control(new Combo(group, SWT.READ_ONLY));
         cSelect.setItems(new String[] { "first", "next" });
         cSelect.addModifyListener(new ModifyListener() {
@@ -212,17 +195,13 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btApply.setEnabled(true);
             }
         });
-
         final GridData gridData_12 = new GridData(SWT.FILL, GridData.CENTER, true, false);
         gridData_12.widthHint = 50;
         gridData_12.minimumWidth = 20;
         cSelect.setLayoutData(gridData_12);
-
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
         createTableRemoteScheduler();
-
         GridData gridData3 = new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1);
         gridData3.widthHint = 100;
         btNewRemoteScheduler = JOE_B_ProcessClassesForm_NewRemoteScheduler.Control(new Button(group, SWT.NONE));
@@ -239,16 +218,13 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btNewRemoteScheduler.setEnabled(false);
             }
         });
-
         Label lbSeperator = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbSeperator.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
         GridData gridData4 = new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1);
         gridData4.widthHint = 100;
         btRemoveRemoteScheduler = JOE_B_ProcessClassesForm_RemoveRemoteScheduler.Control(new Button(group, SWT.NONE));
         btRemoveRemoteScheduler.setLayoutData(gridData4);
         btRemoveRemoteScheduler.setEnabled(false);
-
         btRemoveRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -266,17 +242,14 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btRemoveRemoteScheduler.setEnabled(tableRemoteScheduler.getSelectionCount() > 0);
             }
         });
-
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
         Label lbSchedulerRemoteUrl = new Label(group, SWT.NONE);
         lbSchedulerRemoteUrl.setLayoutData(new GridData(SWT.CENTER, SWT.BOTTOM, false, false, 1, 1));
         lbSchedulerRemoteUrl.setText("Url");
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
         GridData layoutDataOkButton = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
         layoutDataOkButton.widthHint = 100;
         btOkRemoteScheduler = JOE_B_ProcessClassesForm_ApplyRemoteScheduler.Control(new Button(group, SWT.NONE));
@@ -288,29 +261,22 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 
             }
         });
-
         tRemoteSchedulerUrl = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
         tRemoteSchedulerUrl.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false, 3, 1));
-
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
         final Label lbHttpHeartBeatTimeout = new Label(group, SWT.NONE);
         lbHttpHeartBeatTimeout.setText("Heartbeat Timeout");
         lbHttpHeartBeatTimeout.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-
         Label lbHttpHeartBeatPeriod = new Label(group, SWT.NONE);
         lbHttpHeartBeatPeriod.setText("Heartbeat Period");
         lbHttpHeartBeatPeriod.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
         tHttpHeartBeatTimeout = JOE_T_ProcessClassesForm_httpHeartBeatTimeout.integerField(new IntegerField(group, SWT.BORDER));
         tHttpHeartBeatTimeout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         tHttpHeartBeatTimeout.setEnabled(true);
-
         tHttpHeartBeatTimeout.addTraverseListener(new TraverseListener() {
 
             public void keyTraversed(final TraverseEvent e) {
@@ -323,37 +289,29 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btApply.setEnabled(true);
             }
         });
-
         tHttpHeartBeatPeriod = JOE_T_ProcessClassesForm_httpHeartBeatTimeout.integerField(new IntegerField(group, SWT.BORDER));
         tHttpHeartBeatPeriod.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         tHttpHeartBeatPeriod.setEnabled(true);
-
         tHttpHeartBeatPeriod.addTraverseListener(new TraverseListener() {
 
             public void keyTraversed(final TraverseEvent e) {
                 traversed(e);
             }
         });
-
         tHttpHeartBeatPeriod.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
                 btApply.setEnabled(true);
             }
         });
-
-        new Label(group, SWT.NONE);
-
-        // newline
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-
+        new Label(group, SWT.NONE);
         createTableProcessClasses();
-
         btNew = JOE_B_ProcessClassesForm_NewProcessClass.Control(new Button(group, SWT.NONE));
         btNew.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1));
         getShell().setDefaultButton(btNew);
@@ -384,36 +342,31 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                             tableProcessClasses.select(index);
                             listener.selectProcessClass(index);
                             setInput(true);
-                        } else
+                        } else {
                             setInput(false);
+                        }
                     }
                 }
                 btRemove.setEnabled(tableProcessClasses.getSelectionCount() > 0);
                 tProcessClass.setBackground(null);
-                // bNew.setEnabled(true);
             }
         });
-
     }
 
     private void applyRemoteSchedulerEntry() {
-        boolean checkHearbeat = (tHttpHeartBeatPeriod.getText().length() > 0 || tHttpHeartBeatTimeout.getText().length() > 0);
-
+        boolean checkHearbeat = !tHttpHeartBeatPeriod.getText().isEmpty() || !tHttpHeartBeatTimeout.getText().isEmpty();
         if (checkHearbeat && tHttpHeartBeatPeriod.getIntegerValue(0) >= tHttpHeartBeatTimeout.getIntegerValue(-1)) {
             MainWindow.message("HTTP Hearbeat Timeout must be greater than HTTP Heartbeat Period ", SWT.ICON_WARNING);
         } else {
             if (checkHearbeat && tHttpHeartBeatPeriod.getIntegerValue(0) < 0) {
                 MainWindow.message("HTTP Hearbeat Period must be greater than 0 ", SWT.ICON_WARNING);
-
             } else {
-
-                if (tRemoteSchedulerUrl.getText().length() > 0) {
+                if (!tRemoteSchedulerUrl.getText().isEmpty()) {
                     if (tableRemoteScheduler.getSelectionIndex() >= 0) {
                         TableItem item = tableRemoteScheduler.getItems()[tableRemoteScheduler.getSelectionIndex()];
                         item.setText(0, tRemoteSchedulerUrl.getText());
                         item.setText(1, tHttpHeartBeatTimeout.getText());
                         item.setText(2, tHttpHeartBeatPeriod.getText());
-
                         tRemoteSchedulerUrl.setText("");
                         tHttpHeartBeatTimeout.setText("");
                         tHttpHeartBeatPeriod.setText("");
@@ -430,12 +383,10 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                                 tHttpHeartBeatTimeout.setText("");
                                 tHttpHeartBeatPeriod.setText("");
                                 tRemoteSchedulerUrl.setFocus();
-
                                 btApply.setEnabled(true);
                             }
                         }
-                        if (tRemoteSchedulerUrl.getText().length() > 0) {
-
+                        if (!tRemoteSchedulerUrl.getText().isEmpty()) {
                             TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
                             item.setText(0, tRemoteSchedulerUrl.getText());
                             item.setText(1, tHttpHeartBeatTimeout.getText());
@@ -444,7 +395,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                             tHttpHeartBeatTimeout.setText("");
                             tHttpHeartBeatPeriod.setText("");
                             tRemoteSchedulerUrl.setFocus();
-
                             btApply.setEnabled(true);
                         }
                     }
@@ -454,7 +404,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void createTableRemoteScheduler() {
-
         tableRemoteScheduler = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
         tableRemoteScheduler.setHeaderVisible(true);
         tableRemoteScheduler.setLinesVisible(true);
@@ -469,25 +418,20 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                     tRemoteSchedulerUrl.setText(item.getText(0));
                     tHttpHeartBeatTimeout.setText(item.getText(1));
                     tHttpHeartBeatPeriod.setText(item.getText(2));
-
                     btRemoveRemoteScheduler.setEnabled(true);
                     btNewRemoteScheduler.setEnabled(true);
                 }
-
             }
         });
         TableColumn tableColumnHost = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHost.setWidth(300);
         tableColumnHost.setText("Url");
-
         TableColumn tableColumnHeatbeatTimeout = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHeatbeatTimeout.setWidth(150);
         tableColumnHeatbeatTimeout.setText("Heartbeat Timeout");
-
         TableColumn tableColumnHeatbeatPeriod = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHeatbeatPeriod.setWidth(150);
         tableColumnHeatbeatPeriod.setText("Heartbeat Period");
-
     }
 
     private boolean checkChange() {
@@ -495,7 +439,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         return ok == SWT.YES;
     }
 
-    /** This method initializes table */
     private void createTableProcessClasses() {
         tableProcessClasses = JOE_Tbl_ProcessClassesForm_ProcessClasses.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         tableProcessClasses.setHeaderVisible(true);
@@ -537,7 +480,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         listener.applyRemoteSchedulerTable(tableRemoteScheduler, cSelect.getText());
         listener.applyProcessClass(tProcessClass.getText(), tRemoteUrl.getText(), tMaxProcesses.getIntegerValue(1));
         listener.fillProcessClassesTable(tableProcessClasses);
-
         getShell().setDefaultButton(btNew);
         tProcessClass.setBackground(null);
         btApply.setEnabled(false);
@@ -550,16 +492,13 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         tProcessClass.setEnabled(enabled);
         tMaxProcesses.setEnabled(enabled);
         tRemoteUrl.setEnabled(enabled);
-
         if (enabled) {
             tProcessClass.setText(listener.getProcessClass());
             tRemoteUrl.setText(listener.getRemoteUrl());
             cSelect.setText(listener.getSelect());
-
             tMaxProcesses.setText(listener.getMaxProcesses());
             tProcessClass.setFocus();
             listener.fillRemoteSchedulerTable(tableRemoteScheduler);
-
         } else {
             tProcessClass.setText("");
             tRemoteUrl.setText("");
@@ -581,4 +520,5 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 
         }
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

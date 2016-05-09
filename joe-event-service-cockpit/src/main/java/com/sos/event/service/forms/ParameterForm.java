@@ -256,6 +256,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         tableIncludeParams.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
+                //
             }
         });
         tableIncludeParams.addSelectionListener(new SelectionAdapter() {
@@ -421,6 +422,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         tParameter.addPaintListener(new PaintListener() {
 
             public void paintControl(final PaintEvent e) {
+                //
             }
         });
         tParameter.setHeaderVisible(true);

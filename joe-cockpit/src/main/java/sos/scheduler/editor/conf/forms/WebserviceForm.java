@@ -282,7 +282,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                             if (Utils.str2int(sTimeout.getText()) == 0 && !sTimeout.getText().isEmpty()) {
                                 MainWindow.message(JOE_M_0046.label(), SWT.ICON_INFORMATION);
                             } else {
-                                listener.applyService(bDebug.getSelection(), cChain.getText(), tName.getText(), tForward.getText(), tRequest.getText(), tResponse.getText(), sTimeout.getText(), tURL.getText());
+                                listener.applyService(bDebug.getSelection(), cChain.getText(), tName.getText(), tForward.getText(),
+                                        tRequest.getText(), tResponse.getText(), sTimeout.getText(), tURL.getText());
                                 bApply.setEnabled(false);
                             }
                         }

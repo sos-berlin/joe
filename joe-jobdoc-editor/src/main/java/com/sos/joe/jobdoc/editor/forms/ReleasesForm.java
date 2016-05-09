@@ -9,6 +9,7 @@ import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesFo
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesForm_Title;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_ReleasesForm_Releases;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -26,6 +27,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
 
+    private static final Logger LOGGER = Logger.getLogger(ReleasesForm.class);
     private Group group = null;
     private Table tReleases = null;
     private Button bNew = null;
@@ -89,11 +91,13 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
                 listener.newRelease();
                 tReleases.deselectAll();
                 try {
-                    listener.applyRelease(JOE_B_ReleasesForm_NewRelease.label(), String.valueOf((listener.getRelease().getParentElement().getChildren("release", dom.getNamespace()).size())), sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), null);
+                    listener.applyRelease(JOE_B_ReleasesForm_NewRelease.label(),
+                            String.valueOf(listener.getRelease().getParentElement().getChildren("release", dom.getNamespace()).size()),
+                            sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), null);
                     listener.fillReleases(tReleases);
                     _gui.updateReleases();
                 } catch (Exception ex) {
-                    System.out.println(ex.toString());
+                    LOGGER.debug(ex.getMessage(), ex);
                 }
             }
         });
@@ -120,6 +124,7 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
     }
 
     private void createComposite() {
+        //
     }
 
     @Override

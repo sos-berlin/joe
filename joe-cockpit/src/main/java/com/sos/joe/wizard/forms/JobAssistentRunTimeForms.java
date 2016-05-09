@@ -546,7 +546,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             setToolTipText();
             fillList();
             java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            runTimeSingleShell.setBounds((screen.width - runTimeSingleShell.getBounds().width) / 2, (screen.height - runTimeSingleShell.getBounds().height) / 2, runTimeSingleShell.getBounds().width, runTimeSingleShell.getBounds().height);
+            runTimeSingleShell.setBounds((screen.width - runTimeSingleShell.getBounds().width) / 2,
+                    (screen.height - runTimeSingleShell.getBounds().height) / 2, runTimeSingleShell.getBounds().width,
+                    runTimeSingleShell.getBounds().height);
             runTimeSingleShell.open();
             runTimeSingleShell.layout();
             runTimeSingleShell.pack();
@@ -600,13 +602,15 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
     }
 
     public void setToolTipText() {
+        //
     }
 
     private void addPeriod() {
         if (optEveryDay.getSelection()
                 && !txtDayAtHour.getText().concat(txtDayAtMinutes.getText()).concat(txtDayAtSecound.getText()).trim().isEmpty()) {
-            String str = EVERY_DAY + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label() + " "
-                    + Utils.getTime(23, txtDayAtHour.getText(), txtDayAtMinutes.getText(), txtDayAtSecound.getText(), false);
+            String str =
+                    EVERY_DAY + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label() + " "
+                            + Utils.getTime(23, txtDayAtHour.getText(), txtDayAtMinutes.getText(), txtDayAtSecound.getText(), false);
             if (!periodExist(str)) {
                 savePeriod(EVERY_DAY);
                 list.add(str);
@@ -666,7 +670,8 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                 PeriodListener p = new PeriodListener(dom);
                 p.setPeriod(period);
                 if (p.getBegin() == null || p.getBegin().trim().isEmpty()) {
-                    list.add(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()));
+                    list.add(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]),
+                            p.getSingle()));
                 }
             }
         }
@@ -738,7 +743,8 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                     Element period = (Element) periods.get(j);
                     PeriodListener p = new PeriodListener(dom);
                     p.setPeriod(period);
-                    if (selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()))) {
+                    if (selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]),
+                            Utils.asStr(da[0]), p.getSingle()))) {
                         PeriodsListener _pl = new PeriodsListener(dom, speElem);
                         _pl.removePeriod(j);
                     }
@@ -818,7 +824,8 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             PeriodsListener p = new PeriodsListener(dom, eDate);
             Element period = p.getNewPeriod();
             periodlistener.setPeriod(period);
-            periodlistener.setPeriodTime(23, null, "single_start", txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText());
+            periodlistener.setPeriodTime(23, null, "single_start", txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(),
+                    txtSpeDayAtSecound.getText());
             p.applyPeriod(period);
             if (update != null) {
                 update.updateDays(DaysListener.SPECIFIC_DAY);

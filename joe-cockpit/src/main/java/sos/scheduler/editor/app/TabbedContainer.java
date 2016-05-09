@@ -332,7 +332,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         if (folder.getItemCount() == 0) {
             return null;
         } else {
-            return ((IEditor) getFolderTab(filename).getControl());
+            return (IEditor) getFolderTab(filename).getControl();
         }
     }
 

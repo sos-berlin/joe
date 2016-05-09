@@ -110,10 +110,8 @@ public class EventListener {
             }
             table.remove(table.getSelectionIndex());
             fillEvent(table);
-            if (type == JOEConstants.REMOVE_EVENT_GROUP || type == JOEConstants.ADD_EVENT_GROUP) {
-                if (elem.getParentElement() != null) {
-                    elem.getParentElement().detach();
-                }
+            if ((type == JOEConstants.REMOVE_EVENT_GROUP || type == JOEConstants.ADD_EVENT_GROUP) && elem.getParentElement() != null) {
+                elem.getParentElement().detach();
             }
             _dom.setChanged(true);
         }

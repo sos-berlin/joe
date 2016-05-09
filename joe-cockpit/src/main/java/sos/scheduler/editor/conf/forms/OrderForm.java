@@ -91,7 +91,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
-
+        //
     }
 
     public boolean isUnsaved() {
@@ -120,17 +120,13 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-
-                if (event) {
-                    if (checkName()) {
-                        listener.setCommandAttribute("id", tOrderId.getText());
-                        existDetailsConfigurationsFile();
-                    }
+                if (event && checkName()) {
+                    listener.setCommandAttribute("id", tOrderId.getText());
+                    existDetailsConfigurationsFile();
                 }
             }
         });
         tOrderId.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 5, 1));
-        @SuppressWarnings("unused")
         final Label jobchainLabel = JOE_L_OrderForm_JobChain.Control(new Label(gOrder, SWT.NONE));
         butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gOrder, SWT.ARROW | SWT.DOWN));
         butGoto.setVisible(dom != null && !dom.isLifeElement());
@@ -155,34 +151,29 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (event)
-                    if (checkName()) {
-                        listener.setCommandAttribute("job_chain", cJobchain.getText());
-                        String curstate = listener.getCommandAttribute("state");
-                        tState.setItems(listener.getStates());
-                        tState.setText(curstate);
-                        cboStates.setItems(listener.getStates());
-
-                        cboStates.add(JOE_M_OrderForm_Global.label());
-                        cboStates.setText(JOE_M_OrderForm_Global.label());
-                        String curEndstate = listener.getCommandAttribute("end_state");
-                        cboEndState.setItems(listener.getStates());
-                        cboEndState.setText(curEndstate);
-                        butDetails.setEnabled(cJobchain.getText().length() > 0);
-                        cboStates.setEnabled(cJobchain.getText().length() > 0);
-                        existDetailsConfigurationsFile();
-
-                    }
+                if (event && checkName()) {
+                    listener.setCommandAttribute("job_chain", cJobchain.getText());
+                    String curstate = listener.getCommandAttribute("state");
+                    tState.setItems(listener.getStates());
+                    tState.setText(curstate);
+                    cboStates.setItems(listener.getStates());
+                    cboStates.add(JOE_M_OrderForm_Global.label());
+                    cboStates.setText(JOE_M_OrderForm_Global.label());
+                    String curEndstate = listener.getCommandAttribute("end_state");
+                    cboEndState.setItems(listener.getStates());
+                    cboEndState.setText(curEndstate);
+                    butDetails.setEnabled(!cJobchain.getText().isEmpty());
+                    cboStates.setEnabled(!cJobchain.getText().isEmpty());
+                    existDetailsConfigurationsFile();
+                }
             }
         });
-
         cJobchain.addFocusListener(new FocusAdapter() {
 
             public void focusLost(final FocusEvent e) {
                 listener.updateOrders();
             }
         });
-
         final Label titleLabel = JOE_L_OrderForm_Title.Control(new Label(gOrder, SWT.NONE));
         final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
         gridData_6.widthHint = 47;
@@ -241,7 +232,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
         new Label(gOrder, SWT.NONE);
         new Label(gOrder, SWT.NONE);
-        @SuppressWarnings("unused")
         final Label stateLabel_1 = JOE_L_OrderForm_State.Control(new Label(gOrder, SWT.NONE));
         cboStates = JOE_Cbo_OrderForm_State2.Control(new Combo(gOrder, SWT.NONE));
         cboStates.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -255,11 +245,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         butRemove.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                if (xmlDetailsConfigFilename != null && xmlDetailsConfigFilename.length() > 0 && new File(xmlDetailsConfigFilename).exists()) {
+                if (xmlDetailsConfigFilename != null && !xmlDetailsConfigFilename.isEmpty() && new File(xmlDetailsConfigFilename).exists()) {
                     int ok = MainWindow.message(JOE_M_OrderForm_RemoveState.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
-                    if (ok == SWT.YES) {
-                        if (!new File(xmlDetailsConfigFilename).delete())
-                            MainWindow.message(JOE_M_OrderForm_RemoveFailed.params(xmlDetailsConfigFilename), SWT.ICON_INFORMATION);
+                    if (ok == SWT.YES && !new File(xmlDetailsConfigFilename).delete()) {
+                        MainWindow.message(JOE_M_OrderForm_RemoveFailed.params(xmlDetailsConfigFilename), SWT.ICON_INFORMATION);
                     }
                     existDetailsConfigurationsFile();
                 }
@@ -276,10 +265,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         butDetails.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-
-                String state = cboStates.getText().length() == 0 || cboStates.getText().equals("global") ? null : cboStates.getText();
-                DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(), state, tOrderId.getText(), dom.isLifeElement()
-                        || dom.isDirectory(), dom.getFilename());
+                String state = cboStates.getText().isEmpty() || "global".equals(cboStates.getText()) ? null : cboStates.getText();
+                DetailDialogForm detail =
+                        new DetailDialogForm(cJobchain.getText(), state, tOrderId.getText(), dom.isLifeElement() || dom.isDirectory(),
+                                dom.getFilename());
                 detail.showDetails();
                 detail.getDialogForm().setParamsForWizzard(dom, main);
             }
@@ -288,11 +277,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         createSashForm();
     }
 
-    /** This method initializes group1 */
     private void createGroup1() {
+        //
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         GridData gridData18 = new org.eclipse.swt.layout.GridData();
         gridData18.horizontalSpan = 1;
@@ -300,12 +288,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData18.grabExcessHorizontalSpace = true;
         gridData18.grabExcessVerticalSpace = true;
         gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-
         createGroup1();
         createGroup2();
     }
 
-    /** This method initializes group2 */
     private void createGroup2() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 1;
@@ -345,7 +331,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
             tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
             cJobchain.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
             return false;
-        } else if (tOrderId.getText() == null || tOrderId.getText().length() == 0) {
+        } else if (tOrderId.getText() == null || tOrderId.getText().isEmpty()) {
             tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
             return false;
         } else {
@@ -356,24 +342,24 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void existDetailsConfigurationsFile() {
-
         try {
             String path = dom.getFilename();
             String xmlPaths = "";
             String orderId = tOrderId.getText();
-            if (path != null && path.length() > 0) {
+            if (path != null && !path.isEmpty()) {
                 File f = new File(path);
-                if (f.isFile())
+                if (f.isFile()) {
                     xmlPaths = f.getParent();
-                else
+                } else {
                     xmlPaths = path;
+                }
             } else {
                 xmlPaths = Options.getSchedulerData();
                 xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths + "config/" : xmlPaths.concat("/config/"));
             }
             String _currOrderId = orderId != null && orderId.length() > 0 ? "," + orderId : "";
             xmlDetailsConfigFilename = new File(xmlPaths, cJobchain.getText() + _currOrderId + ".config.xml").getCanonicalPath();
-            if (xmlDetailsConfigFilename != null && xmlDetailsConfigFilename.trim().length() > 0 && new File(xmlDetailsConfigFilename).exists()) {
+            if (xmlDetailsConfigFilename != null && !xmlDetailsConfigFilename.trim().isEmpty() && new File(xmlDetailsConfigFilename).exists()) {
                 FontData fontDatas[] = this.getFont().getFontData();
                 FontData fdata = fontDatas[0];
                 Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.BOLD);
@@ -390,4 +376,5 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

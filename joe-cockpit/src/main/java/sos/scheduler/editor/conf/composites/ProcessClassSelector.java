@@ -1,10 +1,6 @@
 package sos.scheduler.editor.conf.composites;
 
-import org.apache.log4j.Logger;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -14,8 +10,10 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.SWT;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.IProcessClassDataProvider;
@@ -27,12 +25,7 @@ import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
 public class ProcessClassSelector extends SOSJOEMessageCodes {
 
-    @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(JobMainComposite.class);
-    @SuppressWarnings("unused")
-    private final String conClassName = "JobMainForm";
     private IProcessClassDataProvider processClassDataProvider = null;
-    @SuppressWarnings("unused")
     private Label lblProcessClass = null;
     private Combo cProcessClass = null;
     private Button butBrowse = null;
@@ -41,10 +34,6 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
     private Button butShowProcessClass = null;
     private int intComboBoxStyle = SWT.NONE;
 
-    /** Create the composite.
-     * 
-     * @param parent
-     * @param style */
     public ProcessClassSelector(IProcessClassDataProvider processClassDataProvider_, Composite parent, int style) {
         super(parent, style);
         processClassDataProvider = processClassDataProvider_;
@@ -52,10 +41,6 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
         init();
     }
 
-    /** Create the composite.
-     * 
-     * @param parent
-     * @param style */
     public ProcessClassSelector(IProcessClassDataProvider processClassDataProvider_, Composite parent, int horizontalSpan_, int style) {
         super(parent, style);
         processClassDataProvider = processClassDataProvider_;
@@ -69,11 +54,9 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
         cProcessClass.setItems(processClassDataProvider.getProcessClasses());
         cProcessClass.setText(process_class);
         init = false;
-
     }
 
     private void createComposite(Composite parent) {
-
         lblProcessClass = JOE_L_JobMainComposite_ProcessClass.Control(new Label(parent, SWT.NONE));
         butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(parent, SWT.ARROW | SWT.DOWN));
         butShowProcessClass.setVisible(processClassDataProvider.get_dom() != null && !processClassDataProvider.get_dom().isLifeElement());
@@ -81,7 +64,7 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String strT = cProcessClass.getText();
-                if (strT.length() > 0) {
+                if (!strT.isEmpty()) {
                     ContextMenu.goTo(strT, processClassDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
                 }
             }
@@ -124,22 +107,25 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
 
             @Override
             public void keyReleased(KeyEvent arg0) {
+                //
             }
         });
         cProcessClass.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseUp(MouseEvent arg0) {
+                //
             }
 
             @Override
             public void mouseDown(MouseEvent arg0) {
+                //
             }
 
             @Override
             public void mouseDoubleClick(MouseEvent arg0) {
                 String strT = cProcessClass.getText();
-                if (strT.length() > 0) {
+                if (!strT.isEmpty()) {
                     ContextMenu.goTo(strT, processClassDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
                 }
             }
@@ -149,8 +135,9 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
-                if (name != null && name.length() > 0)
+                if (name != null && !name.isEmpty()) {
                     cProcessClass.setText(name);
+                }
             }
         });
     }

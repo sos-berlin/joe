@@ -344,7 +344,8 @@ public class WebDavDialogListener {
                 logtext.append("..webdav server reply: saveas[url=" + url + "], [status= " + wdr.getStatusMessage());
             }
         } catch (Exception e) {
-            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..webdav server reply, [status= " + wdr.getStatusMessage() + "]", e);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..webdav server reply, [status= " + wdr.getStatusMessage() + "]",
+                    e);
             if (logtext != null) {
                 logtext.append("..webdav server reply: ");
             }

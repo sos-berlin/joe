@@ -28,8 +28,9 @@ public class OrdersListener {
         selectedJobchain = selectedJobchain_;
         _dom = dom;
         _main = update;
-        if (_dom.isLifeElement())
+        if (_dom.isLifeElement()) {
             return;
+        }
         _config = _dom.getRoot().getChild("config");
         _commands = _config.getChild("commands");
         if (_commands != null) {
@@ -58,7 +59,7 @@ public class OrdersListener {
                 if (o instanceof Element) {
                     Element e = (Element) o;
                     String ordersJobchainName = Utils.getAttributeValue("job_chain", e);
-                    if (selectedjobChainName.equals("") || selectedjobChainName.equals(ordersJobchainName)) {
+                    if ("".equals(selectedjobChainName) || selectedjobChainName.equals(ordersJobchainName)) {
                         TableItem item = new TableItem(table, SWT.NONE);
                         item.setData(e);
                         String id = Utils.getAttributeValue("id", e);
@@ -74,8 +75,7 @@ public class OrdersListener {
                 if (o instanceof Element) {
                     Element e = (Element) o;
                     String ordersJobchainName = Utils.getAttributeValue("job_chain", e);
-
-                    if (selectedjobChainName.equals("") || selectedjobChainName.equals(ordersJobchainName)) {
+                    if ("".equals(selectedjobChainName) || selectedjobChainName.equals(ordersJobchainName)) {
                         TableItem item = new TableItem(table, SWT.NONE);
                         item.setData(e);
                         String id = Utils.getAttributeValue("id", e);
@@ -94,8 +94,9 @@ public class OrdersListener {
         for (int i = 0; i < count; i++) {
             TableItem item = table.getItem(i);
             String actId = item.getText();
-            if (actId.trim().equals(String.valueOf(id)))
+            if (actId.trim().equals(String.valueOf(id))) {
                 return true;
+            }
         }
         return false;
     }
@@ -111,12 +112,10 @@ public class OrdersListener {
             }
             c++;
         }
-
         Element add_order = new Element("order");
         Element runtime = new Element("run_time");
         add_order.setAttribute("job_chain", Utils.getAttributeValue("name", selectedJobchain));
         add_order.setAttribute("id", id);
-
         if (_commands == null) {
             initCommands();
         }
@@ -136,11 +135,13 @@ public class OrdersListener {
             Element e = (Element) item.getData();
             e.detach();
             _dom.setChanged(true);
-            _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e), SchedulerDom.DELETE);
+            _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e),
+                    SchedulerDom.DELETE);
             table.remove(index);
             _main.updateOrders();
-            if (index >= table.getItemCount())
+            if (index >= table.getItemCount()) {
                 index--;
+            }
             if (index >= 0) {
                 table.setSelection(index);
                 return true;
@@ -149,12 +150,10 @@ public class OrdersListener {
         return false;
     }
 
-    /** Lifert alle Order Id's */
     public String[] getOrderIds() {
         String[] listOfIds = null;
         if (_orders != null) {
             listOfIds = new String[_orders.size()];
-            // for (Iterator it = _orders.iterator(); it.hasNext();) {
             for (int i = 0; i < _orders.size(); i++) {
                 Object o = _orders.get(i);
                 if (o instanceof Element) {
@@ -166,7 +165,6 @@ public class OrdersListener {
         }
         if (_orders2 != null) {
             listOfIds = new String[_orders2.size()];
-            // for (Iterator it = _orders.iterator(); it.hasNext();) {
             for (int i = 0; i < _orders2.size(); i++) {
                 Object o = _orders2.get(i);
                 if (o instanceof Element) {
@@ -178,4 +176,5 @@ public class OrdersListener {
         }
         return listOfIds;
     }
+
 }

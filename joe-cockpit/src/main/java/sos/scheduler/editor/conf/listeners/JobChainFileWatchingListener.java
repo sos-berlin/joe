@@ -1,7 +1,5 @@
 package sos.scheduler.editor.conf.listeners;
 
-import org.jdom.Element;
-
 import sos.scheduler.editor.app.IProcessClassDataProvider;
 import sos.scheduler.editor.app.Utils;
 
@@ -22,14 +20,15 @@ public class JobChainFileWatchingListener implements IProcessClassDataProvider {
 
     @Override
     public void setProcessClass(final String processClass) {
-        if (processClass == "") {
+        if ("".equalsIgnoreCase(processClass)) {
             jobchainDataProvider._chain.removeAttribute("file_watching_process_class");
         } else {
             Utils.setAttribute("file_watching_process_class", processClass, jobchainDataProvider._chain);
         }
         jobchainDataProvider._dom.setChanged(true);
-        if (jobchainDataProvider._dom.isDirectory() || jobchainDataProvider._dom.isLifeElement())
+        if (jobchainDataProvider._dom.isDirectory() || jobchainDataProvider._dom.isLifeElement()) {
             jobchainDataProvider._dom.setChangedForDirectory("job_chain", jobchainDataProvider.getChainName(), SchedulerDom.MODIFY);
+        }
     }
 
     @Override

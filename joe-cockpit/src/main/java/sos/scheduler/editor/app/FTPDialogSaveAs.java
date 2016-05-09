@@ -47,14 +47,12 @@ public class FTPDialogSaveAs extends FTPDialog {
 
     @Override
     protected void fillTable(Table directoryTable, HashMap<String, SOSFileEntry> h) {
-
         try {
             Iterator<String> it = h.keySet().iterator();
             directoryTable.removeAll();
             while (it.hasNext()) {
                 String key = it.next();
                 SOSFileEntry sosFileEntry = h.get(key);
-
                 TableItem item = new TableItem(directoryTable, SWT.NONE);
                 item.setText(0, key);
                 item.setText(1, sosFileEntry.getFilesizeAsString());
@@ -66,7 +64,6 @@ public class FTPDialogSaveAs extends FTPDialog {
                     item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
                 }
             }
-
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
@@ -80,7 +77,7 @@ public class FTPDialogSaveAs extends FTPDialog {
 
     private boolean isSingleFile() {
         DomParser currdom = MainWindow.getSpecifiedDom();
-        return (currdom != null && currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isLifeElement());
+        return currdom != null && currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isLifeElement();
     }
 
     private void setFtpProperties() {
@@ -95,14 +92,11 @@ public class FTPDialogSaveAs extends FTPDialog {
         String localParentPath = new File(localFullPath).getParent();
         String localFilename = new File(MainWindow.getContainer().getCurrentEditor().getFilename()).getName();
         String remoteFilename = getNewFileName(localFilename, txtFilename.getText());
-
         sosRemoteFileEntry = new SOSFileEntry();
         sosRemoteFileEntry.setDirectory(false);
         sosRemoteFileEntry.setFilename(remoteFilename);
         sosRemoteFileEntry.setParentPath(remoteDir);
-
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
-
         ftpProfileJadeClient.copyLocalFileToRemote(localParentPath, remoteDir, localFilename);
         ftpProfileJadeClient.renameFile(remoteDir, localFilename, remoteFilename);
     }
@@ -112,12 +106,10 @@ public class FTPDialogSaveAs extends FTPDialog {
         String localFullPath = new File(MainWindow.getContainer().getCurrentEditor().getFilename()).getCanonicalPath();
         String localFilename = new File(MainWindow.getContainer().getCurrentEditor().getFilename()).getName();
         String remoteFilename = txtFilename.getText();
-
         sosRemoteFileEntry = new SOSFileEntry();
         sosRemoteFileEntry.setDirectory(true);
         sosRemoteFileEntry.setFilename(remoteFilename);
         sosRemoteFileEntry.setParentPath(remoteDir);
-
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
         ftpProfileJadeClient.copyLocalFilesToRemote(localFullPath, remoteDir, remoteFilename);
     }
@@ -131,13 +123,11 @@ public class FTPDialogSaveAs extends FTPDialog {
     }
 
     private String getJobSchedulerObject(String filename) {
-        String jobSchedulerObject = filename.replaceFirst("^.*(\\.(job|order|job_chain|schedule|lock)\\.xml$)", "$1");
-        return jobSchedulerObject;
+        return filename.replaceFirst("^.*(\\.(job|order|job_chain|schedule|lock)\\.xml$)", "$1");
     }
 
     private String getNewFileName(String filename, String newObjectname) {
-        String jobSchedulerObject = getJobSchedulerObject(filename);
-        return newObjectname + jobSchedulerObject;
+        return newObjectname + getJobSchedulerObject(filename);
     }
 
     private void openRemoteSingleFile() {
@@ -165,9 +155,7 @@ public class FTPDialogSaveAs extends FTPDialog {
         try {
             String dir = sosRemoteFileEntry.getParentPath();
             String hotfolder = sosRemoteFileEntry.getFilename();
-
             ArrayList<String> hotFolderElements = ftpProfileJadeClient.copyRemoteFilesToLocal(dir, hotfolder);
-
             if (MainWindow.getContainer().openDirectory(listener.getCurrProfile().getLocaldirectory() + "/" + hotfolder) != null) {
                 setFtpProperties();
                 MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", sosRemoteFileEntry.getFullPath());
@@ -184,7 +172,6 @@ public class FTPDialogSaveAs extends FTPDialog {
             }
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
         }
-
     }
 
     private void openRemote() {

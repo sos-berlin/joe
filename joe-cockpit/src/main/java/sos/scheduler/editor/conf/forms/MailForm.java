@@ -253,6 +253,7 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void apply() {
+        //
     }
 
     private void setOnHistory() {

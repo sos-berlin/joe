@@ -624,8 +624,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
                 retVal = retVal + Utils.fill(2, txtSec.getText());
             }
         } else {
-            retVal = Utils.fill(4, txtYear.getText()) + "-" + Utils.fill(2, txtMonth.getText()) + "-" + Utils.fill(2, txtDay.getText()) + " "
-                    + Utils.fill(2, txtHour.getText()) + ":" + Utils.fill(2, txtMin.getText()) + ":" + Utils.fill(2, txtSec.getText());
+            retVal =
+                    Utils.fill(4, txtYear.getText()) + "-" + Utils.fill(2, txtMonth.getText()) + "-" + Utils.fill(2, txtDay.getText()) + " "
+                            + Utils.fill(2, txtHour.getText()) + ":" + Utils.fill(2, txtMin.getText()) + ":" + Utils.fill(2, txtSec.getText());
         }
         listener.setAt(retVal);
         return retVal;

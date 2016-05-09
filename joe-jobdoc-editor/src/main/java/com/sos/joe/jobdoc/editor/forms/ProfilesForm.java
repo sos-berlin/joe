@@ -86,7 +86,8 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = "";
-                DocumentationForm.openNoteDialog(dom, listener.getProfileElement(), "note", tip, true, !listener.isNewProfile(), JOE_B_ProfilesForm_ProfileNotes.label());
+                DocumentationForm.openNoteDialog(dom, listener.getProfileElement(), "note", tip, true, !listener.isNewProfile(),
+                        JOE_B_ProfilesForm_ProfileNotes.label());
             }
         });
         bApply = JOE_B_ProfilesForm_ApplyProfile.Control(new Button(group, SWT.NONE));
@@ -141,13 +142,11 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tProfiles.getSelectionCount() > 0) {
-                    if (listener.removeProfile(tProfiles.getSelectionIndex())) {
-                        setProfileStatus(false);
-                        bRemove.setEnabled(false);
-                        bApply.setEnabled(false);
-                        fillProfiles();
-                    }
+                if (tProfiles.getSelectionCount() > 0 && listener.removeProfile(tProfiles.getSelectionIndex())) {
+                    setProfileStatus(false);
+                    bRemove.setEnabled(false);
+                    bApply.setEnabled(false);
+                    fillProfiles();
                 }
             }
         });
@@ -192,6 +191,7 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
 
     @Override
     public void openBlank() {
+        //
     }
 
     @Override

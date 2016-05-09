@@ -24,22 +24,15 @@ import com.sos.joe.xml.IOUtils;
 
 public class FolderNameSelector extends Text {
 
-    @SuppressWarnings("unused")
-    private final String conClassName = "FolderNameSelector";
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-
     private JobListener objDataProvider = null;
-    public boolean flgIsFileFromLiveFolder = false;
-
     private String strFolderName = "";
     private Menu objContextMenu = null;
     private FormBaseClass objParentForm = null;
     private String strI18NKey = "";
+    public boolean flgIsFileFromLiveFolder = false;
 
     public FolderNameSelector(Composite pobjComposite, int arg1) {
         super(pobjComposite, arg1);
-
         addFocusListener(getFocusAdapter());
         setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         addMouseListener(getMouseListener());
@@ -64,17 +57,13 @@ public class FolderNameSelector extends Text {
             if (objContextMenu == null) {
                 objContextMenu = new Menu(getShell(), SWT.POP_UP);
             }
-
             MenuItem item = null;
-
             item = new MenuItem(objContextMenu, SWT.PUSH);
             item.addListener(SWT.Selection, CopyToClipboardListener());
             item.setText("Copy to Clipboard");
-
             item = new MenuItem(objContextMenu, SWT.PUSH);
             item.addListener(SWT.Selection, OpenListener());
             item.setText("Open");
-
             setMenu(objContextMenu);
         }
     }
@@ -93,38 +82,27 @@ public class FolderNameSelector extends Text {
         refreshContent();
     }
 
-    // private Listener getSaveAsListener() {
-    //
-    // return new Listener() {
-    // public void handleEvent(Event e) {
-    //
-    // }
-    // };
-    // }
-    //
     private Listener CopyToClipboardListener() {
-
         return new Listener() {
 
             public void handleEvent(Event e) {
+                //
             }
         };
     }
 
     private Listener OpenListener() {
-
         return new Listener() {
 
             public void handleEvent(Event e) {
                 objParentForm.showWaitCursor();
                 String strLastFolderName = getText();
-                if (strLastFolderName.trim().length() <= 0) {
+                if (strLastFolderName.trim().isEmpty()) {
                     strLastFolderName = Options.getLastIncludeFolderName();
                 }
-
                 String strT = openDirectory(strLastFolderName);
                 objParentForm.restoreCursor();
-                if (strT.trim().length() > 0) {
+                if (!strT.trim().isEmpty()) {
                     setText(strT);
                 } else {
                     e.doit = false;
@@ -146,22 +124,22 @@ public class FolderNameSelector extends Text {
 
             @Override
             public void focusLost(final FocusEvent e) {
-
+                //
             }
         };
     }
 
     private MouseListener getMouseListener() {
-        return (new MouseListener() {
+        return new MouseListener() {
 
             @Override
             public void mouseUp(MouseEvent arg0) {
-                // TODO Auto-generated method stub
+                // TO DO Auto-generated method stub
             }
 
             @Override
             public void mouseDown(MouseEvent arg0) {
-                // TODO Auto-generated method stub
+                // TO DO Auto-generated method stub
             }
 
             @Override
@@ -189,8 +167,6 @@ public class FolderNameSelector extends Text {
                             }
                             strFolderName = strT;
                             setText(objFile.getName());
-                            // evtl. ein CallBack einbauen ...
-                            // applyFile2Include();
                             objParentForm.setStatusLine(String.format("Directory '%1$s' selected", strT));
                         } else {
                             objParentForm.MsgWarning(String.format("Directory '%1$s' is not readable", strT));
@@ -199,33 +175,26 @@ public class FolderNameSelector extends Text {
                 }
                 objParentForm.restoreCursor();
             }
-
-        });
-
+        };
     }
 
     public String openDirectory(final String pstrDirectoryName) {
-
         String filename = "";
         DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.OPEN);
-
         fdialog.setFilterPath(pstrDirectoryName);
-
         filename = fdialog.open();
-        if (filename == null || filename.trim().length() == 0) {
+        if (filename == null || filename.trim().isEmpty()) {
             return filename;
         }
-        filename = filename.replaceAll("\\\\", "/");
-
-        return filename;
-
+        return filename.replaceAll("\\\\", "/");
     }
 
     public void refreshContent() {
-
+        //
     }
 
     protected void checkSubclass() {
         // Disable the check that prevents subclassing of SWT components
     }
+
 }

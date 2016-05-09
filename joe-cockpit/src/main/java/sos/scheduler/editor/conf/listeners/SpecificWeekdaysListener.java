@@ -27,13 +27,13 @@ class Weekday {
 
 public class SpecificWeekdaysListener {
 
+    private SchedulerDom _dom = null;
+    private String[] _usedDays = null;
+    private Element _runtime = null;
     public static final int WEEKDAYS = 0;
     public static final int MONTHDAYS = 1;
     public static final int ULTIMOS = 2;
-    private SchedulerDom _dom = null;
     public static String[] _daynames = { "First", "Second", "Third", "Fourth", "Last", "Second Last", "Third Last", "Fourth Last" };
-    private String[] _usedDays = null;
-    private Element _runtime = null;
 
     public SpecificWeekdaysListener(SchedulerDom dom, Element runtime) {
         _dom = dom;
@@ -84,7 +84,6 @@ public class SpecificWeekdaysListener {
         String which = "";
         int index = 0;
         StringTokenizer t = new StringTokenizer(day_string.toLowerCase(), ".");
-        // ----------------------------------------------------------
         if (t.hasMoreTokens()) {
             which = t.nextToken();
         }
@@ -109,12 +108,11 @@ public class SpecificWeekdaysListener {
                 if (e.getAttributeValue("day") != null && e.getAttributeValue("day").equalsIgnoreCase(day) && e.getAttributeValue("which") != null
                         && e.getAttributeValue("which").equals(which)) {
                     e.detach();
-                    // remove empty tag
                     boolean isEmpty = true;
                     List _list = _runtime.getChildren("monthdays");
                     for (int i = 0; i < _list.size(); i++) {
                         Element s = (Element) _list.get(i);
-                        if (s.getChildren().size() > 0) {
+                        if (!s.getChildren().isEmpty()) {
                             isEmpty = false;
                             break;
                         }

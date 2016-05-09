@@ -472,7 +472,7 @@ public class DaysListener {
                     List _list = runtime.getChildren(ELEMENT_NAME[type]);
                     for (int i = 0; i < _list.size(); i++) {
                         Element s = (Element) _list.get(i);
-                        if (s.getChildren().size() > 0) {
+                        if (!s.getChildren().isEmpty()) {
                             isEmpty = false;
                             break;
                         }
@@ -499,7 +499,8 @@ public class DaysListener {
             while (it.hasNext()) {
                 Element e = (Element) it.next();
                 if (e.getAttributeValue("day") != null
-                        && (e.getAttributeValue("day").equals("" + getDayNumber(oldDay)) || e.getAttributeValue("day").equals(oldDay) || e.getAttributeValue("day").equals(getDayGroupNumbers(oldDay)))) {
+                        && (e.getAttributeValue("day").equals("" + getDayNumber(oldDay)) || e.getAttributeValue("day").equals(oldDay) || e.getAttributeValue(
+                                "day").equals(getDayGroupNumbers(oldDay)))) {
                     e.setAttribute("day", getDayGroupNumbers(newDay));
                     dom.setChanged(true);
                     if (runtime != null && runtime.getParentElement() != null) {
@@ -581,7 +582,8 @@ public class DaysListener {
         if (tree != null && tree.getSelectionCount() > 0) {
             TreeItem item = f.getTree().getSelection()[0];
             if (item.getParentItem() != null
-                    && ("Holidays".equalsIgnoreCase(item.getParentItem().getText()) || (item.getParentItem().getData("key") != null && "holidays".equals(item.getParentItem().getData("key"))))) {
+                    && ("Holidays".equalsIgnoreCase(item.getParentItem().getText()) || (item.getParentItem().getData("key") != null && "holidays".equals(item.getParentItem().getData(
+                            "key"))))) {
                 if (runtime.getChild("holidays") != null) {
                     runtime = runtime.getChild("holidays");
                 } else {

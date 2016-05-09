@@ -68,7 +68,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         if (_isOpen && !hasText) {
             _sb.append("/>\n");
         } else if (_isOpen) {
-            _sb.append(">").append((_noIndentInCDATAElements.contains(localName) ? "" : "\n"));
+            _sb.append(">").append(_noIndentInCDATAElements.contains(localName) ? "" : "\n");
         }
         if (hasText && _noIndentInCDATAElements.contains(localName)) {
             _sb.append("<![CDATA[").append(text).append("]]>");
@@ -127,12 +127,10 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         }
         _sb.append(_indent).append("<").append(qName).append(" ").append(attributes.toString());
         _isOpen = true;
-        if ("job".equalsIgnoreCase(qName.trim())) {
-            if (!strComment.isEmpty()) {
-                _sb.append(">\n");
-                _isOpen = false;
-                _sb.append(strComment);
-            }
+        if ("job".equalsIgnoreCase(qName.trim()) && !strComment.isEmpty()) {
+            _sb.append(">\n");
+            _isOpen = false;
+            _sb.append(strComment);
         }
         _level++;
     }
@@ -147,17 +145,6 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 
     public void setStyleSheet(String stylesheet_) {
         _stylesheet = stylesheet_;
-    }
-
-    private String nl() {
-        switch (_level) {
-        case 2:
-            return strRepeat("\n", 2);
-        case 3:
-            return strRepeat("\n", 1);
-        default:
-            return "";
-        }
     }
 
 }

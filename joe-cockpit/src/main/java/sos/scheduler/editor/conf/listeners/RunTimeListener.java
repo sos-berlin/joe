@@ -1,5 +1,7 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.util.List;
+
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
@@ -52,36 +54,32 @@ public class RunTimeListener {
 
     private void notifyChange(Element el) {
         _dom.setChanged(true);
-
         Element parent = Utils.getRunTimeParentElement(el);
-
         String name = "";
-        if (parent.getName().equals("order")) {
+        if ("order".equals(parent.getName())) {
             name = Utils.getAttributeValue("job_chain", parent) + "," + Utils.getAttributeValue("id", parent);
         } else {
             name = Utils.getAttributeValue("name", parent);
         }
-
         _dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
-
     }
 
     public Element getRunTime() {
-        if (_runtime == null)
+        if (_runtime == null) {
             setRuntime();
+        }
         return _runtime;
     }
 
     public String[] getSchedules() {
         String[] retval = new String[0];
-        if (!_dom.isLifeElement() && _dom.getRoot() != null) {
-            if (_dom.getRoot().getChild("config") != null && _dom.getRoot().getChild("config").getChild("schedules") != null) {
-                java.util.List l = _dom.getRoot().getChild("config").getChild("schedules").getChildren("schedule");
-                retval = new String[l.size()];
-                for (int i = 0; i < l.size(); i++) {
-                    Element e = (Element) l.get(i);
-                    retval[i] = Utils.getAttributeValue("name", e);
-                }
+        if (!_dom.isLifeElement() && _dom.getRoot() != null && _dom.getRoot().getChild("config") != null
+                && _dom.getRoot().getChild("config").getChild("schedules") != null) {
+            List l = _dom.getRoot().getChild("config").getChild("schedules").getChildren("schedule");
+            retval = new String[l.size()];
+            for (int i = 0; i < l.size(); i++) {
+                Element e = (Element) l.get(i);
+                retval[i] = Utils.getAttributeValue("name", e);
             }
         }
         return retval;
@@ -94,30 +92,30 @@ public class RunTimeListener {
     public void setSchedule(String schedule) {
         if (_runtime != null) {
             Utils.setAttribute("schedule", schedule, _runtime, _dom);
-            if (_dom.isDirectory() || _dom.isLifeElement())
+            if (_dom.isDirectory() || _dom.isLifeElement()) {
                 _dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
+            }
         }
     }
 
     public String getFunction() {
         String s = _runtime.getAttributeValue("start_time_function");
-        if (s == null)
+        if (s == null) {
             s = "";
+        }
         return s;
     }
 
     private void checkRuntime() {
-        // repeat ins every_day moven
         String repeat = Utils.getAttributeValue("repeat", _runtime);
-        if (repeat.length() > 0) {
+        if (!repeat.isEmpty()) {
             Element p = new Element("period");
             p.setAttribute("repeat", repeat);
             _runtime.addContent(p);
             _runtime.removeAttribute("repeat");
         }
-        // single_start ins every_day moven
         String single_start = Utils.getAttributeValue("single_start", _runtime);
-        if (single_start.length() > 0) {
+        if (!single_start.isEmpty()) {
             Element p = new Element("period");
             p.setAttribute("single_start", single_start);
             _runtime.addContent(p);
@@ -128,4 +126,5 @@ public class RunTimeListener {
     public Element getParent() {
         return _job;
     }
+
 }

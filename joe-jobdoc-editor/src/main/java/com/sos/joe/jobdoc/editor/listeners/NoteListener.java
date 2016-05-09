@@ -11,8 +11,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class NoteListener extends JobDocBaseListener<DocumentationDom> {
 
-    private final static Logger LOGGER = Logger.getLogger(NoteListener.class);
-
+    private static final Logger LOGGER = Logger.getLogger(NoteListener.class);
     private final String _name;
     private final boolean _optional;
     private String[] _languages = { "de", "en", "fr", "it", "es" };
@@ -29,10 +28,8 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
     }
 
     private void init() {
-        if (_lang == null) {
-            if (_parent != null) {
-                _lang = getSOSLocale(); // https://change.sos-berlin.com/browse/JOE-26
-            }
+        if (_lang == null && _parent != null) {
+            _lang = getSOSLocale();
         }
     }
 
@@ -58,14 +55,13 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
 
     public void setNote(String note) {
         Element item = getElement();
-        if (item == null && note.length() > 0) {
-            // create new one
+        if (item == null && !note.isEmpty()) {
             if (_parent.getParent() == null) {
                 Element r = _dom.getRoot();
                 Element c = null;
-                if (_parent.getName().equalsIgnoreCase("release")) {
+                if ("release".equalsIgnoreCase(_parent.getName())) {
                     c = r.getChild("releases", _dom.getNamespace());
-                } else if (_parent.getName().equalsIgnoreCase("resource")) {
+                } else if ("resource".equalsIgnoreCase(_parent.getName())) {
                     c = r.getChild("database", _dom.getNamespace());
                 } else {
                     c = r.getChild("configuration", _dom.getNamespace());
@@ -75,7 +71,7 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
             item = new Element(_name, _dom.getNamespace());
             Utils.setAttribute("language", _lang, item);
             _parent.addContent(item);
-        } else if (item != null && note.length() == 0) {
+        } else if (item != null && note.isEmpty()) {
             item.detach();
             if (_setChanged) {
                 _dom.setChanged(true);
@@ -114,10 +110,7 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
             for (Iterator<Element> it = list.iterator(); it.hasNext();) {
                 Element item = it.next();
                 String strAttributeVal = Utils.getAttributeValue("language", item);
-                if (strAttributeVal.length() <= 0) {
-                    return item;
-                }
-                if (strAttributeVal.equals(_lang)) {
+                if (strAttributeVal.isEmpty() || strAttributeVal.equals(_lang)) {
                     return item;
                 }
             }
@@ -126,12 +119,11 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
     }
 
     public void createDefault() {
-        if (_parent != null && !_optional) {
-            if (_parent.getChildren(_name, _dom.getNamespace()).size() == 0) {
-                Element item = new Element(_name, _dom.getNamespace());
-                item.setAttribute("language", _lang);
-                _parent.addContent(item);
-            }
+        if (_parent != null && !_optional && _parent.getChildren(_name, _dom.getNamespace()).isEmpty()) {
+            Element item = new Element(_name, _dom.getNamespace());
+            item.setAttribute("language", _lang);
+            _parent.addContent(item);
         }
     }
+
 }

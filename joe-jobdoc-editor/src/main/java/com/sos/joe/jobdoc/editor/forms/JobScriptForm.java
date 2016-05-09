@@ -76,6 +76,7 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
 
     @Override
     public void openBlank() {
+        //
     }
 
     @Override

@@ -110,12 +110,14 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
 
             @Override
             public void mouseDown(final MouseEvent e) {
+                //
             }
         });
         sBeginMinutes.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(final KeyEvent e) {
+                //
             }
         });
         sBeginMinutes.setLayoutData(gridData21);
@@ -164,12 +166,14 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
 
             @Override
             public void mouseDown(final MouseEvent e) {
+                //
             }
         });
         sEndHours.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(final KeyEvent e) {
+                //
             }
         });
         sEndHours.setLayoutData(gridData41);
@@ -196,12 +200,14 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
 
             @Override
             public void mouseDown(final MouseEvent e) {
+                //
             }
         });
         sEndMinutes.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(final KeyEvent e) {
+                //
             }
         });
         sEndMinutes.setLayoutData(gridData5);
@@ -228,12 +234,14 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
 
             @Override
             public void mouseDown(final MouseEvent e) {
+                //
             }
         });
         sEndSeconds.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(final KeyEvent e) {
+                //
             }
         });
         sEndSeconds.setLayoutData(gridData6);
@@ -268,6 +276,7 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
     }
 
     private void createGroup() {
+        //
     }
 
     public void fillPeriod() {
@@ -329,6 +338,7 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
     }
 
     public void setRunOnce(boolean visible) {
+        //
     }
 
     private boolean beginBeforeAfter() {

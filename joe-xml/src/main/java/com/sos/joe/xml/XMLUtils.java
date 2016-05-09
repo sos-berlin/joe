@@ -24,8 +24,8 @@ public class XMLUtils {
                 dom.setChanged(true);
                 if (dom instanceof SchedulerDom) {
                     if ("order".equals(element.getName())) {
-                        ((SchedulerDom) dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain", element) + ","
-                                + Utils.getAttributeValue("id", element), SchedulerDom.MODIFY);
+                        ((SchedulerDom) dom).setChangedForDirectory("order",
+                                Utils.getAttributeValue("job_chain", element) + "," + Utils.getAttributeValue("id", element), SchedulerDom.MODIFY);
                     } else {
                         ((SchedulerDom) dom).setChangedForDirectory("job", Utils.getAttributeValue("name", element), SchedulerDom.MODIFY);
                     }

@@ -41,16 +41,12 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 public class FilesForm extends JobDocBaseForm<FilesListener> {
 
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label6 = null;
     private Text tFile = null;
-    @SuppressWarnings("unused")
     private Label label9 = null;
     private Combo cOS = null;
-    @SuppressWarnings("unused")
     private Label label10 = null;
     private Combo cType = null;
-    @SuppressWarnings("unused")
     private Label label11 = null;
     private Text tID = null;
     private Label label = null;
@@ -126,7 +122,8 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", null, true, !listener.isNewFile(), JOE_B_FilesForm_Notes.label());
+                DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", null, true, !listener.isNewFile(),
+                        JOE_B_FilesForm_Notes.label());
             }
         });
         label11 = JOE_L_FilesForm_ID.Control(new SOSLabel(group, SWT.NONE));
@@ -206,6 +203,7 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
     }
@@ -226,6 +224,7 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
     }

@@ -12,19 +12,9 @@ import sos.scheduler.editor.conf.composites.TextArea.enuSourceTypes;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
-import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.Messages;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
-import com.sos.joe.globals.options.Options;
-
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IContainer;
-import sos.scheduler.editor.app.MainWindow;
 
 public class JobSourceViewer extends FormBaseClass {
 
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
     private TextArea txtArea4XMLSource = null;
 
     public JobSourceViewer(Composite pParentComposite, JobListener pobjDataProvider) {
@@ -33,8 +23,7 @@ public class JobSourceViewer extends FormBaseClass {
     }
 
     public void apply() {
-        // if (isUnsaved())
-        // addParam();
+        //
     }
 
     public boolean isUnsaved() {
@@ -61,4 +50,5 @@ public class JobSourceViewer extends FormBaseClass {
         txtArea4XMLSource.setDataProvider(objJobDataProvider, enuSourceTypes.xmlSource);
         restoreCursor();
     }
+
 }

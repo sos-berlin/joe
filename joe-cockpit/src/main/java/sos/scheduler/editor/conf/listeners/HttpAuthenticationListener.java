@@ -82,7 +82,7 @@ public class HttpAuthenticationListener {
                 Element user = new Element("http.user");
                 Utils.setAttribute("name", httpUser[i].getText(0), user);
                 Utils.setAttribute("password_md5", httpUser[i].getText(1), user);
-                if (httpUser[i].getText(0) != "") {
+                if (!"".equalsIgnoreCase(httpUser[i].getText(0))) {
                     users.addContent(user);
                 }
             }
@@ -104,4 +104,5 @@ public class HttpAuthenticationListener {
             }
         }
     }
+
 }

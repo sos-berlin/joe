@@ -1,8 +1,6 @@
 package com.sos.joe.xml.jobscheduler;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -11,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -24,6 +23,7 @@ import com.sos.joe.xml.Utils;
 
 public class MergeAllXMLinDirectory {
 
+    private static final Logger LOGGER = Logger.getLogger(MergeAllXMLinDirectory.class);
     public final static String MASK_JOB = "^.*\\.job\\.xml$";
     public final static String MASK_LOCK = "^.*\\.lock\\.xml$";
     public final static String MASK_PROCESS_CLASS = "^.*\\.process_class\\.xml$";
@@ -110,8 +110,8 @@ public class MergeAllXMLinDirectory {
                             parent = new Element(name);
                             config.addContent(parent);
                         }
-                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName()
-                                + ".xml"));
+                        String jobXMLNameWithoutExtension =
+                                jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
                         if (!Utils.getAttributeValue("name", xmlRoot).isEmpty()
                                 && !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
                             listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
@@ -131,7 +131,7 @@ public class MergeAllXMLinDirectory {
                 }
             }
         } catch (Exception e) {
-            System.out.println("error: " + e.getMessage());
+            LOGGER.debug("error: " + e.getMessage());
         }
     }
 
@@ -150,8 +150,9 @@ public class MergeAllXMLinDirectory {
                         parent = new Element(name);
                         config.addContent(parent);
                     }
-                    String xmlNameWithoutExtension = xmlFile.getName().substring(0, xmlFile.getName().indexOf("."
-                            + (xmlRoot.getName().equalsIgnoreCase("add_order") ? "order" : xmlRoot.getName() + ".xml")));
+                    String xmlNameWithoutExtension =
+                            xmlFile.getName().substring(0, xmlFile.getName().indexOf(
+                                            "." + ("add_order".equalsIgnoreCase(xmlRoot.getName()) ? "order" : xmlRoot.getName() + ".xml")));
                     String[] splitNames = xmlNameWithoutExtension.split(",");
                     String jobChainname = "";
                     String orderId = "";
@@ -182,7 +183,7 @@ public class MergeAllXMLinDirectory {
                 }
             }
         } catch (Exception e) {
-            System.out.println("error: " + e.getMessage());
+            LOGGER.debug("error: " + e.getMessage());
         }
     }
 
@@ -205,8 +206,8 @@ public class MergeAllXMLinDirectory {
         try {
             xml = xml + "<spooler>  " + "      <config> " + "      </config> " + "    </spooler>";
         } catch (Exception e) {
-            System.out.println("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: "
-                    + e.getMessage());
+            LOGGER.debug("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: "
+                    + e.getMessage(), e);
         }
         return xml;
     }
@@ -245,7 +246,7 @@ public class MergeAllXMLinDirectory {
             deleteFiles();
             listOfChanges.clear();
         } catch (Exception e) {
-            System.out.println("..error in MergeAllXMLinDirectory.save. Could not save file " + e.getMessage());
+            LOGGER.debug("..error in MergeAllXMLinDirectory.save. Could not save file " + e.getMessage(), e);
         }
     }
 
@@ -335,7 +336,7 @@ public class MergeAllXMLinDirectory {
             return "";
         }
         filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "."
-                + (pstrCurrentTagName.equalsIgnoreCase("add_order") ? "order" : pstrCurrentTagName) + ".xml";
+                        + ("add_order".equalsIgnoreCase(pstrCurrentTagName) ? "order" : pstrCurrentTagName) + ".xml";
         if (listOfChanges.containsKey(pstrCurrentTagName + "_" + attrName)) {
             if (listOfChanges.get(pstrCurrentTagName + "_" + attrName).equals(SchedulerDom.DELETE) && !new File(filename).delete()) {
                 ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);

@@ -36,7 +36,6 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
 
     private SettingsListener settingsListener = null;
     private Group group = null;
-    @SuppressWarnings("unused")
     private Label label = null;
     private Combo cLang = null;
     private TextArea text = null;
@@ -50,9 +49,7 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
 
     public NoteForm(Composite parent, int style, int type) {
         this(parent, style);
-        // super(parent, style);
         this.type = type;
-        // initialize();
     }
 
     public void setParams(DocumentationDom dom, Element parent, String name, boolean optional) {
@@ -83,7 +80,6 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
         setToolTipText();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData8 = new GridData(GridData.END, GridData.CENTER, true, false);
         GridData gridData11 = new GridData(GridData.END, GridData.CENTER, false, false);
@@ -104,7 +100,6 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
                 text.setXMLText("");
             }
         });
-
         bApply = JOE_B_NoteForm_Apply.Control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData11);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -120,14 +115,13 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
                 }
             }
         });
-
         text = new TextArea(group, "JobDoc.Documentation");
         text.setLayoutData(gridData);
         text.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
             public void modifyText(ModifyEvent e) {
-                bClear.setEnabled(text.getText().length() > 0);
+                bClear.setEnabled(!text.getText().isEmpty());
                 if (listener != null) {
                     bApply.setEnabled(true);
                 }
@@ -135,7 +129,6 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
         });
     }
 
-    /** This method initializes cLang */
     private void createCLang() {
         GridData gridData1 = new GridData();
         gridData1.widthHint = 100;
@@ -150,6 +143,7 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
 
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
+                //
             }
         });
     }
@@ -164,6 +158,8 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
             break;
         case JOEConstants.DOC_DOCUMENTATION:
             setToolTipText(JOE_M_NoteForm_Doc.label());
+            break;
+        default:
             break;
         }
     }
@@ -195,12 +191,10 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
     }
 
     private void changeLang() {
-        if (listener != null) {
-            if (Utils.applyFormChanges(this)) {
-                listener.setLang(cLang.getText());
-                text.setXMLText(listener.getNote());
-                bApply.setEnabled(false);
-            }
+        if (listener != null && Utils.applyFormChanges(this)) {
+            listener.setLang(cLang.getText());
+            text.setXMLText(listener.getNote());
+            bApply.setEnabled(false);
         }
         setFocus();
     }
@@ -217,6 +211,7 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
 
     @Override
     public void openBlank() {
+        //
     }
 
     @Override
@@ -229,4 +224,5 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
         apply();
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

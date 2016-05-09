@@ -1,24 +1,11 @@
 package sos.ftp.profiles;
 
-import static org.junit.Assert.*;
-
 import java.util.Properties;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestFTPProfileJadeClientFTP extends TestFTPProfileJadeClient {
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -34,12 +21,7 @@ public class TestFTPProfileJadeClientFTP extends TestFTPProfileJadeClient {
         ftpProperties.put("profilename", "test");
         ftpProperties.put("protocol", "ftp");
         ftpProperties.put("auth_method", "password");
-        // ftpProperties.put("auth_file","");
         ftpProfile = new FTPProfile(ftpProperties);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test
@@ -90,13 +72,7 @@ public class TestFTPProfileJadeClientFTP extends TestFTPProfileJadeClient {
     @Test
     public void testCopyRemoteFileToLocal() throws Exception {
         ftpProfile = new FTPProfile(ftpProperties);
-
         super.testCopyRemoteFileToLocal();
-    }
-
-    @Test
-    public void testCopyRemoteFilesToLocal() {
-        // fail("Not yet implemented");
     }
 
 }
