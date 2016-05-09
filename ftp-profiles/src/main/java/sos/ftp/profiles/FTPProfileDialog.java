@@ -499,12 +499,13 @@ public class FTPProfileDialog {
             butRemove.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
-                    if (cboConnectname.getText().length() == 0)
+                    if (cboConnectname.getText().isEmpty()) {
                         return;
-
+                    }
                     listener.removeProfile(cboConnectname.getText());
-                    if (cboConnectname.getItemCount() > 0)
+                    if (cboConnectname.getItemCount() > 0) {
                         cboConnectname.select(0);
+                    }
                     initForm();
                     saveSettings = true;
                 }
@@ -525,12 +526,11 @@ public class FTPProfileDialog {
             cboProtokol.addModifyListener(new ModifyListener() {
 
                 public void modifyText(final ModifyEvent e) {
-
-                    if (cboProtokol.getText().equalsIgnoreCase("FTP"))
+                    if ("FTP".equalsIgnoreCase(cboProtokol.getText())) {
                         groupAuthenticationMethods.setEnabled(false);
-                    else
+                    } else {
                         groupAuthenticationMethods.setEnabled(true);
-
+                    }
                     setEnabled();
                 }
             });

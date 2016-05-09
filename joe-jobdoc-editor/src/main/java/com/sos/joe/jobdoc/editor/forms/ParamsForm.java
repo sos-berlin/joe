@@ -234,11 +234,9 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (tParams.getSelectionCount() > 0) {
-                    if (listener.selectParam(tParams.getSelectionIndex())) {
-                        bRemove.setEnabled(true);
-                        setParamStatus(true);
-                    }
+                if (tParams.getSelectionCount() > 0 && listener.selectParam(tParams.getSelectionIndex())) {
+                    bRemove.setEnabled(true);
+                    setParamStatus(true);
                 }
                 bApply.setEnabled(false);
             }

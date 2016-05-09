@@ -9,7 +9,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-// import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -90,7 +89,7 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
         });
         label1 = new SOSMsgJOE("JOE_L_JobForm_Title").Control(new SOSLabel(group, SWT.NONE));
         tTitle = new SOSMsgJOE("JOE_T_JobForm_Title").Control(new Text(group, SWT.BORDER));
-        tTitle.setLayoutData(gridData); // Generated
+        tTitle.setLayoutData(gridData);
         tTitle.addModifyListener(new ModifyListener() {
 
             @Override

@@ -36,7 +36,7 @@ public class DatabasesListener extends JobDocBaseListener<DocumentationDom> {
                 Element database = (Element) it.next();
                 TableItem item = new TableItem(table, SWT.NONE);
                 String name = Utils.getAttributeValue("name", database);
-                item.setText(0, !name.equals("") ? name : DEFAULT_NAME);
+                item.setText(0, !"".equals(name) ? name : DEFAULT_NAME);
                 item.setText(1, Utils.getBooleanValue("required", database) ? "yes" : "no");
                 if (database.equals(_database)) {
                     table.select(index);

@@ -24,7 +24,6 @@ public class JobCommandFormAddOrder extends JobCommandForm {
 
     protected void clearFields() {
         bBrowse.setVisible(false);
-
         tJobchain.setFocus();
         tJob.setVisible(true);
         tStartAt.setVisible(true);
@@ -50,7 +49,7 @@ public class JobCommandFormAddOrder extends JobCommandForm {
             cboEndstate.setItems(listener.getStates());
             cboEndstate.setText(Utils.getAttributeValue("end_state", listener.getCommand()));
             tPriority.setText(Utils.getAttributeValue("priority", listener.getCommand()));
-            bReplace.setSelection(Utils.getAttributeValue("replace", listener.getCommand()).equals("yes"));
+            bReplace.setSelection("yes".equals(Utils.getAttributeValue("replace", listener.getCommand())));
         }
     }
 

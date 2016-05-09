@@ -196,7 +196,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             butIsLifeFile.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
-                    butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
+                    butIncludesApply.setEnabled(!"".equals(txtIncludeFilename.getText().trim()));
                 }
             });
         } else {

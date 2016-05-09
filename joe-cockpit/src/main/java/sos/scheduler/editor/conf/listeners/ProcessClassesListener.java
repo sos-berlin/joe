@@ -155,7 +155,7 @@ public class ProcessClassesListener {
 
     public boolean isIgnoreProcessClasses() {
         if (_processClasses != null) {
-            return Utils.getAttributeValue("ignore", _processClasses).equals("yes") ? true : false;
+            return "yes".equals(Utils.getAttributeValue("ignore", _processClasses));
         } else {
             return false;
         }

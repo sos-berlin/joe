@@ -464,7 +464,7 @@ public class DaysListener {
             Iterator it = list.iterator();
             while (it.hasNext()) {
                 Element e = (Element) it.next();
-                if (e.getName().equals("day")
+                if ("day".equals(e.getName())
                         && (e.getAttributeValue("day") != null && (e.getAttributeValue("day").equals("" + getDayNumber(day))
                                 || e.getAttributeValue("day").equals(day) || e.getAttributeValue("day").equals(getDayGroupNumbers(day))))) {
                     e.detach();
@@ -523,7 +523,7 @@ public class DaysListener {
             used = getUsedDays();
             for (int i = 0; used != null && i < used.length; i++) {
                 TreeItem item = new TreeItem(parent, SWT.NONE);
-                if (used[i].equals("1 2 3 4 5 6 7")) {
+                if ("1 2 3 4 5 6 7".equals(used[i])) {
                     item.setText("Every Day");
                 } else {
                     item.setText(used[i]);

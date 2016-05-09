@@ -66,7 +66,7 @@ public class ScriptsListener {
                 } else {
                     item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
                 }
-                item.setText(0, name.equals("") ? EMPTY_MONITOR_NAME : name);
+                item.setText(0, "".equals(name) ? EMPTY_MONITOR_NAME : name);
                 item.setText(1, Utils.getAttributeValue("ordering", monitor));
             }
         }

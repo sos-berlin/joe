@@ -1,7 +1,5 @@
 package sos.scheduler.editor.conf.container;
 
-// import java.io.File;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -22,18 +20,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-// import Options;
-import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.Messages;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
-import com.sos.joe.globals.options.Options;
-
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IContainer;
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 public class JobIncludeFile extends FormBaseClass {
 

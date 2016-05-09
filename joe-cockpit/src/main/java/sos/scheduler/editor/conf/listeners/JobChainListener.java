@@ -538,7 +538,7 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
     }
 
     public boolean getRemoveFile() {
-        return Utils.getAttributeValue("remove", _node).equals("yes");
+        return "yes".equals(Utils.getAttributeValue("remove", _node));
     }
 
     private Element getOnReturnCodes() {
@@ -944,8 +944,9 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
                 }
             }
             return names;
-        } else
+        } else {
             return new String[0];
+        }
     }
 
     private void setStates() {

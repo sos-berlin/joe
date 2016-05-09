@@ -648,7 +648,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
                 isBold = true;
             }
         } else if (type == JOEConstants.WEEKDAYS) {
-            if (item.getData("key") != null && item.getData("key").equals("holidays_@_weekdays")) {
+            if (item.getData("key") != null && "holidays_@_weekdays".equals(item.getData("key"))) {
                 if (elem.getChild("holidays") != null && !elem.getChild("holidays").getChildren("weekdays").isEmpty()) {
                     isBold = true;
                 }
@@ -722,8 +722,9 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
             }
             if (dom.getChangedJob().get(key1).equals(SchedulerDom.NEW) && !key1.startsWith("process_class")) {
                 int i = item.getItemCount() - 1;
-                if (i < 0)
+                if (i < 0) {
                     i = 0;
+                }
                 item = item.getItem(i);
                 if (!item.getText().startsWith("*")) {
                     item.setText("*" + item.getText());

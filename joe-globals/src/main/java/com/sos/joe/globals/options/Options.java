@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -44,7 +45,6 @@ public class Options extends JSToolBox {
     private static boolean _showWizardInfo = true;
     private static String[] jobTitleList = null;
     private static HashMap holidaysDescription = null;
-    private static String strLastFolderName = "";
     public static final String conEnvVarSCHEDULER_DATA = "SCHEDULER_DATA";
     public static final String conPropertyEDITOR_OPTIONS_FILE = "editor.options.file";
     public static final String conPropertyEDITOR_LANGUAGE = "editor.language";
@@ -179,8 +179,7 @@ public class Options extends JSToolBox {
     }
 
     public static boolean getBoolOption(final String pstrPropertyName) {
-        String strT = getProperty(pstrPropertyName);
-        return checkBool(strT);
+        return checkBool(getProperty(pstrPropertyName));
     }
 
     public static String showSplashScreenPicture() {
@@ -265,8 +264,8 @@ public class Options extends JSToolBox {
             } else {
                 url = helpKey.replaceAll("\\{lang\\}}", getLanguage());
             }
-            return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\", "/")).replaceAll(
-                    "\\{lang\\}", getLanguage());
+            return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\", "/"))
+                    .replaceAll("\\{lang\\}", getLanguage());
         } catch (Exception e) {
             return null;
         }
@@ -327,7 +326,7 @@ public class Options extends JSToolBox {
     }
 
     public static boolean isValidate() {
-        return getProperty("editor.xml.validate", "true").equalsIgnoreCase("true");
+        return "true".equalsIgnoreCase(getProperty("editor.xml.validate", "true"));
     }
 
     public static String getXSLT() {
@@ -372,7 +371,7 @@ public class Options extends JSToolBox {
     }
 
     public static boolean getBackupEnabled() {
-        return getProperty("editor.backup.enabled", "false").equalsIgnoreCase("true");
+        return "true".equalsIgnoreCase(getProperty("editor.backup.enabled", "false"));
     }
 
     public static String getLastDirectory() {
@@ -505,22 +504,17 @@ public class Options extends JSToolBox {
     }
 
     private static String getNormalizedJobSchedulerIdWithPort() {
-
         String schedulerId = getEnv(ENV_VAR_SCHEDULER_ID, "");
         String schedulerPort = getEnv(ENV_VAR_SCHEDULER_PORT, "");
-
         if (schedulerId != null && schedulerId.isEmpty()) {
             schedulerId = new File(getJOEHomeDir()).getName();
         }
-
         String schedulerIdWithPort = schedulerId + "_" + schedulerPort;
         schedulerIdWithPort = schedulerIdWithPort.replaceAll("\\\\", "/");
         schedulerIdWithPort = schedulerIdWithPort.replaceAll("/", "_");
-
         if (schedulerIdWithPort.length() > 69) {
             schedulerIdWithPort = "_" + schedulerPort;
         }
-
         LOGGER.debug("getNormalizedJobSchedulerIdWithPort = " + schedulerIdWithPort);
         return schedulerIdWithPort;
     }
@@ -638,8 +632,8 @@ public class Options extends JSToolBox {
 
     public static boolean isShowDiagram() {
         String s = getProperty("editor.jobchain.digagram.show");
-        if (s != null && s.trim().length() > 0) {
-            _showDiagram = s.equals("true");
+        if (s != null && !s.trim().isEmpty()) {
+            _showDiagram = "true".equals(s);
         }
         return _showDiagram;
     }
@@ -713,12 +707,11 @@ public class Options extends JSToolBox {
     }
 
     public static String[] getPropertiesWithPrefix(final String prefix) {
-        String[] retVal = null;
         String s = "";
         Properties p = new Properties();
         p.putAll(JOESettingsDefaults);
         p.putAll(_properties);
-        if (prefix.equalsIgnoreCase("monitor_favorite_")) {
+        if ("monitor_favorite_".equalsIgnoreCase(prefix)) {
             if (!p.containsKey("monitor_favorite_java_configuration_monitor")) {
                 p.put("monitor_favorite_java_configuration_monitor", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor");
                 setProperty("monitor_favorite_java_configuration_monitor", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor");
@@ -728,15 +721,14 @@ public class Options extends JSToolBox {
                 setProperty("monitor_favorite_java_create_event_monitor", "sos.scheduler.job.JobSchedulerSubmitEventMonitor");
             }
         }
-        java.util.Iterator keys = p.keySet().iterator();
+        Iterator keys = p.keySet().iterator();
         while (keys.hasNext()) {
             Object key = keys.next();
             if (key != null && !key.toString().isEmpty() && key.toString().startsWith(prefix)) {
                 s = key.toString().substring(prefix.length()) + ";" + s;
             }
         }
-        retVal = s.split(";");
-        return retVal;
+        return s.split(";");
     }
 
     public static void removeProperty(final String name) {

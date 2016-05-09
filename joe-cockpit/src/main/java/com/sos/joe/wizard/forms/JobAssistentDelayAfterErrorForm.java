@@ -298,7 +298,7 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
                 shellSetBack.dispose();
             }
         });
-        if (!Utils.getAttributeValue("order", job).equals("yes")) {
+        if (!"yes".equals(Utils.getAttributeValue("order", job))) {
             butFinish.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         }
         butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));

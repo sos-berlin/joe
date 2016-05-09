@@ -410,7 +410,7 @@ public class SchedulerDom extends DomParser {
     }
 
     public boolean isLifeElement() {
-        return !getRoot().getName().equals("spooler");
+        return !"spooler".equals(getRoot().getName());
     }
 
     public boolean isDirectory() {

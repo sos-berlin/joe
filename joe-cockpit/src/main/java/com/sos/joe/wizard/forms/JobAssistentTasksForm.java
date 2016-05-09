@@ -313,9 +313,10 @@ public class JobAssistentTasksForm {
             JobsListener j = new JobsListener(dom, update);
             j.newImportJob(joblistener.getJob(), assistentType);
         }
-        if (Options.getPropertyBoolean("editor.job.show.wizard"))
+        if (Options.getPropertyBoolean("editor.job.show.wizard")) {
             Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(joblistener.getJob()),
                     tasksShell, false, null, false, null, true);
+        }
         if (jobname != null) {
             jobname.setText(Utils.getAttributeValue("name", joblistener.getJob()));
         }

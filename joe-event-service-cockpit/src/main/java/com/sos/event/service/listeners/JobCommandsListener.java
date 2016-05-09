@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import com.sos.event.service.forms.ActionsForm;
-// import sos.scheduler.editor.conf.ISchedulerUpdate;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
 

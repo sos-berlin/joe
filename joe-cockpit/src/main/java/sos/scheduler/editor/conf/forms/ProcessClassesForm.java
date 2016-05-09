@@ -331,20 +331,20 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         btRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tableProcessClasses.getSelectionCount() > 0) {
-                    if (Utils.checkElement(tableProcessClasses.getSelection()[0].getText(0), dom, JOEConstants.PROCESS_CLASSES, null)) {
-                        int index = tableProcessClasses.getSelectionIndex();
-                        listener.removeProcessClass(index);
-                        tableProcessClasses.remove(index);
-                        if (index >= tableProcessClasses.getItemCount())
-                            index--;
-                        if (tableProcessClasses.getItemCount() > 0) {
-                            tableProcessClasses.select(index);
-                            listener.selectProcessClass(index);
-                            setInput(true);
-                        } else {
-                            setInput(false);
-                        }
+                if (tableProcessClasses.getSelectionCount() > 0
+                        && Utils.checkElement(tableProcessClasses.getSelection()[0].getText(0), dom, JOEConstants.PROCESS_CLASSES, null)) {
+                    int index = tableProcessClasses.getSelectionIndex();
+                    listener.removeProcessClass(index);
+                    tableProcessClasses.remove(index);
+                    if (index >= tableProcessClasses.getItemCount()) {
+                        index--;
+                    }
+                    if (tableProcessClasses.getItemCount() > 0) {
+                        tableProcessClasses.select(index);
+                        listener.selectProcessClass(index);
+                        setInput(true);
+                    } else {
+                        setInput(false);
                     }
                 }
                 btRemove.setEnabled(tableProcessClasses.getSelectionCount() > 0);
@@ -375,7 +375,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                     } else {
                         for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
                             TableItem item = tableRemoteScheduler.getItems()[i];
-                            if ((item.getText(0).equals(tRemoteSchedulerUrl.getText()))) {
+                            if (item.getText(0).equals(tRemoteSchedulerUrl.getText())) {
                                 item.setText(0, tRemoteSchedulerUrl.getText());
                                 item.setText(1, tHttpHeartBeatTimeout.getText());
                                 item.setText(2, tHttpHeartBeatPeriod.getText());

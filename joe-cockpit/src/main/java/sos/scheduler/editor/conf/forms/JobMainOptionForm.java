@@ -208,7 +208,6 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         });
         new Label(gMain, SWT.NONE);
         new Label(gMain, SWT.NONE);
-        // gridData_16.widthHint = 17;
         final Label minMaskLabel = JOE_L_JobMainOptionForm_MinTasks.Control(new Label(gMain, SWT.NONE));
         minMaskLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
         tMintasks = JOE_T_JobMainOptionForm_MinTasks.Control(new Text(gMain, SWT.BORDER));
