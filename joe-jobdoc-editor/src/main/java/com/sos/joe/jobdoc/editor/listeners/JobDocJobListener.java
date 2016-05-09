@@ -81,7 +81,7 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
 
     public boolean isOrderJob() {
         String order = _job.getAttributeValue("order");
-        return order == null ? false : order.equalsIgnoreCase("yes");
+        return order == null ? false : "yes".equalsIgnoreCase(order);
     }
 
     public void setOrder(final String order) {

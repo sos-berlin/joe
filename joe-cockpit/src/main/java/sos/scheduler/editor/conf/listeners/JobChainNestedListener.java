@@ -237,7 +237,7 @@ public class JobChainNestedListener {
     }
 
     public boolean getRemoveFile() {
-        return Utils.getAttributeValue("remove", _node).equals("yes");
+        return "yes".equals(Utils.getAttributeValue("remove", _node));
     }
 
     public void applyNode(boolean isJobchainNode, String state, String job, String next, String error, boolean isFullnode) {

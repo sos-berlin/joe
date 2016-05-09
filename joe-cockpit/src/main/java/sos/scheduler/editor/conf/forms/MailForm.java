@@ -58,7 +58,7 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         mailOnSuccess.setText(listener.getValue("mail_on_success"));
         mailOnProcess.setText(listener.getValue("mail_on_process"));
         mailOnDelayAfterError.setText(listener.getValue("mail_on_delay_after_error"));
-        mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+        mailOnDelayAfterError.setEnabled("yes".equals(mailOnError.getText()) || "yes".equals(mailOnWarning.getText()));
         mailTo.setText(listener.getValue("log_mail_to"));
         mailCC.setText(listener.getValue("log_mail_cc"));
         mailBCC.setText(listener.getValue("log_mail_bcc"));

@@ -90,7 +90,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         if (_isOpen) {
             _sb.append(">\n");
-        } else if (!qName.equals("base") && !qName.equals("holiday")) {
+        } else if (!"base".equals(qName) && !"holiday".equals(qName)) {
             _sb.append("\n");
         } else {
             _sb.append("\n");

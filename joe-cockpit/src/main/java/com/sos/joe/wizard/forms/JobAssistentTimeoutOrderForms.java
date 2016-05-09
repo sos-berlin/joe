@@ -226,8 +226,9 @@ public class JobAssistentTimeoutOrderForms {
                 Utils.startCursor(shellTimeout);
                 JobAssistentRunOptionsForms runOP = new JobAssistentRunOptionsForms(dom, update, joblistener.getJob(), assistentType);
                 runOP.showRunOptionsForm();
-                if (jobname != null)
+                if (jobname != null) {
                     runOP.setJobname(jobname);
+                }
                 runOP.setBackUpJob(jobBackUp, jobForm);
                 closeDialog = true;
                 Utils.stopCursor(shellTimeout);

@@ -144,8 +144,9 @@ public class JobOptionsListener extends JOEListener {
     }
 
     public void selectSetbackDelay(int index) {
-        if (index >= 0 && index < _setbacks.size())
+        if (index >= 0 && index < _setbacks.size()) {
             _setback = (Element) _setbacks.get(index);
+        }
     }
 
     public void applySetbackDelay(String setbackCount, boolean maximum, String delay) {

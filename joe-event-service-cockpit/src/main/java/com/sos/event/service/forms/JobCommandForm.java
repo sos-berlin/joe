@@ -499,7 +499,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
                 cboEndstate.setItems(listener.getStates());
                 cboEndstate.setText(Utils.getAttributeValue("end_state", listener.getCommand()));
                 tPriority.setText(Utils.getAttributeValue("priority", listener.getCommand()));
-                bReplace.setSelection(Utils.getAttributeValue("replace", listener.getCommand()).equals("yes"));
+                bReplace.setSelection("yes".equals(Utils.getAttributeValue("replace", listener.getCommand())));
             } else {
                 tJob.setText(Utils.getAttributeValue("job", listener.getCommand()));
             }

@@ -71,7 +71,7 @@ public class JobEmailSettings extends FormBaseClass {
         mailOnError.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+                mailOnDelayAfterError.setEnabled("yes".equals(mailOnError.getText()) || "yes".equals(mailOnWarning.getText()));
                 objJobDataProvider.setValue("mail_on_error", mailOnError.getText());
             }
         });
@@ -84,7 +84,7 @@ public class JobEmailSettings extends FormBaseClass {
         mailOnWarning.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                mailOnDelayAfterError.setEnabled(mailOnWarning.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+                mailOnDelayAfterError.setEnabled("yes".equals(mailOnWarning.getText()) || "yes".equals(mailOnWarning.getText()));
                 objJobDataProvider.setValue("mail_on_warning", mailOnWarning.getText());
             }
         });
@@ -118,7 +118,7 @@ public class JobEmailSettings extends FormBaseClass {
         final Label mailOnDelayLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailOnDelayAfterError.Control(new Label(group4EMail, SWT.NONE));
         mailOnDelayAfterError = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnDelayAfterError.Control(new Combo(group4EMail, SWT.READ_ONLY));
         mailOnDelayAfterError.setItems(new String[] { "all", "first_only", "last_only", "first_and_last_only", "" });
-        mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+        mailOnDelayAfterError.setEnabled("yes".equals(mailOnError.getText()) || "yes".equals(mailOnWarning.getText()));
         mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -175,7 +175,7 @@ public class JobEmailSettings extends FormBaseClass {
         mailOnSuccess.setText(objJobDataProvider.getValue("mail_on_success"));
         mailOnProcess.setText(objJobDataProvider.getValue("mail_on_process"));
         mailOnDelayAfterError.setText(objJobDataProvider.getValue("mail_on_delay_after_error"));
-        mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+        mailOnDelayAfterError.setEnabled("yes".equals(mailOnError.getText()) || "yes".equals(mailOnWarning.getText()));
         mailTo.setText(objJobDataProvider.getValue("log_mail_to"));
         mailCC.setText(objJobDataProvider.getValue("log_mail_cc"));
         mailBCC.setText(objJobDataProvider.getValue("log_mail_bcc"));

@@ -304,7 +304,7 @@ public class JobSetback extends FormBaseClass {
             MainWindow.message(SOSJOEMessageCodes.JOE_M_ZeroNotAllowed.label(), SWT.ICON_INFORMATION);
         } else {
             for (int i = 0; i < setback.length; i++) {
-                if (setback[i].getText(1).equalsIgnoreCase("Yes") && sel != i) {
+                if ("Yes".equalsIgnoreCase(setback[i].getText(1)) && sel != i) {
                     maximum = maximum + 1;
                 }
             }

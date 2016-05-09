@@ -738,7 +738,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
+                butEnvApply.setEnabled(!"".equals(txtEnvName.getText().trim()));
             }
         });
         txtEnvName.addKeyListener(new KeyAdapter() {

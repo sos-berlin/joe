@@ -2,7 +2,6 @@ package sos.scheduler.editor.app;
 
 import org.eclipse.swt.custom.CTabItem;
 
-// import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 

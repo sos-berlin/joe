@@ -577,7 +577,7 @@ public class Utils {
         boolean loop = true;
         int counter = 0;
         while (loop) {
-            if (elem != null && elem.getParentElement() != null && !elem.getParentElement().getName().equalsIgnoreCase("spooler")) {
+            if (elem != null && elem.getParentElement() != null && !"spooler".equalsIgnoreCase(elem.getParentElement().getName())) {
                 if ("job".equalsIgnoreCase(elem.getName())) {
                     return elem;
                 } else if ("job".equalsIgnoreCase(elem.getParentElement().getName())) {
@@ -776,7 +776,7 @@ public class Utils {
                     onlyWarning = true;
                     XPath x0 = XPath.newInstance("//job[@name='" + name + "']");
                     Element e = (Element) x0.selectSingleNode(_dom.getDoc());
-                    boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
+                    boolean isOrder = "yes".equalsIgnoreCase(Utils.getAttributeValue("order", e));
                     if (!isOrder) {
                         XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
                         List listOfElement_3 = x3.selectNodes(_dom.getDoc());

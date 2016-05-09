@@ -110,7 +110,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         txtPassword.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                butEncrypt.setEnabled(!txtPassword.getText().equals(""));
+                butEncrypt.setEnabled(!"".equals(txtPassword.getText()));
             }
         });
         txtPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));

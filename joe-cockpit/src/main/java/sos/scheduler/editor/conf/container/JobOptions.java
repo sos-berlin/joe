@@ -1,8 +1,6 @@
 package sos.scheduler.editor.conf.container;
 
 import org.eclipse.swt.SWT;
-// import org.eclipse.swt.events.HelpEvent;
-// import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -116,8 +114,8 @@ public class JobOptions extends FormBaseClass {
                         && job != null
                         && job.getChild("run_time") != null
                         && (!sos.scheduler.editor.app.Utils.getAttributeValue("single_start", job.getChild("run_time")).isEmpty()
-                                || !sos.scheduler.editor.app.Utils.getAttributeValue("let_run", job.getChild("run_time")).isEmpty() || !sos.scheduler.editor.app.Utils.getAttributeValue(
-                                "once", job.getChild("run_time")).isEmpty())) {
+                                || !sos.scheduler.editor.app.Utils.getAttributeValue("let_run", job.getChild("run_time")).isEmpty() 
+                                || !sos.scheduler.editor.app.Utils.getAttributeValue("once", job.getChild("run_time")).isEmpty())) {
                     if (bOrderYes.isVisible()) {
                         _deleteRuntimeAttribute =
                                 Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB, "change_order");

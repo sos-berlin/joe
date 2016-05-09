@@ -811,14 +811,16 @@ public class Utils {
                 if (isOrder) {
                     XPath x = XPath.newInstance("//job[@name='" + name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");
                     List listOfElement = x.selectNodes(_dom.getDoc());
-                    if (!listOfElement.isEmpty())
+                    if (!listOfElement.isEmpty()) {
                         return "An order job [name=" + name + "] may not use single_start-, start_once- and "
                                 + "let_run attributes in Runtime Elements. Should these attributes be deleted?";
+                    }
                     XPath x2 = XPath.newInstance("//job[@name='" + name + "']/run_time//period[@let_run='yes' or @single_start]");
                     List listOfElement_2 = x2.selectNodes(_dom.getDoc());
-                    if (!listOfElement_2.isEmpty())
+                    if (!listOfElement_2.isEmpty()) {
                         return "An order job [name=" + name + "] may not use single_start-, start_once- and "
                                 + "let_run attributes in Runtime Elements. Should these attributes be deleted?";
+                    }
                 }
                 XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
                 List listOfElement_3 = x3.selectNodes(_dom.getDoc());

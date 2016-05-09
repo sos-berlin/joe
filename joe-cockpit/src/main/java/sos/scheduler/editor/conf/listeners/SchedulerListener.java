@@ -828,7 +828,7 @@ public class SchedulerListener {
                     return;
                 }
                 new DaysListener(objSchedulerDom, element, type, parent.getData(conItemDataKeyKEY) != null
-                        && parent.getData(conItemDataKeyKEY).equals("holidays_@_weekdays")).fillTreeDays(parent, expand);
+                        && "holidays_@_weekdays".equals(parent.getData(conItemDataKeyKEY))).fillTreeDays(parent, expand);
                 if (type == DaysListener.SPECIFIC_MONTHS) {
                     List l = element.getChildren("month");
                     for (int i = 0; i < l.size(); i++) {

@@ -107,8 +107,9 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             txtName.addModifyListener(new ModifyListener() {
 
                 public void modifyText(final ModifyEvent e) {
-                    if (!init && !existScheduleName())
+                    if (!init && !existScheduleName()) {
                         listener.setName(txtName.getText());
+                    }
                 }
             });
             txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
@@ -118,8 +119,9 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             txtTitle.addModifyListener(new ModifyListener() {
 
                 public void modifyText(final ModifyEvent e) {
-                    if (!init)
+                    if (!init) {
                         listener.setTitle(txtTitle.getText());
+                    }
                 }
             });
             txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
@@ -131,8 +133,9 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             cboCombo.addModifyListener(new ModifyListener() {
 
                 public void modifyText(final ModifyEvent e) {
-                    if (!init)
+                    if (!init) {
                         listener.setSubstitut(cboCombo.getText());
+                    }
                 }
             });
             cboCombo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));

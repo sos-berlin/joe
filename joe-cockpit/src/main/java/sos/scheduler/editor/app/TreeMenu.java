@@ -560,7 +560,7 @@ public class TreeMenu {
                 TreeData data = (TreeData) _tree.getSelection()[0].getData();
                 boolean override = false;
                 if (_tree.getSelection()[0].getData("override_attributes") != null) {
-                    override = _tree.getSelection()[0].getData("override_attributes").equals("true");
+                    override = "true".equals(_tree.getSelection()[0].getData("override_attributes"));
                 }
                 if (_tree.getSelection()[0].getData("key") instanceof String) {
                     String key = _tree.getSelection()[0].getData("key").toString();
@@ -572,7 +572,7 @@ public class TreeMenu {
                     }
                 }
                 if (_dom instanceof SchedulerDom && (((SchedulerDom) _dom).isDirectory() || ((SchedulerDom) _dom).isLifeElement())) {
-                    Utils.setChangedForDirectory(data.getElement(), ((SchedulerDom) _dom));
+                    Utils.setChangedForDirectory(data.getElement(), (SchedulerDom) _dom);
                 }
             }
         };
