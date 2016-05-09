@@ -119,7 +119,7 @@ public abstract class FTPDialog {
                 ftpProfilePicker.getProfileByName(ftpProfilePicker.getSelectedProfilename());
                 listener = ftpProfilePicker.getListener();
             }
-            ftpProfilePicker.addSelectionListener((new SelectionAdapter() {
+            ftpProfilePicker.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
                     try {
@@ -129,14 +129,14 @@ public abstract class FTPDialog {
                         listener.setCurrProfileName(ftpProfilePicker.getSelectedProfilename());
                         ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
                         initForm();
-                        butExecute.setEnabled(txtFilename.getText().length() > 0);
+                        butExecute.setEnabled(!txtFilename.getText().isEmpty());
                         _setEnabled(true);
                     } catch (Exception r) {
                         MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
                         new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                     }
                 }
-            }));
+            });
             butSite = new Button(schedulerGroup, SWT.NONE);
             butSite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             butSite.addSelectionListener(new SelectionAdapter() {

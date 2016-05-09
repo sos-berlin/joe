@@ -1,5 +1,6 @@
 package com.sos.joe.wizard.forms;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,6 +26,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 /** @author Mueruevet Oeksuez */
 public class JobAssistentTypeForms extends JobWizardBaseForm {
 
+    private static final Logger LOGGER = Logger.getLogger(JobAssistentTypeForms.class);
     private static final String TAG_NAME_JOB = "job";
     private boolean isStandaloneJob = true;
     private Button radStandalonejob = null;
@@ -74,9 +76,9 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
             final GridData gridDataOrderJob = new GridData(GridData.FILL, GridData.CENTER, true, true);
             gridDataOrderJob.heightHint = 48;
             radOrderjob.setLayoutData(gridDataOrderJob);
-            radOrderjob.setSelection(jobType != null && jobType.length() > 0 && jobType.equalsIgnoreCase("order"));
+            radOrderjob.setSelection(jobType != null && !jobType.isEmpty() && "order".equalsIgnoreCase(jobType));
             radStandalonejob = SOSJOEMessageCodes.JOE_B_JobAssistent_StandaloneJob.Control(new Button(jobGroup, SWT.RADIO));
-            radStandalonejob.setSelection(jobType == null || jobType.length() == 0 || jobType.equalsIgnoreCase("standalonejob"));
+            radStandalonejob.setSelection(jobType == null || jobType.isEmpty() || "standalonejob".equalsIgnoreCase(jobType));
             final GridData gridDataStandaloneJob = new GridData(GridData.CENTER, GridData.CENTER, true, true);
             radStandalonejob.setLayoutData(gridDataStandaloneJob);
             butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(jobTypeShell, SWT.NONE));
@@ -102,7 +104,6 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
 
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
-                    // dient nur für die Show Funktion
                     Element job = new Element(TAG_NAME_JOB);
                     Utils.setAttribute("order", isStandaloneJob ? "yes" : "no", job);
                     ErrorLog.message(jobTypeShell, Utils.getElementAsString(job), SWT.OK);
@@ -123,37 +124,36 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
                         isStandaloneJob = true;
                     }
                     if (jobBackUp != null) {
-                        int cont = ErrorLog.message(jobTypeShell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
-                                | SWT.YES | SWT.NO | SWT.CANCEL);
+                        int cont =
+                                ErrorLog.message(jobTypeShell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
+                                        | SWT.YES | SWT.NO | SWT.CANCEL);
                         if (cont == SWT.CANCEL) {
                             return;
                         } else if (cont != SWT.YES) {
-                            JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(new JobListener(dom, jobBackUp, update), null, assistentType);
-                            importJobs.showAllImportJobs((Utils.getAttributeValue("order", jobBackUp).equals("yes") ? "order" : "standalonejob"));
+                            JobAssistentImportJobsForm importJobs =
+                                    new JobAssistentImportJobsForm(new JobListener(dom, jobBackUp, update), null, assistentType);
+                            importJobs.showAllImportJobs("yes".equals(Utils.getAttributeValue("order", jobBackUp)) ? "order" : "standalonejob");
                             jobTypeShell.dispose();
                             return;
                         }
                     }
                     JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
-                    importJobs.showAllImportJobs((isStandaloneJob ? "standalonejob" : "order"));
+                    importJobs.showAllImportJobs(isStandaloneJob ? "standalonejob" : "order");
                     Utils.stopCursor(jobTypeShell);
                     jobTypeShell.dispose();
                 }
             });
             Utils.createHelpButton(composite, "JOE_M_JobAssistentTypeForms_Help.label", jobTypeShell);
             java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            jobTypeShell.setBounds((screen.width - jobTypeShell.getBounds().width) / 2, (screen.height - jobTypeShell.getBounds().height) / 2, jobTypeShell.getBounds().width, jobTypeShell.getBounds().height);
+            jobTypeShell.setBounds((screen.width - jobTypeShell.getBounds().width) / 2, (screen.height - jobTypeShell.getBounds().height) / 2,
+                    jobTypeShell.getBounds().width, jobTypeShell.getBounds().height);
             jobTypeShell.open();
             jobTypeShell.layout();
             jobTypeShell.pack();
         } catch (Exception e) {
             new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-            System.err.println(SOSJOEMessageCodes.JOE_E_0002.params("JobAssistentTypeForms.showTypeForms()") + e.getMessage());
+            LOGGER.error(SOSJOEMessageCodes.JOE_E_0002.params("JobAssistentTypeForms.showTypeForms()") + e.getMessage(), e);
         }
-    }
-
-    private void setToolTipText() {
-        //
     }
 
     private void close() {

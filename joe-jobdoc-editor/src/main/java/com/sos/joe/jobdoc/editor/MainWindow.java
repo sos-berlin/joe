@@ -80,7 +80,8 @@ public class MainWindow implements IEditorAdapter {
             @I18NMessage(value = "Konfiguration", locale = "de", explanation = "Configuration"),
             @I18NMessage(value = "Configuration", locale = "es", explanation = "Configuration"),
             @I18NMessage(value = "Configuration", locale = "fr", explanation = "Configuration"),
-            @I18NMessage(value = "Configuration", locale = "it", explanation = "Configuration") }, msgnum = "MENU_Configuration", msgurl = "Menu-Configuration")
+            @I18NMessage(value = "Configuration", locale = "it", explanation = "Configuration") }, msgnum = "MENU_Configuration",
+            msgurl = "Menu-Configuration")
     public static final String MENU_Configuration = "MENU_Configuration";
     @I18NMessages(value = { @I18NMessage("New"), @I18NMessage(value = "New Object", locale = "en_UK", explanation = "New"),
             @I18NMessage(value = "Neues Objekt erstellen", locale = "de", explanation = "New"),
@@ -92,24 +93,28 @@ public class MainWindow implements IEditorAdapter {
             @I18NMessage(value = "Dokumentation bearbeiten", locale = "de", explanation = "Dokumentation eines Job Templates bearbeiten"),
             @I18NMessage(value = "Modify Documentation", locale = "es", explanation = "Modify Documentation of a job template"),
             @I18NMessage(value = "Modify Documentation", locale = "fr", explanation = "Modify Documentation of a job template"),
-            @I18NMessage(value = "Modify Documentation", locale = "it", explanation = "Modify Documentation of a job template") }, msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
+            @I18NMessage(value = "Modify Documentation", locale = "it", explanation = "Modify Documentation of a job template") },
+            msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
     public static final String MENU_Documentation = "MENU_Documentation";
     @I18NMessages(value = { @I18NMessage("EventHandler"), @I18NMessage(value = "xEventHandler", locale = "en_UK", explanation = "EventHandler"),
             @I18NMessage(value = "Ereignis-Behandlung", locale = "de", explanation = "EventHandler"),
             @I18NMessage(value = "EventHandler", locale = "es", explanation = "EventHandler"),
             @I18NMessage(value = "EventHandler", locale = "fr", explanation = "EventHandler"),
-            @I18NMessage(value = "EventHandler", locale = "it", explanation = "EventHandler") }, msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")
+            @I18NMessage(value = "EventHandler", locale = "it", explanation = "EventHandler") }, msgnum = "MENU_EventHandler",
+            msgurl = "Menu-EventHandler")
     public static final String MENU_EventHandler = "MENU_EventHandler";
     @I18NMessages(value = { @I18NMessage("HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "en_UK", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolder-Objekt", locale = "de", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "es", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "fr", explanation = "HotFolderObject"),
-            @I18NMessage(value = "HotFolderObject", locale = "it", explanation = "HotFolderObject") }, msgnum = "MENU_HotFolderObject", msgurl = "Menu-HotFolderObject")
+            @I18NMessage(value = "HotFolderObject", locale = "it", explanation = "HotFolderObject") }, msgnum = "MENU_HotFolderObject",
+            msgurl = "Menu-HotFolderObject")
     public static final String MENU_HotFolderObject = "MENU_HotFolderObject";
     @I18NMessages(value = { @I18NMessage("Job"), @I18NMessage(value = "Job", locale = "en_UK", explanation = "Job"),
             @I18NMessage(value = "Job", locale = "de", explanation = "Job"), @I18NMessage(value = "Job", locale = "es", explanation = "Job"),
-            @I18NMessage(value = "Job", locale = "fr", explanation = "Job"), @I18NMessage(value = "Job", locale = "it", explanation = "Job") }, msgnum = "MENU_Job", msgurl = "Menu-Job")
+            @I18NMessage(value = "Job", locale = "fr", explanation = "Job"), @I18NMessage(value = "Job", locale = "it", explanation = "Job") },
+            msgnum = "MENU_Job", msgurl = "Menu-Job")
     public static final String MENU_Job = "MENU_Job";
     @I18NMessages(value = { @I18NMessage("JobChain"), @I18NMessage(value = "JobChain", locale = "en_UK", explanation = "JobChain"),
             @I18NMessage(value = "Job-Kette", locale = "de", explanation = "Job-Kette"),
@@ -121,7 +126,8 @@ public class MainWindow implements IEditorAdapter {
             @I18NMessage(value = "Prozess Klasse", locale = "de", explanation = "ProcessClass"),
             @I18NMessage(value = "ProcessClass", locale = "es", explanation = "ProcessClass"),
             @I18NMessage(value = "ProcessClass", locale = "fr", explanation = "ProcessClass"),
-            @I18NMessage(value = "ProcessClass", locale = "it", explanation = "ProcessClass") }, msgnum = "MENU_ProcessClass", msgurl = "Menu-ProcessClass")
+            @I18NMessage(value = "ProcessClass", locale = "it", explanation = "ProcessClass") }, msgnum = "MENU_ProcessClass",
+            msgurl = "Menu-ProcessClass")
     public static final String MENU_ProcessClass = "MENU_ProcessClass";
     @I18NMessages(value = { @I18NMessage("Lock"), @I18NMessage(value = "Lock", locale = "en_UK", explanation = "Lock"),
             @I18NMessage(value = "Sperre", locale = "de", explanation = "Sperren verwalten bzw anlegen"),
@@ -468,6 +474,7 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
         MenuItem pSaveAs = new MenuItem(mFile, SWT.PUSH);
@@ -482,6 +489,7 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
         new MenuItem(mFile, SWT.SEPARATOR);
@@ -503,6 +511,7 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
+                //
             }
         });
         MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
@@ -516,10 +525,12 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
+                //
             }
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
         MenuItem pHelp = new MenuItem(submenu1, SWT.PUSH);
@@ -528,11 +539,12 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-
+                //
             }
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
         MenuItem pAbout = new MenuItem(submenu1, SWT.PUSH);
@@ -541,10 +553,12 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
+                //
             }
 
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
+                //
             }
         });
         submenuItem3.setMenu(submenu1);
@@ -570,11 +584,6 @@ public class MainWindow implements IEditorAdapter {
 
     public static Shell getSShell() {
         return sShell;
-    }
-
-    @SuppressWarnings("unused")
-    private String getMsg(final String pstrKey) {
-        return Messages.getString(pstrKey, EMPTY);
     }
 
     public void setSaveStatus() {
@@ -672,6 +681,7 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
         addDropDown(butNew, menu);
@@ -697,6 +707,7 @@ public class MainWindow implements IEditorAdapter {
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
     }

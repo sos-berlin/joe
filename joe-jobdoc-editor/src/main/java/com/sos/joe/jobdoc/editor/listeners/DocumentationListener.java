@@ -87,7 +87,8 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
         treeFillDatabaseResources(item2, desc.getChild("resources", _dom.getNamespace()));
         item = new TreeItem(tree, SWT.NONE);
         item.setText("Configuration");
-        item.setData(new TreeData(JOEConstants.DOC_CONFIGURATION, desc.getChild("configuration", _dom.getNamespace()), Options.getDocHelpURL("configuration")));
+        item.setData(new TreeData(JOEConstants.DOC_CONFIGURATION, desc.getChild("configuration", _dom.getNamespace()),
+                Options.getDocHelpURL("configuration")));
         item2 = new TreeItem(item, SWT.NONE);
         item2.setText("Parameters");
         item2.setData(new TreeData(JOEConstants.DOC_PARAMS, desc.getChild("configuration", _dom.getNamespace()), Options.getDocHelpURL("parameters")));
@@ -101,11 +102,13 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
         _profiles = new TreeItem(item2, SWT.NONE);
         item2.setExpanded(true);
         _profiles.setText("Profiles");
-        _profiles.setData(new TreeData(JOEConstants.DOC_PROFILES, desc.getChild("configuration", _dom.getNamespace()), Options.getDocHelpURL("profiles")));
+        _profiles.setData(new TreeData(JOEConstants.DOC_PROFILES, desc.getChild("configuration", _dom.getNamespace()),
+                Options.getDocHelpURL("profiles")));
         fillProfiles();
         _connections = new TreeItem(item2, SWT.NONE);
         _connections.setText("Connections");
-        _connections.setData(new TreeData(JOEConstants.DOC_CONNECTIONS, desc.getChild("configuration", _dom.getNamespace()), Options.getDocHelpURL("connections")));
+        _connections.setData(new TreeData(JOEConstants.DOC_CONNECTIONS, desc.getChild("configuration", _dom.getNamespace()),
+                Options.getDocHelpURL("connections")));
         fillConnections();
         item = new TreeItem(tree, SWT.NONE);
         item.setText("Documentation");

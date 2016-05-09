@@ -107,9 +107,11 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
     }
 
     private void createCombo() {
+        //
     }
 
     private void createComposite() {
+        //
     }
 
     private void createSashForm() {
@@ -175,8 +177,9 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 
             public void mouseDoubleClick(final MouseEvent e) {
                 if (tCommands.getSelectionCount() > 0) {
-                    String name = tCommands.getSelection()[0].getText(0) + ": " + tCommands.getSelection()[0].getText(1)
-                            + tCommands.getSelection()[0].getText(2);
+                    String name =
+                            tCommands.getSelection()[0].getText(0) + ": " + tCommands.getSelection()[0].getText(1)
+                                    + tCommands.getSelection()[0].getText(2);
                     ContextMenu.goTo(name, _dom, JOEConstants.JOB_COMMAND_EXIT_CODES);
                 }
             }
@@ -222,6 +225,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
     }
 
     private void createTable() {
+        //
     }
 
     private void createGroup3() {
@@ -229,6 +233,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
     }
 
     private void addParam() {
+        //
     }
 
     private void addJob() {

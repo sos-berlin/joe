@@ -20,24 +20,23 @@ import com.sos.VirtualFileSystem.common.SOSFileEntry;
 
 public class FTPProfileJadeClient {
 
-    public ISOSVfsFileTransfer getFtpClient() {
-        return ftpClient;
-    }
-
-    private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS = "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
-
     protected ISOSVFSHandler objVFS = null;
     protected ISOSVfsFileTransfer ftpClient = null;
     protected enuTransferTypes enuSourceTransferType = enuTransferTypes.local;
     protected enuTransferTypes enuTargetTransferType = enuTransferTypes.local;
+    private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS =
+            "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
     private JADEOptions jadeOptions;
-    SOSConnection2OptionsAlternate virtuelFileSystemOptions;
     private FTPProfile ftpProfile = null;
+    SOSConnection2OptionsAlternate virtuelFileSystemOptions;
+
+    public ISOSVfsFileTransfer getFtpClient() {
+        return ftpClient;
+    }
 
     public FTPProfileJadeClient(FTPProfile ftpProfile_) {
         super();
         this.ftpProfile = ftpProfile_;
-
     }
 
     public void disconnect() throws Exception {
@@ -57,21 +56,17 @@ public class FTPProfileJadeClient {
         if (objVFS == null) {
             jadeOptions = new JADEOptions();
             enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
-
             virtuelFileSystemOptions = jadeOptions.getConnectionOptions().Source();
-
             virtuelFileSystemOptions.host.Value(ftpProfile.getHost());
             virtuelFileSystemOptions.port.Value(ftpProfile.getPort());
             virtuelFileSystemOptions.user.Value(ftpProfile.getUser());
             virtuelFileSystemOptions.password.Value(ftpProfile.getDecryptetPassword());
             virtuelFileSystemOptions.protocol.Value(enuSourceTransferType);
             virtuelFileSystemOptions.passive_mode.value(ftpProfile.isPassiveMode());
-
-            if (!ftpProfile.getAuthMethod().equals("")) {
+            if (!"".equals(ftpProfile.getAuthMethod())) {
                 virtuelFileSystemOptions.auth_method.Value(ftpProfile.getAuthMethod());
                 virtuelFileSystemOptions.auth_file.Value(ftpProfile.getAuthFile());
             }
-
             if (ftpProfile.getUseProxy()) {
                 virtuelFileSystemOptions.proxy_host.Value(ftpProfile.getProxyServer());
                 virtuelFileSystemOptions.proxy_password.Value(ftpProfile.getProxyPassword());
@@ -79,7 +74,6 @@ public class FTPProfileJadeClient {
                 virtuelFileSystemOptions.proxy_protocol.Value(ftpProfile.getProxyProtocol());
                 virtuelFileSystemOptions.proxy_port.Value(ftpProfile.getProxyPort());
             }
-
             objVFS = VFSFactory.getHandler(enuSourceTransferType);
             ftpClient = (ISOSVfsFileTransfer) objVFS;
             objVFS.Connect(virtuelFileSystemOptions);
@@ -107,19 +101,15 @@ public class FTPProfileJadeClient {
 
     public HashMap<String, SOSFileEntry> getDirectoryContent(String remoteDir) throws Exception {
         connect();
-
-        if (remoteDir.equals("")) {
+        if ("".equals(remoteDir)) {
             remoteDir = "/";
         }
-
         ftpClient.nList(remoteDir);
         SOSFileEntries sosFileList = ftpClient.getSOSFileEntries();
-
         HashMap<String, SOSFileEntry> h = new HashMap<String, SOSFileEntry>();
-
         for (SOSFileEntry sosFileListEntry : sosFileList) {
             String filename = sosFileListEntry.getFilename();
-            if (!filename.equals(".")) {
+            if (!".".equals(filename)) {
                 h.put(filename, sosFileListEntry);
             }
         }
@@ -135,7 +125,6 @@ public class FTPProfileJadeClient {
             if (sosFileList.size() == 0) {
                 ftpClient.rmdir(sosFileEntry.getFilename());
             }
-
         } else {
             ftpClient.delete(sosFileEntry.getFullPath());
         }
@@ -145,18 +134,16 @@ public class FTPProfileJadeClient {
         connect();
         ftpClient.changeWorkingDirectory(remoteDir);
         ftpClient.rename(oldFilename, newFilename);
-
         // if this a job chain configuration file, also copy the configuration
         // parameters file
         String jobChainNodeParameterOldFilename = getJobChainNodeParameterFilename(oldFilename);
-        if (jobChainNodeParameterOldFilename.length() > 0) {
+        if (!jobChainNodeParameterOldFilename.isEmpty()) {
             String jobChainNodeParameterNewFilename = getJobChainNodeParameterFilename(newFilename);
             try {
                 ftpClient.rename(jobChainNodeParameterOldFilename, jobChainNodeParameterNewFilename);
             } catch (Exception e) {
             }
         }
-
     }
 
     public void removeFile(String dir, String filename) throws Exception {
@@ -168,19 +155,15 @@ public class FTPProfileJadeClient {
 
     public void removeDir(String dir) throws Exception {
         connect();
-
         String folder = new File(dir).getName();
         String path = new File(dir).getParent();
         ftpClient.changeWorkingDirectory(path);
-
         ftpClient.rmdir(folder);
     }
 
     public void copyLocalFileToRemote(String localDir, String targetDir, String filename) throws Exception {
         jadeOptions = new JADEOptions();
-
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-
         jadeOptions.TargetDir.Value(targetDir);
         jadeOptions.Target().host.Value(ftpProfile.getHost());
         jadeOptions.file_path.Value(filename);
@@ -188,33 +171,26 @@ public class FTPProfileJadeClient {
         jadeOptions.Target().protocol.Value(enuSourceTransferType);
         jadeOptions.Target().user.Value(ftpProfile.getUser());
         jadeOptions.Target().password.Value(ftpProfile.getDecryptetPassword());
-
         if (ftpProfile.getUseProxy()) {
-
             jadeOptions.Target().proxy_host.Value(ftpProfile.getProxyServer());
             jadeOptions.Target().proxy_user.Value(ftpProfile.getProxyUser());
             jadeOptions.Target().proxy_password.Value(ftpProfile.getProxyPassword());
             jadeOptions.Target().proxy_protocol.Value(ftpProfile.getProxyProtocol());
             jadeOptions.Target().proxy_port.Value(ftpProfile.getProxyPort());
         }
-
-        if (!ftpProfile.getAuthMethod().equals("")) {
+        if (!"".equals(ftpProfile.getAuthMethod())) {
             jadeOptions.Target().auth_method.Value(ftpProfile.getAuthMethod());
             jadeOptions.Target().auth_file.Value(ftpProfile.getAuthFile());
         }
-
         jadeOptions.SourceDir.Value(localDir);
         jadeOptions.Source().protocol.Value("local");
-
         jadeOptions.operation.Value(enuJadeOperations.copy);
-
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
         jadeEngine.Execute();
-
         // if this a job chain configuration file, also copy the configuration
         // parameters file
         String jobChainNodeParameterFilename = getJobChainNodeParameterFilename(filename);
-        if (jobChainNodeParameterFilename.length() > 0) {
+        if (!jobChainNodeParameterFilename.isEmpty()) {
             jadeOptions.force_files.value(false);
             jadeOptions.file_path.Value(jobChainNodeParameterFilename);
             try {
@@ -222,7 +198,6 @@ public class FTPProfileJadeClient {
             } catch (Exception e) {
             }
         }
-
         jadeEngine.Logout();
     }
 
@@ -230,41 +205,34 @@ public class FTPProfileJadeClient {
         JADEOptions jadeOptions = new JADEOptions();
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.protocol.Value(enuSourceTransferType);
-
         jadeOptions.getConnectionOptions().Source().protocol.Value(enuSourceTransferType);
         jadeOptions.getConnectionOptions().Source().host.Value(ftpProfile.getHost());
         jadeOptions.getConnectionOptions().Source().port.Value(ftpProfile.getPort());
         jadeOptions.getConnectionOptions().Source().user.Value(ftpProfile.getUser());
         jadeOptions.getConnectionOptions().Source().password.Value(ftpProfile.getDecryptetPassword());
         jadeOptions.getConnectionOptions().Source().Directory.Value(remoteDir);
-        if (!ftpProfile.getAuthMethod().equals("")) {
+        if (!"".equals(ftpProfile.getAuthMethod())) {
             jadeOptions.getConnectionOptions().Source().auth_method.Value(ftpProfile.getAuthMethod());
             jadeOptions.getConnectionOptions().Source().auth_file.Value(ftpProfile.getAuthFile());
         }
-
         jadeOptions.Source().protocol.Value(enuSourceTransferType);
         jadeOptions.Source().host.Value(ftpProfile.getHost());
         jadeOptions.Source().port.Value(ftpProfile.getPort());
         jadeOptions.Source().user.Value(ftpProfile.getUser());
         jadeOptions.Source().password.Value(ftpProfile.getDecryptetPassword());
         jadeOptions.Source().Directory.Value(remoteDir);
-
         if (ftpProfile.getUseProxy()) {
-
             jadeOptions.Source().proxy_host.Value(ftpProfile.getProxyServer());
             jadeOptions.Source().proxy_user.Value(ftpProfile.getProxyUser());
             jadeOptions.Source().proxy_password.Value(ftpProfile.getProxyPassword());
             jadeOptions.Source().proxy_protocol.Value(ftpProfile.getProxyProtocol());
             jadeOptions.Source().proxy_port.Value(ftpProfile.getProxyPort());
-
         }
-
-        if (!ftpProfile.getAuthMethod().equals("")) {
+        if (!"".equals(ftpProfile.getAuthMethod())) {
             jadeOptions.Source().auth_method.Value(ftpProfile.getAuthMethod());
             jadeOptions.Source().auth_file.Value(ftpProfile.getAuthFile());
 
         }
-
         jadeOptions.file_path.Value("");
         jadeOptions.file_spec.Value(REGEX_FOR_JOBSCHEDULER_OBJECTS);
         jadeOptions.SourceDir.Value(remoteDir);
@@ -272,19 +240,15 @@ public class FTPProfileJadeClient {
         jadeOptions.ErrorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
         jadeEngine.Execute();
-
         jadeEngine.Logout();
     }
 
     public void copyLocalFilesToRemote(String sourceDir, String targetDir, String sourceHotFolder) throws Exception {
         jadeOptions = new JADEOptions();
         String remoteDir = targetDir + "/" + sourceHotFolder;
-
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-
         jadeOptions.SourceDir.Value(sourceDir);
         jadeOptions.Source().protocol.Value("local");
-
         jadeOptions.TargetDir.Value(remoteDir);
         jadeOptions.createFoldersOnTarget.value(true);
         jadeOptions.Target().host.Value(ftpProfile.getHost());
@@ -293,41 +257,31 @@ public class FTPProfileJadeClient {
         jadeOptions.Target().protocol.Value(enuSourceTransferType);
         jadeOptions.Target().user.Value(ftpProfile.getUser());
         jadeOptions.Target().password.Value(ftpProfile.getDecryptetPassword());
-
         if (ftpProfile.getUseProxy()) {
-
             jadeOptions.Target().proxy_host.Value(ftpProfile.getProxyServer());
             jadeOptions.Target().proxy_user.Value(ftpProfile.getProxyUser());
             jadeOptions.Target().proxy_password.Value(ftpProfile.getProxyPassword());
             jadeOptions.Target().proxy_protocol.Value(ftpProfile.getProxyProtocol());
             jadeOptions.Target().proxy_port.Value(ftpProfile.getProxyPort());
-
         }
-
-        if (!ftpProfile.getAuthMethod().equals("")) {
+        if (!"".equals(ftpProfile.getAuthMethod())) {
             jadeOptions.Target().auth_method.Value(ftpProfile.getAuthMethod());
             jadeOptions.Target().auth_file.Value(ftpProfile.getAuthFile());
         }
-
         try {
             removeRemoteHotFolderFiles(remoteDir);
         } catch (Exception e) {
         }
-
         jadeOptions.operation.Value(enuJadeOperations.copy);
         jadeOptions.ErrorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
         jadeEngine.Execute();
-
         jadeEngine.Logout();
     }
 
     public File copyRemoteFileToLocal(SOSFileEntry sosFileEntry) throws Exception {
-
         jadeOptions = new JADEOptions();
-
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-
         jadeOptions.SourceDir.Value(sosFileEntry.getParentPath());
         jadeOptions.Source().host.Value(ftpProfile.getHost());
         jadeOptions.file_path.Value(sosFileEntry.getFilename());
@@ -335,35 +289,27 @@ public class FTPProfileJadeClient {
         jadeOptions.Source().protocol.Value(enuSourceTransferType);
         jadeOptions.Source().user.Value(ftpProfile.getUser());
         jadeOptions.Source().password.Value(ftpProfile.getDecryptetPassword());
-
         if (ftpProfile.getUseProxy()) {
-
             jadeOptions.Source().proxy_host.Value(ftpProfile.getProxyServer());
             jadeOptions.Source().proxy_user.Value(ftpProfile.getProxyUser());
             jadeOptions.Source().proxy_password.Value(ftpProfile.getProxyPassword());
             jadeOptions.Source().proxy_protocol.Value(ftpProfile.getProxyProtocol());
             jadeOptions.Source().proxy_port.Value(ftpProfile.getProxyPort());
         }
-
-        if (!ftpProfile.getAuthMethod().equals("")) {
+        if (!"".equals(ftpProfile.getAuthMethod())) {
             jadeOptions.Source().auth_method.Value(ftpProfile.getAuthMethod());
             jadeOptions.Source().auth_file.Value(ftpProfile.getAuthFile());
         }
-
         jadeOptions.TargetDir.Value(ftpProfile.getLocaldirectory());
         jadeOptions.Target().protocol.Value("local");
-
         jadeOptions.operation.Value(enuJadeOperations.copy);
-
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
-
         jadeEngine.Execute();
         // if this a job chain configuration file, also copy the configuration
         // parameters file
         String jobChainNodeParameterFilename = getJobChainNodeParameterFilename(sosFileEntry.getFilename());
-        if (jobChainNodeParameterFilename.length() > 0) {
-            jadeOptions.force_files.value(false); // Hat leider keine Funktion.
-                                                  // Siehe JADE-268
+        if (!jobChainNodeParameterFilename.isEmpty()) {
+            jadeOptions.force_files.value(false);
             jadeOptions.ErrorOnNoDataFound.value(false);
             jadeOptions.file_path.Value(jobChainNodeParameterFilename);
             try {
@@ -371,16 +317,12 @@ public class FTPProfileJadeClient {
             } catch (Exception e) {
             }
         }
-
         jadeEngine.Logout();
         return new File(ftpProfile.getLocaldirectory(), sosFileEntry.getFilename());
-
     }
 
     private void removeLocalHotFolderFiles(String sourceDir) throws Exception {
-
         jadeOptions = new JADEOptions();
-
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.protocol.Value("local");
         jadeOptions.getConnectionOptions().Source().protocol.Value("local");
@@ -391,25 +333,19 @@ public class FTPProfileJadeClient {
         jadeOptions.ErrorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
         jadeEngine.Execute();
-
         jadeEngine.Logout();
     }
 
     public ArrayList<String> copyRemoteFilesToLocal(String sourceDir, String soureHotFolder) throws Exception {
-
         jadeOptions = new JADEOptions();
-
         String remoteDir = "";
         remoteDir = sourceDir + "/" + soureHotFolder;
         String localDir = ftpProfile.getLocaldirectory() + "/" + soureHotFolder;
-
         try {
             removeLocalHotFolderFiles(localDir);
         } catch (Exception e) {
         }
-
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-
         jadeOptions.SourceDir.Value(remoteDir);
         jadeOptions.Source().host.Value(ftpProfile.getHost());
         jadeOptions.file_spec.Value(REGEX_FOR_JOBSCHEDULER_OBJECTS);
@@ -417,38 +353,31 @@ public class FTPProfileJadeClient {
         jadeOptions.Source().protocol.Value(enuSourceTransferType);
         jadeOptions.Source().user.Value(ftpProfile.getUser());
         jadeOptions.Source().password.Value(ftpProfile.getDecryptetPassword());
-
         if (ftpProfile.getUseProxy()) {
-
             jadeOptions.Source().proxy_host.Value(ftpProfile.getProxyServer());
             jadeOptions.Source().proxy_user.Value(ftpProfile.getProxyUser());
             jadeOptions.Source().proxy_password.Value(ftpProfile.getProxyPassword());
             jadeOptions.Source().proxy_protocol.Value(ftpProfile.getProxyProtocol());
             jadeOptions.Source().proxy_port.Value(ftpProfile.getProxyPort());
         }
-
-        if (!ftpProfile.getAuthMethod().equals("")) {
+        if (!"".equals(ftpProfile.getAuthMethod())) {
             jadeOptions.Source().auth_method.Value(ftpProfile.getAuthMethod());
             jadeOptions.Source().auth_file.Value(ftpProfile.getAuthFile());
         }
-
         jadeOptions.TargetDir.Value(localDir);
         jadeOptions.createFoldersOnTarget.value(true);
         jadeOptions.Target().protocol.Value("local");
-
         jadeOptions.operation.Value(enuJadeOperations.copy);
         jadeOptions.ErrorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
         jadeEngine.Execute();
-
         ArrayList<String> resultList = new ArrayList<String>();
         SOSFileList sosFileList = jadeEngine.getFileList();
         for (SOSFileListEntry sosFileListEntry : sosFileList.List()) {
             resultList.add(sosFileListEntry.TargetFileName());
         }
         jadeEngine.Logout();
-
         return resultList;
-
     }
+
 }

@@ -51,4 +51,5 @@ public interface IContainer {
     public ActionsForm newActions();
 
     public void setTitleText(String strT);
+
 }

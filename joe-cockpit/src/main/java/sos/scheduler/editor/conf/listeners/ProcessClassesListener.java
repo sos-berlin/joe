@@ -2,7 +2,6 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListResourceBundle;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -11,11 +10,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.command.RemoteScheduler;
 import sos.scheduler.editor.app.Utils;
 
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
-import com.trilead.ssh2.channel.RemoteX11AcceptThread;
 
 public class ProcessClassesListener {
 
@@ -33,12 +30,10 @@ public class ProcessClassesListener {
     public ProcessClassesListener(SchedulerDom dom, Element config) throws JDOMException {
         _dom = dom;
         _config = config;
-
         _processClasses = _config.getChild("process_classes");
         if (_processClasses != null) {
             _listProcessClasses = _processClasses.getChildren("process_class");
         }
-
     }
 
     private void initClasses() {
@@ -52,16 +47,13 @@ public class ProcessClassesListener {
     }
 
     private void initRemoteScheduler() {
-
         if (_class.getChild("remote_schedulers") == null) {
             _remoteSchedulers = new Element("remote_schedulers");
             _class.addContent(_remoteSchedulers);
         } else {
             _remoteSchedulers = _class.getChild("remote_schedulers");
         }
-
         _listRemoteScheduler = _remoteSchedulers.getChildren("remote_scheduler");
-
     }
 
     public void fillProcessClassesTable(Table tableProcessClasses) {
@@ -85,12 +77,10 @@ public class ProcessClassesListener {
     }
 
     public void fillRemoteSchedulerTable(Table tableRemoteScheduler) {
-
         initRemoteScheduler();
-
         tableRemoteScheduler.removeAll();
         if (_listRemoteScheduler != null) {
-            if (_listRemoteScheduler.size() == 0) {
+            if (_listRemoteScheduler.isEmpty()) {
                 _class.removeChild("remote_schedulers");
             }
             for (Iterator it = _listRemoteScheduler.iterator(); it.hasNext();) {
@@ -99,7 +89,6 @@ public class ProcessClassesListener {
                 String url = Utils.getAttributeValue("remote_scheduler", e);
                 String heartbeatTimeout = Utils.getAttributeValue("http_heartbeat_timeout", e);
                 String heartbeatPeriod = Utils.getAttributeValue("http_heartbeat_period", e);
-
                 item.setText(0, url);
                 item.setText(1, heartbeatTimeout);
                 item.setText(2, heartbeatPeriod);
@@ -122,8 +111,9 @@ public class ProcessClassesListener {
 
     public String getProcessClass() {
         String name = Utils.getAttributeValue("name", _class);
-        if (name.equals(CATCHALL))
+        if (name.equals(CATCHALL)) {
             name = "";
+        }
         return name;
     }
 
@@ -164,15 +154,15 @@ public class ProcessClassesListener {
     }
 
     public boolean isIgnoreProcessClasses() {
-        if (_processClasses != null)
+        if (_processClasses != null) {
             return Utils.getAttributeValue("ignore", _processClasses).equals("yes") ? true : false;
-        else
+        } else {
             return false;
+        }
     }
 
     public boolean isReplace() {
-        // default ist true daher auch gleich leerstring
-        return Utils.getAttributeValue("replace", _class).equals("") || Utils.getBooleanValue("replace", _class);
+        return "".equals(Utils.getAttributeValue("replace", _class)) || Utils.getBooleanValue("replace", _class);
     }
 
     public void newProcessClass() {
@@ -184,8 +174,7 @@ public class ProcessClassesListener {
         _dom.setChangedForDirectory("process_class", Utils.getAttributeValue("name", _class), SchedulerDom.DELETE);
         Utils.setAttribute("name", processClass, _class, _dom);
         Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
-
-        if (url.trim().length() > 0) {
+        if (!url.trim().isEmpty()) {
             Utils.setAttribute("remote_scheduler", url.trim(), _class, _dom);
         } else {
             _class.removeAttribute("remote_scheduler");
@@ -212,7 +201,6 @@ public class ProcessClassesListener {
             if (!select.equals(REMOTE_SCHEDULER_DEFAULT_SELECT)) {
                 Utils.setAttribute("select", select, _remoteSchedulers, _dom);
             }
-
         }
         for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
             TableItem item = tableRemoteScheduler.getItems()[i];
@@ -220,27 +208,24 @@ public class ProcessClassesListener {
             String url = item.getText(0);
             String heartbeatTimeout = item.getText(1);
             String heartbeatPeriod = item.getText(2);
-
-            if (url.trim().length() > 0) {
+            if (!url.trim().isEmpty()) {
                 Utils.setAttribute("remote_scheduler", url.trim(), _remoteScheduler, _dom);
             }
-            if (heartbeatTimeout.trim().length() > 0) {
+            if (!heartbeatTimeout.trim().isEmpty()) {
                 Utils.setAttribute("http_heartbeat_timeout", heartbeatTimeout.trim(), _remoteScheduler, _dom);
             }
-            if (heartbeatPeriod.trim().length() > 0) {
+            if (!heartbeatPeriod.trim().isEmpty()) {
                 Utils.setAttribute("http_heartbeat_period", heartbeatPeriod.trim(), _remoteScheduler, _dom);
             }
-
             _listRemoteScheduler.add(_remoteScheduler);
         }
-
     }
 
     public void removeProcessClass(int index) {
         if (index >= 0 && index < _listProcessClasses.size()) {
             String processClass = Utils.getAttributeValue("name", (Element) _listProcessClasses.get(index));
             _listProcessClasses.remove(index);
-            if (_listProcessClasses.size() == 0 && !isIgnoreProcessClasses()) {
+            if (_listProcessClasses.isEmpty() && !isIgnoreProcessClasses()) {
                 _config.removeChild("process_classes");
                 _processClasses = null;
                 _listProcessClasses = null;
@@ -255,10 +240,12 @@ public class ProcessClassesListener {
         if (_listProcessClasses != null) {
             for (Iterator it = _listProcessClasses.iterator(); it.hasNext();) {
                 Element e = (Element) it.next();
-                if (Utils.getAttributeValue("name", e).equals(name))
+                if (Utils.getAttributeValue("name", e).equals(name)) {
                     return false;
+                }
             }
         }
         return true;
     }
+
 }

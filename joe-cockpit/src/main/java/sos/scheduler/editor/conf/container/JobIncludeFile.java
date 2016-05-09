@@ -132,7 +132,8 @@ public class JobIncludeFile extends FormBaseClass {
         tableIncludes.setLayoutData(gridData_2);
         final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_Name.Control(new TableColumn(tableIncludes, SWT.NONE));
         newColumnTableColumn.setWidth(272);
-        final TableColumn newColumnTableColumn_1 = SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_FileLiveFile.Control(new TableColumn(tableIncludes, SWT.NONE));
+        final TableColumn newColumnTableColumn_1 =
+                SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_FileLiveFile.Control(new TableColumn(tableIncludes, SWT.NONE));
         newColumnTableColumn_1.setWidth(81);
         final Button butNew = SOSJOEMessageCodes.JOE_B_JobIncludeFile_New.Control(new Button(group, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {

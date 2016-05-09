@@ -46,18 +46,16 @@ public class ActionsListForm extends SOSJOEMessageCodes {
         listener.fillActions(list);
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2; // Generated
+        gridLayout.numColumns = 2;
         actionsGroup = JOE_G_ActionsListForm_Actions.Control(new Group(this, SWT.NONE));
-        actionsGroup.setLayout(gridLayout); // Generated
+        actionsGroup.setLayout(gridLayout);
         list = JOE_Tbl_ActionsListForm_ActionsList.Control(new Table(actionsGroup, SWT.BORDER));
         list.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                // ContextMenu.goTo(list.getSelection()[0].getText(0), _dom,
-                // Editor.ACTIONS);
+                //
             }
         });
         list.addSelectionListener(new SelectionAdapter() {
@@ -73,7 +71,6 @@ public class ActionsListForm extends SOSJOEMessageCodes {
             public void widgetSelected(final SelectionEvent e) {
                 TableItem item = new TableItem(list, SWT.NONE);
                 item.setText(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
-                // listener.newAction("New Action " + list.getItemCount());
                 listener.newAction(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
                 listener.fillActions(list);
                 butRemove.setEnabled(false);
@@ -93,4 +90,4 @@ public class ActionsListForm extends SOSJOEMessageCodes {
         new Label(actionsGroup, SWT.NONE);
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

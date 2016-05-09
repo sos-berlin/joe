@@ -80,8 +80,7 @@ public class JobCommandListener {
     }
 
     public boolean isDisabled() {
-        boolean disabled = "no".equalsIgnoreCase(Utils.getAttributeValue("enabled", _job));
-        return disabled;
+        return "no".equalsIgnoreCase(Utils.getAttributeValue("enabled", _job));
     }
 
     public String getName() {
@@ -239,14 +238,12 @@ public class JobCommandListener {
                     Object o = it.next();
                     if (o instanceof Element) {
                         Element e = (Element) o;
-                        if ("param".equals(e.getName())) {
-                            if (name.equals(e.getAttributeValue("name"))) {
-                                found = true;
-                                e.setAttribute("value", value);
-                                _dom.setChanged(true);
-                                _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-                                table.getItem(index).setText(1, value);
-                            }
+                        if ("param".equals(e.getName()) && name.equals(e.getAttributeValue("name"))) {
+                            found = true;
+                            e.setAttribute("value", value);
+                            _dom.setChanged(true);
+                            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
+                            table.getItem(index).setText(1, value);
                         }
                         index++;
                     }

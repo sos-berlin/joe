@@ -357,14 +357,12 @@ public class ScriptListener extends JOEListener {
     }
 
     private void setChangedForDirectory() {
-        if (_dom.isDirectory() || _dom.isLifeElement()) {
-            if (_parent != null) {
-                Element job = _parent;
-                if (!job.getName().equals(_parent)) {
-                    job = Utils.getJobElement(_parent);
-                }
-                _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
+        if ((_dom.isDirectory() || _dom.isLifeElement()) && _parent != null) {
+            Element job = _parent;
+            if (!job.getName().equals(_parent)) {
+                job = Utils.getJobElement(_parent);
             }
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
         }
     }
 

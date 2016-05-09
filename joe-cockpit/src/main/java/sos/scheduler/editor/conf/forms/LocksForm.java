@@ -157,21 +157,19 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tableLocks.getSelectionCount() > 0) {
-                    if (Utils.checkElement(tableLocks.getSelection()[0].getText(0), dom, JOEConstants.LOCKS, null)) {
-                        int index = tableLocks.getSelectionIndex();
-                        listener.removeLock(index);
-                        tableLocks.remove(index);
-                        if (index >= tableLocks.getItemCount()) {
-                            index--;
-                        }
-                        if (tableLocks.getItemCount() > 0) {
-                            tableLocks.select(index);
-                            listener.selectLock(index);
-                            setInput(true);
-                        } else {
-                            setInput(false);
-                        }
+                if (tableLocks.getSelectionCount() > 0 && Utils.checkElement(tableLocks.getSelection()[0].getText(0), dom, JOEConstants.LOCKS, null)) {
+                    int index = tableLocks.getSelectionIndex();
+                    listener.removeLock(index);
+                    tableLocks.remove(index);
+                    if (index >= tableLocks.getItemCount()) {
+                        index--;
+                    }
+                    if (tableLocks.getItemCount() > 0) {
+                        tableLocks.select(index);
+                        listener.selectLock(index);
+                        setInput(true);
+                    } else {
+                        setInput(false);
                     }
                 }
                 bRemove.setEnabled(tableLocks.getSelectionCount() > 0);

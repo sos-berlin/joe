@@ -246,6 +246,7 @@ public class DateForm extends SOSJOEMessageCodes {
         butIsLifeFile.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
+                //
             }
         });
         butIsLifeFile.setLayoutData(new GridData());
@@ -260,7 +261,7 @@ public class DateForm extends SOSJOEMessageCodes {
         tInclude.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                bAdd.setEnabled(!tInclude.getText().equals(""));
+                bAdd.setEnabled(!"".equals(tInclude.getText()));
             }
         });
         tInclude.addKeyListener(new KeyAdapter() {
@@ -311,7 +312,7 @@ public class DateForm extends SOSJOEMessageCodes {
                 } else {
                     tInclude.setText(tableIncludes.getSelection()[0].getText(0));
                 }
-                butIsLifeFile.setSelection(tableIncludes.getSelection()[0].getText(1).equalsIgnoreCase("live_file"));
+                butIsLifeFile.setSelection("live_file".equalsIgnoreCase(tableIncludes.getSelection()[0].getText(1)));
             }
         });
         tableIncludes.setLinesVisible(true);

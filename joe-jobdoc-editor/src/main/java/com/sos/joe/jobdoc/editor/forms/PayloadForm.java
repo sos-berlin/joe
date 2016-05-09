@@ -38,7 +38,6 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener> {
         fParams.setParams(dom, listener.getPayloadElement());
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout = new GridLayout(2, false);
         group = JOE_G_PayloadForm_Payload.Control(new SOSGroup(this, SWT.NONE));
@@ -48,12 +47,7 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // String tip = Messages.getTooltip("doc.note.text.payload");
-                String tip = "";
-                // DocumentationForm.openNoteDialog(dom,
-                // listener.getPayloadElement(), "note", tip,
-                // true,"Payload Note");
-                DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", tip, true, JOE_B_PayloadForm_PayloadNote.label());
+                DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", "", true, JOE_B_PayloadForm_PayloadNote.label());
             }
         });
         bDocNotes = JOE_B_PayloadForm_DocNote.Control(new Button(group, SWT.NONE));
@@ -61,23 +55,16 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                // String tip =
-                // Messages.getTooltip("doc.note.text.payload.document");
-                String tip = "";
-                // DocumentationForm.openNoteDialog(dom,
-                // listener.getDocumentationElement(), "note", tip,
-                // true,"Payload Document Note");
-                DocumentationForm.openNoteDialog(dom, listener.getDocumentationElement(), "note", tip, true, JOE_B_PayloadForm_DocNote.label());
+                DocumentationForm.openNoteDialog(dom, listener.getDocumentationElement(), "note", "", true, JOE_B_PayloadForm_DocNote.label());
             }
         });
         createFParams();
     }
 
-    /** This method initializes fParams */
     private void createFParams() {
         GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         fParams = new ParamsForm(group, SWT.NONE);
-        fParams.setLayoutData(gridData); // Generated
+        fParams.setLayoutData(gridData);
     }
 
     @Override
@@ -93,6 +80,7 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener> {
 
     @Override
     public void openBlank() {
+        //
     }
 
     @Override
@@ -105,4 +93,5 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener> {
         apply();
         return false;
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

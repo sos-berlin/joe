@@ -42,14 +42,15 @@ public class SchedulerDom extends DomParser {
             "file_order_sink" };
     private static final String[] MONITOR_ELEMENTS = { "script" };
     private static final String[] HOLIDAYS_ELEMENTS = { "include", "weekdays", "holiday" };
-    private static final String[] PARAMS_ELEMENTS = { "include","copy_params","param" };
+    private static final String[] PARAMS_ELEMENTS = { "include", "copy_params", "param" };
     private static final String[] HTTP_SERVER = { "web_service", "http.authentication", "http_directory" };
     private static final String[] COMMANDS_ELEMENTS = { "add_order", "order", "start_job" };
     private static final String[] ORDER_ELEMENTS = { "params", "environment" };
     private static final String[] SETTINGS_ELEMENTS = { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process",
             "mail_on_delay_after_error", "log_mail_to", "log_mail_cc", "log_mail_bcc", "log_level", "history", "history_on_process",
             "history_with_log" };
-    private static final String[] CONFIG_ELEMENTS_DIRECTORY = { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands", "monitors" };
+    private static final String[] CONFIG_ELEMENTS_DIRECTORY =
+            { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands", "monitors" };
     private String styleSheet = "";
     private ArrayList<String> listOfReadOnlyFiles = null;
     private ArrayList<String> listOfChangeElementNames = null;
@@ -294,7 +295,8 @@ public class SchedulerDom extends DomParser {
         try {
             getBuilder(true).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
-            int res = ErrorLog.message("Element is not valid. Should it still be saved?" + "\n" + e.getMessage(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+            int res =
+                    ErrorLog.message("Element is not valid. Should it still be saved?" + "\n" + e.getMessage(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
             if (res == SWT.NO) {
                 return false;
             }
@@ -347,7 +349,8 @@ public class SchedulerDom extends DomParser {
         Element parent = Utils.getRunTimeParentElement(_parent);
         if (parent != null) {
             if ("order".equals(parent.getName()) || "add_order".equals(parent.getName())) {
-                setChangedForDirectory(parent.getName(), Utils.getAttributeValue("job_chain", parent) + "," + Utils.getAttributeValue("id", parent), what);
+                setChangedForDirectory(parent.getName(), Utils.getAttributeValue("job_chain", parent) + "," + Utils.getAttributeValue("id", parent),
+                        what);
             } else {
                 setChangedForDirectory(parent.getName(), Utils.getAttributeValue("name", parent), what);
             }
@@ -446,13 +449,20 @@ public class SchedulerDom extends DomParser {
     public ArrayList<File> getHoltFolderFiles(File f) {
         ArrayList<File> listOfhotFolderFiles = new ArrayList<File>();
         try {
-            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_JOB, java.util.regex.Pattern.CASE_INSENSITIVE));
-            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_JOB_CHAIN, java.util.regex.Pattern.CASE_INSENSITIVE));
-            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_LOCK, java.util.regex.Pattern.CASE_INSENSITIVE));
-            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_ORDER, java.util.regex.Pattern.CASE_INSENSITIVE));
-            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_PROCESS_CLASS, java.util.regex.Pattern.CASE_INSENSITIVE));
-            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_SCHEDULE, java.util.regex.Pattern.CASE_INSENSITIVE));
-            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_MONITOR, java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_JOB,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_JOB_CHAIN,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_LOCK,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_ORDER,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_PROCESS_CLASS,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_SCHEDULE,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_MONITOR,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }

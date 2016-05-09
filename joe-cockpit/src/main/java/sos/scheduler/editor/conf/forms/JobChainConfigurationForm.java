@@ -100,6 +100,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     }
 
     private void createCMainForm() {
+        //
     }
 
     public Shell getSShell() {

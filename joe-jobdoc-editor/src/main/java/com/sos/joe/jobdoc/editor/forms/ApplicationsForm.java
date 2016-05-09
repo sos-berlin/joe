@@ -139,11 +139,9 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (table.getSelectionCount() > 0) {
-                    if (listener.selectApp(table.getSelectionIndex())) {
-                        setAppStatus(true);
-                        bRemove.setEnabled(true);
-                    }
+                if (table.getSelectionCount() > 0 && listener.selectApp(table.getSelectionIndex())) {
+                    setAppStatus(true);
+                    bRemove.setEnabled(true);
                 }
             }
         });

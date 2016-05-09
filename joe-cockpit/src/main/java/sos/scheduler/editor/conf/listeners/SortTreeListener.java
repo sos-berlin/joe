@@ -15,7 +15,7 @@ public class SortTreeListener implements SelectionListener {
 
     @Override
     public void widgetDefaultSelected(final SelectionEvent e) {
-
+        //
     }
 
     @Override

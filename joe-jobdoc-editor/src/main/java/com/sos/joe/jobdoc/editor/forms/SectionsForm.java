@@ -223,7 +223,7 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
 
     @Override
     public void openBlank() {
-
+        //
     }
 
     @Override

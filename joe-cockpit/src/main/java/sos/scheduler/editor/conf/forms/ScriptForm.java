@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.forms;
 
-// import org.eclipse.draw2d.*;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -9,7 +8,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -31,18 +29,16 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public abstract class ScriptForm extends SOSJOEMessageCodes {
 
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-    private final int intNoOfLabelColumns = 2;
-    private static Logger logger = Logger.getLogger(ScriptJobMainForm.class);
-    @SuppressWarnings("unused")
-    private final String conClassName = "ScriptForm";
+    protected Group objMainOptionsGroup = null;
     protected JobListener objDataProvider = null;
-    private final Cursor objLastCursor = null;
-    private boolean init = true;
     protected ISchedulerUpdate update;
     protected Element job;
     protected LanguageSelector languageSelector = null;
+    protected CTabFolder tabFolder = null;
+    protected JobScript objJobScript = null;
+    private static final Logger LOGGER = Logger.getLogger(ScriptJobMainForm.class);
+    private final int intNoOfLabelColumns = 2;
+    private boolean init = true;
     private Composite tabItemJavaAPIComposite = null;
     private Composite tabItemIncludedFilesComposite = null;
     private Composite objTabControlComposite = null;
@@ -50,26 +46,19 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
     private CTabItem tabItemScript = null;
     private CTabItem tabItemJavaAPI = null;
     private CTabItem tabItemIncludedFiles = null;
-    protected CTabFolder tabFolder = null;
-    protected JobScript objJobScript = null;
     private JobJavaAPI objJobJAPI = null;
     private JobIncludeFile objJobIncludeFile = null;
     private final SchedulerDom dom;
-    protected Group objMainOptionsGroup = null;
 
     protected abstract void initForm();
-
     protected abstract void createGroup();
-
     protected abstract String getPredefinedFunctionNames();
-
     protected abstract String[] getScriptLanguages();
 
     public ScriptForm(Composite parent, int style, SchedulerDom dom_, Element job_, ISchedulerUpdate main) {
         super(parent, style);
         job = job_;
         dom = dom_;
-        // final ToolTipHandler tooltip = new ToolTipHandler(parent.getShell());
         update = main;
         dom.setInit(true);
         objDataProvider = new JobListener(dom, job, main);
@@ -115,7 +104,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
     }
 
     protected void createScriptTabForm(Group pobjMainOptionsGroup) {
-        tabFolder = new CTabFolder(pobjMainOptionsGroup, SWT.None); // SWT.Bottom
+        tabFolder = new CTabFolder(pobjMainOptionsGroup, SWT.None);
         tabFolder.setLayout(new GridLayout());
         setResizableV(tabFolder);
         tabFolder.setSimple(true);
@@ -125,9 +114,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
             public void widgetSelected(SelectionEvent e) {
                 int intIndex = tabFolder.getSelectionIndex();
                 Options.setLastTabItemIndex(intIndex);
-                // logger.debug("Selected item index = " +
-                // tabFolder.getSelectionIndex());
-                logger.debug(JOE_M_ScriptForm_ItemIndex.params(tabFolder.getSelectionIndex()));
+                LOGGER.debug(JOE_M_ScriptForm_ItemIndex.params(tabFolder.getSelectionIndex()));
             }
 
             @Override
@@ -200,7 +187,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 
             @Override
             public void modifyText(ModifyEvent arg0) {
-                if (objDataProvider != null && init == false) {
+                if (objDataProvider != null && !init) {
                     String strT = languageSelector.getText();
                     objDataProvider.setLanguage(strT);
                     disposeTabPages();
@@ -209,8 +196,9 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
                     if (languageSelector.isJava() && objJobJAPI.getTbxClassName() != null) {
                         objJobJAPI.getTbxClassName().setFocus();
                         objJobJAPI.getTClasspath().setText(objDataProvider.getClasspath());
-                        if (!objJobJAPI.getTbxClassName().getText().equals("") && objDataProvider.getJavaClass().equals(""))
+                        if (!"".equals(objJobJAPI.getTbxClassName().getText()) && "".equals(objDataProvider.getJavaClass())) {
                             objDataProvider.setJavaClass(objJobJAPI.getTbxClassName().getText());
+                        }
                         objJobJAPI.getTbxClassName().setText(objDataProvider.getJavaClass());
                         tabFolder.setSelection(tabItemJavaAPI);
                     } else {
@@ -275,4 +263,5 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
     public CTabItem getTabItemIncludedFiles() {
         return tabItemIncludedFiles;
     }
+
 }

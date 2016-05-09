@@ -4,8 +4,6 @@ import javax.xml.transform.TransformerException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,7 +23,6 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobCommandListener;
 
-import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
@@ -70,7 +67,6 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
             TransformerException {
         super(parent, style);
         listener = new JobCommandListener(dom, command, main);
-
         initialize();
         event = true;
         if (command.getParentElement() != null) {
@@ -90,7 +86,6 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
         createGroup();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.makeColumnsEqualWidth = true;
@@ -113,7 +108,6 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
         jobchainLabel = JOE_L_JobCommand_JobChain.Control(new Label(gDescription, SWT.NONE));
         final GridData gridData_10 = new GridData();
         jobchainLabel.setLayoutData(gridData_10);
-
         tJobchain = JOE_Cbo_JobCommand_JobChain.Control(new Text(gDescription, SWT.BORDER));
         final GridData gridData_jobchain = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_jobchain.widthHint = 150;
@@ -144,7 +138,7 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 String jobChain = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
-                if (jobChain != null && jobChain.length() > 0) {
+                if (jobChain != null && !jobChain.isEmpty()) {
                     tJobchain.setText(jobChain);
                 }
             }
@@ -162,7 +156,6 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
                 tJobModifyListener();
             }
         });
-
         bBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(gDescription, SWT.NONE));
         GridData gd_butBrowse = new GridData(GridData.END, GridData.CENTER, false, false);
         gd_butBrowse.widthHint = 50;
@@ -172,12 +165,11 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
-                if (jobname != null && jobname.length() > 0) {
+                if (jobname != null && !jobname.isEmpty()) {
                     tJob.setText(jobname);
                 }
             }
         });
-
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_3.widthHint = 150;
         tJob.setLayoutData(gridData_3);
@@ -190,9 +182,7 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
                 listener.setAt(tStartAt.getText());
             }
         });
-
         new Label(gDescription, SWT.NONE);
-
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_4.widthHint = 150;
         tStartAt.setLayoutData(gridData_4);
@@ -207,9 +197,7 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
                 listener.setPriority(tPriority.getText());
             }
         });
-
         new Label(gDescription, SWT.NONE);
-
         tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         titleLabel = JOE_L_JobCommand_Title.Control(new Label(gDescription, SWT.NONE));
         titleLabel.setLayoutData(new GridData());
@@ -221,9 +209,7 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
                 listener.setTitle(tTitle.getText());
             }
         });
-
         new Label(gDescription, SWT.NONE);
-
         final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_5.widthHint = 150;
         tTitle.setLayoutData(gridData_5);
@@ -234,13 +220,12 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
         tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setState(tState.getText());
+                }
             }
         });
-
         new Label(gDescription, SWT.NONE);
-
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_2.widthHint = 150;
         tState.setLayoutData(gridData_2);
@@ -250,15 +235,14 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
         cboEndstate.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
-                if (event)
+                if (event) {
                     listener.setEndState(cboEndstate.getText());
+                }
             }
         });
         cboEndstate.setEnabled(false);
         cboEndstate.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
         new Label(gDescription, SWT.NONE);
-
         replaceLabel = JOE_L_JobCommand_Replace.Control(new Label(gDescription, SWT.NONE));
         final GridData gridData_12 = new GridData();
         replaceLabel.setLayoutData(gridData_12);
@@ -273,16 +257,13 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
         });
         bReplace.setLayoutData(new GridData());
         new Label(gDescription, SWT.NONE);
-
         createSashForm();
     }
 
-    /** This method initializes sashForm */
     private void createSashForm() {
         createGroup2();
     }
 
-    /** This method initializes group2 */
     private void createGroup2() {
         setCommandsEnabled();
         clearFields();
@@ -293,4 +274,4 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
         return listener.getCommand();
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -17,12 +17,10 @@ public class JobchainListOfReturnCodeElements {
         super();
         jobchainListOfReturnCodeElements = new ArrayList<JobchainReturnCodeElement>();
         jobchainListOfReturnCodeElements_.reset();
-
         while (jobchainListOfReturnCodeElements_.hasNext()) {
             JobchainReturnCodeElement jobchainReturnCodeElement = jobchainListOfReturnCodeElements_.getNext();
             add(jobchainReturnCodeElement);
         }
-
     }
 
     public ArrayList<JobchainReturnCodeElement> getJobchainListOfReturnCodeElements() {
@@ -44,22 +42,17 @@ public class JobchainListOfReturnCodeElements {
         JobchainReturnCodeElement jobchainReturnCodeElement = new JobchainReturnCodeElement();
         jobchainReturnCodeElement.setReturnCodes(returnCodes);
         add(jobchainReturnCodeElement);
-
         return jobchainReturnCodeElement;
     }
 
     public void add(JobchainReturnCodeNextStateElement jobchainReturnCodeNextStateElement) {
-
         JobchainReturnCodeElement jobchainReturnCodeElement = getJobchainReturnCodeElement(jobchainReturnCodeNextStateElement.getReturnCodes());
         jobchainReturnCodeElement.setJobchainReturnCodeNextStateElement(jobchainReturnCodeNextStateElement);
-
     }
 
     public void add(JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement) {
-
         JobchainReturnCodeElement jobchainReturnCodeElement = getJobchainReturnCodeElement(jobchainReturnCodeAddOrderElement.getReturnCodes());
         jobchainReturnCodeElement.addJobchainReturnCodeAddOrderElement(jobchainReturnCodeAddOrderElement);
-
     }
 
     public void clear() {
@@ -74,7 +67,7 @@ public class JobchainListOfReturnCodeElements {
         if (it == null) {
             it = jobchainListOfReturnCodeElements.listIterator();
         }
-        return (it.hasNext());
+        return it.hasNext();
     }
 
     public int size() {
@@ -82,12 +75,15 @@ public class JobchainListOfReturnCodeElements {
     }
 
     public JobchainReturnCodeElement getNext() {
-
         if (it.hasNext()) {
             return it.next();
         } else {
             return null;
         }
+    }
+
+    public boolean isEmpty() {
+        return jobchainListOfReturnCodeElements.isEmpty();
     }
 
 }

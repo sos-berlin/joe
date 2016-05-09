@@ -156,8 +156,9 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         tCommands.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
-                String str = !tCommands.getSelection()[0].getText(2).isEmpty() ? tCommands.getSelection()[0].getText(2)
-                        : tCommands.getSelection()[0].getText(1);
+                String str =
+                        !tCommands.getSelection()[0].getText(2).isEmpty() ? tCommands.getSelection()[0].getText(2)
+                                : tCommands.getSelection()[0].getText(1);
             }
         });
         tCommands.addSelectionListener(new SelectionAdapter() {

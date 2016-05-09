@@ -79,7 +79,8 @@ public class ScriptFormPreProcessing extends ScriptForm {
 
     private void getFavoriteNames() {
         preProcessingHeader.getCboFavorite().setData("favorites", favorites);
-        preProcessingHeader.getCboFavorite().setMenu(new ContextMenu(preProcessingHeader.getCboFavorite(), objDataProvider.getDom(), JOEConstants.SCRIPT).getMenu());
+        preProcessingHeader.getCboFavorite().setMenu(
+                new ContextMenu(preProcessingHeader.getCboFavorite(), objDataProvider.getDom(), JOEConstants.SCRIPT).getMenu());
     }
 
     private String getFavoriteValue() {

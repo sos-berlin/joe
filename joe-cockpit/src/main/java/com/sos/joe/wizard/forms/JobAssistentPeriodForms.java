@@ -279,7 +279,8 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             });
             fillList();
             java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width, shell.getBounds().height);
+            shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width,
+                    shell.getBounds().height);
             shell.open();
             Button butHelp = Utils.createHelpButton(shell, "JOE_M_JobAssistentPeriodForms_Help.label", shell);
             butHelp.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
@@ -421,7 +422,8 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             periodsListener.applyPeriod(period);
             periodForm.setPeriod(period);
             periodForm.setEnabled(false);
-            list.add(SOSJOEMessageCodes.JOE_M_0027.params(JobAssistentPeriodForms.EVERY_DAY, periodForm.getListener().getBegin(), periodForm.getListener().getEnd()));
+            list.add(SOSJOEMessageCodes.JOE_M_0027.params(JobAssistentPeriodForms.EVERY_DAY, periodForm.getListener().getBegin(),
+                    periodForm.getListener().getEnd()));
         } else if (tabFolder.getSelection()[0].getText().equals(JobAssistentPeriodForms.WEEK_DAY)) {
             if (comboWeekDay.getSelectionIndex() == -1 || comboWeekDay.getText().isEmpty()) {
                 ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoWeekdaySelected.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
@@ -431,7 +433,8 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             periodFormWeekDay.setEnabled(false);
             periodsListenerWeekDay.applyPeriod(period);
             update.updateDays(DaysListener.WEEKDAYS);
-            list.add(SOSJOEMessageCodes.JOE_M_0028.params(JobAssistentPeriodForms.WEEK_DAY, comboWeekDay.getText(), periodFormWeekDay.getListener().getBegin(), periodFormWeekDay.getListener().getEnd()));
+            list.add(SOSJOEMessageCodes.JOE_M_0028.params(JobAssistentPeriodForms.WEEK_DAY, comboWeekDay.getText(),
+                    periodFormWeekDay.getListener().getBegin(), periodFormWeekDay.getListener().getEnd()));
         } else if (tabFolder.getSelection()[0].getText().equals(JobAssistentPeriodForms.MONTH_DAY)) {
             if (comboMonth.getSelectionIndex() == -1 || comboMonth.getText().isEmpty()) {
                 ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoWeekdaySelected.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
@@ -441,13 +444,15 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             periodFormMonthDay.setEnabled(false);
             periodsListenerMonthDay.applyPeriod(period);
             update.updateDays(DaysListener.MONTHDAYS);
-            list.add(SOSJOEMessageCodes.JOE_M_0028.params(JobAssistentPeriodForms.MONTH_DAY, comboMonth.getText(), periodFormMonthDay.getListener().getBegin(), periodFormMonthDay.getListener().getEnd()));
+            list.add(SOSJOEMessageCodes.JOE_M_0028.params(JobAssistentPeriodForms.MONTH_DAY, comboMonth.getText(),
+                    periodFormMonthDay.getListener().getBegin(), periodFormMonthDay.getListener().getEnd()));
         } else if (tabFolder.getSelection()[0].getText().equals(JobAssistentPeriodForms.SPECIFIC_DAY)) {
             Element period = periodFormSpecificDay.getPeriod();
             periodsListenerSpecDay.applyPeriod(period);
             periodFormSpecificDay.setEnabled(false);
             update.updateDays(DaysListener.SPECIFIC_DAY);
-            list.add(SOSJOEMessageCodes.JOE_M_0028.params(JobAssistentPeriodForms.SPECIFIC_DAY, txtSpeDay.getISODate(), periodFormSpecificDay.getListener().getBegin(), periodFormSpecificDay.getListener().getEnd()));
+            list.add(SOSJOEMessageCodes.JOE_M_0028.params(JobAssistentPeriodForms.SPECIFIC_DAY, txtSpeDay.getISODate(),
+                    periodFormSpecificDay.getListener().getBegin(), periodFormSpecificDay.getListener().getEnd()));
         }
     }
 
@@ -476,7 +481,8 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
                 PeriodListener p = new PeriodListener(dom);
                 p.setPeriod(period);
                 if (p.getSingle() == null || p.getSingle().trim().isEmpty()) {
-                    list.add(SOSJOEMessageCodes.JOE_M_0029.params(JobAssistentPeriodForms.SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()));
+                    list.add(SOSJOEMessageCodes.JOE_M_0029.params(JobAssistentPeriodForms.SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]),
+                            Utils.asStr(da[0]), p.getSingle()));
                 }
             }
         }
@@ -550,7 +556,8 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
                     Element period = (Element) periods.get(j);
                     PeriodListener p = new PeriodListener(dom);
                     p.setPeriod(period);
-                    if (selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(JobAssistentPeriodForms.SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()))) {
+                    if (selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(JobAssistentPeriodForms.SPECIFIC_DAY, Utils.asStr(da[2]),
+                            Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()))) {
                         PeriodsListener _pl = new PeriodsListener(dom, speElem);
                         _pl.removePeriod(j);
                     }

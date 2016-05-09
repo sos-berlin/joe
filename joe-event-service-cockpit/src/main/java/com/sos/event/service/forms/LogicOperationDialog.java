@@ -2,6 +2,7 @@ package com.sos.event.service.forms;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -18,13 +19,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
 import sos.util.SOSString;
+
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 
 class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 
+    private static final Logger LOGGER = Logger.getLogger(LogicOperationDialog.class);
     private final Object result = null;
     private Text txt = null;
     private Text txtExpression = null;
@@ -56,7 +60,6 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
                 }
             }
         });
-
         newFolderShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = 10;
@@ -138,15 +141,14 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 try {
-                    if (undo.size() > 0) {
+                    if (!undo.isEmpty()) {
                         undo.add(0, txtExpression.getText());
                         txtExpression.setText(sosString.parseToString(undo.get(undo.size() - 1)));
                         undo.remove(undo.size() - 1);
                         txtExpression.setFocus();
                     }
                 } catch (Exception es) {
-                    System.out.print(e.toString());
-                    // tu nichts
+                    LOGGER.info(es.getMessage(), es);
                 }
             }
         });

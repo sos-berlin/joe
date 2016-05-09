@@ -63,6 +63,7 @@ public class SOSMsgJOE extends SOSMsgControl {
 
             @Override
             public void focusLost(FocusEvent e) {
+                //
             }
         });
         return pobjC;
@@ -77,11 +78,11 @@ public class SOSMsgJOE extends SOSMsgControl {
             @Override
             public void focusGained(final FocusEvent e) {
                 integerField.selectAll();
-                // pobjC.setBackground(new Color(SWT.BLACK));
             }
 
             @Override
             public void focusLost(FocusEvent e) {
+                //
             }
         });
         return integerField;
@@ -226,6 +227,7 @@ public class SOSMsgJOE extends SOSMsgControl {
 
             @Override
             public void keyReleased(KeyEvent arg0) {
+                //
             }
         });
     }
@@ -248,8 +250,9 @@ public class SOSMsgJOE extends SOSMsgControl {
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
                     + com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
-            ErrorLog.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang,
-                    e.getMessage() }), SWT.ICON_ERROR | SWT.OK);
+            ErrorLog.message(
+                    com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
+                    SWT.ICON_ERROR | SWT.OK);
         }
     }
 

@@ -67,18 +67,18 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         _text = new StringBuilder();
         boolean hasText = !text.isEmpty();
         if (_isOpen && !hasText) {
-            _sb.append("/>").append((_doBreak ? "\n" + _indent : ""));
+            _sb.append("/>").append(_doBreak ? "\n" + _indent : "");
         } else if (_isOpen) {
-            _sb.append(">").append((_doBreak ? "\n" + _indent : ""));
+            _sb.append(">").append(_doBreak ? "\n" + _indent : "");
         }
         if (hasText) {
-            _sb.append(formatText(text)).append((_doBreak ? "\n" : ""));
+            _sb.append(formatText(text)).append(_doBreak ? "\n" : "");
         }
         if (!_isOpen) {
-            _sb.append("</").append(qName).append(">").append((_doBreak ? "\n" + _indent : ""));
+            _sb.append("</").append(qName).append(">").append(_doBreak ? "\n" + _indent : "");
         } else if (hasText) {
-            _sb.append((_doBreak ? _indent : "")).append("</").append(qName).append(">").append((_doBreak ? "\n" + strRepeat(_indentStr, _level - 1)
-                    : ""));
+            _sb.append(_doBreak ? _indent : "").append("</").append(qName).append(">").append(
+                    _doBreak ? "\n" + strRepeat(_indentStr, _level - 1) : "");
         }
         if ("div".equalsIgnoreCase(qName)) {
             _xhtml--;

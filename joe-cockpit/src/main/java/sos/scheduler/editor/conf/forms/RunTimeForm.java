@@ -75,21 +75,15 @@ public class RunTimeForm extends SOSJOEMessageCodes {
         setSize(new org.eclipse.swt.graphics.Point(576, 518));
     }
 
-    /** This method initializes group */
     private void createGroup() {
-
         GridLayout gridLayout3 = new GridLayout(2, false);
         gRunTime = JOE_G_RunTimeForm_RunTime.Control(new Group(this, SWT.NONE));
         gRunTime.setLayout(gridLayout3);
-
         Label lblTimezone = new Label(gRunTime, SWT.NONE);
         lblTimezone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-
         lblTimezone.setText("Timezone");
-
         cbTimeZone = new CCombo(gRunTime, SWT.BORDER);
         cbTimeZone.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-
         cbTimeZone.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -104,11 +98,9 @@ public class RunTimeForm extends SOSJOEMessageCodes {
         Set<String> setOfTimeZones = DateTimeZone.getAvailableIDs();
         cbTimeZone.setItems(setOfTimeZones.toArray(new String[setOfTimeZones.size()]));
         cbTimeZone.setText(listener.getTimeZone());
-
         createPeriodForm();
-
         String s = listener.getFunction();
-        if (s != null && s.length() > 0) {
+        if (s != null && !s.isEmpty()) {
             Label lblStartFunction = new Label(gRunTime, SWT.NONE);
             lblStartFunction.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
             lblStartFunction.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
@@ -117,7 +109,6 @@ public class RunTimeForm extends SOSJOEMessageCodes {
         } else {
             new Label(gRunTime, SWT.NONE);
         }
-
         groupSchedule = JOE_G_RunTimeForm_Schedule.Control(new Group(gRunTime, SWT.NONE));
         groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1));
         final GridLayout gridLayout_2 = new GridLayout();
@@ -155,7 +146,7 @@ public class RunTimeForm extends SOSJOEMessageCodes {
 
             public void widgetSelected(final SelectionEvent e) {
                 String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_SCHEDULE);
-                if (name != null && name.length() > 0) {
+                if (name != null && !name.isEmpty()) {
                     comSchedule.setText(name);
                 }
             }
@@ -203,7 +194,6 @@ public class RunTimeForm extends SOSJOEMessageCodes {
         setEnabled();
     }
 
-    /** This method initializes periodForm */
     private void createPeriodForm() {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
         gridData2.widthHint = 151;
@@ -215,7 +205,7 @@ public class RunTimeForm extends SOSJOEMessageCodes {
 
     private void setEnabled() {
         if (init) {
-            if (comSchedule.getText().trim().length() > 0) {
+            if (!comSchedule.getText().trim().isEmpty()) {
                 groupSchedule.setEnabled(true);
                 periodForm.setEnabled(false);
             } else {
@@ -225,7 +215,7 @@ public class RunTimeForm extends SOSJOEMessageCodes {
             return;
         }
         boolean enable = true;
-        if (comSchedule.getText().trim().length() > 0) {
+        if (!comSchedule.getText().trim().isEmpty()) {
             groupSchedule.setEnabled(true);
             enable = false;
         } else {
@@ -241,15 +231,12 @@ public class RunTimeForm extends SOSJOEMessageCodes {
             }
             groupSchedule.setEnabled(true);
         }
-        if (!enable) {
-            if (runTimeBackUpElem == null) {
-                runTimeBackUpElem = (Element) listener.getRunTime().clone();
-                listener.getRunTime().removeContent();
-                listener.getRunTime().getAttributes().clear();
-            }
+        if (!enable && runTimeBackUpElem == null) {
+            runTimeBackUpElem = (Element) listener.getRunTime().clone();
+            listener.getRunTime().removeContent();
+            listener.getRunTime().getAttributes().clear();
         }
         periodForm.setEnabled(enable);
-
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -215,7 +215,7 @@ public class JobSetback extends FormBaseClass {
         sSetBackSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if ((Utils.str2int(sSetBackHours.getText()) > 0) || (Utils.str2int(sSetBackMinutes.getText()) > 0)) {
+                if (Utils.str2int(sSetBackHours.getText()) > 0 || Utils.str2int(sSetBackMinutes.getText()) > 0) {
                     Utils.setBackground(0, 59, sSetBackSeconds);
                 } else {
                     sSetBackSeconds.setBackground(null);

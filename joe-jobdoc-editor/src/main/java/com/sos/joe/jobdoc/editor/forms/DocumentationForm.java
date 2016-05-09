@@ -185,6 +185,7 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 
     @Override
     protected void applySetting() {
+        //
     }
 
     @Override

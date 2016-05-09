@@ -114,8 +114,8 @@ public class ParameterListener {
         for (int i = 0; i < listOfParams.size(); i++) {
             HashMap h = (HashMap) listOfParams.get(i);
             if (h.get("name") != null) {
-                TableItem item = existsParams(h.get("name").toString(), table, h.get("default_value") != null ? h.get("default_value").toString()
-                        : "");
+                TableItem item =
+                        existsParams(h.get("name").toString(), table, h.get("default_value") != null ? h.get("default_value").toString() : "");
                 if (!refreshTable && item != null) {
                     if (h.get("required") != null && "true".equals(h.get("required"))) {
                         if (h.get("value") == null || h.get("value").toString().isEmpty()) {
@@ -466,7 +466,8 @@ public class ParameterListener {
                                 List notelist = note.getChildren();
                                 for (int j = 0; j < notelist.size(); j++) {
                                     Element elNote = (Element) notelist.get(j);
-                                    parameterDescription.put("parameter_description_" + language + "_" + elMain.getAttributeValue("name"), elNote.getValue());
+                                    parameterDescription.put("parameter_description_" + language + "_" + elMain.getAttributeValue("name"),
+                                            elNote.getValue());
                                     if (elMain.getAttributeValue("required") != null) {
                                         parameterRequired.put(elMain.getAttributeValue("name"), elMain.getAttributeValue("required"));
                                     }
@@ -482,14 +483,13 @@ public class ParameterListener {
     }
 
     public String getParameterDescription(final String name) {
-        return parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get("parameter_description_"
-                + Options.getLanguage() + "_" + name).toString()
-                : "";
+        return parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get(
+                "parameter_description_" + Options.getLanguage() + "_" + name).toString() : "";
     }
 
     public String getParameterDescription(final String name, final String language) {
-        return parameterDescription.get("parameter_description_" + language + "_" + name) != null ? parameterDescription.get("parameter_description_"
-                + language + "_" + name).toString() : "";
+        return parameterDescription.get("parameter_description_" + language + "_" + name) != null ? parameterDescription.get(
+                "parameter_description_" + language + "_" + name).toString() : "";
     }
 
     private boolean isParameterRequired(final String name) {

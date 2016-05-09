@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.forms;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.ModifyEvent;
@@ -13,9 +12,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
-
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
@@ -27,14 +23,11 @@ import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+
 public class ScriptJobMainForm extends ScriptForm {
 
-    @SuppressWarnings("unused")
-    private final String conSVNVersion = "$Id$";
-    @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(ScriptJobMainForm.class);
-    @SuppressWarnings("unused")
-    private final String conClassName = "ScriptJobMainForm";
     private JobOptionsListener objDataOptionsProvider;
     private Composite tabItemOptionsComposite = null;
     private Composite tabItemDirChangedComposite = null;
@@ -120,7 +113,6 @@ public class ScriptJobMainForm extends ScriptForm {
         if (tabItemDelayAfterError != null) {
             tabItemDelayAfterError.dispose();
         }
-
         if (tabItemOptions != null) {
             tabItemOptions.dispose();
         }
@@ -143,7 +135,6 @@ public class ScriptJobMainForm extends ScriptForm {
         objTabControlComposite = new Composite(tabFolder, SWT.NONE);
         objTabControlComposite.setLayout(new GridLayout());
         setResizableV(objTabControlComposite);
-
         tabItemOptions = JOE_TI_ScriptJobMainForm_Options.Control(new CTabItem(tabFolder, SWT.NONE));
         tabItemOptionsComposite = new Composite(tabFolder, SWT.NONE);
         tabItemOptionsComposite.setLayout(new GridLayout());
@@ -212,7 +203,7 @@ public class ScriptJobMainForm extends ScriptForm {
         objJobOptions.getbOrderYes().addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent e) {
-                if (objJobOptions.getbOrderYes().getSelection() == false) {
+                if (!objJobOptions.getbOrderYes().getSelection()) {
                     return;
                 }
                 disposeJobMainTabPages();
@@ -223,7 +214,7 @@ public class ScriptJobMainForm extends ScriptForm {
         objJobOptions.getbOrderNo().addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent e) {
-                if (objJobOptions.getbOrderNo().getSelection() == false) {
+                if (!objJobOptions.getbOrderNo().getSelection()) {
                     return;
                 }
                 disposeJobMainTabPages();
@@ -265,4 +256,5 @@ public class ScriptJobMainForm extends ScriptForm {
         new JobStartWhenDirectoryChanged(pParentComposite, objDataProvider);
         pParentComposite.layout();
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

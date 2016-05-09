@@ -82,7 +82,8 @@ public class DetailXMLEditorDialogForm {
         shell.setSize(693, 743);
         shell.setText(SOSJOEMessageCodes.JOE_M_0009.params(xmlFilename));
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width, shell.getBounds().height);
+        shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width,
+                shell.getBounds().height);
         final Group jobGroup = SOSJOEMessageCodes.JOE_G_DetailXMLEditorDialogForm_JobGroup.Control(new Group(shell, SWT.NONE));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 2;
@@ -93,7 +94,8 @@ public class DetailXMLEditorDialogForm {
         gridDataJobGroup.widthHint = 663;
         gridDataJobGroup.heightHint = 685;
         jobGroup.setLayoutData(gridDataJobGroup);
-        txtXML = SOSJOEMessageCodes.JOE_T_DetailXMLEditorDialogForm_XML.Control(new Text(jobGroup, SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.H_SCROLL));
+        txtXML =
+                SOSJOEMessageCodes.JOE_T_DetailXMLEditorDialogForm_XML.Control(new Text(jobGroup, SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.H_SCROLL));
         txtXML.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {

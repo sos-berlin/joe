@@ -178,7 +178,7 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
 
     @Override
     public void openBlank() {
-
+        //
     }
 
     @Override

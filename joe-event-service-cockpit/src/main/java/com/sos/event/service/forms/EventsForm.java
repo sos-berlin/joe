@@ -197,7 +197,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
 
             public void widgetSelected(final SelectionEvent e) {
                 if (table.getSelectionCount() > 0) {
-                    int cont = ErrorLog.message(actionsGroup.getShell(), JOE_M_EventsForm_RemoveGroup.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+                    int cont =
+                            ErrorLog.message(actionsGroup.getShell(), JOE_M_EventsForm_RemoveGroup.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                     if (cont == SWT.OK) {
                         listener.removeEvent(table);
                     }

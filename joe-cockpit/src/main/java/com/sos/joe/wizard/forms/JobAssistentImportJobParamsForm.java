@@ -216,8 +216,8 @@ public class JobAssistentImportJobParamsForm {
                 listOfParams1.add(h);
             }
         } catch (Exception ex) {
-            ErrorLog.message(jobParameterShell, SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " "
-                    + ex.getLocalizedMessage(), SWT.OK);
+            ErrorLog.message(jobParameterShell,
+                    SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " " + ex.getLocalizedMessage(), SWT.OK);
             new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
         }
         return listOfParams1;
@@ -260,7 +260,8 @@ public class JobAssistentImportJobParamsForm {
             });
             jobParameterShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
             java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-            jobParameterShell.setBounds((screen.width - jobParameterShell.getBounds().width) / 2, (screen.height - jobParameterShell.getBounds().height) / 2, 1, jobParameterShell.getBounds().height);
+            jobParameterShell.setBounds((screen.width - jobParameterShell.getBounds().width) / 2,
+                    (screen.height - jobParameterShell.getBounds().height) / 2, 1, jobParameterShell.getBounds().height);
             final GridLayout gridLayout = new GridLayout();
             jobParameterShell.setLayout(gridLayout);
             String step = " ";
@@ -272,7 +273,8 @@ public class JobAssistentImportJobParamsForm {
             jobParameterShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobParameter.label() + step);
             Label nameLabel;
             final Group textParameterGroup = new Group(jobParameterShell, SWT.NONE);
-            textParameterGroup.setText(SOSJOEMessageCodes.JOE_G_JobAssistent_ParamGroup.params(Utils.getAttributeValue(PARAM_NAME, joblistener.getJob())));
+            textParameterGroup.setText(SOSJOEMessageCodes.JOE_G_JobAssistent_ParamGroup.params(Utils.getAttributeValue(PARAM_NAME,
+                    joblistener.getJob())));
             final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
             gridData_3.minimumWidth = -1;
             textParameterGroup.setLayoutData(gridData_3);
@@ -480,8 +482,9 @@ public class JobAssistentImportJobParamsForm {
                     addParam();
                 }
             });
-            tableDescParameters = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_DescParams.Control(new Table(textParameterGroup, SWT.MULTI
-                    | SWT.FULL_SELECTION | SWT.BORDER));
+            tableDescParameters =
+                    SOSJOEMessageCodes.JOE_Tbl_JobAssistent_DescParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION
+                            | SWT.BORDER));
             tableDescParameters.addMouseListener(new MouseAdapter() {
 
                 @Override
@@ -494,9 +497,10 @@ public class JobAssistentImportJobParamsForm {
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
                     if (tableDescParameters.getSelectionCount() > -1) {
-                        String s = tableDescParameters.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tableDescParameters.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_
-                                + Options.getLanguage()).toString()
-                                : "";
+                        String s =
+                                tableDescParameters.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_ + Options.getLanguage()) != null
+                                        ? tableDescParameters.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_ + Options.getLanguage()).toString()
+                                        : "";
                         s = s.replaceAll("\\<.*?>", "");
                         txtDescription.setText(s);
                     }
@@ -507,9 +511,11 @@ public class JobAssistentImportJobParamsForm {
             final GridData gridData2 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
             gridData2.widthHint = 245;
             tableDescParameters.setLayoutData(gridData2);
-            final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobAssistent_NameColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
+            final TableColumn newColumnTableColumn =
+                    SOSJOEMessageCodes.JOE_TCl_JobAssistent_NameColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
             newColumnTableColumn.setWidth(122);
-            final TableColumn newColumnTableColumn_1 = SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
+            final TableColumn newColumnTableColumn_1 =
+                    SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
             newColumnTableColumn_1.setWidth(145);
             final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite4.Control(new Composite(textParameterGroup, SWT.NONE));
             final GridData gridData_11 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
@@ -533,9 +539,13 @@ public class JobAssistentImportJobParamsForm {
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
                     for (int i = 0; i < tableDescParameters.getItemCount(); i++) {
-                        paramListener.saveParameter(tblSelectedParams, tableDescParameters.getItem(i).getText(0), tableDescParameters.getItem(i).getText(1), tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_DE) != null ? tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_DE).toString()
-                                : "", tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_EN) != null ? tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_EN).toString()
-                                : "", tableDescParameters.getItem(i).getBackground().equals(Options.getRequiredColor()));
+                        paramListener.saveParameter(tblSelectedParams, tableDescParameters.getItem(i).getText(0),
+                                tableDescParameters.getItem(i).getText(1),
+                                tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_DE) != null
+                                        ? tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_DE).toString() : "",
+                                tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_EN) != null
+                                        ? tableDescParameters.getItem(i).getData(KEY_PARAMETER_DESCRIPTION_EN).toString() : "",
+                                tableDescParameters.getItem(i).getBackground().equals(Options.getRequiredColor()));
                     }
                     tableDescParameters.removeAll();
                     butApply.setEnabled(false);
@@ -568,10 +578,10 @@ public class JobAssistentImportJobParamsForm {
                             h.put(PARAM_NAME, item.getText(0));
                             h.put(PARAM_ATTRIBUTE_DEFAULT_VALUE, item.getText(1) != null ? item.getText(1) : "");
                             h.put(PARAM_ATTRIBUTE_REQUIRED, TRUE);
-                            h.put(KEY_PARAMETER_DESCRIPTION_DE, item.getData(KEY_PARAMETER_DESCRIPTION_DE) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_DE)
-                                    : "");
-                            h.put(KEY_PARAMETER_DESCRIPTION_EN, item.getData(KEY_PARAMETER_DESCRIPTION_EN) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_EN)
-                                    : "");
+                            h.put(KEY_PARAMETER_DESCRIPTION_DE,
+                                    item.getData(KEY_PARAMETER_DESCRIPTION_DE) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_DE) : "");
+                            h.put(KEY_PARAMETER_DESCRIPTION_EN,
+                                    item.getData(KEY_PARAMETER_DESCRIPTION_EN) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_EN) : "");
                             listOfParams.add(h);
                         } else {
                             TableItem itemDP = new TableItem(tableDescParameters, SWT.NONE);
@@ -593,8 +603,9 @@ public class JobAssistentImportJobParamsForm {
                 }
             });
             butRemoveAll.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            tblSelectedParams = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_SelectedParams.Control(new Table(textParameterGroup, SWT.MULTI
-                    | SWT.FULL_SELECTION | SWT.BORDER));
+            tblSelectedParams =
+                    SOSJOEMessageCodes.JOE_Tbl_JobAssistent_SelectedParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION
+                            | SWT.BORDER));
             tblSelectedParams.addMouseListener(new MouseAdapter() {
 
                 @Override
@@ -620,9 +631,8 @@ public class JobAssistentImportJobParamsForm {
                     if (tblSelectedParams.getSelectionCount() > -1) {
                         txtName.setText(tblSelectedParams.getSelection()[0].getText(0));
                         txtValue.setText(tblSelectedParams.getSelection()[0].getText(1));
-                        txtDescription.setText(tblSelectedParams.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tblSelectedParams.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_
-                                + Options.getLanguage()).toString()
-                                : "");
+                        txtDescription.setText(tblSelectedParams.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_ + Options.getLanguage()) != null
+                                ? tblSelectedParams.getSelection()[0].getData(KEY_PARAMETER_DESCRIPTION_ + Options.getLanguage()).toString() : "");
                         txtValue.setFocus();
                         butApply.setEnabled(false);
                     }
@@ -750,8 +760,9 @@ public class JobAssistentImportJobParamsForm {
     }
 
     private void close() {
-        int cont = ErrorLog.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK
-                | SWT.CANCEL);
+        int cont =
+                ErrorLog.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK
+                        | SWT.CANCEL);
         if (cont == SWT.OK) {
             if (jobBackUp != null) {
                 joblistener.getJob().setContent(jobBackUp.cloneContent());
@@ -816,8 +827,10 @@ public class JobAssistentImportJobParamsForm {
                 if (!existItem(strParamName, tblSelectedParams)) {
                     strParamName = item.getText(0);
                     strParamDefaultValue = item.getText(1);
-                    paramListener.saveParameter(tblSelectedParams, strParamName, strParamDefaultValue, item.getData(KEY_PARAMETER_DESCRIPTION_DE) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_DE).toString()
-                            : "", item.getData(KEY_PARAMETER_DESCRIPTION_EN) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_EN).toString() : "", item.getBackground().equals(Options.getRequiredColor()));
+                    paramListener.saveParameter(tblSelectedParams, strParamName, strParamDefaultValue,
+                            item.getData(KEY_PARAMETER_DESCRIPTION_DE) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_DE).toString() : "",
+                            item.getData(KEY_PARAMETER_DESCRIPTION_EN) != null ? item.getData(KEY_PARAMETER_DESCRIPTION_EN).toString() : "",
+                            item.getBackground().equals(Options.getRequiredColor()));
                 } else {
                     existParams = existParams + strParamName + "\n";
                 }

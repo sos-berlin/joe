@@ -69,20 +69,18 @@ public class ParameterListener {
                         TableItem item = new TableItem(table, SWT.NONE);
                         item.setText(0, "<from>");
                         item.setText(1, ((Element) o).getAttributeValue("from"));
-                    } else if ("param".equals(e.getName())) {
-                        if (e.getAttributeValue("name") != null) {
-                            TableItem item = new TableItem(table, SWT.NONE);
-                            item.setText(0, ((Element) o).getAttributeValue("name"));
-                            item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
-                            if (parameterDescription != null) {
-                                item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_"
-                                        + ((Element) o).getAttributeValue("name")));
-                                item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_"
-                                        + ((Element) o).getAttributeValue("name")));
-                            }
-                            if (parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name"))) {
-                                item.setBackground(Options.getRequiredColor());
-                            }
+                    } else if ("param".equals(e.getName()) && e.getAttributeValue("name") != null) {
+                        TableItem item = new TableItem(table, SWT.NONE);
+                        item.setText(0, ((Element) o).getAttributeValue("name"));
+                        item.setText(1, ((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : "");
+                        if (parameterDescription != null) {
+                            item.setData("parameter_description_de",
+                                    parameterDescription.get("parameter_description_de_" + ((Element) o).getAttributeValue("name")));
+                            item.setData("parameter_description_en",
+                                    parameterDescription.get("parameter_description_en_" + ((Element) o).getAttributeValue("name")));
+                        }
+                        if (parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name"))) {
+                            item.setBackground(Options.getRequiredColor());
                         }
                     }
                 }
@@ -100,18 +98,18 @@ public class ParameterListener {
         for (int i = 0; i < listOfParams.size(); i++) {
             HashMap h = (HashMap) listOfParams.get(i);
             if (h.get("name") != null) {
-                TableItem item = existsParams(h.get("name").toString(), table, (h.get("default_value") != null ? h.get("default_value").toString()
-                        : ""));
+                TableItem item =
+                        existsParams(h.get("name").toString(), table, h.get("default_value") != null ? h.get("default_value").toString() : "");
                 if (!refreshTable && item != null) {
                     if (h.get("required") != null && "true".equals(h.get("required"))) {
                         item.setBackground(Options.getRequiredColor());
                     }
                 } else {
                     String pname = h.get("name").toString();
-                    String pvalue = (h.get("default_value") != null ? h.get("default_value").toString() : "");
-                    String desc_de = (h.get("description_de") != null ? h.get("description_de").toString() : "");
-                    String desc_en = (h.get("description_en") != null ? h.get("description_en").toString() : "");
-                    saveParameter(table, pname, pvalue, desc_de, desc_en, (h.get("required") != null ? "true".equals(h.get("required")) : false));
+                    String pvalue = h.get("default_value") != null ? h.get("default_value").toString() : "";
+                    String desc_de = h.get("description_de") != null ? h.get("description_de").toString() : "";
+                    String desc_en = h.get("description_en") != null ? h.get("description_en").toString() : "";
+                    saveParameter(table, pname, pvalue, desc_de, desc_en, h.get("required") != null ? "true".equals(h.get("required")) : false);
                 }
             }
         }
@@ -125,7 +123,7 @@ public class ParameterListener {
                 if (o instanceof Element) {
                     TableItem item = new TableItem(table, SWT.NONE);
                     item.setText(0, ((Element) o).getAttributeValue("name"));
-                    item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
+                    item.setText(1, ((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : "");
                 }
             }
         }
@@ -146,7 +144,7 @@ public class ParameterListener {
                         item.setText(0, Utils.getAttributeValue("live_file", elem));
                         item.setText(2, "live_file");
                     }
-                    item.setText(1, (((Element) o).getAttributeValue("node") != null ? ((Element) o).getAttributeValue("node") : ""));
+                    item.setText(1, ((Element) o).getAttributeValue("node") != null ? ((Element) o).getAttributeValue("node") : "");
                 }
             }
         }
@@ -170,7 +168,6 @@ public class ParameterListener {
         if (_params != null) {
             _params.remove(index);
             _dom.setChanged(true);
-
         }
         if (_params.isEmpty()) {
             _parent.removeChild("params");
@@ -233,7 +230,7 @@ public class ParameterListener {
                         Utils.setAttribute("node", node, e);
                         _dom.setChanged(true);
                         table.getItem(index).setText(1, node);
-                        table.getItem(index).setText(2, (isLive ? "live_file" : "file"));
+                        table.getItem(index).setText(2, isLive ? "live_file" : "file");
                         break;
                     }
                     index++;
@@ -254,7 +251,7 @@ public class ParameterListener {
             }
             _includeParams.add(e);
             TableItem item = new TableItem(table, SWT.NONE);
-            item.setText(new String[] { file, node, (isLive ? "live_file" : "file") });
+            item.setText(new String[] { file, node, isLive ? "live_file" : "file" });
         }
     }
 
@@ -262,7 +259,7 @@ public class ParameterListener {
         boolean found = false;
         if (_params != null) {
             if ("<from>".equals(name) && type == JOEConstants.COMMANDS) {
-                found = (table.getSelectionIndex() > -1);
+                found = table.getSelectionIndex() > -1;
             } else {
                 int index = 0;
                 Iterator it = _params.iterator();
@@ -359,7 +356,8 @@ public class ParameterListener {
                             List notelist = note.getChildren();
                             for (int j = 0; j < notelist.size(); j++) {
                                 Element elNote = (Element) (notelist.get(j));
-                                parameterDescription.put("parameter_description_" + language + "_" + elMain.getAttributeValue("name"), elNote.getText());
+                                parameterDescription.put("parameter_description_" + language + "_" + elMain.getAttributeValue("name"),
+                                        elNote.getText());
                                 if (elMain.getAttributeValue("required") != null) {
                                     parameterRequired.put(elMain.getAttributeValue("name"), elMain.getAttributeValue("required"));
                                 }
@@ -374,24 +372,18 @@ public class ParameterListener {
     }
 
     public String getParameterDescription(String name) {
-        return (parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get("parameter_description_"
-                + Options.getLanguage() + "_" + name).toString()
-                : "");
+        return parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get(
+                "parameter_description_" + Options.getLanguage() + "_" + name).toString() : "";
     }
 
     public String getParameterDescription(String name, String language) {
-        return (parameterDescription.get("parameter_description_" + language + "_" + name) != null ? parameterDescription.get("parameter_description_"
-                + language + "_" + name).toString()
-                : "");
+        return parameterDescription.get("parameter_description_" + language + "_" + name) != null ? parameterDescription.get(
+                "parameter_description_" + language + "_" + name).toString() : "";
     }
 
     private boolean isParameterRequired(String name) {
-        String isIt = (parameterRequired.get(name) != null ? parameterRequired.get(name).toString() : "");
-        if ("true".equals(isIt)) {
-            return (true);
-        } else {
-            return false;
-        }
+        String isIt = parameterRequired.get(name) != null ? parameterRequired.get(name).toString() : "";
+        return "true".equals(isIt);
     }
 
     public void changeUp(Table table) {

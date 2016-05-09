@@ -55,7 +55,6 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
         tTimeout.setFocus();
     }
 
-    /** This method initializes group */
     private void createGroup() {
         GridData gridData = new GridData();
         gridData.grabExcessHorizontalSpace = true;
@@ -63,19 +62,11 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         gScript = JOE_G_ClusterForm_Cluster.Control(new Group(this, SWT.NONE));
-        // gScript.setText("Cluster");
         gScript.setLayout(gridLayout);
         label14 = JOE_L_ClusterForm_HeartbeatTimeout.Control(new Label(gScript, SWT.NONE));
-        // label14.setText("Heartbeat Timeout");
         createComposite();
         label1 = JOE_L_ClusterForm_HeartbeatOwnTimeout.Control(new Label(gScript, SWT.NONE));
-        // label1.setText("Heartbeat Own Timeout");
         tOwnTimeout = JOE_T_ClusterForm_HeartbeatOwnTimeout.Control(new Text(gScript, SWT.BORDER));
-        // tOwnTimeout.addFocusListener(new FocusAdapter() {
-        // public void focusGained(final FocusEvent e) {
-        // tOwnTimeout.selectAll();
-        // }
-        // });
         tOwnTimeout.setLayoutData(gridData);
         tOwnTimeout.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -84,13 +75,7 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         label3 = JOE_L_ClusterForm_HeartbeatWarnTimeout.Control(new Label(gScript, SWT.NONE));
-        // label3.setText("Heartbeat Warn Timeout");
         tWarnTimeout = JOE_T_ClusterForm_HeartbeatWarnTimeout.Control(new Text(gScript, SWT.BORDER));
-        // tWarnTimeout.addFocusListener(new FocusAdapter() {
-        // public void focusGained(final FocusEvent e) {
-        // tWarnTimeout.selectAll();
-        // }
-        // });
         tWarnTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -102,14 +87,8 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
         tWarnTimeout.setLayoutData(gridData_1);
     }
 
-    /** This method initializes composite */
     private void createComposite() {
         tTimeout = JOE_T_ClusterForm_HeartbeatTimeout.Control(new Text(gScript, SWT.BORDER));
-        // tTimeout.addFocusListener(new FocusAdapter() {
-        // public void focusGained(final FocusEvent e) {
-        // tTimeout.selectAll();
-        // }
-        // });
         tTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -127,8 +106,7 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
 
     @Override
     public void apply() {
-        // TODO Auto-generated method stub
-
+        // TO DO Auto-generated method stub
     }
 
-} // @jve:decl-index=0:visual-constraint="10,10"
+}

@@ -305,7 +305,8 @@ public class HotFolderDialog {
                     item.setText(name);
                     item.setData(filename);
                     item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
-                    java.util.Vector subFilelist = sos.util.SOSFile.getFolderlist(filename, SCHEDULER_CLUSTER_MASK, java.util.regex.Pattern.CASE_INSENSITIVE, false);
+                    java.util.Vector subFilelist =
+                            sos.util.SOSFile.getFolderlist(filename, SCHEDULER_CLUSTER_MASK, java.util.regex.Pattern.CASE_INSENSITIVE, false);
                     createTreeItem(item, subFilelist, false);
                 } else {
                     if (sub) {

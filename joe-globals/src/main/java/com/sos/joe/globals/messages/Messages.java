@@ -2,7 +2,6 @@ package com.sos.joe.globals.messages;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.i18n.annotation.I18NResourceBundle;
@@ -11,10 +10,8 @@ import com.sos.joe.globals.options.Options;
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class Messages {
 
-    //    private static final String   BUNDLE_NAME = "sos.scheduler.editor.messages"; //$NON-NLS-1$
-    private static final String BUNDLE_NAME = "JOEMessages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "JOEMessages";
     public static String strLastMsgKey = "";
-    private static ResourceBundle RESOURCE_BUNDLE;
     private static JSToolBox objToolBox;
 
     private Messages() {
@@ -23,11 +20,6 @@ public class Messages {
 
     public static boolean setResource(Locale pobjLocale) {
         getMsgObj().setLocale(pobjLocale);
-        // try {
-        // RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, locale);
-        // } catch (MissingResourceException e) {
-        // return false;
-        // }
         return true;
     }
 
@@ -63,19 +55,12 @@ public class Messages {
     public static String getString(String key, Object[] values) {
         strLastMsgKey = key;
         return getMsgObj().getMsg(key, values);
-
-        // try {
-        // return MessageFormat.format(RESOURCE_BUNDLE.getString(key), values);
-        // } catch (MissingResourceException e) {
-        // return '!' + key + '!';
-        // }
     }
 
     public static boolean hasMessage(String key) {
         try {
-            // String msg = RESOURCE_BUNDLE.getString(key);
             String msg = getMsgObj().getMsg(key);
-            return msg != null && !msg.equals("");
+            return msg != null && !"".equals(msg);
         } catch (MissingResourceException e) {
             return false;
         }
@@ -88,8 +73,7 @@ public class Messages {
             if (msg == null) {
                 msg = getMsgObj().getLabel(key.toLowerCase() + ".tooltip");
             }
-
-            return msg != null && !msg.equals("") ? msg : key;
+            return msg != null && !"".equals(msg) ? msg : key;
         } catch (Exception e) {
             return key;
         }
@@ -107,7 +91,7 @@ public class Messages {
                 }
             }
             String strR = "";
-            if (msg != null && msg.equals("") == false) {
+            if (msg != null && !"".equals(msg)) {
                 strR = msg;
             } else {
                 strR = key;
@@ -129,7 +113,7 @@ public class Messages {
                     msg = getMsgObj().getLabel(key);
                 }
             }
-            return msg != null && !msg.equals("") ? msg : key;
+            return msg != null && !"".equals(msg) ? msg : key;
         } catch (Exception e) {
             return pstrKey;
         }

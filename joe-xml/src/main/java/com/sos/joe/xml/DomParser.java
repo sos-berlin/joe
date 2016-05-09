@@ -192,7 +192,9 @@ public abstract class DomParser extends I18NBase {
             }
             return s;
         } catch (Exception e) {
-            String strM = this.getMsg("JOE-E-1100: Schema file '%1$s' not found, but required. check editor.properties.\n Execption is %2$s", strT, e.toString());
+            String strM =
+                    this.getMsg("JOE-E-1100: Schema file '%1$s' not found, but required. check editor.properties.\n Execption is %2$s", strT,
+                            e.toString());
             new ErrorLog(strM, e);
             throw new IOException("error in writeSchemaFile(). could not get schema " + strT + "\n" + e.toString());
         }

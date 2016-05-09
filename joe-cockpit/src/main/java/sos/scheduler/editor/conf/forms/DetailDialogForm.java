@@ -41,8 +41,9 @@ public class DetailDialogForm {
         shell = new Shell(sos.scheduler.editor.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
         shell.setLayout(new FillLayout());
         shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
-        shell.setText(SOSJOEMessageCodes.JOE_M_0017.params(jobChainname, state != null && !state.isEmpty() ? SOSJOEMessageCodes.JOE_M_0018.params(state)
-                : "", orderId != null && !orderId.isEmpty() ? SOSJOEMessageCodes.JOE_M_0019.params(orderId) : ""));
+        shell.setText(SOSJOEMessageCodes.JOE_M_0017.params(jobChainname,
+                state != null && !state.isEmpty() ? SOSJOEMessageCodes.JOE_M_0018.params(state) : "", orderId != null && !orderId.isEmpty()
+                        ? SOSJOEMessageCodes.JOE_M_0019.params(orderId) : ""));
         final Composite composite = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(shell, SWT.NONE));
         composite.setLayout(new FillLayout());
         final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);

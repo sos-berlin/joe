@@ -682,7 +682,8 @@ public class SOSJOEMessageCodes extends SOSComposite {
     @I18NMsg
     public static final SOSMsgJOE JOE_M_JobAssistent_JobParameter = new SOSMsgJOE("JOE_M_JobAssistent_JobParameter");
     @I18NMsg
-    public static final SOSMsgJOE JOE_M_JobAssistent_JobParameter_Missing_Xulrunner = new SOSMsgJOE("JOE_M_JobAssistent_JobParameter_Missing_Xulrunner");
+    public static final SOSMsgJOE JOE_M_JobAssistent_JobParameter_Missing_Xulrunner = new SOSMsgJOE(
+            "JOE_M_JobAssistent_JobParameter_Missing_Xulrunner");
     @I18NMsg
     public static final SOSMsgJOE JOE_G_JobAssistent_ParamGroup = new SOSMsgJOE("JOE_G_JobAssistent_ParamGroup");
     @I18NMsg
@@ -813,7 +814,8 @@ public class SOSJOEMessageCodes extends SOSComposite {
     @I18NMsg
     public static final SOSMsgJOE JOE_B_JobAssistent_Close = new SOSMsgJOE("JOE_B_JobAssistent_Close");
     @I18NMsg
-    public static final SOSMsgJOE JOE_B_JobAssistentMonitoringDirectoryForms_Apply = new SOSMsgJOE("JOE_B_JobAssistentMonitoringDirectoryForms_Apply");
+    public static final SOSMsgJOE JOE_B_JobAssistentMonitoringDirectoryForms_Apply =
+            new SOSMsgJOE("JOE_B_JobAssistentMonitoringDirectoryForms_Apply");
     @I18NMsg
     public static final SOSMsgJOE JOE_M_JobAssistent_Close = new SOSMsgJOE("JOE_M_JobAssistent_Close");
     // JobAssistentPeriodForm

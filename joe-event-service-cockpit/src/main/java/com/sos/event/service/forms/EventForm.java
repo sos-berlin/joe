@@ -380,13 +380,15 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
     public void apply() {
         try {
             if (butApply.isEnabled()) {
-                listener.apply(txtEventName.getText(), txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), txtJobname.getText(), txtJobChain.getText(), txtOrderId.getText(), txtComment.getText(), txtExitCode.getText(), getExpirationPeriod(), getExpirationCycle(), table);
+                listener.apply(txtEventName.getText(), txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), txtJobname.getText(),
+                        txtJobChain.getText(), txtOrderId.getText(), txtComment.getText(), txtExitCode.getText(), getExpirationPeriod(),
+                        getExpirationCycle(), table);
                 cboEventClass.setItems(listener.getEventClasses());
                 refresh();
             }
         } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-            ErrorLog.message((JOE_E_0002.params("'save Event'") + e.getMessage()), SWT.ICON_WARNING);
+            ErrorLog.message(JOE_E_0002.params("'save Event'") + e.getMessage(), SWT.ICON_WARNING);
 
         }
 

@@ -101,7 +101,7 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
         if (language < 0) {
             language = 0;
         }
-        spinner.setSelection((objDataProvider.getOrdering().length() == 0 ? 0 : Integer.parseInt(objDataProvider.getOrdering())));
+        spinner.setSelection(objDataProvider.getOrdering().isEmpty() ? 0 : Integer.parseInt(objDataProvider.getOrdering()));
         init = false;
     }
 

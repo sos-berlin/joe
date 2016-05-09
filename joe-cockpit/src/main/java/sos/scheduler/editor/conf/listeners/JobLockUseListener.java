@@ -76,7 +76,7 @@ public class JobLockUseListener {
         if (Utils.getAttributeValue("exclusive", _lockUse) == null || Utils.getAttributeValue("exclusive", _lockUse).isEmpty()) {
             return true;
         } else {
-            return (Utils.getAttributeValue("exclusive", _lockUse).equals("yes"));
+            return "yes".equals(Utils.getAttributeValue("exclusive", _lockUse));
         }
     }
 

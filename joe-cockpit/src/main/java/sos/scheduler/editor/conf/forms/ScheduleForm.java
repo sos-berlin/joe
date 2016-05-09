@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.forms;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -21,8 +23,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
+
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
@@ -73,8 +77,9 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             validToDate.setDate(d);
             validToTime.setTime(d);
             String[] s = listener.getAllSchedules();
-            if (s != null)
+            if (s != null) {
                 cboCombo.setItems(s);
+            }
             cboCombo.setText(listener.getSubstitute());
             setSize(new org.eclipse.swt.graphics.Point(656, 400));
             txtName.setFocus();
@@ -89,15 +94,14 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             gridLayout.numColumns = 3;
             scheduleGroup = JOE_G_ScheduleForm_Schedule.Control(new Group(this, SWT.NONE));
             scheduleGroup.setLayout(gridLayout);
-            @SuppressWarnings("unused")
             final Label nameLabel = JOE_L_Name.Control(new Label(scheduleGroup, SWT.NONE));
             txtName = JOE_T_ScheduleForm_Name.Control(new Text(scheduleGroup, SWT.BORDER));
             txtName.addVerifyListener(new VerifyListener() {
 
                 public void verifyText(final VerifyEvent e) {
-                    if (!init)// während der initialiserung sollen keine
-                              // überprüfungen stattfinden
+                    if (!init) {
                         e.doit = Utils.checkElement(txtName.getText(), dom, JOEConstants.SCHEDULE, null);
+                    }
                 }
             });
             txtName.addModifyListener(new ModifyListener() {
@@ -122,7 +126,6 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
-            @SuppressWarnings("unused")
             final Label substitueLabel = JOE_L_ScheduleForm_Substitute.Control(new Label(scheduleGroup, SWT.NONE));
             cboCombo = JOE_Cbo_ScheduleForm_Substitute.Control(new Combo(scheduleGroup, SWT.NONE));
             cboCombo.addModifyListener(new ModifyListener() {
@@ -149,7 +152,6 @@ public class ScheduleForm extends SOSJOEMessageCodes {
                     setValidDateFrom();
                 }
             });
-            @SuppressWarnings("unused")
             final Label validToLabel = JOE_L_ScheduleForm_ValidTo.Control(new Label(scheduleGroup, SWT.NONE));
             validToDate = JOE_ScheduleForm_ValidToDate.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
             validToDate.addSelectionListener(new SelectionAdapter() {
@@ -165,7 +167,6 @@ public class ScheduleForm extends SOSJOEMessageCodes {
                     setValidDateTo();
                 }
             });
-
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
@@ -175,7 +176,6 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
-
             scheduleFormmessage = new Label(scheduleGroup, SWT.BORDER);
             scheduleFormmessage.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
             scheduleFormmessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_LINK_FOREGROUND));
@@ -189,44 +189,38 @@ public class ScheduleForm extends SOSJOEMessageCodes {
 
     private boolean existScheduleName() {
         boolean retVal = false;
-        if (!dom.isLifeElement()) {
-            if (listener.getSchedule() != null && listener.getSchedule().getParentElement() != null) {
-                Element parent = listener.getSchedule().getParentElement();
-                java.util.List l = parent.getChildren("schedule");
-                for (int i = 0; i < l.size(); i++) {
-                    Element el = (Element) l.get(i);
-                    if (Utils.getAttributeValue("name", el).equals(txtName.getText())) {
-                        retVal = true;
-                        break;
-                    }
+        if (!dom.isLifeElement() && listener.getSchedule() != null && listener.getSchedule().getParentElement() != null) {
+            Element parent = listener.getSchedule().getParentElement();
+            List l = parent.getChildren("schedule");
+            for (int i = 0; i < l.size(); i++) {
+                Element el = (Element) l.get(i);
+                if (Utils.getAttributeValue("name", el).equals(txtName.getText())) {
+                    retVal = true;
+                    break;
                 }
             }
         }
-        if (retVal)
+        if (retVal) {
             txtName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-        else
+        } else {
             txtName.setBackground(null);
+        }
         return retVal;
     }
 
     private void checkDates() {
         Calendar calendarNow = GregorianCalendar.getInstance();
         calendarNow.setTime(new Date());
-
         Calendar calendarTo = GregorianCalendar.getInstance();
         calendarTo.setTime(validToDate.getDate());
-
         calendarTo.set(Calendar.HOUR_OF_DAY, (int) validToTime.getHours());
         calendarTo.set(Calendar.MINUTE, (int) validToTime.getMinutes());
         calendarTo.set(Calendar.SECOND, (int) validToTime.getSeconds());
-
         Calendar calendarFrom = GregorianCalendar.getInstance();
         calendarFrom.setTime(validFromDate.getDate());
-
         calendarFrom.set(Calendar.HOUR_OF_DAY, (int) validFromTime.getHours());
         calendarFrom.set(Calendar.MINUTE, (int) validFromTime.getMinutes());
         calendarFrom.set(Calendar.SECOND, (int) validFromTime.getSeconds());
-
         if (calendarNow.after(calendarFrom)) {
             scheduleFormmessage.setText(JOE_E_ScheduleForm_ValidFromTo_001.label());
         } else {
@@ -259,4 +253,5 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             }
         }
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+
+}

@@ -235,7 +235,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
         });
         yesButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        shellSetBack.setBounds((screen.width - shellSetBack.getBounds().width) / 2, (screen.height - shellSetBack.getBounds().height) / 2, shellSetBack.getBounds().width, shellSetBack.getBounds().height);
+        shellSetBack.setBounds((screen.width - shellSetBack.getBounds().width) / 2, (screen.height - shellSetBack.getBounds().height) / 2,
+                shellSetBack.getBounds().width, shellSetBack.getBounds().height);
         shellSetBack.open();
         final Composite composite_1 = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(shellSetBack, SWT.NONE));
         composite_1.setLayoutData(new GridData());
@@ -310,7 +311,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
                     jobname.setText(Utils.getAttributeValue("name", job));
                 }
                 if (Options.getPropertyBoolean("editor.job.show.wizard")) {
-                    Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_EndWizard.label() + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true);
+                    Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_EndWizard.label() + "\n\n" + Utils.getElementAsString(job),
+                            shellSetBack, false, null, false, null, true);
                 }
                 closeDialog = true;
                 shellSetBack.dispose();

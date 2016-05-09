@@ -183,7 +183,8 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
 
             @Override
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                DocumentationForm.openNoteDialog(dom, listener.getResource(), "note", null, true, !listener.isNewDatabase(), JOE_B_DBResources_Notes.label());
+                DocumentationForm.openNoteDialog(dom, listener.getResource(), "note", null, true, !listener.isNewDatabase(),
+                        JOE_B_DBResources_Notes.label());
             }
         });
         fNote = new NoteForm(group1, SWT.NONE);
@@ -208,6 +209,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
 
             @Override
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+                //
             }
         });
     }
@@ -222,6 +224,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
     }
 
     private void createComposite1() {
+        //
     }
 
     @Override

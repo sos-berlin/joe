@@ -63,11 +63,6 @@ public class TextDialog extends Dialog {
         bEdit = true;
     }
 
-    /** Schreibt den String in das Dialog und schrolt zu der Stelle, in der
-     * selectString steht
-     * 
-     * @param content
-     * @param selectString */
     public void setContent(String content, String selectString) {
         try {
             String _selectString = "=\"" + selectString + "\"";
@@ -98,9 +93,6 @@ public class TextDialog extends Dialog {
         return _styledText;
     }
 
-    /*
-     * public StyledText getStyledText() { return _styledText; }
-     */
     private void init() {
         Shell parent = getParent();
         _shell = new Shell(parent, _shellStyle);
@@ -164,14 +156,12 @@ public class TextDialog extends Dialog {
         final GridLayout gridLayout = new GridLayout();
         _shell.setLayout(gridLayout);
         GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
-        // _styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER |
-        // SWT.WRAP | SWT.H_SCROLL);
         _styledText = new Text(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
         _styledText.addVerifyListener(new VerifyListener() {
 
             @Override
             public void verifyText(final VerifyEvent e) {
-                // das ist CTRL-Z
+                //
             }
         });
 
@@ -239,7 +229,7 @@ public class TextDialog extends Dialog {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                if (_styledText.getText().length() > 0) {
+                if (!_styledText.getText().isEmpty()) {
                     clipBoardClick = true;
                 }
                 _shell.close();
@@ -257,7 +247,7 @@ public class TextDialog extends Dialog {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                if (cboFunctions.getText().length() > 0) {
+                if (!cboFunctions.getText().isEmpty()) {
                     _styledText.append(Options.getProperty(scriptLanguage + cboFunctions.getText()));
                     cboFunctions.setText("");
                 }
@@ -291,7 +281,6 @@ public class TextDialog extends Dialog {
         return _shell;
     }
 
-    // location soll gespeichert werden
     public void setBSaveWindow(boolean saveWindow) {
         bSaveWindow = saveWindow;
     }
@@ -306,24 +295,20 @@ public class TextDialog extends Dialog {
         _shell.close();
     }
 
-    /** @return the showFunctions */
     public boolean isShowFunctions() {
         return showFunctions;
     }
 
-    /** @param showFunctions the showFunctions to set */
     public void setShowFunctions(boolean showFunctions) {
         this.showFunctions = showFunctions;
         cboFunctions.setVisible(showFunctions);
         addPredefinedFunctionsLabel.setVisible(showFunctions);
     }
 
-    /** @return the scriptLanguage */
     public String getScriptLanguage() {
         return scriptLanguage;
     }
 
-    /** @param scriptLanguage the scriptLanguage to set */
     public void setScriptLanguage(String scriptLanguage_) {
         if (scriptLanguage_ != null) {
             this.scriptLanguage = scriptLanguage_.toLowerCase();
@@ -334,18 +319,10 @@ public class TextDialog extends Dialog {
         }
     }
 
-    /** @return the butShowSiteInFuture */
-    /*
-     * public boolean getShowDialogButtonInFutureIsVisible() {
-     * if(butShowSiteInFuture != null && butShowSiteInFuture.isVisible()) return
-     * true; else return false; }
-     */
-    /** dont Show Wizzard Info
-     * 
-     * @param butShowSiteInFuture the butShowSiteInFuture to set */
     public void setShowWizzardInfo(boolean visible) {
         if (butShowSiteInFuture != null) {
             this.butShowSiteInFuture.setVisible(visible);
         }
     }
+
 }

@@ -1,7 +1,8 @@
 package sos.scheduler.editor.conf.listeners;
 
 import java.text.ParseException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jdom.Element;
 
@@ -55,8 +56,7 @@ public class ScheduleListener {
     }
 
     public String getValidFrom() throws ParseException {
-        String sDate = Utils.getAttributeValue("valid_from", _schedule);
-        return sDate;
+        return Utils.getAttributeValue("valid_from", _schedule);
     }
 
     private void clearValid() {
@@ -73,12 +73,11 @@ public class ScheduleListener {
     }
 
     public String getValidTo() throws ParseException {
-        String sDate = Utils.getAttributeValue("valid_to", _schedule);
-        return sDate;
+        return Utils.getAttributeValue("valid_to", _schedule);
     }
 
     public void setSubstitut(String substitute) {
-        if (substitute.trim().equals("")) {
+        if ("".equals(substitute.trim())) {
             clearValid();
         }
         Utils.setAttribute("substitute", substitute, _schedule);
@@ -91,26 +90,25 @@ public class ScheduleListener {
     }
 
     public String[] getAllSchedules() {
-        java.util.List s = null;
+        List s = null;
         if (_dom.isLifeElement() || _schedule == null) {
             return null;
         }
-
         String currSchedulename = Utils.getAttributeValue("name", _schedule);
         Element schedules = null;
-        if (_schedule.getParentElement() != null)
+        if (_schedule.getParentElement() != null) {
             schedules = (Element) _schedule.getParentElement().clone();
-        else
+        } else {
             return null;
+        }
         s = schedules.getChildren("schedule");
-        java.util.ArrayList list = new java.util.ArrayList();
+        ArrayList list = new java.util.ArrayList();
         list.add("");
         for (int i = 0; i < s.size(); i++) {
             if (s.get(i) instanceof Element) {
                 Element e = (Element) s.get(i);
                 if (!Utils.getAttributeValue("name", e).equals(currSchedulename)) {
                     list.add(Utils.getAttributeValue("name", e));
-
                 }
             }
         }
@@ -118,7 +116,7 @@ public class ScheduleListener {
         for (int i = 0; i < list.size(); i++) {
             str[i] = (String) list.get(i);
         }
-
         return str;
     }
+
 }

@@ -197,7 +197,8 @@ public class JobAssistentScriptForms {
             item.setText(in);
         }
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        scriptShell.setBounds((screen.width - scriptShell.getBounds().width) / 2, (screen.height - scriptShell.getBounds().height) / 2, scriptShell.getBounds().width, scriptShell.getBounds().height);
+        scriptShell.setBounds((screen.width - scriptShell.getBounds().width) / 2, (screen.height - scriptShell.getBounds().height) / 2,
+                scriptShell.getBounds().width, scriptShell.getBounds().height);
         scriptShell.open();
         final Composite composite = new Composite(scriptShell, SWT.NONE);
         final GridLayout gridLayout_2 = new GridLayout();
@@ -326,7 +327,8 @@ public class JobAssistentScriptForms {
             listener.newImportJob(scriptlistener.getParent(), assistentType);
         }
         if (Options.getPropertyBoolean("editor.job.show.wizard")) {
-            Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), scriptShell, false, null, false, null, true);
+            Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()),
+                    scriptShell, false, null, false, null, true);
         }
         closeDialog = true;
         scriptShell.dispose();
