@@ -873,7 +873,7 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
             while (it.hasNext()) {
                 Element node = (Element) it.next();
                 if ("file_order_source".equalsIgnoreCase(node.getName())) {
-                    if (Utils.getAttributeValue("directory", node).endsWith(item.getText(0))
+                    if (Utils.getAttributeValue("directory", node).equalsIgnoreCase(item.getText(0))
                             && Utils.getAttributeValue("regex", node).equalsIgnoreCase(item.getText(1))) {
                         index = i;
                     }
@@ -1094,7 +1094,7 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
         try {
             XPath x3 = XPath.newInstance("//job_chain[@name='" + getChainName() + "']/job_chain_node.job_chain");
             List listOfElement_3 = x3.selectNodes(getDom().getDoc());
-            return listOfElement_3.isEmpty();
+            return !listOfElement_3.isEmpty();
         } catch (Exception e) {
             try {
                 new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
