@@ -743,7 +743,7 @@ public class DetailsListener {
         Utils.setAttribute("name", "configuration_monitor", monitor);
         Utils.setAttribute("ordering", "0", monitor);
         Element script = new Element("script");
-        Utils.setAttribute("java_class", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor", script);
+        Utils.setAttribute("java_class", "com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor", script);
         Utils.setAttribute("language", "java", script);
         monitor.addContent(script);
         job.addContent(monitor);
@@ -792,8 +792,7 @@ public class DetailsListener {
                             if (tab.getFilelist().contains(hotFolderfilename)) {
                                 form = (SchedulerForm) tab.getEditor(hotFolderfilename);
                                 x2 =
-                                        XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
-                                                + "ConfigurationOrderMonitor']");
+                                        XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                             } else {
                                 form = (SchedulerForm) tab.getEditor(pathFromHotFolderDirectory);
                                 x2 =
@@ -808,13 +807,12 @@ public class DetailsListener {
                                 XPath x4 = null;
                                 if (tab.getFilelist().contains(hotFolderfilename)) {
                                     x3 =
-                                            XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
-                                                    + "ConfigurationOrderMonitor']");
+                                            XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                                     x4 = XPath.newInstance("//job");
                                 } else {
                                     x3 =
                                             XPath.newInstance("//job[@name='" + new File(jobname).getName() + "']/monitor/script[@java_class="
-                                                    + "'sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                                                    + "'sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                                     x4 = XPath.newInstance("//job[@name='" + new File(jobname).getName() + "']");
                                 }
                                 List listOfElement3 = x3.selectNodes(currdom.getDoc());
@@ -848,8 +846,7 @@ public class DetailsListener {
                             currDom.read(hotFolderfilename);
                             if (x2 == null) {
                                 x2 =
-                                        XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
-                                                + "ConfigurationOrderMonitor']");
+                                        XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                             }
                             listOfElement2 = x2.selectNodes(currDom.getDoc());
                             if (listOfElement2.isEmpty()) {
@@ -864,8 +861,7 @@ public class DetailsListener {
                         }
                     } else {
                         XPath x2 =
-                                XPath.newInstance("//job[@name='" + jobname + "']/monitor/script[@java_class='sos.scheduler.managed.configuration."
-                                        + "ConfigurationOrderMonitor']");
+                                XPath.newInstance("//job[@name='" + jobname + "']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                         listOfElement2 = x2.selectNodes(dom.getDoc());
                         if (listOfElement2.isEmpty()) {
                             XPath x3 = XPath.newInstance("//jobs/job[@name='" + jobname + "']");
@@ -926,7 +922,7 @@ public class DetailsListener {
                                 + " not exist.", SWT.ICON_WARNING);
                         return;
                     }
-                    XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+                    XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                     sos.scheduler.editor.app.TabbedContainer tab = (sos.scheduler.editor.app.TabbedContainer) MainWindow.getContainer();
                     if (tab.getFilelist() != null && tab.getFilelist().contains(hotFolderfilename)) {
                         SchedulerForm form = (SchedulerForm) tab.getEditor(hotFolderfilename);
@@ -934,8 +930,7 @@ public class DetailsListener {
                         listOfElement2 = x2.selectNodes(currdom.getDoc());
                         if (listOfElement2.isEmpty()) {
                             XPath x3 =
-                                    XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration."
-                                            + "ConfigurationOrderMonitor']");
+                                    XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                             List listOfElement3 = x3.selectNodes(currdom.getDoc());
                             if (listOfElement3.isEmpty()) {
                                 x3 = XPath.newInstance("//job");
@@ -970,8 +965,7 @@ public class DetailsListener {
                     }
                 } else {
                     XPath x2 =
-                            XPath.newInstance("//job[@name='" + jobname + "']/monitor/script[@java_class='sos.scheduler.managed.configuration."
-                                    + "ConfigurationOrderMonitor']");
+                            XPath.newInstance("//job[@name='" + jobname + "']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor' or @java_class='com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor']");
                     listOfElement2 = x2.selectNodes(dom.getDoc());
                     if (listOfElement2.isEmpty()) {
                         XPath x3 = XPath.newInstance("//jobs/job[@name='" + jobname + "']");
