@@ -1,18 +1,17 @@
-import com.google.common.io.Files;
-import com.sos.resources.ResourceHelper;
-import com.sos.resources.SOSProductionResource;
-import com.sos.resources.SOSResourceFactory;
-
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+import com.google.common.io.Files;
+import com.sos.resources.ResourceHelper;
+import com.sos.resources.SOSProductionResource;
+import com.sos.resources.SOSResourceFactory;
 
 public class SOSResourceFactoryTest {
 
@@ -28,7 +27,6 @@ public class SOSResourceFactoryTest {
         File tempFile = SOSResourceFactory.asFile(SOSProductionResource.SCHEDULER_XSD);
         File tempDir = ResourceHelper.getInstance().getWorkingDirectory();
         String s = this.getClass().getClassLoader().getResource(SOSProductionResource.SCHEDULER_XSD.getFullName()).toString();
-
         assertTrue(tempFile.exists());
         SOSResourceFactory.removeTemporaryFiles();
         assertFalse(tempFile.exists());
