@@ -236,7 +236,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
 
     private void encrypt() {
         try {
-            String _encrypt = SOSCrypt.MD5encrypt(txtPassword.getText());
+            String _encrypt = SOSCrypt.md5encrypt(txtPassword.getText());
             txtMD5Password.setText(_encrypt.toUpperCase());
         } catch (Exception ex) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + JOE_M_0016.params(txtPassword.getText()), ex);

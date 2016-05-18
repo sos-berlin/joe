@@ -86,7 +86,7 @@ public class SourceGenerator extends JSToolBox {
             }
             String strClassName;
             String strClassNameExtension;
-            JSDataElementDate objDate = new JSDataElementDate(Now());
+            JSDataElementDate objDate = new JSDataElementDate(now());
             objDate.setFormatPattern(JSDateFormat.dfTIMESTAMPS24);
             objDate.setParsePattern(JSDateFormat.dfTIMESTAMPS24);
             String strTimeStamp = objDate.FormattedValue();
