@@ -133,7 +133,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        Button btnOk = JOE_B_Apply.Control(new Button(grpGroup, SWT.NONE));
+        Button btnOk = JOE_B_Apply.control(new Button(grpGroup, SWT.NONE));
         GridData gd_btnOk = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
         gd_btnOk.widthHint = 58;
         btnOk.setLayoutData(gd_btnOk);
@@ -149,7 +149,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
                 dialogShell.dispose();
             }
         });
-        Button btnCancelButton = JOE_B_Cancel.Control(new Button(grpGroup, SWT.NONE));
+        Button btnCancelButton = JOE_B_Cancel.control(new Button(grpGroup, SWT.NONE));
         btnCancelButton.setSize(48, 25);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
@@ -280,7 +280,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         createTableNextStates();
         GridData gd_btOkJobchainNodeReturnCodeNextState = new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1);
         gd_btOkJobchainNodeReturnCodeNextState.widthHint = 140;
-        btOkJobchainNodeReturnCodeNextState = JOE_B_ReturnCodesForm_Add_Next_State.Control(new Button(grpGroup, SWT.NONE));
+        btOkJobchainNodeReturnCodeNextState = JOE_B_ReturnCodesForm_Add_Next_State.control(new Button(grpGroup, SWT.NONE));
         btOkJobchainNodeReturnCodeNextState.setLayoutData(gd_btOkJobchainNodeReturnCodeNextState);
         btOkJobchainNodeReturnCodeNextState.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -290,7 +290,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         });
         GridData gd_btNewJobchainNodeReturnNextState = new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1);
         gd_btNewJobchainNodeReturnNextState.widthHint = 100;
-        btNewJobchainNodeReturnNextState = JOE_B_New.Control(new Button(grpGroup, SWT.NONE));
+        btNewJobchainNodeReturnNextState = JOE_B_New.control(new Button(grpGroup, SWT.NONE));
         btNewJobchainNodeReturnNextState.setEnabled(false);
         btNewJobchainNodeReturnNextState.setLayoutData(gd_btNewJobchainNodeReturnNextState);
         btNewJobchainNodeReturnNextState.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -305,7 +305,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         });
         GridData gd_btRemoveJobchainNodeReturnCodeNextState = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
         gd_btRemoveJobchainNodeReturnCodeNextState.widthHint = 100;
-        btRemoveJobchainNodeReturnCodeNextState = JOE_B_Remove.Control(new Button(grpGroup, SWT.NONE));
+        btRemoveJobchainNodeReturnCodeNextState = JOE_B_Remove.control(new Button(grpGroup, SWT.NONE));
         btRemoveJobchainNodeReturnCodeNextState.setLayoutData(gd_btRemoveJobchainNodeReturnCodeNextState);
         btRemoveJobchainNodeReturnCodeNextState.setEnabled(false);
         btRemoveJobchainNodeReturnCodeNextState.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -353,14 +353,14 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        Label lblAddOrders = JOE_L_ReturnCodesForm_Add_Order.Control(new Label(grpGroup, SWT.NONE));
+        Label lblAddOrders = JOE_L_ReturnCodesForm_Add_Order.control(new Label(grpGroup, SWT.NONE));
         lblAddOrders.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         createTableAddOrder();
-        btOkJobchainNodeReturnCodeAddOrder = JOE_B_ReturnCodesForm_Add_Order.Control(new Button(grpGroup, SWT.NONE));
+        btOkJobchainNodeReturnCodeAddOrder = JOE_B_ReturnCodesForm_Add_Order.control(new Button(grpGroup, SWT.NONE));
         btOkJobchainNodeReturnCodeAddOrder.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -369,7 +369,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
             }
         });
         btOkJobchainNodeReturnCodeAddOrder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btNewJobchainNodeReturnAddOrder = JOE_B_New.Control(new Button(grpGroup, SWT.NONE));
+        btNewJobchainNodeReturnAddOrder = JOE_B_New.control(new Button(grpGroup, SWT.NONE));
         btNewJobchainNodeReturnAddOrder.setEnabled(false);
         GridData gd_btNewJobchainNodeReturnAddOrder = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
         gd_btNewJobchainNodeReturnAddOrder.widthHint = 100;
@@ -385,7 +385,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
                 btNewJobchainNodeReturnNextState.setEnabled(false);
             }
         });
-        btRemoveJobchainNodeReturnCodeAddOrder = JOE_B_Remove.Control(new Button(grpGroup, SWT.NONE));
+        btRemoveJobchainNodeReturnCodeAddOrder = JOE_B_Remove.control(new Button(grpGroup, SWT.NONE));
         btRemoveJobchainNodeReturnCodeAddOrder.setEnabled(false);
         btRemoveJobchainNodeReturnCodeAddOrder.addSelectionListener(new SelectionAdapter() {
 
@@ -419,14 +419,14 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        Label lblJobChain = JOE_L_OrderForm_JobChain.Control(new Label(grpGroup, SWT.NONE));
+        Label lblJobChain = JOE_L_OrderForm_JobChain.control(new Label(grpGroup, SWT.NONE));
         lblJobChain.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         cJobChain = new Combo(grpGroup, SWT.BORDER);
         cJobChain.setItems(listener.getJobChains());
         GridData gd_tJobChain = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
         gd_tJobChain.widthHint = 250;
         cJobChain.setLayoutData(gd_tJobChain);
-        Button btnBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(grpGroup, SWT.NONE));
+        Button btnBrowse = JOE_B_JobChainNodes_Browse.control(new Button(grpGroup, SWT.NONE));
         GridData gd_btnBrowse = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_btnBrowse.widthHint = 80;
         btnBrowse.setLayoutData(gd_btnBrowse);
@@ -467,14 +467,14 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        Label lblValue = JOE_L_ParameterForm_Value.Control(new Label(grpGroup, SWT.NONE));
+        Label lblValue = JOE_L_ParameterForm_Value.control(new Label(grpGroup, SWT.NONE));
         lblValue.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         tParamValue = new Text(grpGroup, SWT.BORDER);
         tParamValue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        btAddParam = JOE_B_ReturnCodesForm_Add_Param.Control(new Button(grpGroup, SWT.NONE));
+        btAddParam = JOE_B_ReturnCodesForm_Add_Param.control(new Button(grpGroup, SWT.NONE));
         btAddParam.setEnabled(false);
         btAddParam.addSelectionListener(new SelectionAdapter() {
 
@@ -540,7 +540,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        btNewParam = JOE_B_ReturnCodesForm_New_Param.Control(new Button(grpGroup, SWT.NONE));
+        btNewParam = JOE_B_ReturnCodesForm_New_Param.control(new Button(grpGroup, SWT.NONE));
         btNewParam.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -554,7 +554,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        btRemoveParam = JOE_B_ReturnCodesForm_Remove_Param.Control(new Button(grpGroup, SWT.NONE));
+        btRemoveParam = JOE_B_ReturnCodesForm_Remove_Param.control(new Button(grpGroup, SWT.NONE));
         btRemoveParam.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -639,7 +639,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
     }
 
     private void createTableNextStates() {
-        Label lblNextState = JOE_L_JobChainNodes_NextState.Control(new Label(grpGroup, SWT.NONE));
+        Label lblNextState = JOE_L_JobChainNodes_NextState.control(new Label(grpGroup, SWT.NONE));
         lblNextState.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);

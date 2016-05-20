@@ -98,11 +98,11 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout.numColumns = 3;
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 5;
-        group = JOE_G_BaseForm_BaseFiles.Control(new Group(this, SWT.NONE));
+        group = JOE_G_BaseForm_BaseFiles.control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
-        label1 = JOE_L_BaseForm_BaseFile.Control(new Label(group, SWT.NONE));
-        tFile = JOE_T_BaseForm_BaseFile.Control(new Text(group, SWT.BORDER));
-        bApply = JOE_B_BaseForm_Apply.Control(new Button(group, SWT.NONE));
+        label1 = JOE_L_BaseForm_BaseFile.control(new Label(group, SWT.NONE));
+        tFile = JOE_T_BaseForm_BaseFile.control(new Text(group, SWT.BORDER));
+        bApply = JOE_B_BaseForm_Apply.control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData1);
         bApply.setEnabled(false);
         bApply.addSelectionListener(new SelectionAdapter() {
@@ -112,11 +112,11 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         GridData gridData8 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-        label3 = JOE_L_BaseForm_BaseComment.Control(new Label(group, SWT.NONE));
+        label3 = JOE_L_BaseForm_BaseComment.control(new Label(group, SWT.NONE));
         label3.setLayoutData(gridData8);
         GridData gridData9 = new GridData(GridData.FILL, GridData.FILL, false, false);
         gridData9.heightHint = 80;
-        tComment = JOE_T_BaseForm_BaseComment.Control(new Text(group, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
+        tComment = JOE_T_BaseForm_BaseComment.control(new Text(group, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
         tComment.setLayoutData(gridData9);
         tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         tComment.setEnabled(false);
@@ -135,14 +135,14 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
                 button.setEnabled(!"".equals(tFile.getText()));
             }
         });
-        final Composite composite = JOE_Cmp_BaseForm_CommentOpen.Control(new Composite(group, SWT.NONE));
+        final Composite composite = JOE_Cmp_BaseForm_CommentOpen.control(new Composite(group, SWT.NONE));
         composite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.marginWidth = 0;
         gridLayout_1.marginHeight = 0;
         gridLayout_1.horizontalSpacing = 0;
         composite.setLayout(gridLayout_1);
-        button = JOE_B_BaseForm_Comment.Control(new Button(composite, SWT.NONE));
+        button = JOE_B_BaseForm_Comment.control(new Button(composite, SWT.NONE));
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, true, true);
         button.setLayoutData(gridData);
         button.setEnabled(false);
@@ -156,7 +156,7 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        butOpenFileDialog = JOE_B_BaseForm_OpenFileDialog.Control(new Button(composite, SWT.NONE));
+        butOpenFileDialog = JOE_B_BaseForm_OpenFileDialog.control(new Button(composite, SWT.NONE));
         butOpenFileDialog.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, true, true));
         butOpenFileDialog.setEnabled(false);
         butOpenFileDialog.setImage(ResourceManager.getImageFromResource(IMAGE_ICON_OPEN_GIF));
@@ -166,10 +166,10 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
                 openFileDialog();
             }
         });
-        label = JOE_Sep_BaseForm_S1.Control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.SHADOW_OUT));
+        label = JOE_Sep_BaseForm_S1.control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.SHADOW_OUT));
         label.setLayoutData(gridData11);
         createTable();
-        bNew = JOE_B_BaseForm_NewBaseFile.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_BaseForm_NewBaseFile.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData3);
         bNew.addSelectionListener(new SelectionAdapter() {
 
@@ -179,7 +179,7 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         getShell().setDefaultButton(bNew);
-        butOpen = JOE_B_BaseForm_OpenBaseFile.Control(new Button(group, SWT.NONE));
+        butOpen = JOE_B_BaseForm_OpenBaseFile.control(new Button(group, SWT.NONE));
         butOpen.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butOpen.addSelectionListener(new SelectionAdapter() {
 
@@ -187,9 +187,9 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
                 openBaseElement();
             }
         });
-        label2 = JOE_Sep_BaseForm_S2.Control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL));
+        label2 = JOE_Sep_BaseForm_S2.control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL));
         label2.setLayoutData(gridData21);
-        bRemove = JOE_B_BaseForm_RemoveBaseFile.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_BaseForm_RemoveBaseFile.control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData2);
         bRemove.addSelectionListener(new SelectionAdapter() {
@@ -235,7 +235,7 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private void createTable() {
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 4);
-        table = JOE_Tbl_BaseForm_BaseTable.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
+        table = JOE_Tbl_BaseForm_BaseTable.control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -254,9 +254,9 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_BaseForm_BaseFiles.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_BaseForm_BaseFiles.control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(300);
-        TableColumn tableColumn1 = JOE_TCl_BaseForm_BaseComment.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_BaseForm_BaseComment.control(new TableColumn(table, SWT.NONE));
         table.setSortColumn(tableColumn1);
         tableColumn1.setWidth(300);
     }
@@ -296,7 +296,7 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved {
         }
         currPath = currPath.replace("/".toCharArray()[0], sep.toCharArray()[0]);
         currPath = currPath.replace("\\".toCharArray()[0], sep.toCharArray()[0]);
-        FileDialog fdialog = JOE_FD_BaseForm_OpenBaseFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
+        FileDialog fdialog = JOE_FD_BaseForm_OpenBaseFile.control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
         fdialog.setFilterPath(currPath);
         fdialog.setFilterExtensions(new String[] { "*.xml", "*.sosdoc", "*.*" });
         String fname = fdialog.open();

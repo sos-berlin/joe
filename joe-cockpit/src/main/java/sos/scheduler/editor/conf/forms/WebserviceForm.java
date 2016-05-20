@@ -81,10 +81,10 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        group_1 = JOE_G_WeberviceForm_WebServices.Control(new Group(this, SWT.NONE));
+        group_1 = JOE_G_WeberviceForm_WebServices.control(new Group(this, SWT.NONE));
         group_1.setLayout(gridLayout);
         createGroup1();
-        bApply = JOE_B_WebserviceForm_Apply.Control(new Button(group_1, SWT.NONE));
+        bApply = JOE_B_WebserviceForm_Apply.control(new Button(group_1, SWT.NONE));
         bApply.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
         bApply.setEnabled(false);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -132,8 +132,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
         gWebService = new Composite(group_1, SWT.NONE);
         gWebService.setLayout(gridLayout1);
         gWebService.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 1, 3));
-        label = JOE_L_Name.Control(new Label(gWebService, SWT.NONE));
-        tName = JOE_T_WebserviceForm_Name.Control(new Text(gWebService, SWT.BORDER));
+        label = JOE_L_Name.control(new Label(gWebService, SWT.NONE));
+        tName = JOE_T_WebserviceForm_Name.control(new Text(gWebService, SWT.BORDER));
         tName.setLayoutData(gridData9);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -152,8 +152,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(valid);
             }
         });
-        label1 = JOE_L_WebserviceForm_URL.Control(new Label(gWebService, SWT.NONE));
-        tURL = JOE_T_WebserviceForm_URL.Control(new Text(gWebService, SWT.BORDER));
+        label1 = JOE_L_WebserviceForm_URL.control(new Label(gWebService, SWT.NONE));
+        tURL = JOE_T_WebserviceForm_URL.control(new Text(gWebService, SWT.BORDER));
         tURL.addSelectionListener(new SelectionAdapter() {
 
             public void widgetDefaultSelected(final SelectionEvent e) {
@@ -177,8 +177,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(valid);
             }
         });
-        label2 = JOE_L_WebserviceForm_JobChain.Control(new Label(gWebService, SWT.NONE));
-        cChain = JOE_Cbo_WebserviceForm_JobChain.Control(new CCombo(gWebService, SWT.BORDER));
+        label2 = JOE_L_WebserviceForm_JobChain.control(new Label(gWebService, SWT.NONE));
+        cChain = JOE_Cbo_WebserviceForm_JobChain.control(new CCombo(gWebService, SWT.BORDER));
         cChain.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -192,8 +192,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                 setEnabledComponent();
             }
         });
-        label3 = JOE_L_WebserviceForm_Timeout.Control(new Label(gWebService, SWT.NONE));
-        sTimeout = JOE_T_WebserviceForm_Timeout.Control(new Text(gWebService, SWT.BORDER));
+        label3 = JOE_L_WebserviceForm_Timeout.control(new Label(gWebService, SWT.NONE));
+        sTimeout = JOE_T_WebserviceForm_Timeout.control(new Text(gWebService, SWT.BORDER));
         sTimeout.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -211,8 +211,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(valid);
             }
         });
-        label5 = JOE_L_WebserviceForm_Debug.Control(new Label(gWebService, SWT.NONE));
-        bDebug = JOE_B_WebserviceForm_Debug.Control(new Button(gWebService, SWT.CHECK));
+        label5 = JOE_L_WebserviceForm_Debug.control(new Label(gWebService, SWT.NONE));
+        bDebug = JOE_B_WebserviceForm_Debug.control(new Button(gWebService, SWT.CHECK));
         bDebug.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -223,8 +223,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(valid);
             }
         });
-        label7 = JOE_L_WebserviceForm_RequestXSLT.Control(new Label(gWebService, SWT.NONE));
-        tRequest = JOE_T_WebserviceForm_RequestXSLT.Control(new Text(gWebService, SWT.BORDER));
+        label7 = JOE_L_WebserviceForm_RequestXSLT.control(new Label(gWebService, SWT.NONE));
+        tRequest = JOE_T_WebserviceForm_RequestXSLT.control(new Text(gWebService, SWT.BORDER));
         tRequest.setLayoutData(gridData8);
         tRequest.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -232,8 +232,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                 setEnabledComponent();
             }
         });
-        label19 = JOE_L_WebserviceForm_ResponseXSLT.Control(new Label(gWebService, SWT.NONE));
-        tResponse = JOE_T_WebserviceForm_ResponseXSLT.Control(new Text(gWebService, SWT.BORDER));
+        label19 = JOE_L_WebserviceForm_ResponseXSLT.control(new Label(gWebService, SWT.NONE));
+        tResponse = JOE_T_WebserviceForm_ResponseXSLT.control(new Text(gWebService, SWT.BORDER));
         tResponse.setLayoutData(gridData6);
         tResponse.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -241,8 +241,8 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
                 setEnabledComponent();
             }
         });
-        label13 = JOE_L_WebserviceForm_ForwardXSLT.Control(new Label(gWebService, SWT.NONE));
-        tForward = JOE_T_WebserviceForm_ForwardXSLT.Control(new Text(gWebService, SWT.BORDER));
+        label13 = JOE_L_WebserviceForm_ForwardXSLT.control(new Label(gWebService, SWT.NONE));
+        tForward = JOE_T_WebserviceForm_ForwardXSLT.control(new Text(gWebService, SWT.BORDER));
         tForward.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
         tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 

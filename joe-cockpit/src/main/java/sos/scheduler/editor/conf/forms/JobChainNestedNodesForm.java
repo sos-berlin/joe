@@ -119,9 +119,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         gridLayout_3.marginTop = 5;
         gridLayout_3.numColumns = 4;
         gNodes.setLayout(gridLayout_3);
-        label6 = JOE_L_JobChainNodes_State.Control(new Label(gNodes, SWT.NONE));
+        label6 = JOE_L_JobChainNodes_State.control(new Label(gNodes, SWT.NONE));
         label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false, 2, 1));
-        tState = JOE_T_JobChainNodes_State.Control(new Text(gNodes, SWT.BORDER));
+        tState = JOE_T_JobChainNodes_State.control(new Text(gNodes, SWT.BORDER));
         tState.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -140,7 +140,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         final GridData gridData18 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData18.widthHint = 459;
         tState.setLayoutData(gridData18);
-        bApplyNode = JOE_B_JobChainNodes_ApplyNode.Control(new Button(gNodes, SWT.NONE));
+        bApplyNode = JOE_B_JobChainNodes_ApplyNode.control(new Button(gNodes, SWT.NONE));
         bApplyNode.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -150,9 +150,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         bApplyNode.setLayoutData(gridData7);
         bApplyNode.setEnabled(false);
-        label7 = JOE_L_JCNestedNodesForm_JobChain.Control(new Label(gNodes, SWT.NONE));
+        label7 = JOE_L_JCNestedNodesForm_JobChain.control(new Label(gNodes, SWT.NONE));
         label7.setLayoutData(new GridData());
-        butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
+        butGoto = JOE_B_JobChainNodes_Goto.control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
         butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
         butGoto.addSelectionListener(new SelectionAdapter() {
 
@@ -161,7 +161,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         butGoto.setAlignment(SWT.RIGHT);
-        cJobChain = JOE_Cbo_JCNestedNodesForm_JobChain.Control(new Combo(gNodes, SWT.BORDER));
+        cJobChain = JOE_Cbo_JCNestedNodesForm_JobChain.control(new Combo(gNodes, SWT.BORDER));
         cJobChain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobChain, dom, JOEConstants.JOB_CHAIN).getMenu());
         cJobChain.addMouseListener(new MouseAdapter() {
 
@@ -198,7 +198,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         gridLayout_2.marginWidth = 0;
         gridLayout_2.marginHeight = 0;
         composite.setLayout(gridLayout_2);
-        butBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(composite, SWT.NONE));
+        butBrowse = JOE_B_JobChainNodes_Browse.control(new Button(composite, SWT.NONE));
         butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         butBrowse.addSelectionListener(new SelectionAdapter() {
 
@@ -209,9 +209,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
                 }
             }
         });
-        label8 = JOE_L_JobChainNodes_NextState.Control(new Label(gNodes, SWT.NONE));
+        label8 = JOE_L_JobChainNodes_NextState.control(new Label(gNodes, SWT.NONE));
         label8.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        cNextState = JOE_Cbo_JobChainNodes_NextState.Control(new Combo(gNodes, SWT.BORDER));
+        cNextState = JOE_Cbo_JobChainNodes_NextState.control(new Combo(gNodes, SWT.BORDER));
         cNextState.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -232,7 +232,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         final GridData gridData14 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData14.widthHint = 80;
         cNextState.setLayoutData(gridData14);
-        bNewNode = JOE_B_JCNestedNodesForm_NewNode.Control(new Button(gNodes, SWT.NONE));
+        bNewNode = JOE_B_JCNestedNodesForm_NewNode.control(new Button(gNodes, SWT.NONE));
         bNewNode.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -248,9 +248,9 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-        label9 = JOE_L_JobChainNodes_ErrorState.Control(new Label(gNodes, SWT.NONE));
+        label9 = JOE_L_JobChainNodes_ErrorState.control(new Label(gNodes, SWT.NONE));
         label9.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        cErrorState = JOE_Cbo_JobChainNodes_ErrorState.Control(new Combo(gNodes, SWT.BORDER));
+        cErrorState = JOE_Cbo_JobChainNodes_ErrorState.control(new Combo(gNodes, SWT.BORDER));
         cErrorState.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -271,7 +271,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         final GridData gridData15 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData15.widthHint = 80;
         cErrorState.setLayoutData(gridData15);
-        butInsert = JOE_B_JCNestedNodesForm_Insert.Control(new Button(gNodes, SWT.NONE));
+        butInsert = JOE_B_JCNestedNodesForm_Insert.control(new Button(gNodes, SWT.NONE));
         butInsert.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -298,7 +298,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         gridData5.widthHint = 387;
         gridData5.heightHint = 35;
         cType.setLayoutData(gridData5);
-        bFullNode = JOE_B_JCNestedNodesForm_FullNode.Control(new Button(cType, SWT.RADIO));
+        bFullNode = JOE_B_JCNestedNodesForm_FullNode.control(new Button(cType, SWT.RADIO));
         bFullNode.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         bFullNode.addSelectionListener(new SelectionAdapter() {
 
@@ -307,7 +307,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         bFullNode.setSelection(true);
-        bEndNode = JOE_B_JCNestedNodesForm_EndNode.Control(new Button(cType, SWT.RADIO));
+        bEndNode = JOE_B_JCNestedNodesForm_EndNode.control(new Button(cType, SWT.RADIO));
         bEndNode.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         bEndNode.addSelectionListener(new SelectionAdapter() {
 
@@ -332,7 +332,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         new Label(gNodes, SWT.NONE);
-        tNodes = JOE_Tbl_JCNestedNodesForm_Nodes.Control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));
+        tNodes = JOE_Tbl_JCNestedNodesForm_Nodes.control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));
         tNodes.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -344,17 +344,17 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 4);
         gridData4.heightHint = 112;
         tNodes.setLayoutData(gridData4);
-        final TableColumn tableColumn3 = JOE_TCl_JCNestedNodesForm_State.Control(new TableColumn(tNodes, SWT.NONE));
+        final TableColumn tableColumn3 = JOE_TCl_JCNestedNodesForm_State.control(new TableColumn(tNodes, SWT.NONE));
         tableColumn3.setWidth(90);
-        final TableColumn newColumnTableColumn_3 = JOE_TCl_JCNestedNodesForm_Node.Control(new TableColumn(tNodes, SWT.NONE));
+        final TableColumn newColumnTableColumn_3 = JOE_TCl_JCNestedNodesForm_Node.control(new TableColumn(tNodes, SWT.NONE));
         newColumnTableColumn_3.setWidth(100);
-        final TableColumn tableColumn4 = JOE_TCl_JCNestedNodesForm_JobChain.Control(new TableColumn(tNodes, SWT.NONE));
+        final TableColumn tableColumn4 = JOE_TCl_JCNestedNodesForm_JobChain.control(new TableColumn(tNodes, SWT.NONE));
         tableColumn4.setWidth(200);
-        final TableColumn tableColumn5 = JOE_TCl_JCNestedNodesForm_NextState.Control(new TableColumn(tNodes, SWT.NONE));
+        final TableColumn tableColumn5 = JOE_TCl_JCNestedNodesForm_NextState.control(new TableColumn(tNodes, SWT.NONE));
         tableColumn5.setWidth(90);
-        final TableColumn tableColumn6 = JOE_TCl_JCNestedNodesForm_ErrorState.Control(new TableColumn(tNodes, SWT.NONE));
+        final TableColumn tableColumn6 = JOE_TCl_JCNestedNodesForm_ErrorState.control(new TableColumn(tNodes, SWT.NONE));
         tableColumn6.setWidth(90);
-        final TableColumn newColumnTableColumn_4 = JOE_TCl_JCNestedNodesForm_OnError.Control(new TableColumn(tNodes, SWT.NONE));
+        final TableColumn newColumnTableColumn_4 = JOE_TCl_JCNestedNodesForm_OnError.control(new TableColumn(tNodes, SWT.NONE));
         newColumnTableColumn_4.setWidth(100);
         final Composite composite_1 = new Composite(gNodes, SWT.NONE);
         composite_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -363,7 +363,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         gridLayout_5.marginHeight = 0;
         gridLayout_5.numColumns = 3;
         composite_1.setLayout(gridLayout_5);
-        butUp = JOE_B_Up.Control(new Button(composite_1, SWT.NONE));
+        butUp = JOE_B_Up.control(new Button(composite_1, SWT.NONE));
         butUp.setLayoutData(new GridData());
         butUp.addSelectionListener(new SelectionAdapter() {
 
@@ -379,7 +379,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
-        butDown = JOE_B_Down.Control(new Button(composite_1, SWT.NONE));
+        butDown = JOE_B_Down.control(new Button(composite_1, SWT.NONE));
         butDown.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -395,8 +395,8 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         });
         butDown.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
-        reorderButton = JOE_B_JCNestedNodesForm_Reorder.Control(new Button(composite_1, SWT.CHECK));
-        butDetailsJob = JOE_B_JobChainForm_Parameter.Control(new Button(gNodes, SWT.NONE));
+        reorderButton = JOE_B_JCNestedNodesForm_Reorder.control(new Button(composite_1, SWT.CHECK));
+        butDetailsJob = JOE_B_JobChainForm_Parameter.control(new Button(gNodes, SWT.NONE));
         butDetailsJob.setEnabled(false);
         butDetailsJob.addSelectionListener(new SelectionAdapter() {
 
@@ -407,7 +407,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-        butAddMissingNodes = JOE_B_JCNestedNodesForm_AddMissingNodes.Control(new Button(gNodes, SWT.NONE));
+        butAddMissingNodes = JOE_B_JCNestedNodesForm_AddMissingNodes.control(new Button(gNodes, SWT.NONE));
         butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -436,7 +436,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
         });
         butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butAddMissingNodes.setEnabled(false);
-        bRemoveNode = JOE_B_JCNestedNodesForm_RemoveNode.Control(new Button(gNodes, SWT.NONE));
+        bRemoveNode = JOE_B_JCNestedNodesForm_RemoveNode.control(new Button(gNodes, SWT.NONE));
         bRemoveNode.setEnabled(false);
         bRemoveNode.addSelectionListener(new SelectionAdapter() {
 

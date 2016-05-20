@@ -130,16 +130,16 @@ public class ConfigForm extends SOSJOEMessageCodes {
         GridLayout gridLayout1 = new GridLayout();
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        gConfig = JOE_G_ConfigForm_Config.Control(new Group(this, SWT.NONE));
+        gConfig = JOE_G_ConfigForm_Config.control(new Group(this, SWT.NONE));
         gConfig.setLayout(gridLayout1);
         gConfig.setSize(new Point(798, 516));
-        final Group group_1 = JOE_G_ConfigForm_Group1.Control(new Group(gConfig, SWT.NONE));
+        final Group group_1 = JOE_G_ConfigForm_Group1.control(new Group(gConfig, SWT.NONE));
         group_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 2;
         group_1.setLayout(gridLayout_1);
-        label = JOE_L_ConfigForm_SchedulerID.Control(new Label(group_1, SWT.NONE));
-        tSpoolerID = JOE_T_ConfigForm_SchedulerID.Control(new Text(group_1, SWT.BORDER));
+        label = JOE_L_ConfigForm_SchedulerID.control(new Label(group_1, SWT.NONE));
+        tSpoolerID = JOE_T_ConfigForm_SchedulerID.control(new Text(group_1, SWT.BORDER));
         tSpoolerID.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -147,8 +147,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setSpoolerID(tSpoolerID.getText());
             }
         });
-        label7 = JOE_L_ConfigForm_Params.Control(new Label(group_1, SWT.NONE));
-        tParameter = JOE_T_ConfigForm_Params.Control(new Text(group_1, SWT.BORDER));
+        label7 = JOE_L_ConfigForm_Params.control(new Label(group_1, SWT.NONE));
+        tParameter = JOE_T_ConfigForm_Params.control(new Text(group_1, SWT.BORDER));
         tParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -156,8 +156,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setParam(tParameter.getText());
             }
         });
-        label10 = JOE_L_ConfigForm_IncludePath.Control(new Label(group_1, SWT.NONE));
-        tIncludePath = JOE_T_ConfigForm_IncludePath.Control(new Text(group_1, SWT.BORDER));
+        label10 = JOE_L_ConfigForm_IncludePath.control(new Label(group_1, SWT.NONE));
+        tIncludePath = JOE_T_ConfigForm_IncludePath.control(new Text(group_1, SWT.BORDER));
         tIncludePath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tIncludePath.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -165,8 +165,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setIncludePath(tIncludePath.getText());
             }
         });
-        final Label ipaddressLabel = JOE_L_ConfigForm_IPAddress.Control(new Label(group_1, SWT.NONE));
-        tIpAddress = JOE_T_ConfigForm_IPAddress.Control(new Text(group_1, SWT.BORDER));
+        final Label ipaddressLabel = JOE_L_ConfigForm_IPAddress.control(new Label(group_1, SWT.NONE));
+        tIpAddress = JOE_T_ConfigForm_IPAddress.control(new Text(group_1, SWT.BORDER));
         tIpAddress.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -174,8 +174,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
             }
         });
         tIpAddress.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        label11 = JOE_L_ConfigForm_LogDir.Control(new Label(group_1, SWT.NONE));
-        tLogDir = JOE_T_ConfigForm_LogDir.Control(new Text(group_1, SWT.BORDER));
+        label11 = JOE_L_ConfigForm_LogDir.control(new Label(group_1, SWT.NONE));
+        tLogDir = JOE_T_ConfigForm_LogDir.control(new Text(group_1, SWT.BORDER));
         tLogDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tLogDir.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -183,8 +183,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setLogDir(tLogDir.getText());
             }
         });
-        label12 = JOE_L_ConfigForm_MailXSLT.Control(new Label(group_1, SWT.NONE));
-        tMailXSLTStylesheet = JOE_T_ConfigForm_MailXSLT.Control(new Text(group_1, SWT.BORDER));
+        label12 = JOE_L_ConfigForm_MailXSLT.control(new Label(group_1, SWT.NONE));
+        tMailXSLTStylesheet = JOE_T_ConfigForm_MailXSLT.control(new Text(group_1, SWT.BORDER));
         tMailXSLTStylesheet.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tMailXSLTStylesheet.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -192,9 +192,9 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setMailXSLTStylesheet(tMailXSLTStylesheet.getText());
             }
         });
-        final Label centralConfigurationDirectoryLabel = JOE_L_ConfigForm_CentralConfigDir.Control(new Label(group_1, SWT.NONE));
+        final Label centralConfigurationDirectoryLabel = JOE_L_ConfigForm_CentralConfigDir.control(new Label(group_1, SWT.NONE));
         centralConfigurationDirectoryLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-        txtCentralConfigDir = JOE_T_ConfigForm_CentralConfigDir.Control(new Text(group_1, SWT.BORDER));
+        txtCentralConfigDir = JOE_T_ConfigForm_CentralConfigDir.control(new Text(group_1, SWT.BORDER));
         txtCentralConfigDir.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -216,16 +216,16 @@ public class ConfigForm extends SOSJOEMessageCodes {
         gridData42.horizontalAlignment = GridData.FILL;
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 6;
-        final Group eventGroup = JOE_G_ConfigForm_Event.Control(new Group(gConfig, SWT.NONE));
+        final Group eventGroup = JOE_G_ConfigForm_Event.control(new Group(gConfig, SWT.NONE));
         eventGroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 1, 2));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
         eventGroup.setLayout(gridLayout);
-        label12_1 = JOE_L_ConfigForm_ConfigAddEvent.Control(new Label(eventGroup, SWT.NONE));
+        label12_1 = JOE_L_ConfigForm_ConfigAddEvent.control(new Label(eventGroup, SWT.NONE));
         final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData.widthHint = 153;
         label12_1.setLayoutData(gridData);
-        cConfigurationAddEvent = JOE_Cbo_ConfigForm_ConfigAddEvent.Control(new Combo(eventGroup, SWT.NONE));
+        cConfigurationAddEvent = JOE_Cbo_ConfigForm_ConfigAddEvent.control(new Combo(eventGroup, SWT.NONE));
         cConfigurationAddEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cConfigurationAddEvent.setItems(listener.getJobs());
         cConfigurationAddEvent.addModifyListener(new ModifyListener() {
@@ -235,7 +235,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
             }
         });
         cConfigurationAddEvent.setText(listener.getConfigurationAddEvent());
-        butBrowse = JOE_B_ConfigForm_Browse1.Control(new Button(eventGroup, SWT.NONE));
+        butBrowse = JOE_B_ConfigForm_Browse1.control(new Button(eventGroup, SWT.NONE));
         butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butBrowse.addSelectionListener(new SelectionAdapter() {
 
@@ -246,8 +246,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 }
             }
         });
-        label12_2 = JOE_L_ConfigForm_ConfigModifyEvent.Control(new Label(eventGroup, SWT.NONE));
-        cConfigurationModifyEvent = JOE_Cbo_ConfigForm_ConfigModifyEvent.Control(new Combo(eventGroup, SWT.NONE));
+        label12_2 = JOE_L_ConfigForm_ConfigModifyEvent.control(new Label(eventGroup, SWT.NONE));
+        cConfigurationModifyEvent = JOE_Cbo_ConfigForm_ConfigModifyEvent.control(new Combo(eventGroup, SWT.NONE));
         cConfigurationModifyEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cConfigurationModifyEvent.setItems(listener.getJobs());
         cConfigurationModifyEvent.addModifyListener(new ModifyListener() {
@@ -257,7 +257,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
             }
         });
         cConfigurationModifyEvent.setText(listener.getConfigurationModifyEvent());
-        butBrowse_1 = JOE_B_ConfigForm_Browse2.Control(new Button(eventGroup, SWT.NONE));
+        butBrowse_1 = JOE_B_ConfigForm_Browse2.control(new Button(eventGroup, SWT.NONE));
         butBrowse_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butBrowse_1.addSelectionListener(new SelectionAdapter() {
 
@@ -268,8 +268,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 }
             }
         });
-        label12_3 = JOE_L_ConfigForm_ConfigDeleteEvent.Control(new Label(eventGroup, SWT.NONE));
-        cConfigurationDeleteEvent = JOE_Cbo_ConfigForm_ConfigDeleteEvent.Control(new Combo(eventGroup, SWT.NONE));
+        label12_3 = JOE_L_ConfigForm_ConfigDeleteEvent.control(new Label(eventGroup, SWT.NONE));
+        cConfigurationDeleteEvent = JOE_Cbo_ConfigForm_ConfigDeleteEvent.control(new Combo(eventGroup, SWT.NONE));
         cConfigurationDeleteEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cConfigurationDeleteEvent.setItems(listener.getJobs());
         cConfigurationDeleteEvent.addModifyListener(new ModifyListener() {
@@ -279,7 +279,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
             }
         });
         cConfigurationDeleteEvent.setText(listener.getConfigurationDeleteEvent());
-        butBrowse_2 = JOE_B_ConfigForm_Browse3.Control(new Button(eventGroup, SWT.NONE));
+        butBrowse_2 = JOE_B_ConfigForm_Browse3.control(new Button(eventGroup, SWT.NONE));
         butBrowse_2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butBrowse_2.addSelectionListener(new SelectionAdapter() {
 
@@ -322,7 +322,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
         gridData19.grabExcessHorizontalSpace = true;
         GridLayout gridLayout6 = new GridLayout();
         gridLayout6.numColumns = 2;
-        final Composite composite = JOE_Cmp_ConfigForm_CmpPort.Control(new Composite(gConfig, SWT.NONE));
+        final Composite composite = JOE_Cmp_ConfigForm_CmpPort.control(new Composite(gConfig, SWT.NONE));
         final GridData gridData = new GridData(GridData.FILL, GridData.BEGINNING, true, false);
         gridData.heightHint = 67;
         composite.setLayoutData(gridData);
@@ -335,14 +335,14 @@ public class ConfigForm extends SOSJOEMessageCodes {
         GridLayout gridLayout11 = new GridLayout();
         gridLayout11.marginWidth = 0;
         gridLayout11.numColumns = 6;
-        gPorts = JOE_G_ConfigForm_Ports.Control(new Group(composite, SWT.NONE));
+        gPorts = JOE_G_ConfigForm_Ports.control(new Group(composite, SWT.NONE));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, false, true);
         gridData_2.heightHint = 60;
         gPorts.setLayoutData(gridData_2);
         gPorts.setLayout(gridLayout11);
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1);
         gridData3.horizontalIndent = 5;
-        cSamePorts = JOE_B_ConfigForm_SamePortsCheckBtn.Control(new Button(gPorts, SWT.CHECK));
+        cSamePorts = JOE_B_ConfigForm_SamePortsCheckBtn.control(new Button(gPorts, SWT.CHECK));
         cSamePorts.setLayoutData(gridData3);
         cSamePorts.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -350,11 +350,11 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 setEditable();
             }
         });
-        label14 = JOE_L_ConfigForm_SchedulerPort.Control(new Label(gPorts, SWT.NONE));
+        label14 = JOE_L_ConfigForm_SchedulerPort.control(new Label(gPorts, SWT.NONE));
         final GridData gridData_5 = new GridData(30, SWT.DEFAULT);
         gridData_5.horizontalIndent = 5;
         label14.setLayoutData(gridData_5);
-        sPort = JOE_T_ConfigForm_SamePort.Control(new Text(gPorts, SWT.BORDER));
+        sPort = JOE_T_ConfigForm_SamePort.control(new Text(gPorts, SWT.BORDER));
         sPort.setLayoutData(new GridData(60, SWT.DEFAULT));
         sPort.addModifyListener(new ModifyListener() {
 
@@ -364,11 +364,11 @@ public class ConfigForm extends SOSJOEMessageCodes {
         });
         GridData gridData5 = new GridData(60, SWT.DEFAULT);
         gridData5.horizontalIndent = 10;
-        final Label tcpLabel = JOE_L_ConfigForm_TCP.Control(new Label(gPorts, SWT.NONE));
+        final Label tcpLabel = JOE_L_ConfigForm_TCP.control(new Label(gPorts, SWT.NONE));
         final GridData gridData_6 = new GridData();
         gridData_6.horizontalIndent = 10;
         tcpLabel.setLayoutData(gridData_6);
-        sTcpPort = JOE_T_ConfigForm_TCP.Control(new Text(gPorts, SWT.BORDER));
+        sTcpPort = JOE_T_ConfigForm_TCP.control(new Text(gPorts, SWT.BORDER));
         sTcpPort.setLayoutData(gridData5);
         sTcpPort.addModifyListener(new ModifyListener() {
 
@@ -376,8 +376,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setTcpPort(sTcpPort.getText());
             }
         });
-        label4 = JOE_L_ConfigForm_UDP.Control(new Label(gPorts, SWT.NONE));
-        sUdpPort = JOE_T_ConfigForm_UDP.Control(new Text(gPorts, SWT.BORDER));
+        label4 = JOE_L_ConfigForm_UDP.control(new Label(gPorts, SWT.NONE));
+        sUdpPort = JOE_T_ConfigForm_UDP.control(new Text(gPorts, SWT.BORDER));
         sUdpPort.setLayoutData(new GridData(60, SWT.DEFAULT));
         sUdpPort.addModifyListener(new ModifyListener() {
 
@@ -391,14 +391,14 @@ public class ConfigForm extends SOSJOEMessageCodes {
         gridData9.horizontalSpan = 4;
         GridLayout gridLayout4 = new GridLayout();
         gridLayout4.numColumns = 4;
-        gMainScheduler = JOE_G_ConfigForm_Supervisor.Control(new Group(composite, SWT.NONE));
+        gMainScheduler = JOE_G_ConfigForm_Supervisor.control(new Group(composite, SWT.NONE));
         gMainScheduler.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gMainScheduler.setLayout(gridLayout7);
-        label1 = JOE_L_ConfigForm_Host.Control(new Label(gMainScheduler, SWT.NONE));
+        label1 = JOE_L_ConfigForm_Host.control(new Label(gMainScheduler, SWT.NONE));
         label1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData6.widthHint = 58;
-        tMainSchedulerHost = JOE_T_ConfigForm_Host.Control(new Text(gMainScheduler, SWT.BORDER));
+        tMainSchedulerHost = JOE_T_ConfigForm_Host.control(new Text(gMainScheduler, SWT.BORDER));
         tMainSchedulerHost.setLayoutData(gridData6);
         tMainSchedulerHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -406,11 +406,11 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setMainScheduler(tMainSchedulerHost.getText() + ":" + listener.getMainSchedulerPort());
             }
         });
-        label2 = JOE_L_ConfigForm_SupervisorPort.Control(new Label(gMainScheduler, SWT.NONE));
+        label2 = JOE_L_ConfigForm_SupervisorPort.control(new Label(gMainScheduler, SWT.NONE));
         label2.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, false, true);
         gridData11.widthHint = 47;
-        sMainSchedulerPort = JOE_T_ConfigForm_SupervisorPort.Control(new Text(gMainScheduler, SWT.BORDER));
+        sMainSchedulerPort = JOE_T_ConfigForm_SupervisorPort.control(new Text(gMainScheduler, SWT.BORDER));
         sMainSchedulerPort.setLayoutData(gridData11);
         sMainSchedulerPort.addModifyListener(new ModifyListener() {
 
@@ -423,11 +423,11 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setMainScheduler(listener.getMainSchedulerHost() + ":" + sMainSchedulerPort.getText());
             }
         });
-        gJavaOptions = JOE_G_ConfigForm_JavaOptions.Control(new Group(gConfig, SWT.NONE));
+        gJavaOptions = JOE_G_ConfigForm_JavaOptions.control(new Group(gConfig, SWT.NONE));
         gJavaOptions.setLayout(gridLayout8);
         gJavaOptions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        label8 = JOE_L_ConfigForm_ClassPath.Control(new Label(gJavaOptions, SWT.NONE));
-        tJavaClassPath = JOE_T_ConfigForm_ClassPath.Control(new Text(gJavaOptions, SWT.BORDER));
+        label8 = JOE_L_ConfigForm_ClassPath.control(new Label(gJavaOptions, SWT.NONE));
+        tJavaClassPath = JOE_T_ConfigForm_ClassPath.control(new Text(gJavaOptions, SWT.BORDER));
         tJavaClassPath.setLayoutData(gridData22);
         tJavaClassPath.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -435,8 +435,8 @@ public class ConfigForm extends SOSJOEMessageCodes {
                 listener.setJavaClasspath(tJavaClassPath.getText());
             }
         });
-        label9 = JOE_L_ConfigForm_Options.Control(new Label(gJavaOptions, SWT.NONE));
-        tJavaOptions = JOE_T_ConfigForm_Options.Control(new Text(gJavaOptions, SWT.BORDER));
+        label9 = JOE_L_ConfigForm_Options.control(new Label(gJavaOptions, SWT.NONE));
+        tJavaOptions = JOE_T_ConfigForm_Options.control(new Text(gJavaOptions, SWT.BORDER));
         tJavaOptions.setLayoutData(gridData24);
         tJavaOptions.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -447,12 +447,12 @@ public class ConfigForm extends SOSJOEMessageCodes {
     }
 
     private void createGroup() {
-        group = JOE_G_ConfigForm_Comment.Control(new Group(gConfig, SWT.NONE));
+        group = JOE_G_ConfigForm_Comment.control(new Group(gConfig, SWT.NONE));
         group.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         group.setLayout(gridLayout);
-        button = JOE_B_ConfigForm_Comment.Control(new Button(group, SWT.NONE));
+        button = JOE_B_ConfigForm_Comment.control(new Button(group, SWT.NONE));
         button.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -463,7 +463,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
             }
         });
         button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
-        tComment = JOE_T_ConfigForm_Comment.Control(new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
+        tComment = JOE_T_ConfigForm_Comment.control(new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
         tComment.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {

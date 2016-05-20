@@ -86,9 +86,9 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         gridLayout.numColumns = 3;
         gridLayout.marginHeight = 0;
         gridLayout.verticalSpacing = 0;
-        final Label nameLabel = JOE_L_JobCommandNamesForm_Name.Control(new Label(gMain, SWT.NONE));
+        final Label nameLabel = JOE_L_JobCommandNamesForm_Name.control(new Label(gMain, SWT.NONE));
         nameLabel.setLayoutData(new GridData());
-        txtName = JOE_T_JobCommandNamesForm_Name.Control(new Text(gMain, SWT.BORDER));
+        txtName = JOE_T_JobCommandNamesForm_Name.control(new Text(gMain, SWT.BORDER));
         txtName.setBackground(SWTResourceManager.getColor(255, 255, 217));
         txtName.addModifyListener(new ModifyListener() {
 
@@ -101,7 +101,7 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_1.widthHint = 288;
         txtName.setLayoutData(gridData_1);
-        addJobButton = JOE_B_JobCommandNamesForm_AddJob.Control(new Button(gMain, SWT.NONE));
+        addJobButton = JOE_B_JobCommandNamesForm_AddJob.control(new Button(gMain, SWT.NONE));
         addJobButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
         addJobButton.addSelectionListener(new SelectionAdapter() {
 
@@ -109,9 +109,9 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
                 addJob();
             }
         });
-        final Label schedulerHostLabel = JOE_L_JobCommandNamesForm_SchedulerHost.Control(new Label(gMain, SWT.NONE));
+        final Label schedulerHostLabel = JOE_L_JobCommandNamesForm_SchedulerHost.control(new Label(gMain, SWT.NONE));
         schedulerHostLabel.setLayoutData(new GridData());
-        txtHost = JOE_T_JobCommandNamesForm_SchedulerHost.Control(new Text(gMain, SWT.BORDER));
+        txtHost = JOE_T_JobCommandNamesForm_SchedulerHost.control(new Text(gMain, SWT.BORDER));
         txtHost.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -121,7 +121,7 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
             }
         });
         txtHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        addOrderButton = JOE_B_JobCommandNamesForm_AddOrder.Control(new Button(gMain, SWT.NONE));
+        addOrderButton = JOE_B_JobCommandNamesForm_AddOrder.control(new Button(gMain, SWT.NONE));
         addOrderButton.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false, 2, 1));
         addOrderButton.addSelectionListener(new SelectionAdapter() {
 
@@ -129,9 +129,9 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
                 addOrder();
             }
         });
-        final Label schedulerPortLabel = JOE_L_JobCommandNamesForm_SchedulerPort.Control(new Label(gMain, SWT.NONE));
+        final Label schedulerPortLabel = JOE_L_JobCommandNamesForm_SchedulerPort.control(new Label(gMain, SWT.NONE));
         schedulerPortLabel.setLayoutData(new GridData());
-        txtPort = JOE_T_JobCommandNamesForm_SchedulerPort.Control(new Text(gMain, SWT.BORDER));
+        txtPort = JOE_T_JobCommandNamesForm_SchedulerPort.control(new Text(gMain, SWT.BORDER));
         txtPort.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -152,7 +152,7 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         final Label label = new Label(gMain, SWT.HORIZONTAL | SWT.SEPARATOR);
         label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
         new Label(gMain, SWT.NONE);
-        tCommands = JOE_Tbl_JobCommandNamesForm_Commands.Control(new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER));
+        tCommands = JOE_Tbl_JobCommandNamesForm_Commands.control(new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER));
         tCommands.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -177,15 +177,15 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved 
         gridData9.widthHint = 545;
         tCommands.setLayoutData(gridData9);
         listener.fillCommands(tCommands);
-        final TableColumn tcJob = JOE_TCl_JobCommandNamesForm_Command.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcJob = JOE_TCl_JobCommandNamesForm_Command.control(new TableColumn(tCommands, SWT.NONE));
         tcJob.setWidth(167);
-        final TableColumn tcCommand = JOE_TCl_JobCommandNamesForm_JobID.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcCommand = JOE_TCl_JobCommandNamesForm_JobID.control(new TableColumn(tCommands, SWT.NONE));
         tcCommand.setWidth(154);
-        final TableColumn tcJobchain = JOE_TCl_JobCommandNamesForm_JobChain.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcJobchain = JOE_TCl_JobCommandNamesForm_JobChain.control(new TableColumn(tCommands, SWT.NONE));
         tcJobchain.setWidth(136);
-        final TableColumn tcStartAt = JOE_TCl_JobCommandNamesForm_StartAt.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcStartAt = JOE_TCl_JobCommandNamesForm_StartAt.control(new TableColumn(tCommands, SWT.NONE));
         tcStartAt.setWidth(139);
-        bRemoveExitcode = JOE_B_JobCommandNamesForm_RemoveExitCode.Control(new Button(gMain, SWT.NONE));
+        bRemoveExitcode = JOE_B_JobCommandNamesForm_RemoveExitCode.control(new Button(gMain, SWT.NONE));
         final GridData gridData = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         bRemoveExitcode.setLayoutData(gridData);
         bRemoveExitcode.setEnabled(false);

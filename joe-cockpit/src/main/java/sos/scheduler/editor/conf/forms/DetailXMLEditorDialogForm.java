@@ -84,7 +84,7 @@ public class DetailXMLEditorDialogForm {
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width,
                 shell.getBounds().height);
-        final Group jobGroup = SOSJOEMessageCodes.JOE_G_DetailXMLEditorDialogForm_JobGroup.Control(new Group(shell, SWT.NONE));
+        final Group jobGroup = SOSJOEMessageCodes.JOE_G_DetailXMLEditorDialogForm_JobGroup.control(new Group(shell, SWT.NONE));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 2;
         jobGroup.setLayout(gridLayout_1);
@@ -95,7 +95,7 @@ public class DetailXMLEditorDialogForm {
         gridDataJobGroup.heightHint = 685;
         jobGroup.setLayoutData(gridDataJobGroup);
         txtXML =
-                SOSJOEMessageCodes.JOE_T_DetailXMLEditorDialogForm_XML.Control(new Text(jobGroup, SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.H_SCROLL));
+                SOSJOEMessageCodes.JOE_T_DetailXMLEditorDialogForm_XML.control(new Text(jobGroup, SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.H_SCROLL));
         txtXML.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -108,7 +108,7 @@ public class DetailXMLEditorDialogForm {
         txtXML.setLayoutData(gridDataTxtXml);
         txtXML.setEnabled(true);
         txtXML.setEditable(true);
-        butApply = SOSJOEMessageCodes.JOE_B_DetailXMLEditorDialogForm_Apply.Control(new Button(jobGroup, SWT.NONE));
+        butApply = SOSJOEMessageCodes.JOE_B_DetailXMLEditorDialogForm_Apply.control(new Button(jobGroup, SWT.NONE));
         butApply.setEnabled(false);
         butApply.addSelectionListener(new SelectionAdapter() {
 
@@ -125,7 +125,7 @@ public class DetailXMLEditorDialogForm {
         final GridData gridDataBtnApply = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
         gridDataBtnApply.widthHint = 62;
         butApply.setLayoutData(gridDataBtnApply);
-        final Button butClose = SOSJOEMessageCodes.JOE_B_DetailXMLEditorDialogForm_Close.Control(new Button(jobGroup, SWT.NONE));
+        final Button butClose = SOSJOEMessageCodes.JOE_B_DetailXMLEditorDialogForm_Close.control(new Button(jobGroup, SWT.NONE));
         butClose.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {

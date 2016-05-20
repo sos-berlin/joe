@@ -121,31 +121,31 @@ public class DateForm extends SOSJOEMessageCodes {
         }
         gDates.setText(strT);
         gDates.setLayout(gridLayout);
-        final Group group = JOE_G_DateForm_Dates.Control(new Group(gDates, SWT.NONE));
+        final Group group = JOE_G_DateForm_Dates.control(new Group(gDates, SWT.NONE));
         group.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 7;
         group.setLayout(gridLayout_1);
-        yearLabel = JOE_L_DateForm_Year.Control(new Label(group, SWT.NONE));
+        yearLabel = JOE_L_DateForm_Year.control(new Label(group, SWT.NONE));
         yearLabel.setLayoutData(new GridData());
-        sYear = JOE_Sp_DateForm_Year.Control(new Spinner(group, SWT.BORDER));
+        sYear = JOE_Sp_DateForm_Year.control(new Spinner(group, SWT.BORDER));
         final GridData gridData2 = new GridData(40, SWT.DEFAULT);
         sYear.setLayoutData(gridData2);
         sYear.setMinimum(1900);
         sYear.setMaximum(10000);
-        label1 = JOE_L_DateForm_Month.Control(new Label(group, SWT.NONE));
-        sMonth = JOE_Sp_DateForm_Month.Control(new Spinner(group, SWT.BORDER));
+        label1 = JOE_L_DateForm_Month.control(new Label(group, SWT.NONE));
+        sMonth = JOE_Sp_DateForm_Month.control(new Spinner(group, SWT.BORDER));
         final GridData gridData21 = new GridData(20, SWT.DEFAULT);
         sMonth.setLayoutData(gridData21);
         sMonth.setMinimum(1);
         sMonth.setMaximum(12);
-        label2 = JOE_L_DateForm_Day.Control(new Label(group, SWT.NONE));
-        sDay = JOE_Sp_DateForm_Day.Control(new Spinner(group, SWT.BORDER));
+        label2 = JOE_L_DateForm_Day.control(new Label(group, SWT.NONE));
+        sDay = JOE_Sp_DateForm_Day.control(new Spinner(group, SWT.BORDER));
         final GridData gridData31 = new GridData(20, SWT.DEFAULT);
         sDay.setLayoutData(gridData31);
         sDay.setMinimum(1);
         sDay.setMaximum(31);
-        bAddDay = JOE_B_DateForm_AddDate.Control(new Button(group, SWT.NONE));
+        bAddDay = JOE_B_DateForm_AddDate.control(new Button(group, SWT.NONE));
         bAddDay.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -160,7 +160,7 @@ public class DateForm extends SOSJOEMessageCodes {
                     return;
                 }
                 if (listener.exists(year, month, day)) {
-                    MessageBox mb = JOE_M_0014.Control(new MessageBox(getShell(), SWT.ICON_INFORMATION));
+                    MessageBox mb = JOE_M_0014.control(new MessageBox(getShell(), SWT.ICON_INFORMATION));
                     mb.open();
                     if (main != null && dom.isChanged()) {
                         main.dataChanged();
@@ -184,7 +184,7 @@ public class DateForm extends SOSJOEMessageCodes {
         final GridData gridData32 = new GridData(GridData.FILL, GridData.CENTER, false, false, 7, 1);
         gridData32.heightHint = 10;
         label3.setLayoutData(gridData32);
-        lDates = JOE_Lst_DateForm_DatesList.Control(new List(group, SWT.BORDER));
+        lDates = JOE_Lst_DateForm_DatesList.control(new List(group, SWT.BORDER));
         lDates.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -193,7 +193,7 @@ public class DateForm extends SOSJOEMessageCodes {
         });
         final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 6, 2);
         lDates.setLayoutData(gridData);
-        bRemoveDate = JOE_B_DateForm_RemoveDate.Control(new Button(group, SWT.NONE));
+        bRemoveDate = JOE_B_DateForm_RemoveDate.control(new Button(group, SWT.NONE));
         bRemoveDate.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -237,12 +237,12 @@ public class DateForm extends SOSJOEMessageCodes {
     }
 
     private void createGroupForIncludes() {
-        gInclude = JOE_G_DateForm_IncludeFiles.Control(new Group(gDates, SWT.NONE));
+        gInclude = JOE_G_DateForm_IncludeFiles.control(new Group(gDates, SWT.NONE));
         gInclude.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 3;
         gInclude.setLayout(gridLayout_2);
-        butIsLifeFile = JOE_B_DateForm_IsLifeFile.Control(new Button(gInclude, SWT.CHECK));
+        butIsLifeFile = JOE_B_DateForm_IsLifeFile.control(new Button(gInclude, SWT.CHECK));
         butIsLifeFile.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -250,7 +250,7 @@ public class DateForm extends SOSJOEMessageCodes {
             }
         });
         butIsLifeFile.setLayoutData(new GridData());
-        tInclude = JOE_Cbo_DateForm_Include.Control(new Combo(gInclude, SWT.BORDER));
+        tInclude = JOE_Cbo_DateForm_Include.control(new Combo(gInclude, SWT.BORDER));
         tInclude.setCapture(true);
         tInclude.addSelectionListener(new SelectionAdapter() {
 
@@ -276,7 +276,7 @@ public class DateForm extends SOSJOEMessageCodes {
         });
         final GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         tInclude.setLayoutData(gridData6);
-        bAdd = JOE_B_DateForm_AddFile.Control(new Button(gInclude, SWT.NONE));
+        bAdd = JOE_B_DateForm_AddFile.control(new Button(gInclude, SWT.NONE));
         bAdd.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -286,10 +286,10 @@ public class DateForm extends SOSJOEMessageCodes {
         final GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         bAdd.setLayoutData(gridData7);
         bAdd.setEnabled(false);
-        label_1 = JOE_Sep_DateForm_S2.Control(new Label(gInclude, SWT.HORIZONTAL | SWT.SEPARATOR));
+        label_1 = JOE_Sep_DateForm_S2.control(new Label(gInclude, SWT.HORIZONTAL | SWT.SEPARATOR));
         final GridData gridData1_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
         label_1.setLayoutData(gridData1_1);
-        tableIncludes = JOE_Tbl_DateForm_Includes.Control(new Table(gInclude, SWT.FULL_SELECTION | SWT.BORDER));
+        tableIncludes = JOE_Tbl_DateForm_Includes.control(new Table(gInclude, SWT.FULL_SELECTION | SWT.BORDER));
         tableIncludes.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -319,9 +319,9 @@ public class DateForm extends SOSJOEMessageCodes {
         tableIncludes.setHeaderVisible(true);
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3);
         tableIncludes.setLayoutData(gridData_2);
-        final TableColumn newColumnTableColumn = JOE_TCl_DateForm_NameColumn.Control(new TableColumn(tableIncludes, SWT.NONE));
+        final TableColumn newColumnTableColumn = JOE_TCl_DateForm_NameColumn.control(new TableColumn(tableIncludes, SWT.NONE));
         newColumnTableColumn.setWidth(200);
-        final Button butIncludeNew = JOE_B_DateForm_NewButton.Control(new Button(gInclude, SWT.NONE));
+        final Button butIncludeNew = JOE_B_DateForm_NewButton.control(new Button(gInclude, SWT.NONE));
         butIncludeNew.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -334,7 +334,7 @@ public class DateForm extends SOSJOEMessageCodes {
             }
         });
         butIncludeNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        butOpenInclude = JOE_B_DateForm_OpenButton.Control(new Button(gInclude, SWT.NONE));
+        butOpenInclude = JOE_B_DateForm_OpenButton.control(new Button(gInclude, SWT.NONE));
         butOpenInclude.setEnabled(false);
         butOpenInclude.addSelectionListener(new SelectionAdapter() {
 
@@ -344,7 +344,7 @@ public class DateForm extends SOSJOEMessageCodes {
             }
         });
         butOpenInclude.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        bRemove = JOE_B_DateForm_RemoveFile.Control(new Button(gInclude, SWT.NONE));
+        bRemove = JOE_B_DateForm_RemoveFile.control(new Button(gInclude, SWT.NONE));
         bRemove.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {

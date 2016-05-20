@@ -91,8 +91,8 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         group1 = JOE_G_DBResources_Resources.Control(new SOSGroup(this, SWT.NONE));
         group1.setLayout(gridLayout1);
         group1.setLayoutData(gridData11);
-        label1 = JOE_L_Name.Control(new SOSLabel(group1, SWT.NONE));
-        tName = JOE_T_DBResources_Name.Control(new Text(group1, SWT.BORDER));
+        label1 = JOE_L_Name.control(new SOSLabel(group1, SWT.NONE));
+        tName = JOE_T_DBResources_Name.control(new Text(group1, SWT.BORDER));
         tName.setLayoutData(gridData3);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -103,7 +103,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
             }
         });
         createCType();
-        bApply = JOE_B_DBResources_Apply.Control(new Button(group1, SWT.NONE));
+        bApply = JOE_B_DBResources_Apply.control(new Button(group1, SWT.NONE));
         bApply.setLayoutData(gridData12);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -114,7 +114,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         });
         label5 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label5.setLayoutData(gridData5);
-        tResources = JOE_Tbl_DBResources_Resources.Control(new Table(group1, SWT.FULL_SELECTION | SWT.BORDER));
+        tResources = JOE_Tbl_DBResources_Resources.control(new Table(group1, SWT.FULL_SELECTION | SWT.BORDER));
         tResources.setHeaderVisible(true);
         tResources.setLayoutData(gridData10);
         tResources.setLinesVisible(true);
@@ -143,11 +143,11 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_DBResources_Name.Control(new TableColumn(tResources, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_DBResources_Name.control(new TableColumn(tResources, SWT.NONE));
         tableColumn.setWidth(250);
-        TableColumn tableColumn1 = JOE_TCl_DBResources_Type.Control(new TableColumn(tResources, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_DBResources_Type.control(new TableColumn(tResources, SWT.NONE));
         tableColumn1.setWidth(60);
-        bNewRes = JOE_B_DBResources_New.Control(new Button(group1, SWT.NONE));
+        bNewRes = JOE_B_DBResources_New.control(new Button(group1, SWT.NONE));
         bNewRes.setLayoutData(gridData13);
         bNewRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -163,7 +163,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
         });
         label4 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label4.setLayoutData(gridData9);
-        bRemoveRes = JOE_B_DBResources_Remove.Control(new Button(group1, SWT.NONE));
+        bRemoveRes = JOE_B_DBResources_Remove.control(new Button(group1, SWT.NONE));
         bRemoveRes.setLayoutData(gridData14);
         bRemoveRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -177,7 +177,7 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
                 bRemoveRes.setEnabled(false);
             }
         });
-        bNotes = JOE_B_DBResources_Notes.Control(new Button(group1, SWT.NONE));
+        bNotes = JOE_B_DBResources_Notes.control(new Button(group1, SWT.NONE));
         bNotes.setLayoutData(new GridData());
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -196,9 +196,9 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
     private void createCType() {
         GridData gridData4 = new GridData();
         gridData4.widthHint = 100;
-        label2 = JOE_L_DBResources_Type.Control(new SOSLabel(group1, SWT.NONE));
+        label2 = JOE_L_DBResources_Type.control(new SOSLabel(group1, SWT.NONE));
         label2.setLayoutData(new GridData());
-        cType = JOE_Cbo_DBResources_Type.Control(new Combo(group1, SWT.READ_ONLY));
+        cType = JOE_Cbo_DBResources_Type.control(new Combo(group1, SWT.READ_ONLY));
         cType.setLayoutData(gridData4);
         cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 

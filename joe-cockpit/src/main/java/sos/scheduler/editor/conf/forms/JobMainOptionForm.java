@@ -102,10 +102,10 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         gMain.setLayoutData(gridData_12);
         gMain.setText(JOE_M_JobMainOptionForm_MainOptions.params(listener.getJobName()));
         gMain.setLayout(gridLayout);
-        label3 = JOE_L_JobMainOptionForm_SchedulerID.Control(new Label(gMain, SWT.NONE));
+        label3 = JOE_L_JobMainOptionForm_SchedulerID.control(new Label(gMain, SWT.NONE));
         label3.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
         label3.setVisible(!listener.get_dom().isLifeElement() && !listener.get_dom().isDirectory());
-        tSpoolerID = JOE_T_JobMainOptionForm_SchedulerID.Control(new Text(gMain, SWT.BORDER));
+        tSpoolerID = JOE_T_JobMainOptionForm_SchedulerID.control(new Text(gMain, SWT.BORDER));
         tSpoolerID.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
         tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -117,9 +117,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         });
         tSpoolerID.setVisible(!listener.get_dom().isLifeElement() && !listener.get_dom().isDirectory());
-        final Label java_optionsLabel = JOE_L_JobMainOptionForm_JavaOptions.Control(new Label(gMain, SWT.NONE));
+        final Label java_optionsLabel = JOE_L_JobMainOptionForm_JavaOptions.control(new Label(gMain, SWT.NONE));
         java_optionsLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        txtJavaOptions = JOE_T_JobMainOptionForm_JavaOptions.Control(new Text(gMain, SWT.BORDER));
+        txtJavaOptions = JOE_T_JobMainOptionForm_JavaOptions.control(new Text(gMain, SWT.BORDER));
         txtJavaOptions.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -130,9 +130,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         });
         txtJavaOptions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
-        final Label ignore_signalLabel = JOE_L_JobMainOptionForm_IgnoreSignals.Control(new Label(gMain, SWT.NONE));
+        final Label ignore_signalLabel = JOE_L_JobMainOptionForm_IgnoreSignals.control(new Label(gMain, SWT.NONE));
         ignore_signalLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        tIgnoreSignals = JOE_T_JobMainOptionForm_IgnoreSignals.Control(new Text(gMain, SWT.BORDER));
+        tIgnoreSignals = JOE_T_JobMainOptionForm_IgnoreSignals.control(new Text(gMain, SWT.BORDER));
         tIgnoreSignals.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -143,7 +143,7 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         });
         tIgnoreSignals.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
-        addButton = JOE_B_JobMainOptionForm_Add.Control(new Button(gMain, SWT.NONE));
+        addButton = JOE_B_JobMainOptionForm_Add.control(new Button(gMain, SWT.NONE));
         addButton.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -158,16 +158,16 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         });
         addButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        cSignals = JOE_Cbo_JobMainOptionForm_Signals.Control(new Combo(gMain, SWT.NONE));
+        cSignals = JOE_Cbo_JobMainOptionForm_Signals.control(new Combo(gMain, SWT.NONE));
         cSignals.setItems(new String[] { "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL",
                 "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN",
                 "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS." });
         cSignals.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
-        label17 = JOE_L_JobMainOptionForm_Priority.Control(new Label(gMain, SWT.NONE));
+        label17 = JOE_L_JobMainOptionForm_Priority.control(new Label(gMain, SWT.NONE));
         final GridData gridData_7 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false);
         gridData_7.widthHint = 41;
         label17.setLayoutData(gridData_7);
-        sPriority = JOE_Cbo_JobMainOptionForm_Priority.Control(new Combo(gMain, SWT.NONE));
+        sPriority = JOE_Cbo_JobMainOptionForm_Priority.control(new Combo(gMain, SWT.NONE));
         sPriority.setItems(new String[] { "idle", "below_normal", "normal", "above_normal", "high" });
         sPriority.addVerifyListener(new VerifyListener() {
 
@@ -192,9 +192,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         });
         new Label(gMain, SWT.NONE);
         new Label(gMain, SWT.NONE);
-        final Label visibleLabel = JOE_L_JobMainOptionForm_Visible.Control(new Label(gMain, SWT.NONE));
+        final Label visibleLabel = JOE_L_JobMainOptionForm_Visible.control(new Label(gMain, SWT.NONE));
         visibleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        comVisible = JOE_Cbo_JobMainOptionForm_Visible.Control(new Combo(gMain, SWT.READ_ONLY));
+        comVisible = JOE_Cbo_JobMainOptionForm_Visible.control(new Combo(gMain, SWT.READ_ONLY));
         comVisible.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         comVisible.setItems(new String[] { "", "yes", "no", "never" });
         comVisible.addModifyListener(new ModifyListener() {
@@ -208,9 +208,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         });
         new Label(gMain, SWT.NONE);
         new Label(gMain, SWT.NONE);
-        final Label minMaskLabel = JOE_L_JobMainOptionForm_MinTasks.Control(new Label(gMain, SWT.NONE));
+        final Label minMaskLabel = JOE_L_JobMainOptionForm_MinTasks.control(new Label(gMain, SWT.NONE));
         minMaskLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        tMintasks = JOE_T_JobMainOptionForm_MinTasks.Control(new Text(gMain, SWT.BORDER));
+        tMintasks = JOE_T_JobMainOptionForm_MinTasks.control(new Text(gMain, SWT.BORDER));
         tMintasks.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -229,9 +229,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         tMintasks.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         new Label(gMain, SWT.NONE);
         new Label(gMain, SWT.NONE);
-        label15 = JOE_L_JobMainOptionForm_Tasks.Control(new Label(gMain, SWT.NONE));
+        label15 = JOE_L_JobMainOptionForm_Tasks.control(new Label(gMain, SWT.NONE));
         label15.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        sTasks = JOE_T_JobMainOptionForm_Tasks.Control(new Text(gMain, SWT.BORDER));
+        sTasks = JOE_T_JobMainOptionForm_Tasks.control(new Text(gMain, SWT.BORDER));
         sTasks.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         sTasks.addVerifyListener(new VerifyListener() {
 
@@ -256,9 +256,9 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
         });
         new Label(gMain, SWT.NONE);
         new Label(gMain, SWT.NONE);
-        label13 = JOE_L_JobMainOptionForm_Timeout.Control(new Label(gMain, SWT.NONE));
+        label13 = JOE_L_JobMainOptionForm_Timeout.control(new Label(gMain, SWT.NONE));
         label13.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        sTimeout = JOE_T_JobMainOptionForm_Timeout.Control(new Text(gMain, SWT.BORDER));
+        sTimeout = JOE_T_JobMainOptionForm_Timeout.control(new Text(gMain, SWT.BORDER));
         sTimeout.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -275,11 +275,11 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         });
         sTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        final Label hhmmssLabel = JOE_L_JobAssistent_TimeFormat.Control(new Label(gMain, SWT.NONE));
+        final Label hhmmssLabel = JOE_L_JobAssistent_TimeFormat.control(new Label(gMain, SWT.NONE));
         hhmmssLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        label11 = JOE_L_JobMainOptionForm_IdleTimeout.Control(new Label(gMain, SWT.NONE));
+        label11 = JOE_L_JobMainOptionForm_IdleTimeout.control(new Label(gMain, SWT.NONE));
         label11.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        sIdleTimeout = JOE_T_JobMainOptionForm_IdleTimeout.Control(new Text(gMain, SWT.BORDER));
+        sIdleTimeout = JOE_T_JobMainOptionForm_IdleTimeout.control(new Text(gMain, SWT.BORDER));
         sIdleTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         sIdleTimeout.addVerifyListener(new VerifyListener() {
 
@@ -296,10 +296,10 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
                 listener.setIdleTimeout(sIdleTimeout.getText());
             }
         });
-        final Label hhmmssLabel_1 = JOE_L_JobMainOptionForm_IdleTimeoutFormat.Control(new Label(gMain, SWT.NONE));
+        final Label hhmmssLabel_1 = JOE_L_JobMainOptionForm_IdleTimeoutFormat.control(new Label(gMain, SWT.NONE));
         hhmmssLabel_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        final Label warnIfLongerLabel = JOE_L_JobMainOptionForm_WarnIfLonger.Control(new Label(gMain, SWT.NONE));
-        txtWarnIfLongerThan = JOE_T_JobMainOptionForm_WarnIfLonger.Control(new Text(gMain, SWT.BORDER));
+        final Label warnIfLongerLabel = JOE_L_JobMainOptionForm_WarnIfLonger.control(new Label(gMain, SWT.NONE));
+        txtWarnIfLongerThan = JOE_T_JobMainOptionForm_WarnIfLonger.control(new Text(gMain, SWT.BORDER));
         txtWarnIfLongerThan.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -316,10 +316,10 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         });
         txtWarnIfLongerThan.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label hhmmssLabel_1_1 = JOE_L_JobMainOptionForm_WarnIfLongerFormat.Control(new Label(gMain, SWT.NONE));
+        final Label hhmmssLabel_1_1 = JOE_L_JobMainOptionForm_WarnIfLongerFormat.control(new Label(gMain, SWT.NONE));
         hhmmssLabel_1_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        final Label warnIfShorterLabel = JOE_L_JobMainOptionForm_WarnIfShorter.Control(new Label(gMain, SWT.NONE));
-        txtWarnIfShorterThan = JOE_T_JobMainOptionForm_WarnIfShorter.Control(new Text(gMain, SWT.BORDER));
+        final Label warnIfShorterLabel = JOE_L_JobMainOptionForm_WarnIfShorter.control(new Label(gMain, SWT.NONE));
+        txtWarnIfShorterThan = JOE_T_JobMainOptionForm_WarnIfShorter.control(new Text(gMain, SWT.BORDER));
         txtWarnIfShorterThan.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -330,11 +330,11 @@ public class JobMainOptionForm extends SOSJOEMessageCodes {
             }
         });
         txtWarnIfShorterThan.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label hhmmssOrPercentageLabel = JOE_L_JobMainOptionForm_WarnIfShorterFormat.Control(new Label(gMain, SWT.NONE));
+        final Label hhmmssOrPercentageLabel = JOE_L_JobMainOptionForm_WarnIfShorterFormat.control(new Label(gMain, SWT.NONE));
         hhmmssOrPercentageLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        final Label force_idle_timeoutLabel = JOE_L_JobMainOptionForm_ForceIdleTimeout.Control(new Label(gMain, SWT.NONE));
+        final Label force_idle_timeoutLabel = JOE_L_JobMainOptionForm_ForceIdleTimeout.control(new Label(gMain, SWT.NONE));
         force_idle_timeoutLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-        bForceIdletimeout = JOE_B_JobMainOptionForm_ForceIdleTimeout.Control(new Button(gMain, SWT.CHECK));
+        bForceIdletimeout = JOE_B_JobMainOptionForm_ForceIdleTimeout.control(new Button(gMain, SWT.CHECK));
         bForceIdletimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
         bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
 

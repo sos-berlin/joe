@@ -71,7 +71,7 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
         shellRunOptions.setLayout(gridLayout);
         shellRunOptions.setSize(542, 377);
         shellRunOptions.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_MonitoringDirectory.label());
-        final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(shellRunOptions, SWT.NONE));
+        final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.control(new Group(shellRunOptions, SWT.NONE));
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
         gridData_3.widthHint = 514;
         gridData_3.heightHint = 283;
@@ -85,9 +85,9 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
         gridLayout_1.marginBottom = 10;
         gridLayout_1.numColumns = 3;
         jobGroup.setLayout(gridLayout_1);
-        final Label lblDirectory = SOSJOEMessageCodes.JOE_L_JobAssistent_Directory.Control(new Label(jobGroup, SWT.NONE));
+        final Label lblDirectory = SOSJOEMessageCodes.JOE_L_JobAssistent_Directory.control(new Label(jobGroup, SWT.NONE));
         lblDirectory.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-        txtDirectory = SOSJOEMessageCodes.JOE_T_JobAssistent_Directory.Control(new Text(jobGroup, SWT.BORDER));
+        txtDirectory = SOSJOEMessageCodes.JOE_T_JobAssistent_Directory.control(new Text(jobGroup, SWT.BORDER));
         txtDirectory.addKeyListener(new KeyAdapter() {
 
             @Override
@@ -99,7 +99,7 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
         });
         txtDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         txtDirectory.setFocus();
-        final Composite composite = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(jobGroup, SWT.NONE));
+        final Composite composite = SOSJOEMessageCodes.JOE_Composite1.control(new Composite(jobGroup, SWT.NONE));
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, false, 1, 2);
         gridData_4.heightHint = 59;
         gridData_4.widthHint = 72;
@@ -109,7 +109,7 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
         gridLayout_4.marginWidth = 0;
         gridLayout_4.marginHeight = 0;
         composite.setLayout(gridLayout_4);
-        butApply = SOSJOEMessageCodes.JOE_B_JobAssistent_ApplyDir.Control(new Button(composite, SWT.NONE));
+        butApply = SOSJOEMessageCodes.JOE_B_JobAssistent_ApplyDir.control(new Button(composite, SWT.NONE));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         butApply.setLayoutData(gridData_2);
         butApply.addSelectionListener(new SelectionAdapter() {
@@ -119,7 +119,7 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
                 apply();
             }
         });
-        butNewDirectory = SOSJOEMessageCodes.JOE_B_JobAssistent_NewDirectory.Control(new Button(composite, SWT.NONE));
+        butNewDirectory = SOSJOEMessageCodes.JOE_B_JobAssistent_NewDirectory.control(new Button(composite, SWT.NONE));
         final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData.widthHint = 47;
         butNewDirectory.setLayoutData(gridData);
@@ -133,8 +133,8 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
                 tableWatchDirectory.deselectAll();
             }
         });
-        final Label lblRegExp = SOSJOEMessageCodes.JOE_L_JobAssistent_Regex.Control(new Label(jobGroup, SWT.NONE));
-        txtRegExp = SOSJOEMessageCodes.JOE_T_JobAssistent_Regex.Control(new Text(jobGroup, SWT.BORDER));
+        final Label lblRegExp = SOSJOEMessageCodes.JOE_L_JobAssistent_Regex.control(new Label(jobGroup, SWT.NONE));
+        txtRegExp = SOSJOEMessageCodes.JOE_T_JobAssistent_Regex.control(new Text(jobGroup, SWT.BORDER));
         txtRegExp.addKeyListener(new KeyAdapter() {
 
             @Override
@@ -145,7 +145,7 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
             }
         });
         txtRegExp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        tableWatchDirectory = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_WatchDirectory.Control(new Table(jobGroup, SWT.FULL_SELECTION | SWT.BORDER));
+        tableWatchDirectory = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_WatchDirectory.control(new Table(jobGroup, SWT.FULL_SELECTION | SWT.BORDER));
         final GridData gridData_7 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         tableWatchDirectory.setLayoutData(gridData_7);
         optionlistener.fillDirectories(tableWatchDirectory);
@@ -164,12 +164,12 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
         tableWatchDirectory.setLinesVisible(true);
         tableWatchDirectory.setHeaderVisible(true);
         final TableColumn newColumnTableColumn =
-                SOSJOEMessageCodes.JOE_TCl_JobAssistent_DirectoryColumn.Control(new TableColumn(tableWatchDirectory, SWT.NONE));
+                SOSJOEMessageCodes.JOE_TCl_JobAssistent_DirectoryColumn.control(new TableColumn(tableWatchDirectory, SWT.NONE));
         newColumnTableColumn.setWidth(156);
         final TableColumn newColumnTableColumn_1 =
-                SOSJOEMessageCodes.JOE_TCl_JobAssistent_RegexColumn.Control(new TableColumn(tableWatchDirectory, SWT.NONE));
+                SOSJOEMessageCodes.JOE_TCl_JobAssistent_RegexColumn.control(new TableColumn(tableWatchDirectory, SWT.NONE));
         newColumnTableColumn_1.setWidth(186);
-        butRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobAssistent_RemoveDirectory.Control(new Button(jobGroup, SWT.NONE));
+        butRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobAssistent_RemoveDirectory.control(new Button(jobGroup, SWT.NONE));
         butRemoveDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, true));
         butRemoveDirectory.setEnabled(false);
         butRemoveDirectory.addSelectionListener(new SelectionAdapter() {
@@ -185,12 +185,12 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
         shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) / 2, (screen.height - shellRunOptions.getBounds().height) / 2,
                 shellRunOptions.getBounds().width, shellRunOptions.getBounds().height);
         shellRunOptions.open();
-        final Composite composite_1 = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(shellRunOptions, SWT.NONE));
+        final Composite composite_1 = SOSJOEMessageCodes.JOE_Composite2.control(new Composite(shellRunOptions, SWT.NONE));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.marginWidth = 0;
         composite_1.setLayout(gridLayout_2);
         {
-            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.Control(new Button(composite_1, SWT.NONE));
+            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.control(new Button(composite_1, SWT.NONE));
             butCancel.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -199,14 +199,14 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
                 }
             });
         }
-        final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite3.Control(new Composite(shellRunOptions, SWT.NONE));
+        final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite3.control(new Composite(shellRunOptions, SWT.NONE));
         composite_2.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
         final GridLayout gridLayout_3 = new GridLayout();
         gridLayout_3.marginRight = 10;
         gridLayout_3.marginWidth = 0;
         gridLayout_3.numColumns = 4;
         composite_2.setLayout(gridLayout_3);
-        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
+        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.control(new Button(composite_2, SWT.NONE));
         butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butFinish.setVisible(false);
         butFinish.addSelectionListener(new SelectionAdapter() {
@@ -219,7 +219,7 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
         });
         Utils.createHelpButton(composite_2, "JOE_M_JobAssistentMonitoringDirectoryForms_Help.label", shellRunOptions).setLayoutData(
                 new GridData(GridData.END, GridData.CENTER, false, false));
-        butNext = SOSJOEMessageCodes.JOE_B_JobAssistentMonitoringDirectoryForms_Apply.Control(new Button(composite_2, SWT.NONE));
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistentMonitoringDirectoryForms_Apply.control(new Button(composite_2, SWT.NONE));
         butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_6.widthHint = 54;

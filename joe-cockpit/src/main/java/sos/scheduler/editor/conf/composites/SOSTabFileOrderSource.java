@@ -90,9 +90,9 @@ public class SOSTabFileOrderSource extends CTabItem {
         gridLayout_1.marginBottom = 5;
         gridLayout_1.numColumns = 6;
         gFileOrderSource.setLayout(gridLayout_1);
-        final Label directoryLabel = JOE_L_JCNodesForm_Directory.Control(new Label(gFileOrderSource, SWT.NONE));
+        final Label directoryLabel = JOE_L_JCNodesForm_Directory.control(new Label(gFileOrderSource, SWT.NONE));
         new Label(gFileOrderSource, SWT.NONE);
-        tDirectory = JOE_T_JCNodesForm_Directory.Control(new Text(gFileOrderSource, SWT.BORDER));
+        tDirectory = JOE_T_JCNodesForm_Directory.control(new Text(gFileOrderSource, SWT.BORDER));
         tDirectory.addModifyListener(new ModifyListener() {
 
             @Override
@@ -110,8 +110,8 @@ public class SOSTabFileOrderSource extends CTabItem {
             }
         });
         tDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label delay_after_errorLabel = JOE_L_JCNodesForm_DelayAfterError.Control(new Label(gFileOrderSource, SWT.NONE));
-        tDelayAfterError = JOE_T_JCNodesForm_DelayAfterError.Control(new Text(gFileOrderSource, SWT.BORDER));
+        final Label delay_after_errorLabel = JOE_L_JCNodesForm_DelayAfterError.control(new Label(gFileOrderSource, SWT.NONE));
+        tDelayAfterError = JOE_T_JCNodesForm_DelayAfterError.control(new Text(gFileOrderSource, SWT.BORDER));
         tDelayAfterError.addModifyListener(new ModifyListener() {
 
             @Override
@@ -123,7 +123,7 @@ public class SOSTabFileOrderSource extends CTabItem {
             }
         });
         tDelayAfterError.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        bApplyFileOrderSource = JOE_B_JCNodesForm_ApplyFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
+        bApplyFileOrderSource = JOE_B_JCNodesForm_ApplyFileOrderSource.control(new Button(gFileOrderSource, SWT.NONE));
         bApplyFileOrderSource.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -133,9 +133,9 @@ public class SOSTabFileOrderSource extends CTabItem {
         });
         bApplyFileOrderSource.setEnabled(false);
         bApplyFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        final Label regexLabel = JOE_L_JCNodesForm_Regex.Control(new Label(gFileOrderSource, SWT.NONE));
+        final Label regexLabel = JOE_L_JCNodesForm_Regex.control(new Label(gFileOrderSource, SWT.NONE));
         new Label(gFileOrderSource, SWT.NONE);
-        tRegex = JOE_T_JCNodesForm_Regex.Control(new Text(gFileOrderSource, SWT.BORDER));
+        tRegex = JOE_T_JCNodesForm_Regex.control(new Text(gFileOrderSource, SWT.BORDER));
         tRegex.addModifyListener(new ModifyListener() {
 
             @Override
@@ -147,8 +147,8 @@ public class SOSTabFileOrderSource extends CTabItem {
             }
         });
         tRegex.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label repeatLabel = JOE_L_JCNodesForm_Repeat.Control(new Label(gFileOrderSource, SWT.NONE));
-        tRepeat = JOE_T_JCNodesForm_Repeat.Control(new Text(gFileOrderSource, SWT.BORDER));
+        final Label repeatLabel = JOE_L_JCNodesForm_Repeat.control(new Label(gFileOrderSource, SWT.NONE));
+        tRepeat = JOE_T_JCNodesForm_Repeat.control(new Text(gFileOrderSource, SWT.BORDER));
         tRepeat.addModifyListener(new ModifyListener() {
 
             @Override
@@ -161,7 +161,7 @@ public class SOSTabFileOrderSource extends CTabItem {
         });
         tRepeat.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         new Label(gFileOrderSource, SWT.NONE);
-        final Label alertWhenDirectoryMissingLabel = JOE_L_JCNodesForm_AlertWhenDirectoryMissing.Control(new Label(gFileOrderSource, SWT.NONE));
+        final Label alertWhenDirectoryMissingLabel = JOE_L_JCNodesForm_AlertWhenDirectoryMissing.control(new Label(gFileOrderSource, SWT.NONE));
         new Label(gFileOrderSource, SWT.NONE);
         cbAlertWhenDirectoryMissing = new Button(gFileOrderSource, SWT.CHECK);
         cbAlertWhenDirectoryMissing.addSelectionListener(new SelectionAdapter() {
@@ -174,8 +174,8 @@ public class SOSTabFileOrderSource extends CTabItem {
                 }
             }
         });
-        final Label nextStateLabel = JOE_L_JCNodesForm_NextState.Control(new Label(gFileOrderSource, SWT.NONE));
-        tNextState = JOE_T_JCNodesForm_NextState.Control(new Text(gFileOrderSource, SWT.BORDER));
+        final Label nextStateLabel = JOE_L_JCNodesForm_NextState.control(new Label(gFileOrderSource, SWT.NONE));
+        tNextState = JOE_T_JCNodesForm_NextState.control(new Text(gFileOrderSource, SWT.BORDER));
         tNextState.addModifyListener(new ModifyListener() {
 
             @Override
@@ -188,10 +188,10 @@ public class SOSTabFileOrderSource extends CTabItem {
         });
         tNextState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tNextState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        dumm2 = JOE_B_JCNodesForm_RemoveFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
+        dumm2 = JOE_B_JCNodesForm_RemoveFileOrderSource.control(new Button(gFileOrderSource, SWT.NONE));
         dumm2.setVisible(false);
         dumm2.setEnabled(false);
-        tFileOrderSource = JOE_Tbl_JCNodesForm_FileOrderSource.Control(new Table(gFileOrderSource, SWT.BORDER));
+        tFileOrderSource = JOE_Tbl_JCNodesForm_FileOrderSource.control(new Table(gFileOrderSource, SWT.BORDER));
         tFileOrderSource.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -211,13 +211,13 @@ public class SOSTabFileOrderSource extends CTabItem {
         gridData_9.minimumHeight = 40;
         gridData_9.heightHint = 138;
         tFileOrderSource.setLayoutData(gridData_9);
-        final TableColumn newColumnTableColumn = JOE_TCl_JCNodesForm_Directory.Control(new TableColumn(tFileOrderSource, SWT.NONE));
+        final TableColumn newColumnTableColumn = JOE_TCl_JCNodesForm_Directory.control(new TableColumn(tFileOrderSource, SWT.NONE));
         newColumnTableColumn.setWidth(300);
-        final TableColumn newColumnTableColumn_1 = JOE_TCl_JCNodesForm_Regex.Control(new TableColumn(tFileOrderSource, SWT.NONE));
+        final TableColumn newColumnTableColumn_1 = JOE_TCl_JCNodesForm_Regex.control(new TableColumn(tFileOrderSource, SWT.NONE));
         newColumnTableColumn_1.setWidth(200);
-        final TableColumn newColumnTableColumn_2 = JOE_TCl_JCNodesForm_NextState.Control(new TableColumn(tFileOrderSource, SWT.NONE));
+        final TableColumn newColumnTableColumn_2 = JOE_TCl_JCNodesForm_NextState.control(new TableColumn(tFileOrderSource, SWT.NONE));
         newColumnTableColumn_2.setWidth(100);
-        bNewFileOrderSource = JOE_B_JCNodesForm_NewFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
+        bNewFileOrderSource = JOE_B_JCNodesForm_NewFileOrderSource.control(new Button(gFileOrderSource, SWT.NONE));
         bNewFileOrderSource.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -232,7 +232,7 @@ public class SOSTabFileOrderSource extends CTabItem {
             }
         });
         bNewFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        bRemoveFileOrderSource = JOE_B_JCNodesForm_RemoveFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
+        bRemoveFileOrderSource = JOE_B_JCNodesForm_RemoveFileOrderSource.control(new Button(gFileOrderSource, SWT.NONE));
         new Label(gFileOrderSource, SWT.NONE);
         new Label(gFileOrderSource, SWT.NONE);
         bRemoveFileOrderSource.addSelectionListener(new SelectionAdapter() {

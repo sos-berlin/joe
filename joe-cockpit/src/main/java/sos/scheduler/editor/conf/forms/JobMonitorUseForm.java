@@ -73,10 +73,10 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData51.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 5;
-        group1 = JOE_G_JobMonitorUseForm_Use.Control(new Group(this, SWT.NONE));
+        group1 = JOE_G_JobMonitorUseForm_Use.control(new Group(this, SWT.NONE));
         group1.setLayout(gridLayout1);
-        monitorLabel = JOE_L_JobMonitorUseForm_Monitor.Control(new Label(group1, SWT.NONE));
-        tMonitorUse = JOE_Cbo_JobMonitorUseForm_MonitorUse.Control(new Combo(group1, SWT.NONE));
+        monitorLabel = JOE_L_JobMonitorUseForm_Monitor.control(new Label(group1, SWT.NONE));
+        tMonitorUse = JOE_Cbo_JobMonitorUseForm_MonitorUse.control(new Combo(group1, SWT.NONE));
         tMonitorUse.setEnabled(false);
         tMonitorUse.addModifyListener(new ModifyListener() {
 
@@ -88,9 +88,9 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         tMonitorUse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        label11 = JOE_L_JobMonitorUseForm_Ordering.Control(new Label(group1, SWT.NONE));
+        label11 = JOE_L_JobMonitorUseForm_Ordering.control(new Label(group1, SWT.NONE));
         label11.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-        edOrdering = JOE_T_JobMonitorUseForm_Ordering.Control(new Text(group1, SWT.BORDER));
+        edOrdering = JOE_T_JobMonitorUseForm_Ordering.control(new Text(group1, SWT.BORDER));
         edOrdering.setEnabled(true);
         edOrdering.addModifyListener(new ModifyListener() {
 
@@ -98,7 +98,7 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApplyMonitorUse.setEnabled(true);
             }
         });
-        bApplyMonitorUse = JOE_B_JobMonitorUseForm_ApplyMonitorUse.Control(new Button(group1, SWT.NONE));
+        bApplyMonitorUse = JOE_B_JobMonitorUseForm_ApplyMonitorUse.control(new Button(group1, SWT.NONE));
         bApplyMonitorUse.setEnabled(false);
         bApplyMonitorUse.setLayoutData(gridData51);
         bApplyMonitorUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -109,7 +109,7 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         new Label(group1, SWT.NONE);
         GridData gridData30 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 3);
-        this.tMonitorUseTable = JOE_Tbl_JobMonitorUseForm_MonitorUseTable.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
+        this.tMonitorUseTable = JOE_Tbl_JobMonitorUseForm_MonitorUseTable.control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
         this.tMonitorUseTable.setHeaderVisible(true);
         this.tMonitorUseTable.setLayoutData(gridData30);
         this.tMonitorUseTable.setLinesVisible(true);
@@ -125,12 +125,12 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
                 bRemoveMontiorUse.setEnabled(tMonitorUseTable.getSelectionCount() > 0);
             }
         });
-        TableColumn tableColumn5 = JOE_TCl_JobMonitorUseForm_Monitor.Control(new TableColumn(this.tMonitorUseTable, SWT.NONE));
+        TableColumn tableColumn5 = JOE_TCl_JobMonitorUseForm_Monitor.control(new TableColumn(this.tMonitorUseTable, SWT.NONE));
         tableColumn5.setWidth(300);
-        TableColumn tableColumn6 = JOE_TCl_JobMonitorUseForm_Ordering.Control(new TableColumn(this.tMonitorUseTable, SWT.NONE));
+        TableColumn tableColumn6 = JOE_TCl_JobMonitorUseForm_Ordering.control(new TableColumn(this.tMonitorUseTable, SWT.NONE));
         tableColumn6.setWidth(70);
         GridData gridData41 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
-        bNewMonitorUse = JOE_B_JobMonitorUseForm_NewMonitorUse.Control(new Button(group1, SWT.NONE));
+        bNewMonitorUse = JOE_B_JobMonitorUseForm_NewMonitorUse.control(new Button(group1, SWT.NONE));
         bNewMonitorUse.setLayoutData(gridData41);
         bNewMonitorUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -143,7 +143,7 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         new Label(group1, SWT.NONE);
         GridData gridData31 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        bRemoveMontiorUse = JOE_B_JobMonitorUseForm_RemoveMonitorUse.Control(new Button(group1, SWT.NONE));
+        bRemoveMontiorUse = JOE_B_JobMonitorUseForm_RemoveMonitorUse.control(new Button(group1, SWT.NONE));
         bRemoveMontiorUse.setEnabled(false);
         bRemoveMontiorUse.setLayoutData(gridData31);
         bRemoveMontiorUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -168,7 +168,7 @@ public class JobMonitorUseForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         new Label(group1, SWT.NONE);
-        butBrowse = JOE_B_JobMonitorUseForm_Browse.Control(new Button(group1, SWT.NONE));
+        butBrowse = JOE_B_JobMonitorUseForm_Browse.control(new Button(group1, SWT.NONE));
         butBrowse.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {

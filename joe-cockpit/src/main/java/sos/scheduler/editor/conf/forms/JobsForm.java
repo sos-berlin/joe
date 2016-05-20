@@ -67,10 +67,10 @@ public class JobsForm extends SOSJOEMessageCodes {
         try {
             GridLayout gridLayout = new GridLayout();
             gridLayout.numColumns = 2;
-            group = JOE_G_JobsForm_Jobs.Control(new Group(this, SWT.NONE));
+            group = JOE_G_JobsForm_Jobs.control(new Group(this, SWT.NONE));
             group.setLayout(gridLayout);
             createTable();
-            bNewJob = JOE_B_JobsForm_NewStandaloneJob.Control(new Button(group, SWT.NONE));
+            bNewJob = JOE_B_JobsForm_NewStandaloneJob.control(new Button(group, SWT.NONE));
             bNewJob.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
             getShell().setDefaultButton(bNewJob);
             bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -81,7 +81,7 @@ public class JobsForm extends SOSJOEMessageCodes {
                     bRemoveJob.setEnabled(table.getSelection().length > 0);
                 }
             });
-            newOrderJob = JOE_B_JobsForm_NewOrderJob.Control(new Button(group, SWT.NONE));
+            newOrderJob = JOE_B_JobsForm_NewOrderJob.control(new Button(group, SWT.NONE));
             newOrderJob.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -91,7 +91,7 @@ public class JobsForm extends SOSJOEMessageCodes {
                 }
             });
             newOrderJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            butAssistent = JOE_B_JobsForm_JobWizard.Control(new Button(group, SWT.NONE));
+            butAssistent = JOE_B_JobsForm_JobWizard.control(new Button(group, SWT.NONE));
             butAssistent.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -108,7 +108,7 @@ public class JobsForm extends SOSJOEMessageCodes {
                 }
             });
             butAssistent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            bRemoveJob = JOE_B_JobsForm_RemoveJob.Control(new Button(group, SWT.NONE));
+            bRemoveJob = JOE_B_JobsForm_RemoveJob.control(new Button(group, SWT.NONE));
             bRemoveJob.setEnabled(false);
             bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -133,7 +133,7 @@ public class JobsForm extends SOSJOEMessageCodes {
 
     private void createTable() {
         try {
-            table = JOE_Tbl_JobsForm_Table.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK));
+            table = JOE_Tbl_JobsForm_Table.control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK));
             table.addMouseListener(new MouseAdapter() {
 
                 @Override
@@ -146,7 +146,7 @@ public class JobsForm extends SOSJOEMessageCodes {
             table.setHeaderVisible(true);
             table.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 5));
             table.setLinesVisible(true);
-            TableColumn tableColumn5 = JOE_TCl_JobsForm_Disabled.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn5 = JOE_TCl_JobsForm_Disabled.control(new TableColumn(table, SWT.NONE));
             tableColumn5.setWidth(60);
             table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -164,15 +164,15 @@ public class JobsForm extends SOSJOEMessageCodes {
                     }
                 }
             });
-            TableColumn tableColumn = JOE_TCl_JobsForm_Name.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn = JOE_TCl_JobsForm_Name.control(new TableColumn(table, SWT.NONE));
             tableColumn.setWidth(100);
-            TableColumn tableColumn1 = JOE_TCl_JobsForm_Title.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn1 = JOE_TCl_JobsForm_Title.control(new TableColumn(table, SWT.NONE));
             tableColumn1.setWidth(200);
-            TableColumn tableColumn2 = JOE_TCl_JobsForm_SchedulerID.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn2 = JOE_TCl_JobsForm_SchedulerID.control(new TableColumn(table, SWT.NONE));
             tableColumn2.setWidth(100);
-            TableColumn tableColumn3 = JOE_TCl_JobsForm_ProcessClass.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn3 = JOE_TCl_JobsForm_ProcessClass.control(new TableColumn(table, SWT.NONE));
             tableColumn3.setWidth(100);
-            TableColumn tableColumn4 = JOE_TCl_JobsForm_Order.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn4 = JOE_TCl_JobsForm_Order.control(new TableColumn(table, SWT.NONE));
             tableColumn4.setWidth(40);
         } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);

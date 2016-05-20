@@ -51,7 +51,7 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
     }
 
     private void createGroup() {
-        httpDirectoriesGroup = JOE_G_HttpDirectoriesForm_DirectoriesGroup.Control(new Group(this, SWT.NONE));
+        httpDirectoriesGroup = JOE_G_HttpDirectoriesForm_DirectoriesGroup.control(new Group(this, SWT.NONE));
         createGroup1();
         GridLayout gridLayout = new GridLayout();
         httpDirectoriesGroup.setLayout(gridLayout);
@@ -59,7 +59,7 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
     }
 
     private void createGroup1() {
-        final Group group_1 = JOE_G_HttpDirectoriesForm_Group1.Control(new Group(httpDirectoriesGroup, SWT.NONE));
+        final Group group_1 = JOE_G_HttpDirectoriesForm_Group1.control(new Group(httpDirectoriesGroup, SWT.NONE));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
         gridData_2.heightHint = 427;
         gridData_2.widthHint = 525;
@@ -67,8 +67,8 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group_1.setLayout(gridLayout);
-        final Label urlPathLabel = JOE_L_HttpDirectoriesForm_URLPath.Control(new Label(group_1, SWT.NONE));
-        tUrlPath = JOE_T_HttpDirectoriesForm_URLPath.Control(new Text(group_1, SWT.BORDER));
+        final Label urlPathLabel = JOE_L_HttpDirectoriesForm_URLPath.control(new Label(group_1, SWT.NONE));
+        tUrlPath = JOE_T_HttpDirectoriesForm_URLPath.control(new Text(group_1, SWT.BORDER));
         tUrlPath.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
@@ -88,8 +88,8 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
             }
         });
         tUrlPath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label pathLabel = JOE_L_HttpDirectoriesForm_Path.Control(new Label(group_1, SWT.NONE));
-        tPath = JOE_T_HttpDirectoriesForm_Path.Control(new Text(group_1, SWT.BORDER));
+        final Label pathLabel = JOE_L_HttpDirectoriesForm_Path.control(new Label(group_1, SWT.NONE));
+        tPath = JOE_T_HttpDirectoriesForm_Path.control(new Text(group_1, SWT.BORDER));
         tPath.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
@@ -105,7 +105,7 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
             }
         });
         tPath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        bApplyHttpDirectory = JOE_B_HttpDirectoriesForm_Apply.Control(new Button(group_1, SWT.NONE));
+        bApplyHttpDirectory = JOE_B_HttpDirectoriesForm_Apply.control(new Button(group_1, SWT.NONE));
         bApplyHttpDirectory.setEnabled(false);
         bApplyHttpDirectory.addSelectionListener(new SelectionAdapter() {
 
@@ -114,7 +114,7 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
             }
         });
         bApplyHttpDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        tHttpDirectory = JOE_Tbl_HttpDirectoriesForm_DirectoriesTable.Control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
+        tHttpDirectory = JOE_Tbl_HttpDirectoriesForm_DirectoriesTable.control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
         tHttpDirectory.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -134,11 +134,11 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved 
         gridData_1.minimumHeight = 100;
         gridData_1.horizontalIndent = 4;
         tHttpDirectory.setLayoutData(gridData_1);
-        final TableColumn urlPathTableColumn = JOE_TCl_HttpDirectoriesForm_URLPath.Control(new TableColumn(tHttpDirectory, SWT.NONE));
+        final TableColumn urlPathTableColumn = JOE_TCl_HttpDirectoriesForm_URLPath.control(new TableColumn(tHttpDirectory, SWT.NONE));
         urlPathTableColumn.setWidth(150);
-        final TableColumn pathTableColumn = JOE_TCl_HttpDirectoriesForm_Path.Control(new TableColumn(tHttpDirectory, SWT.NONE));
+        final TableColumn pathTableColumn = JOE_TCl_HttpDirectoriesForm_Path.control(new TableColumn(tHttpDirectory, SWT.NONE));
         pathTableColumn.setWidth(250);
-        bRemoveHttpDirectory = JOE_B_HttpDirectoriesForm_Remove.Control(new Button(group_1, SWT.NONE));
+        bRemoveHttpDirectory = JOE_B_HttpDirectoriesForm_Remove.control(new Button(group_1, SWT.NONE));
         bRemoveHttpDirectory.setEnabled(false);
         bRemoveHttpDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         bRemoveHttpDirectory.addSelectionListener(new SelectionAdapter() {

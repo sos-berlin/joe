@@ -99,10 +99,10 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout.marginTop = 10;
         gridLayout.numColumns = 4;
         jobChainGroup.setLayout(gridLayout);
-        chainNameLabel = JOE_L_JobChainForm_ChainName.Control(new Label(jobChainGroup, SWT.NONE));
+        chainNameLabel = JOE_L_JobChainForm_ChainName.control(new Label(jobChainGroup, SWT.NONE));
         chainNameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         new Label(jobChainGroup, SWT.NONE);
-        tName = JOE_T_JobChainForm_ChainName.Control(new Text(jobChainGroup, SWT.BORDER));
+        tName = JOE_T_JobChainForm_ChainName.control(new Text(jobChainGroup, SWT.BORDER));
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 1, 1);
         gridData_4.widthHint = 273;
         tName.setLayoutData(gridData_4);
@@ -146,7 +146,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        butDetails = JOE_B_JobChainForm_Parameter.Control(new Button(jobChainGroup, SWT.NONE));
+        butDetails = JOE_B_JobChainForm_Parameter.control(new Button(jobChainGroup, SWT.NONE));
         butDetails.setEnabled(true);
         butDetails.addSelectionListener(new SelectionAdapter() {
 
@@ -164,9 +164,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 showDetails(null);
             }
         });
-        final Label titleLabel = JOE_L_JobChainForm_Title.Control(new Label(jobChainGroup, SWT.NONE));
+        final Label titleLabel = JOE_L_JobChainForm_Title.control(new Label(jobChainGroup, SWT.NONE));
         new Label(jobChainGroup, SWT.NONE);
-        txtTitle = JOE_T_JobChainForm_Title.Control(new Text(jobChainGroup, SWT.BORDER));
+        txtTitle = JOE_T_JobChainForm_Title.control(new Text(jobChainGroup, SWT.BORDER));
         txtTitle.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -178,9 +178,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
         new Label(jobChainGroup, SWT.NONE);
-        Label lblMaxOrders = JOE_L_JobChainForm_MaxOrders.Control(new Label(jobChainGroup, SWT.NONE));
+        Label lblMaxOrders = JOE_L_JobChainForm_MaxOrders.control(new Label(jobChainGroup, SWT.NONE));
         new Label(jobChainGroup, SWT.NONE);
-        sMaxorders = JOE_T_JobChainForm_MaxOrders.Control(new Text(jobChainGroup, SWT.BORDER));
+        sMaxorders = JOE_T_JobChainForm_MaxOrders.control(new Text(jobChainGroup, SWT.BORDER));
         sMaxorders.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent arg0) {
@@ -203,7 +203,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         new Label(jobChainGroup, SWT.NONE);
         new Label(jobChainGroup, SWT.NONE);
         Button button = new Button(jobChainGroup, SWT.CHECK);
-        bRecoverable = JOE_B_JobChainForm_Recoverable.Control(button);
+        bRecoverable = JOE_B_JobChainForm_Recoverable.control(button);
         bRecoverable.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         bRecoverable.setSelection(true);
         bRecoverable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -219,7 +219,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         new Label(jobChainGroup, SWT.NONE);
         new Label(jobChainGroup, SWT.NONE);
         Button button_1 = new Button(jobChainGroup, SWT.CHECK);
-        butDistributed = JOE_B_JobChainForm_Distributed.Control(button_1);
+        butDistributed = JOE_B_JobChainForm_Distributed.control(button_1);
         butDistributed.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         butDistributed.addSelectionListener(new SelectionAdapter() {
 
@@ -235,7 +235,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
         new Label(jobChainGroup, SWT.NONE);
         new Label(jobChainGroup, SWT.NONE);
         Button button_2 = new Button(jobChainGroup, SWT.CHECK);
-        bVisible = JOE_B_JobChainForm_Visible.Control(button_2);
+        bVisible = JOE_B_JobChainForm_Visible.control(button_2);
         bVisible.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         bVisible.setSelection(true);
         bVisible.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {

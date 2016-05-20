@@ -89,10 +89,10 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout.marginLeft = 5;
         gridLayout.marginTop = 5;
         gridLayout.numColumns = 2;
-        group = JOE_G_MailForm_Mail.Control(new Group(this, SWT.NONE));
+        group = JOE_G_MailForm_Mail.control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
-        Label label14 = JOE_L_MailForm_MailOnError.Control(new Label(group, SWT.NONE));
-        mailOnError = JOE_Cbo_MailForm_MailOnError.Control(new Combo(group, SWT.READ_ONLY));
+        Label label14 = JOE_L_MailForm_MailOnError.control(new Label(group, SWT.NONE));
+        mailOnError = JOE_Cbo_MailForm_MailOnError.control(new Combo(group, SWT.READ_ONLY));
         mailOnError.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -103,8 +103,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         GridData gd_mailOnError = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnError.minimumWidth = 150;
         mailOnError.setLayoutData(gd_mailOnError);
-        Label label1 = JOE_L_MailForm_MailOnWarning.Control(new Label(group, SWT.NONE));
-        mailOnWarning = JOE_Cbo_MailForm_MailOnWarning.Control(new Combo(group, SWT.READ_ONLY));
+        Label label1 = JOE_L_MailForm_MailOnWarning.control(new Label(group, SWT.NONE));
+        mailOnWarning = JOE_Cbo_MailForm_MailOnWarning.control(new Combo(group, SWT.READ_ONLY));
         mailOnWarning.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -115,8 +115,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         GridData gd_mailOnWarning = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnWarning.minimumWidth = 150;
         mailOnWarning.setLayoutData(gd_mailOnWarning);
-        Label label3 = JOE_L_MailForm_MailOnSuccess.Control(new Label(group, SWT.NONE));
-        mailOnSuccess = JOE_Cbo_MailForm_MailOnSuccess.Control(new Combo(group, SWT.READ_ONLY));
+        Label label3 = JOE_L_MailForm_MailOnSuccess.control(new Label(group, SWT.NONE));
+        mailOnSuccess = JOE_Cbo_MailForm_MailOnSuccess.control(new Combo(group, SWT.READ_ONLY));
         mailOnSuccess.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -126,8 +126,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         GridData gd_mailOnSuccess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnSuccess.minimumWidth = 150;
         mailOnSuccess.setLayoutData(gd_mailOnSuccess);
-        final Label mailOnProcessLabel = JOE_L_MailForm_MailOnProcess.Control(new Label(group, SWT.NONE));
-        mailOnProcess = JOE_Cbo_MailForm_MailOnProcess.Control(new Combo(group, SWT.READ_ONLY));
+        final Label mailOnProcessLabel = JOE_L_MailForm_MailOnProcess.control(new Label(group, SWT.NONE));
+        mailOnProcess = JOE_Cbo_MailForm_MailOnProcess.control(new Combo(group, SWT.READ_ONLY));
         mailOnProcess.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -137,8 +137,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         GridData gd_mailOnProcess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnProcess.minimumWidth = 150;
         mailOnProcess.setLayoutData(gd_mailOnProcess);
-        final Label mailOnDelayLabel = JOE_L_MailForm_MailOnDelayAfterError.Control(new Label(group, SWT.NONE));
-        mailOnDelayAfterError = JOE_Cbo_MailForm_MailOnDelayAfterError.Control(new Combo(group, SWT.READ_ONLY));
+        final Label mailOnDelayLabel = JOE_L_MailForm_MailOnDelayAfterError.control(new Label(group, SWT.NONE));
+        mailOnDelayAfterError = JOE_Cbo_MailForm_MailOnDelayAfterError.control(new Combo(group, SWT.READ_ONLY));
         mailOnDelayAfterError.setEnabled("yes".equals(mailOnError.getText()) || "yes".equals(mailOnWarning.getText()));
         mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
 
@@ -151,8 +151,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
         gridData_1.heightHint = 8;
         ddddLabel.setLayoutData(gridData_1);
-        final Label mailToLabel = JOE_L_MailForm_MailTo.Control(new Label(group, SWT.NONE));
-        mailTo = JOE_T_MailForm_MailTo.Control(new Text(group, SWT.BORDER));
+        final Label mailToLabel = JOE_L_MailForm_MailTo.control(new Label(group, SWT.NONE));
+        mailTo = JOE_T_MailForm_MailTo.control(new Text(group, SWT.BORDER));
         mailTo.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -160,8 +160,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         mailTo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label mailCcLabel = JOE_L_MailForm_MailCC.Control(new Label(group, SWT.NONE));
-        mailCC = JOE_T_MailForm_MailCC.Control(new Text(group, SWT.BORDER));
+        final Label mailCcLabel = JOE_L_MailForm_MailCC.control(new Label(group, SWT.NONE));
+        mailCC = JOE_T_MailForm_MailCC.control(new Text(group, SWT.BORDER));
         mailCC.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -171,10 +171,10 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_2.minimumWidth = 60;
         mailCC.setLayoutData(gridData_2);
-        final Label mailBccLabel = JOE_L_MailForm_MailBCC.Control(new Label(group, SWT.NONE));
+        final Label mailBccLabel = JOE_L_MailForm_MailBCC.control(new Label(group, SWT.NONE));
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData.minimumWidth = 60;
-        mailBCC = JOE_T_MailForm_MailBCC.Control(new Text(group, SWT.BORDER));
+        mailBCC = JOE_T_MailForm_MailBCC.control(new Text(group, SWT.BORDER));
         mailBCC.setLayoutData(gridData);
         mailBCC.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -186,8 +186,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
         gridData_3.heightHint = 8;
         label_1.setLayoutData(gridData_3);
-        final Label logLevelLabel = JOE_L_MailForm_LogLevel.Control(new Label(group, SWT.NONE));
-        LogLevel = JOE_Cbo_MailForm_LogLevel.Control(new Combo(group, SWT.READ_ONLY));
+        final Label logLevelLabel = JOE_L_MailForm_LogLevel.control(new Label(group, SWT.NONE));
+        LogLevel = JOE_Cbo_MailForm_LogLevel.control(new Combo(group, SWT.READ_ONLY));
         GridData gd_LogLevel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
         gd_LogLevel.minimumWidth = 150;
         LogLevel.setLayoutData(gd_LogLevel);
@@ -201,8 +201,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
         gridData_4.heightHint = 8;
         label_2.setLayoutData(gridData_4);
-        final Label historyLabel = JOE_L_MailForm_History.Control(new Label(group, SWT.NONE));
-        cboHistory = JOE_Cbo_MailForm_History.Control(new Combo(group, SWT.READ_ONLY));
+        final Label historyLabel = JOE_L_MailForm_History.control(new Label(group, SWT.NONE));
+        cboHistory = JOE_Cbo_MailForm_History.control(new Combo(group, SWT.READ_ONLY));
         cboHistory.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -212,8 +212,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         GridData gd_cboHistory = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_cboHistory.minimumWidth = 150;
         cboHistory.setLayoutData(gd_cboHistory);
-        final Label historyOnProcessLabel = JOE_L_MailForm_HistoryOnProcess.Control(new Label(group, SWT.NONE));
-        cboHistoryOnProcess = JOE_Cbo_MailForm_HistoryOnProcess.Control(new Combo(group, SWT.NONE));
+        final Label historyOnProcessLabel = JOE_L_MailForm_HistoryOnProcess.control(new Label(group, SWT.NONE));
+        cboHistoryOnProcess = JOE_Cbo_MailForm_HistoryOnProcess.control(new Combo(group, SWT.NONE));
         cboHistoryOnProcess.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -235,8 +235,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
         GridData gd_cboHistoryOnProcess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_cboHistoryOnProcess.minimumWidth = 150;
         cboHistoryOnProcess.setLayoutData(gd_cboHistoryOnProcess);
-        final Label historyWithLogLabel = JOE_L_MailForm_HistoryWithLog.Control(new Label(group, SWT.NONE));
-        cboHistoryWithLog = JOE_Cbo_MailForm_HistoryWithLog.Control(new Combo(group, SWT.READ_ONLY));
+        final Label historyWithLogLabel = JOE_L_MailForm_HistoryWithLog.control(new Label(group, SWT.NONE));
+        cboHistoryWithLog = JOE_Cbo_MailForm_HistoryWithLog.control(new Combo(group, SWT.READ_ONLY));
         cboHistoryWithLog.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {

@@ -141,7 +141,7 @@ public class SchedulerEditorFontDialog {
         gd_t.heightHint = 74;
         t.setLayoutData(gd_t);
         new Label(s, SWT.NONE);
-        final Button btnChange = SOSJOEMessageCodes.JOE_B_FontDialog_Change.Control(new Button(s, SWT.PUSH | SWT.BORDER));
+        final Button btnChange = SOSJOEMessageCodes.JOE_B_FontDialog_Change.control(new Button(s, SWT.PUSH | SWT.BORDER));
         btnChange.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -158,7 +158,7 @@ public class SchedulerEditorFontDialog {
                 t.setForeground(new Color(d, fd.getRGB()));
             }
         });
-        Button btnSave = SOSJOEMessageCodes.JOE_B_FontDialog_Save.Control(new Button(s, SWT.NONE));
+        Button btnSave = SOSJOEMessageCodes.JOE_B_FontDialog_Save.control(new Button(s, SWT.NONE));
         btnSave.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -167,7 +167,7 @@ public class SchedulerEditorFontDialog {
                 s.dispose();
             }
         });
-        Button btnReset = SOSJOEMessageCodes.JOE_B_FontDialog_Reset.Control(new Button(s, SWT.NONE));
+        Button btnReset = SOSJOEMessageCodes.JOE_B_FontDialog_Reset.control(new Button(s, SWT.NONE));
         btnReset.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -176,7 +176,7 @@ public class SchedulerEditorFontDialog {
                 t.setForeground(new Color(d, aktForeGround));
             }
         });
-        Button btnCancel = SOSJOEMessageCodes.JOE_B_FontDialog_Cancel.Control(new Button(s, SWT.NONE));
+        Button btnCancel = SOSJOEMessageCodes.JOE_B_FontDialog_Cancel.control(new Button(s, SWT.NONE));
         btnCancel.addSelectionListener(new SelectionAdapter() {
 
             @Override

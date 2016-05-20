@@ -75,7 +75,7 @@ public class ScriptsForm extends SOSJOEMessageCodes {
                 scriptsGroup.setEnabled(false);
             }
             createTable();
-            butNew = JOE_B_ScriptsForm_New.Control(new Button(scriptsGroup, SWT.NONE));
+            butNew = JOE_B_ScriptsForm_New.control(new Button(scriptsGroup, SWT.NONE));
             butNew.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
@@ -83,7 +83,7 @@ public class ScriptsForm extends SOSJOEMessageCodes {
                 }
             });
             butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            butRemove = JOE_B_ScriptsForm_Remove.Control(new Button(scriptsGroup, SWT.NONE));
+            butRemove = JOE_B_ScriptsForm_Remove.control(new Button(scriptsGroup, SWT.NONE));
             butRemove.setEnabled(false);
             butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -108,7 +108,7 @@ public class ScriptsForm extends SOSJOEMessageCodes {
         try {
             GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
             gridData2.widthHint = 425;
-            table = JOE_Tbl_ScriptsForm_PrePostProcessing.Control(new Table(scriptsGroup, SWT.FULL_SELECTION | SWT.BORDER));
+            table = JOE_Tbl_ScriptsForm_PrePostProcessing.control(new Table(scriptsGroup, SWT.FULL_SELECTION | SWT.BORDER));
             table.addMouseListener(new MouseAdapter() {
 
                 public void mouseDoubleClick(final MouseEvent e) {
@@ -157,9 +157,9 @@ public class ScriptsForm extends SOSJOEMessageCodes {
                     }
                 }
             });
-            TableColumn tableColumn1 = JOE_TCl_ScriptsForm_Name.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn1 = JOE_TCl_ScriptsForm_Name.control(new TableColumn(table, SWT.NONE));
             tableColumn1.setWidth(280);
-            TableColumn tableColumn2 = JOE_TCl_ScriptsForm_Ordering.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn2 = JOE_TCl_ScriptsForm_Ordering.control(new TableColumn(table, SWT.NONE));
             tableColumn2.setWidth(280);
         } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);

@@ -88,11 +88,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
-        group = JOE_G_EventForm_ActionGroup.Control(new Group(this, SWT.NONE));
+        group = JOE_G_EventForm_ActionGroup.control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
-        final Label lblLogic = JOE_L_EventForm_EventName.Control(new Label(group, SWT.NONE));
+        final Label lblLogic = JOE_L_EventForm_EventName.control(new Label(group, SWT.NONE));
         lblLogic.setLayoutData(new GridData());
-        txtEventName = JOE_T_EventForm_EventName.Control(new Text(group, SWT.BORDER));
+        txtEventName = JOE_T_EventForm_EventName.control(new Text(group, SWT.BORDER));
         txtEventName.addKeyListener(new KeyAdapter() {
 
             @Override
@@ -110,7 +110,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtEventName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butApply = JOE_B_EventForm_Apply.Control(new Button(group, SWT.NONE));
+        butApply = JOE_B_EventForm_Apply.control(new Button(group, SWT.NONE));
         butApply.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -119,9 +119,9 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        final Label eventTitleLabel = JOE_L_EventForm_EventTitle.Control(new Label(group, SWT.NONE));
+        final Label eventTitleLabel = JOE_L_EventForm_EventTitle.control(new Label(group, SWT.NONE));
         eventTitleLabel.setLayoutData(new GridData());
-        txtTitle = JOE_T_EventForm_EventTitle.Control(new Text(group, SWT.BORDER));
+        txtTitle = JOE_T_EventForm_EventTitle.control(new Text(group, SWT.BORDER));
         txtTitle.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -137,7 +137,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butNew = JOE_B_EventForm_New.Control(new Button(group, SWT.NONE));
+        butNew = JOE_B_EventForm_New.control(new Button(group, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -146,14 +146,14 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        matchingAttributesGroup = JOE_G_EventForm_MatchingAttributes.Control(new Group(group, SWT.NONE));
+        matchingAttributesGroup = JOE_G_EventForm_MatchingAttributes.control(new Group(group, SWT.NONE));
         matchingAttributesGroup.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false, 3, 1));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.marginTop = 5;
         gridLayout_1.numColumns = 4;
         matchingAttributesGroup.setLayout(gridLayout_1);
-        final Label txtEventClass = JOE_L_EventForm_EventClass.Control(new Label(matchingAttributesGroup, SWT.NONE));
-        cboEventClass = JOE_Cbo_EventForm_EventClass.Control(new Combo(matchingAttributesGroup, SWT.NONE));
+        final Label txtEventClass = JOE_L_EventForm_EventClass.control(new Label(matchingAttributesGroup, SWT.NONE));
+        cboEventClass = JOE_Cbo_EventForm_EventClass.control(new Combo(matchingAttributesGroup, SWT.NONE));
         cboEventClass.addModifyListener(new ModifyListener() {
 
             @Override
@@ -171,8 +171,8 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
-        final Label labeld = JOE_L_EventForm_EventID.Control(new Label(matchingAttributesGroup, SWT.NONE));
-        txtEventId = JOE_T_EventForm_EventID.Control(new Text(matchingAttributesGroup, SWT.BORDER));
+        final Label labeld = JOE_L_EventForm_EventID.control(new Label(matchingAttributesGroup, SWT.NONE));
+        txtEventId = JOE_T_EventForm_EventID.control(new Text(matchingAttributesGroup, SWT.BORDER));
         txtEventId.addModifyListener(new ModifyListener() {
 
             @Override
@@ -190,8 +190,8 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtEventId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
-        final Label jobNameLabel = JOE_L_EventForm_JobName.Control(new Label(matchingAttributesGroup, SWT.NONE));
-        txtJobname = JOE_T_EventForm_JobName.Control(new Text(matchingAttributesGroup, SWT.BORDER));
+        final Label jobNameLabel = JOE_L_EventForm_JobName.control(new Label(matchingAttributesGroup, SWT.NONE));
+        txtJobname = JOE_T_EventForm_JobName.control(new Text(matchingAttributesGroup, SWT.BORDER));
         txtJobname.addModifyListener(new ModifyListener() {
 
             @Override
@@ -209,8 +209,8 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtJobname.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
-        final Label jobChainLabel = JOE_L_EventForm_JobChain.Control(new Label(matchingAttributesGroup, SWT.NONE));
-        txtJobChain = JOE_T_EventForm_JobChain.Control(new Text(matchingAttributesGroup, SWT.BORDER));
+        final Label jobChainLabel = JOE_L_EventForm_JobChain.control(new Label(matchingAttributesGroup, SWT.NONE));
+        txtJobChain = JOE_T_EventForm_JobChain.control(new Text(matchingAttributesGroup, SWT.BORDER));
         txtJobChain.addModifyListener(new ModifyListener() {
 
             @Override
@@ -228,8 +228,8 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtJobChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
-        final Label lblOrderId = JOE_L_EventForm_OrderID.Control(new Label(matchingAttributesGroup, SWT.NONE));
-        txtOrderId = JOE_T_EventForm_OrderID.Control(new Text(matchingAttributesGroup, SWT.BORDER));
+        final Label lblOrderId = JOE_L_EventForm_OrderID.control(new Label(matchingAttributesGroup, SWT.NONE));
+        txtOrderId = JOE_T_EventForm_OrderID.control(new Text(matchingAttributesGroup, SWT.BORDER));
         txtOrderId.addModifyListener(new ModifyListener() {
 
             @Override
@@ -247,9 +247,9 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtOrderId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
-        final Label exitCodeLabel = JOE_L_EventForm_ExitCode.Control(new Label(matchingAttributesGroup, SWT.NONE));
+        final Label exitCodeLabel = JOE_L_EventForm_ExitCode.control(new Label(matchingAttributesGroup, SWT.NONE));
         exitCodeLabel.setLayoutData(new GridData());
-        txtExitCode = JOE_T_EventForm_ExitCode.Control(new Text(matchingAttributesGroup, SWT.BORDER));
+        txtExitCode = JOE_T_EventForm_ExitCode.control(new Text(matchingAttributesGroup, SWT.BORDER));
         txtExitCode.addModifyListener(new ModifyListener() {
 
             @Override
@@ -270,9 +270,9 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         if (type == JOEConstants.ADD_EVENT_GROUP) {
             createExpirationTime(matchingAttributesGroup);
         }
-        final Label commentLabel = JOE_L_EventForm_Comment.Control(new Label(group, SWT.NONE));
+        final Label commentLabel = JOE_L_EventForm_Comment.control(new Label(group, SWT.NONE));
         commentLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-        txtComment = JOE_T_EventForm_Comment.Control(new Text(group, SWT.MULTI | SWT.BORDER));
+        txtComment = JOE_T_EventForm_Comment.control(new Text(group, SWT.MULTI | SWT.BORDER));
         txtComment.addModifyListener(new ModifyListener() {
 
             @Override
@@ -283,7 +283,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
         gridData.heightHint = 45;
         txtComment.setLayoutData(gridData);
-        table = JOE_Tbl_EventForm_Events.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
+        table = JOE_Tbl_EventForm_Events.control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         table.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -325,29 +325,29 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1));
-        final TableColumn newColumnTableColumn = JOE_L_EventForm_EventName.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn = JOE_L_EventForm_EventName.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn.setWidth(70);
-        final TableColumn newColumnTableColumn_1 = JOE_L_EventForm_EventID.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_1 = JOE_L_EventForm_EventID.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_1.setWidth(70);
-        final TableColumn newColumnTableColumn_2 = JOE_L_EventForm_EventTitle.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_2 = JOE_L_EventForm_EventTitle.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_2.setWidth(70);
-        final TableColumn newColumnTableColumn_3 = JOE_L_EventForm_EventClass.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_3 = JOE_L_EventForm_EventClass.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_3.setWidth(73);
-        final TableColumn newColumnTableColumn_4 = JOE_L_EventForm_JobName.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_4 = JOE_L_EventForm_JobName.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_4.setWidth(70);
-        final TableColumn newColumnTableColumn_5 = JOE_L_EventForm_JobChain.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_5 = JOE_L_EventForm_JobChain.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_5.setWidth(70);
-        final TableColumn newColumnTableColumn_6 = JOE_L_EventForm_OrderID.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_6 = JOE_L_EventForm_OrderID.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_6.setWidth(70);
-        final TableColumn newColumnTableColumn_7 = JOE_L_EventForm_Comment.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_7 = JOE_L_EventForm_Comment.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_7.setWidth(70);
-        final TableColumn newColumnTableColumn_8 = JOE_L_EventForm_ExitCode.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_8 = JOE_L_EventForm_ExitCode.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_8.setWidth(50);
-        final TableColumn expiration_period = JOE_L_EventForm_ExpirationPeriod.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn expiration_period = JOE_L_EventForm_ExpirationPeriod.control(new TableColumn(table, SWT.NONE));
         expiration_period.setWidth(type == JOEConstants.ADD_EVENT_GROUP ? 100 : 0);
-        final TableColumn newColumnTableColumn_10 = JOE_L_EventForm_ExpirationCycle.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_10 = JOE_L_EventForm_ExpirationCycle.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_10.setWidth(type == JOEConstants.ADD_EVENT_GROUP ? 100 : 0);
-        butRemove = JOE_B_EventForm_Remove.Control(new Button(group, SWT.NONE));
+        butRemove = JOE_B_EventForm_Remove.control(new Button(group, SWT.NONE));
         butRemove.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -419,7 +419,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void createExpirationTime(final Group matchingAttributesGroup) {
-        final Label expirationPeriodLabel = JOE_L_EventForm_ExpirationPeriod.Control(new Label(matchingAttributesGroup, SWT.NONE));
+        final Label expirationPeriodLabel = JOE_L_EventForm_ExpirationPeriod.control(new Label(matchingAttributesGroup, SWT.NONE));
         final Composite composite = new Composite(matchingAttributesGroup, SWT.NONE);
         composite.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, true, false));
         final GridLayout gridLayout_2 = new GridLayout();
@@ -429,7 +429,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout_2.horizontalSpacing = 0;
         gridLayout_2.numColumns = 6;
         composite.setLayout(gridLayout_2);
-        txtHourExpirationPeriod = JOE_T_EventForm_HourExpirationPeriod.Control(new Text(composite, SWT.BORDER));
+        txtHourExpirationPeriod = JOE_T_EventForm_HourExpirationPeriod.control(new Text(composite, SWT.BORDER));
         txtHourExpirationPeriod.addModifyListener(new ModifyListener() {
 
             @Override
@@ -446,11 +446,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         txtHourExpirationPeriod.setLayoutData(new GridData(30, SWT.DEFAULT));
         txtHourExpirationPeriod.setTextLimit(2);
-        final Label label = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
+        final Label label = JOE_L_Colon.control(new Label(composite, SWT.NONE));
         label.setAlignment(SWT.CENTER);
         final GridData gridData_2 = new GridData(10, SWT.DEFAULT);
         label.setLayoutData(gridData_2);
-        txtMinExpirationPeriod = JOE_T_EventForm_MinExpirationPeriod.Control(new Text(composite, SWT.BORDER));
+        txtMinExpirationPeriod = JOE_T_EventForm_MinExpirationPeriod.control(new Text(composite, SWT.BORDER));
         txtMinExpirationPeriod.addModifyListener(new ModifyListener() {
 
             @Override
@@ -467,11 +467,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         txtMinExpirationPeriod.setLayoutData(new GridData(30, SWT.DEFAULT));
         txtMinExpirationPeriod.setTextLimit(2);
-        final Label label_1 = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
+        final Label label_1 = JOE_L_Colon.control(new Label(composite, SWT.NONE));
         final GridData gridData_2_1 = new GridData(10, SWT.DEFAULT);
         label_1.setLayoutData(gridData_2_1);
         label_1.setAlignment(SWT.CENTER);
-        txtSecExpirationPeriod = JOE_T_EventForm_SecExpirationPeriod.Control(new Text(composite, SWT.BORDER));
+        txtSecExpirationPeriod = JOE_T_EventForm_SecExpirationPeriod.control(new Text(composite, SWT.BORDER));
         txtSecExpirationPeriod.addModifyListener(new ModifyListener() {
 
             @Override
@@ -488,11 +488,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         txtSecExpirationPeriod.setLayoutData(new GridData(30, SWT.DEFAULT));
         txtSecExpirationPeriod.setTextLimit(2);
-        final Label hhmmssLabel = JOE_L_JobAssistent_TimeFormat.Control(new Label(composite, SWT.NONE));
+        final Label hhmmssLabel = JOE_L_JobAssistent_TimeFormat.control(new Label(composite, SWT.NONE));
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_3.horizontalIndent = 5;
         hhmmssLabel.setLayoutData(gridData_3);
-        final Label expirationCycleLabel = JOE_L_EventForm_ExpirationCycle.Control(new Label(matchingAttributesGroup, SWT.NONE));
+        final Label expirationCycleLabel = JOE_L_EventForm_ExpirationCycle.control(new Label(matchingAttributesGroup, SWT.NONE));
         expirationCycleLabel.setLayoutData(new GridData(96, SWT.DEFAULT));
         final Composite composite_1 = new Composite(matchingAttributesGroup, SWT.NONE);
         composite_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, false, false));
@@ -503,7 +503,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout_3.marginHeight = 0;
         gridLayout_3.horizontalSpacing = 0;
         composite_1.setLayout(gridLayout_3);
-        txtHourExpirationCycle = JOE_T_EventForm_HourExpirationCycle.Control(new Text(composite_1, SWT.BORDER));
+        txtHourExpirationCycle = JOE_T_EventForm_HourExpirationCycle.control(new Text(composite_1, SWT.BORDER));
         txtHourExpirationCycle.addModifyListener(new ModifyListener() {
 
             @Override
@@ -522,11 +522,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_4.widthHint = 30;
         txtHourExpirationCycle.setLayoutData(gridData_4);
-        final Label label_2 = JOE_L_Colon.Control(new Label(composite_1, SWT.NONE));
+        final Label label_2 = JOE_L_Colon.control(new Label(composite_1, SWT.NONE));
         final GridData gridData_2_2 = new GridData(10, SWT.DEFAULT);
         label_2.setLayoutData(gridData_2_2);
         label_2.setAlignment(SWT.CENTER);
-        txtMinExpirationCycle = JOE_T_EventForm_MinExpirationCycle.Control(new Text(composite_1, SWT.BORDER));
+        txtMinExpirationCycle = JOE_T_EventForm_MinExpirationCycle.control(new Text(composite_1, SWT.BORDER));
         txtMinExpirationCycle.addModifyListener(new ModifyListener() {
 
             @Override
@@ -545,11 +545,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_5.widthHint = 30;
         txtMinExpirationCycle.setLayoutData(gridData_5);
-        final Label label_1_1 = JOE_L_Colon.Control(new Label(composite_1, SWT.NONE));
+        final Label label_1_1 = JOE_L_Colon.control(new Label(composite_1, SWT.NONE));
         final GridData gridData_2_1_1 = new GridData(10, SWT.DEFAULT);
         label_1_1.setLayoutData(gridData_2_1_1);
         label_1_1.setAlignment(SWT.CENTER);
-        txtSecExpirationCycle = JOE_T_EventForm_SecExpirationCycle.Control(new Text(composite_1, SWT.BORDER));
+        txtSecExpirationCycle = JOE_T_EventForm_SecExpirationCycle.control(new Text(composite_1, SWT.BORDER));
         txtSecExpirationCycle.addModifyListener(new ModifyListener() {
 
             @Override
@@ -568,7 +568,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_6.widthHint = 30;
         txtSecExpirationCycle.setLayoutData(gridData_6);
-        final Label hhmmssLabel_1 = JOE_L_JobAssistent_TimeFormat.Control(new Label(composite_1, SWT.NONE));
+        final Label hhmmssLabel_1 = JOE_L_JobAssistent_TimeFormat.control(new Label(composite_1, SWT.NONE));
         final GridData gridData_3_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_3_1.horizontalIndent = 5;
         hhmmssLabel_1.setLayoutData(gridData_3_1);

@@ -41,9 +41,9 @@ public class CommandsForm extends SOSJOEMessageCodes {
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        commandsGroup = JOE_G_CommandsForm_Commands.Control(new Group(this, SWT.NONE));
+        commandsGroup = JOE_G_CommandsForm_Commands.control(new Group(this, SWT.NONE));
         commandsGroup.setLayout(gridLayout);
-        tCommands = JOE_T_CommandsForm_Commands.Control(new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL));
+        tCommands = JOE_T_CommandsForm_Commands.control(new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL));
         tCommands.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
@@ -56,7 +56,7 @@ public class CommandsForm extends SOSJOEMessageCodes {
         final GridData gridData4_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         tCommands.setLayoutData(gridData4_1);
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        bSave = JOE_B_CommandsForm_Apply.Control(new Button(commandsGroup, SWT.NONE));
+        bSave = JOE_B_CommandsForm_Apply.control(new Button(commandsGroup, SWT.NONE));
         bSave.setLayoutData(gridData);
         getShell().setDefaultButton(bSave);
         bSave.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {

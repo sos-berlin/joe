@@ -74,10 +74,10 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
         GridData gridData1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         GridLayout gridLayout1 = new GridLayout(5, false);
-        group = MsgHandler.newMsg("JOE_G_SectionsForm_Sections").Control(new SOSGroup(this, SWT.NONE));
+        group = MsgHandler.newMsg("JOE_G_SectionsForm_Sections").control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout1);
-        label5 = MsgHandler.newMsg("JOE_L_Name").Control(new SOSLabel(group, SWT.NONE));
-        tName = MsgHandler.newMsg("JOE_T_SectionsForm_Name").Control(new Text(group, SWT.BORDER));
+        label5 = MsgHandler.newMsg("JOE_L_Name").control(new SOSLabel(group, SWT.NONE));
+        tName = MsgHandler.newMsg("JOE_T_SectionsForm_Name").control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -86,7 +86,7 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
                 setApplyStatus();
             }
         });
-        bApply = MsgHandler.newMsg("JOE_B_SectionsForm_Apply").Control(new Button(group, SWT.NONE));
+        bApply = MsgHandler.newMsg("JOE_B_SectionsForm_Apply").control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData5); // Generated
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -95,10 +95,10 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
                 applySection();
             }
         });
-        label8 = MsgHandler.newMsg("JOE_L_SectionsForm_Reference").Control(new SOSLabel(group, SWT.NONE));
+        label8 = MsgHandler.newMsg("JOE_L_SectionsForm_Reference").control(new SOSLabel(group, SWT.NONE));
         createCReference();
-        label6 = MsgHandler.newMsg("JOE_L_SectionsForm_ID").Control(new SOSLabel(group, SWT.NONE));
-        tID = MsgHandler.newMsg("JOE_T_SectionsForm_ID").Control(new Text(group, SWT.BORDER));
+        label6 = MsgHandler.newMsg("JOE_L_SectionsForm_ID").control(new SOSLabel(group, SWT.NONE));
+        tID = MsgHandler.newMsg("JOE_T_SectionsForm_ID").control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData2);
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -110,7 +110,7 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
         label7 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label7.setText("Label");
         label7.setLayoutData(gridData4);
-        tSections = MsgHandler.newMsg("JOE_Tbl_SectionsForm_Sections").Control(new Table(group, SWT.BORDER));
+        tSections = MsgHandler.newMsg("JOE_Tbl_SectionsForm_Sections").control(new Table(group, SWT.BORDER));
         tSections.setHeaderVisible(true);
         tSections.setLayoutData(gridData1);
         tSections.setLinesVisible(true);
@@ -124,7 +124,7 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
                 }
             }
         });
-        bNew = MsgHandler.newMsg("JOE_B_SectionsForm_New").Control(new Button(group, SWT.NONE));
+        bNew = MsgHandler.newMsg("JOE_B_SectionsForm_New").control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData6); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -139,7 +139,7 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label");
         label.setLayoutData(gridData7);
-        bRemove = MsgHandler.newMsg("JOE_B_SectionsForm_Remove").Control(new Button(group, SWT.NONE));
+        bRemove = MsgHandler.newMsg("JOE_B_SectionsForm_Remove").control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData8);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -153,17 +153,17 @@ public class SectionsForm extends JobDocBaseForm<SectionsListener> {
                 }
             }
         });
-        TableColumn tableColumn3 = MsgHandler.newMsg("JOE_TCl_SectionsForm_Name").Control(new TableColumn(tSections, SWT.NONE));
+        TableColumn tableColumn3 = MsgHandler.newMsg("JOE_TCl_SectionsForm_Name").control(new TableColumn(tSections, SWT.NONE));
         tableColumn3.setWidth(200);
-        TableColumn tableColumn5 = MsgHandler.newMsg("JOE_TCl_SectionsForm_Reference").Control(new TableColumn(tSections, SWT.NONE));
+        TableColumn tableColumn5 = MsgHandler.newMsg("JOE_TCl_SectionsForm_Reference").control(new TableColumn(tSections, SWT.NONE));
         tableColumn5.setWidth(180);
-        TableColumn tableColumn4 = MsgHandler.newMsg("JOE_TCl_SectionsForm_ID").Control(new TableColumn(tSections, SWT.NONE));
+        TableColumn tableColumn4 = MsgHandler.newMsg("JOE_TCl_SectionsForm_ID").control(new TableColumn(tSections, SWT.NONE));
         tableColumn4.setWidth(180);
     }
 
     private void createCReference() {
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        cReference = MsgHandler.newMsg("JOE_Cbo_SectionsForm_Reference").Control(new Combo(group, SWT.NONE));
+        cReference = MsgHandler.newMsg("JOE_Cbo_SectionsForm_Reference").control(new Combo(group, SWT.NONE));
         cReference.setLayoutData(gridData3);
         cReference.addModifyListener(new ModifyListener() {
 

@@ -70,7 +70,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     }
 
     private void createGTree() {
-        gTree = JOE_G_JobAssistent_JobChainConfiguration.Control(new Group(sashForm, SWT.NONE));
+        gTree = JOE_G_JobAssistent_JobChainConfiguration.control(new Group(sashForm, SWT.NONE));
         gTree.setLayout(new FillLayout());
         tree = new Tree(gTree, SWT.BORDER);
         tree.addListener(SWT.MenuDetect, new Listener() {
@@ -177,7 +177,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     public static String getFile(Collection filenames) {
         try {
             if (filename == null || "".equals(filename)) {
-                FileDialog fdialog = JOE_FD_JobAssistent_OpenFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
+                FileDialog fdialog = JOE_FD_JobAssistent_OpenFile.control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
                 fdialog.setFilterPath(Options.getLastDirectory());
                 filename = fdialog.open();
             }

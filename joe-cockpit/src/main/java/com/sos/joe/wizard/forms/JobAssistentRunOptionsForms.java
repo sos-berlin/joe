@@ -90,7 +90,7 @@ public class JobAssistentRunOptionsForms {
         final GridLayout gridLayout_4 = new GridLayout();
         gridLayout_4.numColumns = 3;
         composite.setLayout(gridLayout_4);
-        butPeriod = SOSJOEMessageCodes.JOE_B_JobAssistent_Period.Control(new Button(composite, SWT.NONE));
+        butPeriod = SOSJOEMessageCodes.JOE_B_JobAssistent_Period.control(new Button(composite, SWT.NONE));
         butPeriod.setFocus();
         butPeriod.addSelectionListener(new SelectionAdapter() {
 
@@ -105,7 +105,7 @@ public class JobAssistentRunOptionsForms {
         gridData_4.horizontalIndent = 10;
         gridData_4.minimumWidth = 100;
         butPeriod.setLayoutData(gridData_4);
-        butRunTime = SOSJOEMessageCodes.JOE_B_JobAssistent_RunTime.Control(new Button(composite, SWT.NONE));
+        butRunTime = SOSJOEMessageCodes.JOE_B_JobAssistent_RunTime.control(new Button(composite, SWT.NONE));
         butRunTime.setEnabled("no".equals(Utils.getAttributeValue("order", job)));
         butRunTime.addSelectionListener(new SelectionAdapter() {
 
@@ -119,7 +119,7 @@ public class JobAssistentRunOptionsForms {
         gridData_7.horizontalIndent = 10;
         gridData_7.widthHint = 97;
         butRunTime.setLayoutData(gridData_7);
-        butDirectoryMonitoring = SOSJOEMessageCodes.JOE_B_JobAssistent_DirectoryMonitoring.Control(new Button(composite, SWT.NONE));
+        butDirectoryMonitoring = SOSJOEMessageCodes.JOE_B_JobAssistent_DirectoryMonitoring.control(new Button(composite, SWT.NONE));
         butDirectoryMonitoring.setEnabled("no".equals(Utils.getAttributeValue("order", job)));
         butDirectoryMonitoring.addSelectionListener(new SelectionAdapter() {
 
@@ -142,7 +142,7 @@ public class JobAssistentRunOptionsForms {
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.marginWidth = 0;
         composite_1.setLayout(gridLayout_2);
-        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
+        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.control(new Button(composite_1, SWT.NONE));
         butCancel.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -156,7 +156,7 @@ public class JobAssistentRunOptionsForms {
         gridLayout_3.marginWidth = 0;
         gridLayout_3.numColumns = 5;
         composite_2.setLayout(gridLayout_3);
-        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
+        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.control(new Button(composite_2, SWT.NONE));
         butShow.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -164,7 +164,7 @@ public class JobAssistentRunOptionsForms {
                 Utils.showClipboard(Utils.getElementAsString(job), shellRunOptions, false, null, false, null, false);
             }
         });
-        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
+        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.control(new Button(composite_2, SWT.NONE));
         butFinish.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -172,7 +172,7 @@ public class JobAssistentRunOptionsForms {
                 doFinish();
             }
         });
-        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
+        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.control(new Button(composite_2, SWT.NONE));
         butBack.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -193,7 +193,7 @@ public class JobAssistentRunOptionsForms {
                 shellRunOptions.dispose();
             }
         });
-        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.control(new Button(composite_2, SWT.NONE));
         butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
         butNext.setLayoutData(gridData_6);

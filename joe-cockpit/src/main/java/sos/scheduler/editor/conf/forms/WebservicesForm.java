@@ -65,9 +65,9 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData3.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        group = JOE_G_WebservicesForm_WebServices.Control(new Group(this, SWT.NONE));
+        group = JOE_G_WebservicesForm_WebServices.control(new Group(this, SWT.NONE));
         GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-        tServices = JOE_Tbl_WebservicesForm_Services.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
+        tServices = JOE_Tbl_WebservicesForm_Services.control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         tServices.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -89,14 +89,14 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_WebservicesForm_Name.Control(new TableColumn(tServices, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_WebservicesForm_Name.control(new TableColumn(tServices, SWT.NONE));
         tableColumn.setWidth(150);
-        TableColumn tableColumn1 = JOE_TCl_WebservicesForm_URL.Control(new TableColumn(tServices, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_WebservicesForm_URL.control(new TableColumn(tServices, SWT.NONE));
         tableColumn1.setWidth(150);
-        TableColumn tableColumn2 = JOE_TCl_WebservicesForm_JobChain.Control(new TableColumn(tServices, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_WebservicesForm_JobChain.control(new TableColumn(tServices, SWT.NONE));
         tableColumn2.setWidth(100);
         GridData gridData5 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        bNew = JOE_B_WebservicesForm_New.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_WebservicesForm_New.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData5);
         getShell().setDefaultButton(bNew);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -109,7 +109,7 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
         label8 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label8.setText("Label");
         label8.setLayoutData(gridData19);
-        bRemove = JOE_B_WebservicesForm_Remove.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_WebservicesForm_Remove.control(new Button(group, SWT.NONE));
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {

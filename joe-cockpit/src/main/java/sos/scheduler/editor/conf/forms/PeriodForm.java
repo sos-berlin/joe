@@ -348,13 +348,13 @@ public class PeriodForm extends SOSJOEMessageCodes {
         gPeriod = new Composite(this, SWT.NONE);
         gPeriod.setEnabled(false);
         gPeriod.setLayout(gridLayout);
-        final Group groupSlottime = JOE_G_PeriodForm_TimeSlot.Control(new Group(gPeriod, SWT.NONE));
+        final Group groupSlottime = JOE_G_PeriodForm_TimeSlot.control(new Group(gPeriod, SWT.NONE));
         groupSlottime.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 8;
         groupSlottime.setLayout(gridLayout_1);
-        JOE_L_PeriodForm_LetRun.Control(new Label(groupSlottime, SWT.NONE));
-        bLetRun = JOE_B_PeriodForm_LetRun.Control(new Button(groupSlottime, SWT.CHECK));
+        JOE_L_PeriodForm_LetRun.control(new Label(groupSlottime, SWT.NONE));
+        bLetRun = JOE_B_PeriodForm_LetRun.control(new Button(groupSlottime, SWT.CHECK));
         bLetRun.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -367,9 +367,9 @@ public class PeriodForm extends SOSJOEMessageCodes {
             }
         });
         new Label(groupSlottime, SWT.NONE);
-        lRunOnce = JOE_L_PeriodForm_RunOnce.Control(new Label(groupSlottime, SWT.NONE));
+        lRunOnce = JOE_L_PeriodForm_RunOnce.control(new Label(groupSlottime, SWT.NONE));
         lRunOnce.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
-        cRunOnce = JOE_B_PeriodForm_RunOnce.Control(new Button(groupSlottime, SWT.CHECK));
+        cRunOnce = JOE_B_PeriodForm_RunOnce.control(new Button(groupSlottime, SWT.CHECK));
         cRunOnce.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         cRunOnce.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -382,9 +382,9 @@ public class PeriodForm extends SOSJOEMessageCodes {
                 }
             }
         });
-        label2 = JOE_L_PeriodForm_BeginTime.Control(new Label(groupSlottime, SWT.NONE));
+        label2 = JOE_L_PeriodForm_BeginTime.control(new Label(groupSlottime, SWT.NONE));
         label2.setLayoutData(new GridData(86, SWT.DEFAULT));
-        sBeginHours = JOE_T_PeriodForm_BeginHours.Control(new Text(groupSlottime, SWT.BORDER));
+        sBeginHours = JOE_T_PeriodForm_BeginHours.control(new Text(groupSlottime, SWT.BORDER));
         sBeginHours.setTextLimit(2);
         sBeginHours.addKeyListener(new KeyAdapter() {
 
@@ -411,8 +411,8 @@ public class PeriodForm extends SOSJOEMessageCodes {
                 setBeginHours();
             }
         });
-        JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
-        sBeginMinutes = JOE_T_PeriodForm_BeginMinutes.Control(new Text(groupSlottime, SWT.BORDER));
+        JOE_L_Colon.control(new Label(groupSlottime, SWT.NONE));
+        sBeginMinutes = JOE_T_PeriodForm_BeginMinutes.control(new Text(groupSlottime, SWT.BORDER));
         sBeginMinutes.setTextLimit(2);
         sBeginMinutes.addKeyListener(new KeyAdapter() {
 
@@ -439,8 +439,8 @@ public class PeriodForm extends SOSJOEMessageCodes {
                 setBeginminutes();
             }
         });
-        JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
-        sBeginSeconds = JOE_T_PeriodForm_BeginSeconds.Control(new Text(groupSlottime, SWT.BORDER));
+        JOE_L_Colon.control(new Label(groupSlottime, SWT.NONE));
+        sBeginSeconds = JOE_T_PeriodForm_BeginSeconds.control(new Text(groupSlottime, SWT.BORDER));
         sBeginSeconds.setTextLimit(2);
         sBeginSeconds.addKeyListener(new KeyAdapter() {
 
@@ -469,11 +469,11 @@ public class PeriodForm extends SOSJOEMessageCodes {
                 setBeginSeconds();
             }
         });
-        label5 = JOE_L_JobAssistent_TimeFormat.Control(new Label(groupSlottime, SWT.NONE));
+        label5 = JOE_L_JobAssistent_TimeFormat.control(new Label(groupSlottime, SWT.NONE));
         label5.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        label6 = JOE_L_PeriodForm_EndTime.Control(new Label(groupSlottime, SWT.NONE));
+        label6 = JOE_L_PeriodForm_EndTime.control(new Label(groupSlottime, SWT.NONE));
         label6.setLayoutData(new GridData(86, SWT.DEFAULT));
-        sEndHours = JOE_T_PeriodForm_EndHours.Control(new Text(groupSlottime, SWT.BORDER));
+        sEndHours = JOE_T_PeriodForm_EndHours.control(new Text(groupSlottime, SWT.BORDER));
         sEndHours.setTextLimit(2);
         sEndHours.addKeyListener(new KeyAdapter() {
 
@@ -500,8 +500,8 @@ public class PeriodForm extends SOSJOEMessageCodes {
                 setEndHours();
             }
         });
-        JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
-        sEndMinutes = JOE_T_PeriodForm_EndMinutes.Control(new Text(groupSlottime, SWT.BORDER));
+        JOE_L_Colon.control(new Label(groupSlottime, SWT.NONE));
+        sEndMinutes = JOE_T_PeriodForm_EndMinutes.control(new Text(groupSlottime, SWT.BORDER));
         sEndMinutes.setTextLimit(2);
         sEndMinutes.addKeyListener(new KeyAdapter() {
 
@@ -528,8 +528,8 @@ public class PeriodForm extends SOSJOEMessageCodes {
                 setEndMinutes();
             }
         });
-        JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
-        sEndSeconds = JOE_T_PeriodForm_EndSeconds.Control(new Text(groupSlottime, SWT.BORDER));
+        JOE_L_Colon.control(new Label(groupSlottime, SWT.NONE));
+        sEndSeconds = JOE_T_PeriodForm_EndSeconds.control(new Text(groupSlottime, SWT.BORDER));
         sEndSeconds.setTextLimit(2);
         sEndSeconds.addKeyListener(new KeyAdapter() {
 
@@ -558,12 +558,12 @@ public class PeriodForm extends SOSJOEMessageCodes {
                 setEndSeconds();
             }
         });
-        label9 = JOE_L_JobAssistent_TimeFormat.Control(new Label(groupSlottime, SWT.NONE));
+        label9 = JOE_L_JobAssistent_TimeFormat.control(new Label(groupSlottime, SWT.NONE));
         label9.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
     }
 
     private void createStartTimeGroup() {
-        startTimePeriodGroup = JOE_G_PeriodForm_StartTime.Control(new Group(gPeriod, SWT.NONE));
+        startTimePeriodGroup = JOE_G_PeriodForm_StartTime.control(new Group(gPeriod, SWT.NONE));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         startTimePeriodGroup.setLayoutData(gridData_2);
         final GridLayout gridLayout = new GridLayout();
@@ -575,7 +575,7 @@ public class PeriodForm extends SOSJOEMessageCodes {
         gridLayout_1.marginHeight = 0;
         gridLayout_1.numColumns = 8;
         composite.setLayout(gridLayout_1);
-        cboStarttime = JOE_Cbo_PeriodForm_StartTime.Control(new Combo(composite, SWT.READ_ONLY));
+        cboStarttime = JOE_Cbo_PeriodForm_StartTime.control(new Combo(composite, SWT.READ_ONLY));
         final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         cboStarttime.setLayoutData(gridData_3);
         cboStarttime.setItems(new String[] { EMPTY_STRING, SINGLE_START, REPEAT_TIME, ABSOLUTE_TIME });
@@ -650,7 +650,7 @@ public class PeriodForm extends SOSJOEMessageCodes {
             }
         });
         stHour.setLayoutData(new GridData(24, SWT.DEFAULT));
-        JOE_L_Colon.Control(new Label(composite, SWT.NONE));
+        JOE_L_Colon.control(new Label(composite, SWT.NONE));
         stMinutes = new Text(composite, SWT.BORDER);
         stMinutes.setTextLimit(2);
         stMinutes.addKeyListener(new KeyAdapter() {
@@ -693,7 +693,7 @@ public class PeriodForm extends SOSJOEMessageCodes {
         });
         final GridData gridData_4 = new GridData(24, SWT.DEFAULT);
         stMinutes.setLayoutData(gridData_4);
-        JOE_L_Colon.Control(new Label(composite, SWT.NONE));
+        JOE_L_Colon.control(new Label(composite, SWT.NONE));
         stSeconds = new Text(composite, SWT.BORDER);
         stSeconds.setTextLimit(2);
         stSeconds.addKeyListener(new KeyAdapter() {
@@ -728,9 +728,9 @@ public class PeriodForm extends SOSJOEMessageCodes {
             }
         });
         stSeconds.setLayoutData(new GridData(24, SWT.DEFAULT));
-        label18_2 = JOE_L_JobAssistent_TimeFormat.Control(new Label(composite, SWT.NONE));
+        label18_2 = JOE_L_JobAssistent_TimeFormat.control(new Label(composite, SWT.NONE));
         label18_2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        lblOrSecond = JOE_L_PeriodForm_OrSS.Control(new Label(composite, SWT.NONE));
+        lblOrSecond = JOE_L_PeriodForm_OrSS.control(new Label(composite, SWT.NONE));
         lblOrSecond.setVisible(false);
         lblOrSecond.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
     }
@@ -746,11 +746,11 @@ public class PeriodForm extends SOSJOEMessageCodes {
     }
 
     private void createWhenHoliday() {
-        final Group whenHolidayGroup = JOE_G_PeriodForm_WhenHoliday.Control(new Group(gPeriod, SWT.NONE));
+        final Group whenHolidayGroup = JOE_G_PeriodForm_WhenHoliday.control(new Group(gPeriod, SWT.NONE));
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, false);
         whenHolidayGroup.setLayoutData(gridData_4);
         whenHolidayGroup.setLayout(new GridLayout());
-        cboWhenHoliday = JOE_Cbo_PeriodForm_WhenHoliday.Control(new Combo(whenHolidayGroup, SWT.READ_ONLY));
+        cboWhenHoliday = JOE_Cbo_PeriodForm_WhenHoliday.control(new Combo(whenHolidayGroup, SWT.READ_ONLY));
         cboWhenHoliday.addSelectionListener(new SelectionAdapter() {
 
             @Override

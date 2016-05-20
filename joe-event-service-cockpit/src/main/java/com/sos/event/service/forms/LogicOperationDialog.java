@@ -71,7 +71,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         newFolderShell.setLayout(gridLayout);
         newFolderShell.setText(SOSJOEMessageCodes.JOE_M_LogicOperationDialog_LogicalOperation.label());
         newFolderShell.pack();
-        txtExpression = SOSJOEMessageCodes.JOE_T_LogicOperationDialog_Expression.Control(new Text(newFolderShell, SWT.MULTI | SWT.BORDER | SWT.WRAP));
+        txtExpression = SOSJOEMessageCodes.JOE_T_LogicOperationDialog_Expression.control(new Text(newFolderShell, SWT.MULTI | SWT.BORDER | SWT.WRAP));
         txtExpression.addKeyListener(new KeyAdapter() {
 
             @Override
@@ -84,7 +84,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
         gridData.heightHint = 104;
         txtExpression.setLayoutData(gridData);
-        list = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Operators.Control(new List(newFolderShell, SWT.BORDER));
+        list = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Operators.control(new List(newFolderShell, SWT.BORDER));
         list.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -97,7 +97,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         });
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         list.setLayoutData(gridData_1);
-        listOfIds = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Group.Control(new List(newFolderShell, SWT.BORDER));
+        listOfIds = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Group.control(new List(newFolderShell, SWT.BORDER));
         listOfIds.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -117,7 +117,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         gridLayout_2.marginWidth = 0;
         gridLayout_2.horizontalSpacing = 0;
         composite_1.setLayout(gridLayout_2);
-        butCancel = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Cancel.Control(new Button(composite_1, SWT.NONE));
+        butCancel = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Cancel.control(new Button(composite_1, SWT.NONE));
         butCancel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
         butCancel.addSelectionListener(new SelectionAdapter() {
 
@@ -134,7 +134,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         gridLayout_1.marginWidth = 0;
         gridLayout_1.numColumns = 3;
         composite.setLayout(gridLayout_1);
-        restoreButton = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Restore.Control(new Button(composite, SWT.NONE));
+        restoreButton = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Restore.control(new Button(composite, SWT.NONE));
         restoreButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
         restoreButton.addSelectionListener(new SelectionAdapter() {
 
@@ -152,7 +152,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
                 }
             }
         });
-        butClear = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Clear.Control(new Button(composite, SWT.NONE));
+        butClear = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Clear.control(new Button(composite, SWT.NONE));
         butClear.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butClear.addSelectionListener(new SelectionAdapter() {
 
@@ -163,7 +163,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
                 txtExpression.setFocus();
             }
         });
-        butApply = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Apply.Control(new Button(composite, SWT.NONE));
+        butApply = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Apply.control(new Button(composite, SWT.NONE));
         butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butApply.addSelectionListener(new SelectionAdapter() {
 

@@ -34,7 +34,7 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
     }
 
     private void initialize() {
-        cUseScript = JOE_B_JobScriptForm_UseScript.Control(new Button(this, SWT.RADIO));
+        cUseScript = JOE_B_JobScriptForm_UseScript.control(new Button(this, SWT.RADIO));
         cUseScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override

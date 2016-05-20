@@ -34,7 +34,7 @@ public class ErrorLog extends Exception {
             init();
             JobSchedulerException objJSE = new JobSchedulerException(msg, e);
             objJSE.setIntStatus(JobSchedulerException.NONE);
-            String strMsg = msg + "\n" + objJSE.ExceptionText();
+            String strMsg = msg + "\n" + objJSE.getExceptionText();
             message(strMsg, SWT.ERROR);
             LOGGER.error(strMsg, e);
         } catch (Exception ex) {
@@ -48,7 +48,7 @@ public class ErrorLog extends Exception {
             init();
             JobSchedulerException objJSE = new JobSchedulerException(msg, e);
             objJSE.setIntStatus(JobSchedulerException.NONE);
-            String strMsg = msg + "\n" + objJSE.ExceptionText();
+            String strMsg = msg + "\n" + objJSE.getExceptionText();
             message(application, strMsg, SWT.ERROR);
             LOGGER.error(strMsg);
         } catch (Exception ex) {

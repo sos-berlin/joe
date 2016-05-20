@@ -35,7 +35,7 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
 
     private String getSOSLocale() {
         JSOptionsClass objO = new JSOptionsClass();
-        return objO.Locale.Value();
+        return objO.locale.getValue();
     }
 
     public String[] getLanguages() {

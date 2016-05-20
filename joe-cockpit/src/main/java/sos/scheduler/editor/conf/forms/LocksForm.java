@@ -95,17 +95,17 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
-        locksGroup = JOE_G_LocksForm_Locks.Control(new Group(this, SWT.NONE));
+        locksGroup = JOE_G_LocksForm_Locks.control(new Group(this, SWT.NONE));
         locksGroup.setLayout(gridLayout);
-        label1 = JOE_L_LocksForm_Lock.Control(new Label(locksGroup, SWT.NONE));
-        tLock = JOE_T_LocksForm_Lock.Control(new Text(locksGroup, SWT.BORDER));
-        bApply = JOE_B_LocksForm_Apply.Control(new Button(locksGroup, SWT.NONE));
-        label5 = JOE_L_LocksForm_MaxNonExclusive.Control(new Label(locksGroup, SWT.NONE));
+        label1 = JOE_L_LocksForm_Lock.control(new Label(locksGroup, SWT.NONE));
+        tLock = JOE_T_LocksForm_Lock.control(new Text(locksGroup, SWT.BORDER));
+        bApply = JOE_B_LocksForm_Apply.control(new Button(locksGroup, SWT.NONE));
+        label5 = JOE_L_LocksForm_MaxNonExclusive.control(new Label(locksGroup, SWT.NONE));
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
         gridData.horizontalIndent = 5;
         label5.setLayoutData(gridData);
         GridData gridData4 = new GridData(20, SWT.DEFAULT);
-        butUnlimitedNonExclusive = JOE_B_LocksForm_UnlimitedNonExclusive.Control(new Button(locksGroup, SWT.CHECK));
+        butUnlimitedNonExclusive = JOE_B_LocksForm_UnlimitedNonExclusive.control(new Button(locksGroup, SWT.CHECK));
         butUnlimitedNonExclusive.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -115,7 +115,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         butUnlimitedNonExclusive.setSelection(true);
         butUnlimitedNonExclusive.setEnabled(false);
-        sMaxNonExclusive = JOE_Sp_LocksForm_MaxNonExclusive.Control(new Spinner(locksGroup, SWT.NONE));
+        sMaxNonExclusive = JOE_Sp_LocksForm_MaxNonExclusive.control(new Spinner(locksGroup, SWT.NONE));
         sMaxNonExclusive.setMaximum(99999999);
         sMaxNonExclusive.setLayoutData(gridData4);
         sMaxNonExclusive.setEnabled(false);
@@ -137,7 +137,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
         label = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setLayoutData(gridData7);
         createTable();
-        bNew = JOE_B_LocksForm_NewLock.Control(new Button(locksGroup, SWT.NONE));
+        bNew = JOE_B_LocksForm_NewLock.control(new Button(locksGroup, SWT.NONE));
         bNew.setLayoutData(gridData1);
         getShell().setDefaultButton(bNew);
         label2 = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -151,7 +151,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(listener.isValidLock(tLock.getText()));
             }
         });
-        bRemove = JOE_B_LocksForm_RemoveLock.Control(new Button(locksGroup, SWT.NONE));
+        bRemove = JOE_B_LocksForm_RemoveLock.control(new Button(locksGroup, SWT.NONE));
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData2);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -211,7 +211,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private void createTable() {
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
-        tableLocks = JOE_Tbl_LocksForm_Table.Control(new Table(locksGroup, SWT.FULL_SELECTION | SWT.BORDER));
+        tableLocks = JOE_Tbl_LocksForm_Table.control(new Table(locksGroup, SWT.FULL_SELECTION | SWT.BORDER));
         tableLocks.setHeaderVisible(true);
         tableLocks.setLayoutData(gridData);
         tableLocks.setLinesVisible(true);
@@ -235,9 +235,9 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        TableColumn lockTableColumn = JOE_TCl_LocksForm_Lock.Control(new TableColumn(tableLocks, SWT.NONE));
+        TableColumn lockTableColumn = JOE_TCl_LocksForm_Lock.control(new TableColumn(tableLocks, SWT.NONE));
         lockTableColumn.setWidth(200);
-        TableColumn tableColumn1 = JOE_TCl_LocksForm_MaxNonExclusive.Control(new TableColumn(tableLocks, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_LocksForm_MaxNonExclusive.control(new TableColumn(tableLocks, SWT.NONE));
         tableColumn1.setWidth(150);
     }
 

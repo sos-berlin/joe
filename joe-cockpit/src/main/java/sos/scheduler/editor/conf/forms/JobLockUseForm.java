@@ -71,10 +71,10 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData51.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 5;
-        group1 = JOE_G_JobLockUseForm_Use.Control(new Group(this, SWT.NONE));
+        group1 = JOE_G_JobLockUseForm_Use.control(new Group(this, SWT.NONE));
         group1.setLayout(gridLayout1);
-        lockLabel = JOE_L_JobLockUseForm_Lock.Control(new Label(group1, SWT.NONE));
-        tLockUse = JOE_Cbo_JobLockUseForm_LockUse.Control(new Combo(group1, SWT.NONE));
+        lockLabel = JOE_L_JobLockUseForm_Lock.control(new Label(group1, SWT.NONE));
+        tLockUse = JOE_Cbo_JobLockUseForm_LockUse.control(new Combo(group1, SWT.NONE));
         tLockUse.setEnabled(false);
         tLockUse.addModifyListener(new ModifyListener() {
 
@@ -86,9 +86,9 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         tLockUse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        label11 = JOE_L_JobLockUseForm_Exclusive.Control(new Label(group1, SWT.NONE));
+        label11 = JOE_L_JobLockUseForm_Exclusive.control(new Label(group1, SWT.NONE));
         label11.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-        bExclusive = JOE_B_JobLockUseForm_Exclusive.Control(new Button(group1, SWT.CHECK));
+        bExclusive = JOE_B_JobLockUseForm_Exclusive.control(new Button(group1, SWT.CHECK));
         bExclusive.setSelection(true);
         bExclusive.setEnabled(true);
         bExclusive.addSelectionListener(new SelectionAdapter() {
@@ -97,7 +97,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApplyLockUse.setEnabled(true);
             }
         });
-        bApplyLockUse = JOE_B_JobLockUseForm_ApplyLockUse.Control(new Button(group1, SWT.NONE));
+        bApplyLockUse = JOE_B_JobLockUseForm_ApplyLockUse.control(new Button(group1, SWT.NONE));
         bApplyLockUse.setEnabled(false);
         bApplyLockUse.setLayoutData(gridData51);
         bApplyLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -108,7 +108,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         new Label(group1, SWT.NONE);
         GridData gridData30 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 3);
-        this.tLockUseTable = JOE_Tbl_JobLockUseForm_LockUseTable.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
+        this.tLockUseTable = JOE_Tbl_JobLockUseForm_LockUseTable.control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
         this.tLockUseTable.setHeaderVisible(true);
         this.tLockUseTable.setLayoutData(gridData30);
         this.tLockUseTable.setLinesVisible(true);
@@ -124,12 +124,12 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
                 bRemoveLockUse.setEnabled(tLockUseTable.getSelectionCount() > 0);
             }
         });
-        TableColumn tableColumn5 = JOE_TCl_JobLockUseForm_Lock.Control(new TableColumn(this.tLockUseTable, SWT.NONE));
+        TableColumn tableColumn5 = JOE_TCl_JobLockUseForm_Lock.control(new TableColumn(this.tLockUseTable, SWT.NONE));
         tableColumn5.setWidth(300);
-        TableColumn tableColumn6 = JOE_TCl_JobLockUseForm_Exclusive.Control(new TableColumn(this.tLockUseTable, SWT.NONE));
+        TableColumn tableColumn6 = JOE_TCl_JobLockUseForm_Exclusive.control(new TableColumn(this.tLockUseTable, SWT.NONE));
         tableColumn6.setWidth(70);
         GridData gridData41 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
-        bNewLockUse = JOE_B_JobLockUseForm_NewLockUse.Control(new Button(group1, SWT.NONE));
+        bNewLockUse = JOE_B_JobLockUseForm_NewLockUse.control(new Button(group1, SWT.NONE));
         bNewLockUse.setLayoutData(gridData41);
         bNewLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -142,7 +142,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         new Label(group1, SWT.NONE);
         GridData gridData31 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        bRemoveLockUse = JOE_B_JobLockUseForm_RemoveLockUse.Control(new Button(group1, SWT.NONE));
+        bRemoveLockUse = JOE_B_JobLockUseForm_RemoveLockUse.control(new Button(group1, SWT.NONE));
         bRemoveLockUse.setEnabled(false);
         bRemoveLockUse.setLayoutData(gridData31);
         bRemoveLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -167,7 +167,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         new Label(group1, SWT.NONE);
-        butBrowse = JOE_B_JobLockUseForm_Browse.Control(new Button(group1, SWT.NONE));
+        butBrowse = JOE_B_JobLockUseForm_Browse.control(new Button(group1, SWT.NONE));
         butBrowse.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {

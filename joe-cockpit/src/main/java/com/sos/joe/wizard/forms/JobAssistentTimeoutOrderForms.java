@@ -98,9 +98,9 @@ public class JobAssistentTimeoutOrderForms {
         gridLayout_1.marginHeight = 10;
         gridLayout_1.numColumns = 5;
         jobGroup.setLayout(gridLayout_1);
-        lblTimeout = SOSJOEMessageCodes.JOE_L_JobAssistent_Timeout.Control(new Label(jobGroup, SWT.NONE));
+        lblTimeout = SOSJOEMessageCodes.JOE_L_JobAssistent_Timeout.control(new Label(jobGroup, SWT.NONE));
         lblTimeout.setLayoutData(new GridData());
-        txtTimeout = SOSJOEMessageCodes.JOE_T_JobAssistent_Timeout.Control(new Text(jobGroup, SWT.BORDER));
+        txtTimeout = SOSJOEMessageCodes.JOE_T_JobAssistent_Timeout.control(new Text(jobGroup, SWT.BORDER));
         txtTimeout.setFocus();
         txtTimeout.addModifyListener(new ModifyListener() {
 
@@ -115,12 +115,12 @@ public class JobAssistentTimeoutOrderForms {
         gridData_3.minimumWidth = 70;
         txtTimeout.setLayoutData(gridData_3);
         txtTimeout.setText(joblistener.getTimeout());
-        lblIdleTimeout = SOSJOEMessageCodes.JOE_L_JobAssistent_IdleTimeout.Control(new Label(jobGroup, SWT.NONE));
+        lblIdleTimeout = SOSJOEMessageCodes.JOE_L_JobAssistent_IdleTimeout.control(new Label(jobGroup, SWT.NONE));
         lblIdleTimeout.setAlignment(SWT.RIGHT);
         final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false, 2, 1);
         gridData_1.widthHint = 77;
         lblIdleTimeout.setLayoutData(gridData_1);
-        txtIdleTimeout = SOSJOEMessageCodes.JOE_T_JobAssistent_IdleTimeout.Control(new Text(jobGroup, SWT.BORDER));
+        txtIdleTimeout = SOSJOEMessageCodes.JOE_T_JobAssistent_IdleTimeout.control(new Text(jobGroup, SWT.BORDER));
         txtIdleTimeout.addModifyListener(new ModifyListener() {
 
             @Override
@@ -134,10 +134,10 @@ public class JobAssistentTimeoutOrderForms {
         gridData_2.minimumWidth = 70;
         txtIdleTimeout.setLayoutData(gridData_2);
         txtIdleTimeout.setText(joblistener.getIdleTimeout());
-        lblForceIdleTimeout = SOSJOEMessageCodes.JOE_L_JobAssistent_ForceIdleTimeout.Control(new Label(jobGroup, SWT.NONE));
+        lblForceIdleTimeout = SOSJOEMessageCodes.JOE_L_JobAssistent_ForceIdleTimeout.control(new Label(jobGroup, SWT.NONE));
         final GridData gridData_1_1 = new GridData(SWT.DEFAULT, 12);
         lblForceIdleTimeout.setLayoutData(gridData_1_1);
-        final Button noButton = SOSJOEMessageCodes.JOE_B_JobAssistent_NoButton.Control(new Button(jobGroup, SWT.RADIO));
+        final Button noButton = SOSJOEMessageCodes.JOE_B_JobAssistent_NoButton.control(new Button(jobGroup, SWT.RADIO));
         noButton.setEnabled(joblistener.getMintasks() != null && joblistener.getMintasks().trim().length() > 0);
         noButton.setSelection(!joblistener.getForceIdletimeout());
         noButton.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, true, false));
@@ -148,7 +148,7 @@ public class JobAssistentTimeoutOrderForms {
                 joblistener.setForceIdletimeout(false);
             }
         });
-        final Button yesButton = SOSJOEMessageCodes.JOE_B_JobAssistent_YesButton.Control(new Button(jobGroup, SWT.RADIO));
+        final Button yesButton = SOSJOEMessageCodes.JOE_B_JobAssistent_YesButton.control(new Button(jobGroup, SWT.RADIO));
         yesButton.setSelection(joblistener.getForceIdletimeout());
         yesButton.setEnabled(joblistener.getMintasks() != null && joblistener.getMintasks().trim().length() > 0);
         yesButton.setLayoutData(new GridData());
@@ -169,7 +169,7 @@ public class JobAssistentTimeoutOrderForms {
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.marginWidth = 0;
         composite.setLayout(gridLayout_2);
-        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
+        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.control(new Button(composite, SWT.NONE));
         butCancel.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -183,7 +183,7 @@ public class JobAssistentTimeoutOrderForms {
         gridLayout_2_1.marginWidth = 0;
         gridLayout_2_1.numColumns = 5;
         composite_2.setLayout(gridLayout_2_1);
-        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
+        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.control(new Button(composite_2, SWT.NONE));
         butShow.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -192,7 +192,7 @@ public class JobAssistentTimeoutOrderForms {
                 txtTimeout.setFocus();
             }
         });
-        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
+        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.control(new Button(composite_2, SWT.NONE));
         butFinish.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -200,7 +200,7 @@ public class JobAssistentTimeoutOrderForms {
                 doFinish();
             }
         });
-        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
+        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.control(new Button(composite_2, SWT.NONE));
         butBack.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -216,7 +216,7 @@ public class JobAssistentTimeoutOrderForms {
                 shellTimeout.dispose();
             }
         });
-        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.control(new Button(composite_2, SWT.NONE));
         butNext.setFocus();
         butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         butNext.addSelectionListener(new SelectionAdapter() {

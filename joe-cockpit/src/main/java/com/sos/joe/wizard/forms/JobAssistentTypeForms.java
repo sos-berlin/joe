@@ -60,7 +60,7 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
             gridLayout.numColumns = 2;
             jobTypeShell.setLayout(gridLayout);
             jobTypeShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobType.params(SOSJOEMessageCodes.JOE_M_JobAssistent_Step1.label()));
-            final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(jobTypeShell, SWT.NONE));
+            final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.control(new Group(jobTypeShell, SWT.NONE));
             jobGroup.setCapture(true);
             final GridData gridDataJobGroup = new GridData(GridData.FILL, GridData.CENTER, true, true, 2, 1);
             gridDataJobGroup.heightHint = 99;
@@ -72,16 +72,16 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
             gridLayout_1.marginHeight = 0;
             gridLayout_1.numColumns = 2;
             jobGroup.setLayout(gridLayout_1);
-            radOrderjob = SOSJOEMessageCodes.JOE_B_JobAssistent_OrderJob.Control(new Button(jobGroup, SWT.RADIO));
+            radOrderjob = SOSJOEMessageCodes.JOE_B_JobAssistent_OrderJob.control(new Button(jobGroup, SWT.RADIO));
             final GridData gridDataOrderJob = new GridData(GridData.FILL, GridData.CENTER, true, true);
             gridDataOrderJob.heightHint = 48;
             radOrderjob.setLayoutData(gridDataOrderJob);
             radOrderjob.setSelection(jobType != null && !jobType.isEmpty() && "order".equalsIgnoreCase(jobType));
-            radStandalonejob = SOSJOEMessageCodes.JOE_B_JobAssistent_StandaloneJob.Control(new Button(jobGroup, SWT.RADIO));
+            radStandalonejob = SOSJOEMessageCodes.JOE_B_JobAssistent_StandaloneJob.control(new Button(jobGroup, SWT.RADIO));
             radStandalonejob.setSelection(jobType == null || jobType.isEmpty() || "standalonejob".equalsIgnoreCase(jobType));
             final GridData gridDataStandaloneJob = new GridData(GridData.CENTER, GridData.CENTER, true, true);
             radStandalonejob.setLayoutData(gridDataStandaloneJob);
-            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(jobTypeShell, SWT.NONE));
+            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.control(new Button(jobTypeShell, SWT.NONE));
             butCancel.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -97,7 +97,7 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
             gridLayoutComposite.marginWidth = 0;
             gridLayoutComposite.numColumns = 3;
             composite.setLayout(gridLayoutComposite);
-            butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
+            butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.control(new Button(composite, SWT.NONE));
             butShow.setVisible(false);
             butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
             butShow.addSelectionListener(new SelectionAdapter() {
@@ -109,7 +109,7 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
                     ErrorLog.message(jobTypeShell, Utils.getElementAsString(job), SWT.OK);
                 }
             });
-            butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite, SWT.NONE));
+            butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.control(new Button(composite, SWT.NONE));
             butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
             final GridData gridDataButNext = new GridData(GridData.END, GridData.CENTER, false, false);
             butNext.setLayoutData(gridDataButNext);

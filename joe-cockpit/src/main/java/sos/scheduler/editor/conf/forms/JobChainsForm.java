@@ -65,11 +65,11 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
         sashForm = new SashForm(group, SWT.VERTICAL);
         sashForm.setLayout(new GridLayout());
         sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-        final Group jobchainsGroup = JOE_G_JobChainsForm_JobChains.Control(new Group(sashForm, SWT.NONE));
+        final Group jobchainsGroup = JOE_G_JobChainsForm_JobChains.control(new Group(sashForm, SWT.NONE));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 2;
         jobchainsGroup.setLayout(gridLayout_2);
-        tChains = JOE_Tbl_JobChainsForm_JobChains.Control(new Table(jobchainsGroup, SWT.BORDER));
+        tChains = JOE_Tbl_JobChainsForm_JobChains.control(new Table(jobchainsGroup, SWT.BORDER));
         tChains.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -98,13 +98,13 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
                 bRemoveChain.setEnabled(tChains.getSelectionCount() > 0 && enabled);
             }
         });
-        TableColumn tableColumn1 = JOE_TCl_JobChainsForm_Name.Control(new TableColumn(tChains, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_JobChainsForm_Name.control(new TableColumn(tChains, SWT.NONE));
         tableColumn1.setWidth(150);
-        TableColumn ordersRecoverableTableColumn = JOE_TCl_JobChainsForm_OrdersRecoverable.Control(new TableColumn(tChains, SWT.NONE));
+        TableColumn ordersRecoverableTableColumn = JOE_TCl_JobChainsForm_OrdersRecoverable.control(new TableColumn(tChains, SWT.NONE));
         ordersRecoverableTableColumn.setWidth(104);
-        TableColumn tableColumn2 = JOE_TCl_JobChainsForm_Visible.Control(new TableColumn(tChains, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_JobChainsForm_Visible.control(new TableColumn(tChains, SWT.NONE));
         tableColumn2.setWidth(90);
-        bNewChain = JOE_B_JobChainsForm_NewChain.Control(new Button(jobchainsGroup, SWT.NONE));
+        bNewChain = JOE_B_JobChainsForm_NewChain.control(new Button(jobchainsGroup, SWT.NONE));
         bNewChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         getShell().setDefaultButton(bNewChain);
         bNewChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -113,7 +113,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
                 createNewJobChain();
             }
         });
-        bRemoveChain = JOE_B_JobChainsForm_RemoveChain.Control(new Button(jobchainsGroup, SWT.NONE));
+        bRemoveChain = JOE_B_JobChainsForm_RemoveChain.control(new Button(jobchainsGroup, SWT.NONE));
         bRemoveChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         bRemoveChain.setEnabled(false);
         bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -130,7 +130,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        butDetails = JOE_B_JobChainsForm_Details.Control(new Button(jobchainsGroup, SWT.NONE));
+        butDetails = JOE_B_JobChainsForm_Details.control(new Button(jobchainsGroup, SWT.NONE));
         butDetails.setEnabled(false);
         butDetails.addSelectionListener(new SelectionAdapter() {
 

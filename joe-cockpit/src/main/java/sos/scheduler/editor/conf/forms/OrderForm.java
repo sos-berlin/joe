@@ -110,12 +110,12 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         group.setLayout(gridLayout2);
         GridLayout gridLayout3 = new GridLayout();
         gridLayout3.numColumns = 7;
-        gOrder = JOE_G_OrderForm_Order.Control(new Group(group, SWT.NONE));
+        gOrder = JOE_G_OrderForm_Order.control(new Group(group, SWT.NONE));
         gOrder.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         gOrder.setLayout(gridLayout3);
-        label10 = JOE_L_OrderForm_OrderID.Control(new Label(gOrder, SWT.NONE));
+        label10 = JOE_L_OrderForm_OrderID.control(new Label(gOrder, SWT.NONE));
         label10.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        tOrderId = JOE_T_OrderForm_OrderID.Control(new Text(gOrder, SWT.BORDER));
+        tOrderId = JOE_T_OrderForm_OrderID.control(new Text(gOrder, SWT.BORDER));
         tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
         tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -127,8 +127,8 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         tOrderId.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 5, 1));
-        final Label jobchainLabel = JOE_L_OrderForm_JobChain.Control(new Label(gOrder, SWT.NONE));
-        butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gOrder, SWT.ARROW | SWT.DOWN));
+        final Label jobchainLabel = JOE_L_OrderForm_JobChain.control(new Label(gOrder, SWT.NONE));
+        butGoto = JOE_B_JobChainNodes_Goto.control(new Button(gOrder, SWT.ARROW | SWT.DOWN));
         butGoto.setVisible(dom != null && !dom.isLifeElement());
         butGoto.addSelectionListener(new SelectionAdapter() {
 
@@ -145,7 +145,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout.marginHeight = 0;
         gridLayout.horizontalSpacing = 0;
         composite.setLayout(gridLayout);
-        cJobchain = JOE_Cbo_OrderForm_JobChain.Control(new Combo(composite, SWT.NONE));
+        cJobchain = JOE_Cbo_OrderForm_JobChain.control(new Combo(composite, SWT.NONE));
         cJobchain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobchain, dom, JOEConstants.JOB_CHAIN).getMenu());
         cJobchain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -174,11 +174,11 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
                 listener.updateOrders();
             }
         });
-        final Label titleLabel = JOE_L_OrderForm_Title.Control(new Label(gOrder, SWT.NONE));
+        final Label titleLabel = JOE_L_OrderForm_Title.control(new Label(gOrder, SWT.NONE));
         final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
         gridData_6.widthHint = 47;
         titleLabel.setLayoutData(gridData_6);
-        tTitle = JOE_T_OrderForm_Title.Control(new Text(gOrder, SWT.BORDER));
+        tTitle = JOE_T_OrderForm_Title.control(new Text(gOrder, SWT.BORDER));
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -188,9 +188,9 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         tTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
-        final Label priorityLabel = JOE_L_OrderForm_Priority.Control(new Label(gOrder, SWT.NONE));
+        final Label priorityLabel = JOE_L_OrderForm_Priority.control(new Label(gOrder, SWT.NONE));
         priorityLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        tPriority = JOE_T_OrderForm_Priority.Control(new Text(gOrder, SWT.BORDER));
+        tPriority = JOE_T_OrderForm_Priority.control(new Text(gOrder, SWT.BORDER));
         tPriority.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -206,9 +206,9 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
-        final Label stateLabel = JOE_L_OrderForm_State.Control(new Label(gOrder, SWT.NONE));
+        final Label stateLabel = JOE_L_OrderForm_State.control(new Label(gOrder, SWT.NONE));
         stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        tState = JOE_T_OrderForm_State.Control(new Combo(gOrder, SWT.BORDER));
+        tState = JOE_T_OrderForm_State.control(new Combo(gOrder, SWT.BORDER));
         tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -218,9 +218,9 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         tState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
-        final Label endStateLabel = JOE_L_OrderForm_EndState.Control(new Label(gOrder, SWT.NONE));
+        final Label endStateLabel = JOE_L_OrderForm_EndState.control(new Label(gOrder, SWT.NONE));
         endStateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-        cboEndState = JOE_Cbo_OrderForm_EndState.Control(new Combo(gOrder, SWT.NONE));
+        cboEndState = JOE_Cbo_OrderForm_EndState.control(new Combo(gOrder, SWT.NONE));
         cboEndState.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -232,10 +232,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
         cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
         new Label(gOrder, SWT.NONE);
         new Label(gOrder, SWT.NONE);
-        final Label stateLabel_1 = JOE_L_OrderForm_State.Control(new Label(gOrder, SWT.NONE));
-        cboStates = JOE_Cbo_OrderForm_State2.Control(new Combo(gOrder, SWT.NONE));
+        final Label stateLabel_1 = JOE_L_OrderForm_State.control(new Label(gOrder, SWT.NONE));
+        cboStates = JOE_Cbo_OrderForm_State2.control(new Combo(gOrder, SWT.NONE));
         cboStates.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butRemove = JOE_B_OrderForm_Remove.Control(new Button(gOrder, SWT.NONE));
+        butRemove = JOE_B_OrderForm_Remove.control(new Button(gOrder, SWT.NONE));
         butRemove.addFocusListener(new FocusAdapter() {
 
             public void focusGained(final FocusEvent e) {
@@ -255,7 +255,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butRemove.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_delete.gif"));
-        butDetails = JOE_B_JobChainForm_Parameter.Control(new Button(gOrder, SWT.NONE));
+        butDetails = JOE_B_JobChainForm_Parameter.control(new Button(gOrder, SWT.NONE));
         butDetails.addFocusListener(new FocusAdapter() {
 
             public void focusGained(final FocusEvent e) {

@@ -133,19 +133,19 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
         objTabControlComposite = new Composite(tabFolder, SWT.NONE);
         objTabControlComposite.setLayout(new GridLayout());
         setResizableV(objTabControlComposite);
-        tabItemScript = JOE_ScriptForm_TabItemScript.Control(new CTabItem(tabFolder, SWT.NONE));
+        tabItemScript = JOE_ScriptForm_TabItemScript.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemScriptComposite = new Composite(tabFolder, SWT.NONE);
         tabItemScriptComposite.setLayout(new GridLayout());
         setResizableV(tabItemScriptComposite);
         tabItemScript.setControl(tabItemScriptComposite);
         if (objDataProvider.isJava()) {
-            tabItemJavaAPI = JOE_ScriptForm_TabItemJavaAPI.Control(new CTabItem(tabFolder, SWT.NONE));
+            tabItemJavaAPI = JOE_ScriptForm_TabItemJavaAPI.control(new CTabItem(tabFolder, SWT.NONE));
             tabItemJavaAPIComposite = new Composite(tabFolder, SWT.NONE);
             tabItemJavaAPIComposite.setLayout(new GridLayout());
             setResizableV(tabItemJavaAPIComposite);
             tabItemJavaAPI.setControl(tabItemJavaAPIComposite);
         }
-        tabItemIncludedFiles = JOE_ScriptForm_TabItemIncludes.Control(new CTabItem(tabFolder, SWT.NONE));
+        tabItemIncludedFiles = JOE_ScriptForm_TabItemIncludes.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemIncludedFilesComposite = new Composite(tabFolder, SWT.NONE);
         tabItemIncludedFilesComposite.setLayout(new GridLayout());
         setResizableV(tabItemIncludedFilesComposite);
@@ -180,7 +180,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
     }
 
     protected void createLanguageSelector(Composite pobjComposite) {
-        Label labelLanguageSelector = JOE_L_ScriptForm_Language.Control(new Label(pobjComposite, SWT.NONE));
+        Label labelLanguageSelector = JOE_L_ScriptForm_Language.control(new Label(pobjComposite, SWT.NONE));
         labelLanguageSelector.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false, intNoOfLabelColumns, 1));
         languageSelector = new LanguageSelector(pobjComposite, SWT.NONE);
         languageSelector.addModifyListener(new ModifyListener() {

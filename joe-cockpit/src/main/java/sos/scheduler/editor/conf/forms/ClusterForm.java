@@ -61,12 +61,12 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData.minimumWidth = 60;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        gScript = JOE_G_ClusterForm_Cluster.Control(new Group(this, SWT.NONE));
+        gScript = JOE_G_ClusterForm_Cluster.control(new Group(this, SWT.NONE));
         gScript.setLayout(gridLayout);
-        label14 = JOE_L_ClusterForm_HeartbeatTimeout.Control(new Label(gScript, SWT.NONE));
+        label14 = JOE_L_ClusterForm_HeartbeatTimeout.control(new Label(gScript, SWT.NONE));
         createComposite();
-        label1 = JOE_L_ClusterForm_HeartbeatOwnTimeout.Control(new Label(gScript, SWT.NONE));
-        tOwnTimeout = JOE_T_ClusterForm_HeartbeatOwnTimeout.Control(new Text(gScript, SWT.BORDER));
+        label1 = JOE_L_ClusterForm_HeartbeatOwnTimeout.control(new Label(gScript, SWT.NONE));
+        tOwnTimeout = JOE_T_ClusterForm_HeartbeatOwnTimeout.control(new Text(gScript, SWT.BORDER));
         tOwnTimeout.setLayoutData(gridData);
         tOwnTimeout.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -74,8 +74,8 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
                 listener.setHeartbeatOwnTimeout(tOwnTimeout.getText());
             }
         });
-        label3 = JOE_L_ClusterForm_HeartbeatWarnTimeout.Control(new Label(gScript, SWT.NONE));
-        tWarnTimeout = JOE_T_ClusterForm_HeartbeatWarnTimeout.Control(new Text(gScript, SWT.BORDER));
+        label3 = JOE_L_ClusterForm_HeartbeatWarnTimeout.control(new Label(gScript, SWT.NONE));
+        tWarnTimeout = JOE_T_ClusterForm_HeartbeatWarnTimeout.control(new Text(gScript, SWT.BORDER));
         tWarnTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -88,7 +88,7 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void createComposite() {
-        tTimeout = JOE_T_ClusterForm_HeartbeatTimeout.Control(new Text(gScript, SWT.BORDER));
+        tTimeout = JOE_T_ClusterForm_HeartbeatTimeout.control(new Text(gScript, SWT.BORDER));
         tTimeout.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {

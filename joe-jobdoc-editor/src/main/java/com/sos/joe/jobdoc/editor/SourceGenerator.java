@@ -72,7 +72,7 @@ public class SourceGenerator extends JSToolBox {
             String strXMLFileName = jobdocFile.getCanonicalPath();
             strMessage = "Source is " + strXMLFileName + "\n";
             JSXMLFile objXMLFile = new JSXMLFile(strXMLFileName);
-            objXMLFile.MustExist();
+            objXMLFile.mustExist();
             String strWorkerClassName = jobdocFile.getName();
             strWorkerClassName = strWorkerClassName.replaceAll("\\..*$", "");
             strWorkerClassName = javaClassName;
@@ -89,7 +89,7 @@ public class SourceGenerator extends JSToolBox {
             JSDataElementDate objDate = new JSDataElementDate(now());
             objDate.setFormatPattern(JSDateFormat.dfTIMESTAMPS24);
             objDate.setParsePattern(JSDateFormat.dfTIMESTAMPS24);
-            String strTimeStamp = objDate.FormattedValue();
+            String strTimeStamp = objDate.getFormattedValue();
             setXSLTParameter("timestamp", strTimeStamp);
             setXSLTParameter(XSLT_PARM_WORKER_CLASSNAME, strWorkerClassName);
             setXSLTParameter(XSLT_PARM_VERSION, "version");
@@ -100,14 +100,14 @@ public class SourceGenerator extends JSToolBox {
             setXSLTParameter(XSLT_PARM_SOURCE_TYPE, "options");
             setXSLTParameter(XSLT_PARM_CLASSNAME, strWorkerClassName);
             String newFileName = strWorkerClassName + strClassNameExtension + JAVA_FILENAME_EXTENSION;
-            doTransform("JSJobDoc2JSOptionSuperClass.xsl", objXMLFile, outputDir.newFile(newFileName));
+            doTransform("JSJobDoc2JSOptionSuperClass.xsl", objXMLFile, outputDir.getNewFile(newFileName));
             strMessage += "File generated " + newFileName;
             strClassNameExtension = "Options";
             setXSLTParameter(XSLT_PARM_EXTENDS_CLASSNAME, strWorkerClassName + "OptionsSuperClass");
             setXSLTParameter(XSLT_PARM_CLASSNAME_EXTENSION, strClassNameExtension);
             setXSLTParameter(XSLT_PARM_CLASSNAME, strWorkerClassName + strClassNameExtension);
             doTransform("JSJobDoc2JSOptionClass.xsl", objXMLFile,
-                    outputDir.newFile(strWorkerClassName + strClassNameExtension + JAVA_FILENAME_EXTENSION));
+                    outputDir.getNewFile(strWorkerClassName + strClassNameExtension + JAVA_FILENAME_EXTENSION));
             setXSLTParameter(XSLT_PARM_EXTENDS_CLASSNAME, "JobSchedulerJobAdapter");
             strClassNameExtension = "JSAdapterClass";
             setXSLTParameter(XSLT_PARM_CLASSNAME_EXTENSION, strClassNameExtension);
@@ -115,14 +115,14 @@ public class SourceGenerator extends JSToolBox {
             setXSLTParameter(XSLT_PARM_CLASSNAME, strClassName);
             setXSLTParameter(XSLT_PARM_WORKER_CLASSNAME, strWorkerClassName);
             setXSLTParameter(XSLT_PARM_SOURCE_TYPE, "JSJavaApiJob");
-            doTransform("JSJobDoc2JSAdapterClass.xsl", objXMLFile, outputDir.newFile(strClassName + JAVA_FILENAME_EXTENSION));
+            doTransform("JSJobDoc2JSAdapterClass.xsl", objXMLFile, outputDir.getNewFile(strClassName + JAVA_FILENAME_EXTENSION));
             setXSLTParameter(XSLT_PARM_EXTENDS_CLASSNAME, "JSToolBox");
             strClassNameExtension = "";
             setXSLTParameter(XSLT_PARM_CLASSNAME_EXTENSION, strClassNameExtension);
             strClassName = (strWorkerClassName + strClassNameExtension).trim();
             setXSLTParameter(XSLT_PARM_CLASSNAME, strClassName);
             setXSLTParameter(XSLT_PARM_WORKER_CLASSNAME, strWorkerClassName);
-            doTransform("JSJobDoc2JSWorkerClass.xsl", objXMLFile, outputDir.newFile(strClassName + JAVA_FILENAME_EXTENSION));
+            doTransform("JSJobDoc2JSWorkerClass.xsl", objXMLFile, outputDir.getNewFile(strClassName + JAVA_FILENAME_EXTENSION));
             strClassNameExtension = "Main";
             strClassName = (strWorkerClassName + strClassNameExtension).trim();
             setXSLTParameter(XSLT_PARM_EXTENDS_CLASSNAME, "JSToolBox");
@@ -130,7 +130,7 @@ public class SourceGenerator extends JSToolBox {
             setXSLTParameter(XSLT_PARM_CLASSNAME, strClassName);
             setXSLTParameter(XSLT_PARM_WORKER_CLASSNAME, strWorkerClassName.trim());
             setXSLTParameter(XSLT_PARM_SOURCE_TYPE, "Main");
-            doTransform("JSJobDoc2JSMainClass.xsl", objXMLFile, outputDir.newFile(strClassName + JAVA_FILENAME_EXTENSION));
+            doTransform("JSJobDoc2JSMainClass.xsl", objXMLFile, outputDir.getNewFile(strClassName + JAVA_FILENAME_EXTENSION));
             setXSLTParameter(XSLT_PARM_EXTENDS_CLASSNAME, "JSToolBox");
             strClassNameExtension = "JUnitTest";
             setXSLTParameter(XSLT_PARM_CLASSNAME_EXTENSION, strClassNameExtension);
@@ -138,7 +138,7 @@ public class SourceGenerator extends JSToolBox {
             setXSLTParameter(XSLT_PARM_CLASSNAME, strClassName);
             setXSLTParameter(XSLT_PARM_WORKER_CLASSNAME, strWorkerClassName);
             setXSLTParameter(XSLT_PARM_SOURCE_TYPE, "Junit");
-            doTransform("JSJobDoc2JSJUnitClass.xsl", objXMLFile, outputDir.newFile(strClassName + JAVA_FILENAME_EXTENSION));
+            doTransform("JSJobDoc2JSJUnitClass.xsl", objXMLFile, outputDir.getNewFile(strClassName + JAVA_FILENAME_EXTENSION));
             setXSLTParameter(XSLT_PARM_EXTENDS_CLASSNAME, "JSToolBox");
             strClassNameExtension = "OptionsJUnitTest";
             setXSLTParameter(XSLT_PARM_CLASSNAME_EXTENSION, strClassNameExtension);
@@ -146,7 +146,7 @@ public class SourceGenerator extends JSToolBox {
             setXSLTParameter(XSLT_PARM_CLASSNAME, strClassName);
             setXSLTParameter(XSLT_PARM_WORKER_CLASSNAME, strWorkerClassName);
             setXSLTParameter(XSLT_PARM_SOURCE_TYPE, "Junit");
-            doTransform("JSJobDoc2JSJUnitOptionSuperClass.xsl", objXMLFile, outputDir.newFile(strClassName + JAVA_FILENAME_EXTENSION));
+            doTransform("JSJobDoc2JSJUnitOptionSuperClass.xsl", objXMLFile, outputDir.getNewFile(strClassName + JAVA_FILENAME_EXTENSION));
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             strMessage += "run aborted. reason " + e.getMessage().toString();
@@ -169,7 +169,7 @@ public class SourceGenerator extends JSToolBox {
             File objXSLOptionClassFile = copyResource2TempFile(conResource4XslPathName + pstrXSLFileName);
             setXSLTParameter("XSLTFilename", conResource4XslPathName + pstrXSLFileName);
             objXMLFile.setParameters(pobjHshMap);
-            objXMLFile.Transform(objXSLOptionClassFile, objOutFile);
+            objXMLFile.transform(objXSLOptionClassFile, objOutFile);
             String strGeneratedContent = objOutFile.getContent();
             LOGGER.info("Size of generated content is " + strGeneratedContent.length());
         } catch (Exception e) {

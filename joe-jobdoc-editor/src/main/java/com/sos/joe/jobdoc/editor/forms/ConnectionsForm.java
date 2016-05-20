@@ -89,8 +89,8 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
         gridLayout.numColumns = 4;
         group = JOE_G_ConnectionsForm_Connections.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
-        label = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
-        tName = JOE_T_ConnectionsForm_Name.Control(new Text(group, SWT.BORDER));
+        label = JOE_L_Name.control(new SOSLabel(group, SWT.NONE));
+        tName = JOE_T_ConnectionsForm_Name.control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -100,7 +100,7 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
                 getShell().setDefaultButton(bApply);
             }
         });
-        bNotes = JOE_B_ConnectionsForm_Notes.Control(new Button(group, SWT.NONE));
+        bNotes = JOE_B_ConnectionsForm_Notes.control(new Button(group, SWT.NONE));
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -109,7 +109,7 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
                         JOE_B_ConnectionsForm_Notes.label());
             }
         });
-        bApply = JOE_B_ConnectionsForm_Apply.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_ConnectionsForm_Apply.control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData2);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -120,7 +120,7 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
         });
         label1 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setLayoutData(gridData3);
-        tConnections = JOE_Tbl_ConnectionsForm_Connections.Control(new Table(group, SWT.BORDER));
+        tConnections = JOE_Tbl_ConnectionsForm_Connections.control(new Table(group, SWT.BORDER));
         tConnections.setHeaderVisible(true);
         tConnections.setLayoutData(gridData1);
         tConnections.setLinesVisible(true);
@@ -136,9 +136,9 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_ConnectionsForm_Name.Control(new TableColumn(tConnections, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_ConnectionsForm_Name.control(new TableColumn(tConnections, SWT.NONE));
         tableColumn.setWidth(400);
-        bNew = JOE_B_ConnectionsForm_New.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_ConnectionsForm_New.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData4);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -153,7 +153,7 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
         });
         label2 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label2.setLayoutData(gridData5);
-        bRemove = JOE_B_ConnectionsForm_Remove.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_ConnectionsForm_Remove.control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData6);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 

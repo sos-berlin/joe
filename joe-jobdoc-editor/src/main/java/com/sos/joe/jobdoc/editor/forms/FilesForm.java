@@ -91,8 +91,8 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
         gridLayout2.numColumns = 5;
         group = JOE_G_FilesForm_Files.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout2);
-        label6 = JOE_L_FilesForm_File.Control(new SOSLabel(group, SWT.NONE));
-        tFile = JOE_T_FilesForm_File.Control(new Text(group, SWT.BORDER));
+        label6 = JOE_L_FilesForm_File.control(new SOSLabel(group, SWT.NONE));
+        tFile = JOE_T_FilesForm_File.control(new Text(group, SWT.BORDER));
         tFile.setLayoutData(gridData);
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -102,7 +102,7 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
                 setApplyStatus();
             }
         });
-        bApply = JOE_B_FilesForm_Apply.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_FilesForm_Apply.control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData4);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -111,12 +111,12 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
                 applyFile();
             }
         });
-        label9 = JOE_L_FilesForm_OS.Control(new SOSLabel(group, SWT.NONE));
+        label9 = JOE_L_FilesForm_OS.control(new SOSLabel(group, SWT.NONE));
         createCOS();
-        label10 = JOE_L_FilesForm_Type.Control(new SOSLabel(group, SWT.NONE));
+        label10 = JOE_L_FilesForm_Type.control(new SOSLabel(group, SWT.NONE));
         createCType();
         GridData gridData11 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        bNotes = JOE_B_FilesForm_Notes.Control(new Button(group, SWT.NONE));
+        bNotes = JOE_B_FilesForm_Notes.control(new Button(group, SWT.NONE));
         bNotes.setLayoutData(gridData11);
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -126,15 +126,15 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
                         JOE_B_FilesForm_Notes.label());
             }
         });
-        label11 = JOE_L_FilesForm_ID.Control(new SOSLabel(group, SWT.NONE));
-        tID = JOE_T_FilesForm_ID.Control(new Text(group, SWT.BORDER));
+        label11 = JOE_L_FilesForm_ID.control(new SOSLabel(group, SWT.NONE));
+        tID = JOE_T_FilesForm_ID.control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData1);
         tID.addModifyListener(modifyTextListener);
         new Label(group, SWT.NONE);
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label");
         label.setLayoutData(gridData5);
-        table = JOE_Tbl_FilesForm_Files.Control(new Table(group, SWT.BORDER));
+        table = JOE_Tbl_FilesForm_Files.control(new Table(group, SWT.BORDER));
         table.setHeaderVisible(true);
         table.setLayoutData(gridData6);
         table.setLinesVisible(true);
@@ -149,15 +149,15 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_FilesForm_File.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_FilesForm_File.control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(300);
         @SuppressWarnings("unused")
-        TableColumn tableColumn3 = JOE_TCl_FilesForm_OS.Control(new TableColumn(table, SWT.NONE));
-        TableColumn tableColumn2 = JOE_TCl_FilesForm_Type.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn3 = JOE_TCl_FilesForm_OS.control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_FilesForm_Type.control(new TableColumn(table, SWT.NONE));
         tableColumn2.setWidth(80);
-        TableColumn tableColumn1 = JOE_TCl_FilesForm_ID.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_FilesForm_ID.control(new TableColumn(table, SWT.NONE));
         tableColumn1.setWidth(150);
-        bNew = JOE_B_FilesForm_New.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_FilesForm_New.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData7);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -171,7 +171,7 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setText("Label");
         label1.setLayoutData(gridData8);
-        bRemove = JOE_B_FilesForm_Remove.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_FilesForm_Remove.control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData9);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -192,7 +192,7 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
         gridData2.horizontalAlignment = GridData.FILL;
         gridData2.grabExcessHorizontalSpace = true;
         gridData2.verticalAlignment = GridData.CENTER;
-        cOS = JOE_Cbo_FilesForm_OS.Control(new Combo(group, SWT.READ_ONLY));
+        cOS = JOE_Cbo_FilesForm_OS.control(new Combo(group, SWT.READ_ONLY));
         cOS.setLayoutData(gridData2);
         cOS.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
@@ -213,7 +213,7 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
         gridData3.horizontalAlignment = GridData.FILL;
         gridData3.grabExcessHorizontalSpace = true;
         gridData3.verticalAlignment = GridData.CENTER;
-        cType = JOE_Cbo_FilesForm_Type.Control(new Combo(group, SWT.READ_ONLY));
+        cType = JOE_Cbo_FilesForm_Type.control(new Combo(group, SWT.READ_ONLY));
         cType.setLayoutData(gridData3);
         cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 

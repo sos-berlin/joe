@@ -57,7 +57,7 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
         group.setLayout(gridLayout);
         createComposite();
         createGroup1();
-        tReleases = JOE_Tbl_ReleasesForm_Releases.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
+        tReleases = JOE_Tbl_ReleasesForm_Releases.control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         tReleases.setHeaderVisible(true);
         tReleases.setLayoutData(gridData);
         tReleases.setLinesVisible(true);
@@ -74,15 +74,15 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
                 }
             }
         });
-        TableColumn idTableColumn = JOE_TCl_ReleasesForm_ID.Control(new TableColumn(tReleases, SWT.NONE));
+        TableColumn idTableColumn = JOE_TCl_ReleasesForm_ID.control(new TableColumn(tReleases, SWT.NONE));
         idTableColumn.setWidth(250);
-        TableColumn tableColumn5 = JOE_TCl_ReleasesForm_Title.Control(new TableColumn(tReleases, SWT.NONE));
+        TableColumn tableColumn5 = JOE_TCl_ReleasesForm_Title.control(new TableColumn(tReleases, SWT.NONE));
         tableColumn5.setWidth(90);
-        TableColumn tableColumn6 = JOE_TCl_ReleasesForm_Created.Control(new TableColumn(tReleases, SWT.NONE));
+        TableColumn tableColumn6 = JOE_TCl_ReleasesForm_Created.control(new TableColumn(tReleases, SWT.NONE));
         tableColumn6.setWidth(90);
-        TableColumn tableColumn1 = JOE_TCl_ReleasesForm_Modified.Control(new TableColumn(tReleases, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_ReleasesForm_Modified.control(new TableColumn(tReleases, SWT.NONE));
         tableColumn1.setWidth(60);
-        bNew = JOE_B_ReleasesForm_NewRelease.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_ReleasesForm_NewRelease.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData1);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -101,7 +101,7 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
                 }
             }
         });
-        bRemove = JOE_B_ReleasesForm_RemoveRelease.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_ReleasesForm_RemoveRelease.control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData2);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 

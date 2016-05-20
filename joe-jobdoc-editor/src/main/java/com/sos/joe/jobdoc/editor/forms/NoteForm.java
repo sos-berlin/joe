@@ -89,9 +89,9 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
         GridLayout gridLayout = new GridLayout(4, false);
         group = JOE_G_NoteForm_Documentation.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
-        label = JOE_L_NoteForm_Language.Control(new SOSLabel(group, SWT.NONE));
+        label = JOE_L_NoteForm_Language.control(new SOSLabel(group, SWT.NONE));
         createCLang();
-        bClear = JOE_B_NoteForm_Clear.Control(new Button(group, SWT.NONE));
+        bClear = JOE_B_NoteForm_Clear.control(new Button(group, SWT.NONE));
         bClear.setLayoutData(gridData8);
         bClear.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -100,7 +100,7 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
                 text.setXMLText("");
             }
         });
-        bApply = JOE_B_NoteForm_Apply.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_NoteForm_Apply.control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData11);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -132,7 +132,7 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
     private void createCLang() {
         GridData gridData1 = new GridData();
         gridData1.widthHint = 100;
-        cLang = JOE_Cbo_NoteForm_Language.Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
+        cLang = JOE_Cbo_NoteForm_Language.control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
         cLang.setLayoutData(gridData1);
         cLang.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 

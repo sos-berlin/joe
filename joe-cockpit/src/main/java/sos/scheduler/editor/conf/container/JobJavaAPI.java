@@ -60,10 +60,10 @@ public class JobJavaAPI extends FormBaseClass {
         lgridLayout.numColumns = 13;
         gScript_2.setLayout(lgridLayout);
         setResizableV(gScript_2);
-        Label lblClassNameLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classname.Control(new Label(gScript_2, SWT.NONE));
+        Label lblClassNameLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classname.control(new Label(gScript_2, SWT.NONE));
         GridData labelGridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false, 1, 1);
         lblClassNameLabel.setLayoutData(labelGridData);
-        tbxClassName = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classname.Control(new Text(gScript_2, SWT.BORDER));
+        tbxClassName = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classname.control(new Text(gScript_2, SWT.BORDER));
         tbxClassName.setEnabled(true);
         tbxClassName.setText(objJobDataProvider.getJavaClass());
         GridData gd_tClass = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -82,9 +82,9 @@ public class JobJavaAPI extends FormBaseClass {
         new Label(gScript_1, SWT.NONE);
         new Label(gScript_1, SWT.NONE);
         new Label(gScript_1, SWT.NONE);
-        Label lblNewLabel_1 = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classpath.Control(new Label(gScript_2, SWT.NONE));
+        Label lblNewLabel_1 = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classpath.control(new Label(gScript_2, SWT.NONE));
         lblNewLabel_1.setLayoutData(labelGridData);
-        tClasspath = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classpath.Control(new Text(gScript_2, SWT.BORDER));
+        tClasspath = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classpath.control(new Text(gScript_2, SWT.BORDER));
         tClasspath.setEnabled(true);
         tClasspath.setText(objJobDataProvider.getClasspath());
         GridData gd_tClasspath = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -102,9 +102,9 @@ public class JobJavaAPI extends FormBaseClass {
         new Label(gScript_2, SWT.NONE);
         new Label(gScript_2, SWT.NONE);
         new Label(gScript_2, SWT.NONE);
-        final Label java_optionsLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Options.Control(new Label(gScript_2, SWT.NONE));
+        final Label java_optionsLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Options.control(new Label(gScript_2, SWT.NONE));
         java_optionsLabel.setLayoutData(labelGridData);
-        txtJavaOptions = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Options.Control(new Text(gScript_2, SWT.BORDER));
+        txtJavaOptions = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Options.control(new Text(gScript_2, SWT.BORDER));
         txtJavaOptions.setText(objJobDataProvider.getJavaOptions());
         txtJavaOptions.addModifyListener(new ModifyListener() {
 

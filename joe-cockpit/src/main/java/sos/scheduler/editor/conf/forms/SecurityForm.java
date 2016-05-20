@@ -91,9 +91,9 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData1.horizontalSpan = 5;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
-        group = JOE_G_SecurityForm_Security.Control(new Group(this, SWT.NONE));
+        group = JOE_G_SecurityForm_Security.control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
-        cIgnoreUnknownHosts = JOE_B_SecurityForm_IgnoreUnkownHosts.Control(new Button(group, SWT.CHECK));
+        cIgnoreUnknownHosts = JOE_B_SecurityForm_IgnoreUnkownHosts.control(new Button(group, SWT.CHECK));
         cIgnoreUnknownHosts.setLayoutData(gridData1);
         cIgnoreUnknownHosts.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -101,9 +101,9 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
                 listener.setIgnoreUnknownHosts(cIgnoreUnknownHosts.getSelection());
             }
         });
-        lblHost = JOE_L_SecurityForm_Host.Control(new Label(group, SWT.NONE));
+        lblHost = JOE_L_SecurityForm_Host.control(new Label(group, SWT.NONE));
         lblHost.setLayoutData(new org.eclipse.swt.layout.GridData());
-        tHost = JOE_T_SecurityForm_Host.Control(new Text(group, SWT.BORDER));
+        tHost = JOE_T_SecurityForm_Host.control(new Text(group, SWT.BORDER));
         tHost.setEnabled(false);
         tHost.setLayoutData(gridData5);
         tHost.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -120,8 +120,8 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(!"".equals(tHost.getText()));
             }
         });
-        label4 = JOE_L_SecurityForm_AccessLevel.Control(new Label(group, SWT.NONE));
-        cLevel = JOE_Cbo_SecurityForm_AccessLevel.Control(new CCombo(group, SWT.BORDER | SWT.READ_ONLY));
+        label4 = JOE_L_SecurityForm_AccessLevel.control(new Label(group, SWT.NONE));
+        cLevel = JOE_Cbo_SecurityForm_AccessLevel.control(new CCombo(group, SWT.BORDER | SWT.READ_ONLY));
         cLevel.setEditable(false);
         cLevel.setLayoutData(gridData6);
         cLevel.setEnabled(false);
@@ -139,7 +139,7 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(!"".equals(tHost.getText()));
             }
         });
-        bApply = JOE_B_SecurityForm_ApplyHost.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_SecurityForm_ApplyHost.control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData3);
         bApply.setEnabled(false);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -151,7 +151,7 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setLayoutData(gridData7);
         createTable();
-        bNew = JOE_B_SecurityForm_NewHost.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_SecurityForm_NewHost.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData2);
         getShell().setDefaultButton(bNew);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -163,7 +163,7 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label2.setLayoutData(gridData8);
-        bRemove = JOE_B_SecurityForm_RemoveHost.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_SecurityForm_RemoveHost.control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData4);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -197,7 +197,7 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData.horizontalSpan = 4;
         gridData.verticalSpan = 3;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        table = JOE_Tbl_SecurityForm_Hosts.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
+        table = JOE_Tbl_SecurityForm_Hosts.control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         table.setHeaderVisible(true);
         table.setLayoutData(gridData);
         table.setLinesVisible(true);
@@ -212,9 +212,9 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_SecurityForm_Host.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_SecurityForm_Host.control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(250);
-        TableColumn tableColumn1 = JOE_TCl_SecurityForm_AccessLevel.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_SecurityForm_AccessLevel.control(new TableColumn(table, SWT.NONE));
         tableColumn1.setWidth(200);
     }
 

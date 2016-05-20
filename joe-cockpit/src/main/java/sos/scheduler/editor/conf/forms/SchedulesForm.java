@@ -61,10 +61,10 @@ public class SchedulesForm extends SOSJOEMessageCodes {
             GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
             GridLayout gridLayout = new GridLayout();
             gridLayout.numColumns = 2;
-            schedulesGroup = JOE_G_SchedulesForm_Schedules.Control(new Group(this, SWT.NONE));
+            schedulesGroup = JOE_G_SchedulesForm_Schedules.control(new Group(this, SWT.NONE));
             schedulesGroup.setLayout(gridLayout);
             createTable();
-            bNewSchedule = JOE_B_SchedulesForm_NewSchedule.Control(new Button(schedulesGroup, SWT.NONE));
+            bNewSchedule = JOE_B_SchedulesForm_NewSchedule.control(new Button(schedulesGroup, SWT.NONE));
             bNewSchedule.setLayoutData(gridData);
             getShell().setDefaultButton(bNewSchedule);
             bNewSchedule.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -74,7 +74,7 @@ public class SchedulesForm extends SOSJOEMessageCodes {
                     butRemove.setEnabled(true);
                 }
             });
-            butRemove = JOE_B_SchedulesForm_Remove.Control(new Button(schedulesGroup, SWT.NONE));
+            butRemove = JOE_B_SchedulesForm_Remove.control(new Button(schedulesGroup, SWT.NONE));
             butRemove.setEnabled(false);
             butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -99,7 +99,7 @@ public class SchedulesForm extends SOSJOEMessageCodes {
     private void createTable() {
         try {
             GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-            table = JOE_Tbl_SchedulesForm_Schedules.Control(new Table(schedulesGroup, SWT.FULL_SELECTION | SWT.BORDER));
+            table = JOE_Tbl_SchedulesForm_Schedules.control(new Table(schedulesGroup, SWT.FULL_SELECTION | SWT.BORDER));
             table.addMouseListener(new MouseAdapter() {
 
                 public void mouseDoubleClick(final MouseEvent e) {
@@ -121,7 +121,7 @@ public class SchedulesForm extends SOSJOEMessageCodes {
                     }
                 }
             });
-            TableColumn tableColumn = JOE_TCl_SchedulesForm_Name.Control(new TableColumn(table, SWT.NONE));
+            TableColumn tableColumn = JOE_TCl_SchedulesForm_Name.control(new TableColumn(table, SWT.NONE));
             tableColumn.setWidth(385);
         } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);

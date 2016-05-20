@@ -104,7 +104,7 @@ public class HotFolderDialog {
         createTree();
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         tree.setLayoutData(gridData_1);
-        cancelButton = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Cancel.Control(new Button(schedulerConfigurationShell, SWT.NONE));
+        cancelButton = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Cancel.control(new Button(schedulerConfigurationShell, SWT.NONE));
         cancelButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -112,7 +112,7 @@ public class HotFolderDialog {
                 schedulerConfigurationShell.dispose();
             }
         });
-        txtName = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Name.Control(new Text(schedulerConfigurationShell, SWT.BORDER));
+        txtName = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Name.control(new Text(schedulerConfigurationShell, SWT.BORDER));
         txtName.addVerifyListener(new VerifyListener() {
 
             @Override
@@ -129,7 +129,7 @@ public class HotFolderDialog {
         });
         txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         if (type == SCHEDULER_HOST) {
-            txtPort = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Port.Control(new Text(schedulerConfigurationShell, SWT.BORDER));
+            txtPort = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Port.control(new Text(schedulerConfigurationShell, SWT.BORDER));
             txtPort.addVerifyListener(new VerifyListener() {
 
                 @Override
@@ -150,7 +150,7 @@ public class HotFolderDialog {
             });
             txtPort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         }
-        butAdd = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Add.Control(new Button(schedulerConfigurationShell, SWT.NONE));
+        butAdd = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Add.control(new Button(schedulerConfigurationShell, SWT.NONE));
         butAdd.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -159,7 +159,7 @@ public class HotFolderDialog {
             }
         });
         butAdd.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-        butRename = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Rename.Control(new Button(schedulerConfigurationShell, SWT.NONE));
+        butRename = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Rename.control(new Button(schedulerConfigurationShell, SWT.NONE));
         butRename.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -210,7 +210,7 @@ public class HotFolderDialog {
         });
         butRename.setEnabled(false);
         butRename.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
-        butOK = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Open.Control(new Button(schedulerConfigurationShell, SWT.NONE));
+        butOK = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Open.control(new Button(schedulerConfigurationShell, SWT.NONE));
         butOK.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -227,7 +227,7 @@ public class HotFolderDialog {
     private void createTree() {
         String mask = "";
         try {
-            tree = SOSJOEMessageCodes.JOE_HotFolderDialog_Tree.Control(new Tree(schedulerGroup, SWT.BORDER));
+            tree = SOSJOEMessageCodes.JOE_HotFolderDialog_Tree.control(new Tree(schedulerGroup, SWT.BORDER));
             tree.addSelectionListener(new SelectionAdapter() {
 
                 @Override

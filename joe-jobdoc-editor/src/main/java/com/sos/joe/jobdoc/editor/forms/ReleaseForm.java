@@ -79,10 +79,10 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
         GridLayout gridLayout = new GridLayout(4, false);
         group = JOE_G_ReleaseForm_Releases.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
-        label1 = JOE_L_ReleaseForm_ID.Control(new SOSLabel(group, SWT.NONE));
+        label1 = JOE_L_ReleaseForm_ID.control(new SOSLabel(group, SWT.NONE));
         label1.setLayoutData(new GridData());
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        tID = JOE_T_ReleaseForm_ID.Control(new Text(group, SWT.BORDER));
+        tID = JOE_T_ReleaseForm_ID.control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData3);
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -92,12 +92,12 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
                 listener.setId(tID.getText());
             }
         });
-        label2 = JOE_L_ReleaseForm_Created.Control(new SOSLabel(group, SWT.NONE));
+        label2 = JOE_L_ReleaseForm_Created.control(new SOSLabel(group, SWT.NONE));
         createCreated();
-        label = JOE_L_ReleaseForm_Title.Control(new SOSLabel(group, SWT.NONE));
+        label = JOE_L_ReleaseForm_Title.control(new SOSLabel(group, SWT.NONE));
         label.setLayoutData(new GridData());
         GridData gridData21 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        tTitle = JOE_T_ReleaseForm_Title.Control(new Text(group, SWT.BORDER));
+        tTitle = JOE_T_ReleaseForm_Title.control(new Text(group, SWT.BORDER));
         tTitle.setLayoutData(gridData21);
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -107,7 +107,7 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
                 listener.setTitle(tTitle.getText());
             }
         });
-        label3 = JOE_L_ReleaseForm_Modified.Control(new SOSLabel(group, SWT.NONE));
+        label3 = JOE_L_ReleaseForm_Modified.control(new SOSLabel(group, SWT.NONE));
         label3.setLayoutData(new GridData());
         createModified();
         createComposite();
@@ -134,7 +134,7 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
 
     private void createCreated() {
         GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-        created = JOE_ReleaseForm_Created.Control(new SOSDateTime(group, SWT.NONE));
+        created = JOE_ReleaseForm_Created.control(new SOSDateTime(group, SWT.NONE));
         created.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -147,7 +147,7 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUns
 
     private void createModified() {
         GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-        modified = JOE_ReleaseForm_Modified.Control(new SOSDateTime(group, SWT.NONE));
+        modified = JOE_ReleaseForm_Modified.control(new SOSDateTime(group, SWT.NONE));
         modified.addSelectionListener(new SelectionAdapter() {
 
             @Override

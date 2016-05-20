@@ -52,7 +52,7 @@ public class JobAssistentInfoForms {
         shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width,
                 shell.getBounds().height);
         shell.open();
-        final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(shell, SWT.NONE));
+        final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.control(new Group(shell, SWT.NONE));
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false, 3, 1);
         gridData.widthHint = 581;
         gridData.heightHint = 329;
@@ -67,7 +67,7 @@ public class JobAssistentInfoForms {
         gridLayout_1.marginHeight = 10;
         gridLayout_1.marginBottom = 10;
         jobGroup.setLayout(gridLayout_1);
-        final Text txtInfoGlobal = SOSJOEMessageCodes.JOE_T_JobAssistent_InfoGlobal.Control(new Text(jobGroup, SWT.READ_ONLY | SWT.WRAP));
+        final Text txtInfoGlobal = SOSJOEMessageCodes.JOE_T_JobAssistent_InfoGlobal.control(new Text(jobGroup, SWT.READ_ONLY | SWT.WRAP));
         txtInfoGlobal.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -80,7 +80,7 @@ public class JobAssistentInfoForms {
         gridData_1.widthHint = 491;
         gridData_1.heightHint = 271;
         txtInfoGlobal.setLayoutData(gridData_1);
-        final Button butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_ShowInFuture.Control(new Button(jobGroup, SWT.CHECK));
+        final Button butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_ShowInFuture.control(new Button(jobGroup, SWT.CHECK));
         butShow.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -89,7 +89,7 @@ public class JobAssistentInfoForms {
             }
         });
         new Label(shell, SWT.NONE);
-        cancelButton = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(shell, SWT.NONE));
+        cancelButton = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.control(new Button(shell, SWT.NONE));
         cancelButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -97,7 +97,7 @@ public class JobAssistentInfoForms {
                 shell.dispose();
             }
         });
-        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(shell, SWT.NONE));
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.control(new Button(shell, SWT.NONE));
         butNext.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         butNext.addSelectionListener(new SelectionAdapter() {

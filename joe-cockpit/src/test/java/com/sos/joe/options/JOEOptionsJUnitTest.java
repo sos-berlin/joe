@@ -22,15 +22,15 @@ public class JOEOptionsJUnitTest extends JSToolBox {
 
     @Test
     public void testJOEHomeDir() {
-        assertNotEquals("JOE Home Dir wrong", "C:\\ProgramData\\sos-berlin.com\\JOE/", objOptions.JOEHomeDir.Value());
-        objOptions.JOEHomeDir.Value("++env:SOS_JOE_HOME++");
-        assertEquals("", "++env:SOS_JOE_HOME++" + "/", objOptions.JOEHomeDir.Value());
+        assertNotEquals("JOE Home Dir wrong", "C:\\ProgramData\\sos-berlin.com\\JOE/", objOptions.JOEHomeDir.getValue());
+        objOptions.JOEHomeDir.setValue("++env:SOS_JOE_HOME++");
+        assertEquals("", "++env:SOS_JOE_HOME++" + "/", objOptions.JOEHomeDir.getValue());
     }
 
     @Test
     public void testJOEJobDocDir() { // SOSOptionString
-        objOptions.JOEJobDocDir.Value("++env:SOS_JOBDOC_DIR++");
-        assertEquals("", "++env:SOS_JOBDOC_DIR++" + "/", objOptions.JOEJobDocDir.Value());
+        objOptions.JOEJobDocDir.setValue("++env:SOS_JOBDOC_DIR++");
+        assertEquals("", "++env:SOS_JOBDOC_DIR++" + "/", objOptions.JOEJobDocDir.getValue());
     }
 
 }

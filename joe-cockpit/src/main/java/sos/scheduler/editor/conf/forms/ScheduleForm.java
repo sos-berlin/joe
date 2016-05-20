@@ -92,10 +92,10 @@ public class ScheduleForm extends SOSJOEMessageCodes {
         try {
             GridLayout gridLayout = new GridLayout();
             gridLayout.numColumns = 3;
-            scheduleGroup = JOE_G_ScheduleForm_Schedule.Control(new Group(this, SWT.NONE));
+            scheduleGroup = JOE_G_ScheduleForm_Schedule.control(new Group(this, SWT.NONE));
             scheduleGroup.setLayout(gridLayout);
-            final Label nameLabel = JOE_L_Name.Control(new Label(scheduleGroup, SWT.NONE));
-            txtName = JOE_T_ScheduleForm_Name.Control(new Text(scheduleGroup, SWT.BORDER));
+            final Label nameLabel = JOE_L_Name.control(new Label(scheduleGroup, SWT.NONE));
+            txtName = JOE_T_ScheduleForm_Name.control(new Text(scheduleGroup, SWT.BORDER));
             txtName.addVerifyListener(new VerifyListener() {
 
                 public void verifyText(final VerifyEvent e) {
@@ -113,9 +113,9 @@ public class ScheduleForm extends SOSJOEMessageCodes {
                 }
             });
             txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-            final Label titleLabel = JOE_L_ScheduleForm_Title.Control(new Label(scheduleGroup, SWT.NONE));
+            final Label titleLabel = JOE_L_ScheduleForm_Title.control(new Label(scheduleGroup, SWT.NONE));
             titleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-            txtTitle = JOE_T_ScheduleForm_Title.Control(new Text(scheduleGroup, SWT.BORDER));
+            txtTitle = JOE_T_ScheduleForm_Title.control(new Text(scheduleGroup, SWT.BORDER));
             txtTitle.addModifyListener(new ModifyListener() {
 
                 public void modifyText(final ModifyEvent e) {
@@ -128,8 +128,8 @@ public class ScheduleForm extends SOSJOEMessageCodes {
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
-            final Label substitueLabel = JOE_L_ScheduleForm_Substitute.Control(new Label(scheduleGroup, SWT.NONE));
-            cboCombo = JOE_Cbo_ScheduleForm_Substitute.Control(new Combo(scheduleGroup, SWT.NONE));
+            final Label substitueLabel = JOE_L_ScheduleForm_Substitute.control(new Label(scheduleGroup, SWT.NONE));
+            cboCombo = JOE_Cbo_ScheduleForm_Substitute.control(new Combo(scheduleGroup, SWT.NONE));
             cboCombo.addModifyListener(new ModifyListener() {
 
                 public void modifyText(final ModifyEvent e) {
@@ -139,31 +139,31 @@ public class ScheduleForm extends SOSJOEMessageCodes {
                 }
             });
             cboCombo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-            Label validFromLabel = JOE_L_ScheduleForm_ValidFrom.Control(new Label(scheduleGroup, SWT.NONE));
+            Label validFromLabel = JOE_L_ScheduleForm_ValidFrom.control(new Label(scheduleGroup, SWT.NONE));
             validFromLabel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            validFromDate = JOE_ScheduleForm_ValidFromDate.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
+            validFromDate = JOE_ScheduleForm_ValidFromDate.control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
             validFromDate.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(SelectionEvent e) {
                     setValidDateFrom();
                 }
             });
-            validFromTime = JOE_ScheduleForm_ValidFromTime.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
+            validFromTime = JOE_ScheduleForm_ValidFromTime.control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
             validFromTime.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(SelectionEvent e) {
                     setValidDateFrom();
                 }
             });
-            final Label validToLabel = JOE_L_ScheduleForm_ValidTo.Control(new Label(scheduleGroup, SWT.NONE));
-            validToDate = JOE_ScheduleForm_ValidToDate.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
+            final Label validToLabel = JOE_L_ScheduleForm_ValidTo.control(new Label(scheduleGroup, SWT.NONE));
+            validToDate = JOE_ScheduleForm_ValidToDate.control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
             validToDate.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(SelectionEvent e) {
                     setValidDateTo();
                 }
             });
-            validToTime = JOE_ScheduleForm_ValidToTime.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
+            validToTime = JOE_ScheduleForm_ValidToTime.control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
             validToTime.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(SelectionEvent e) {
