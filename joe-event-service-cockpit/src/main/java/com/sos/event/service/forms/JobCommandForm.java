@@ -101,10 +101,10 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         jobsAndOrdersGroup = new Group(this, SWT.NONE);
         jobsAndOrdersGroup.setText(JOE_G_ActionsJobCommandForm_JobsOrders.params(listener.getCommandName()));
         jobsAndOrdersGroup.setLayout(gridLayout2);
-        jobchainLabel = JOE_L_ActionsJobCommandForm_JobChain.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
+        jobchainLabel = JOE_L_ActionsJobCommandForm_JobChain.control(new Label(jobsAndOrdersGroup, SWT.NONE));
         final GridData gridData_10 = new GridData();
         jobchainLabel.setLayoutData(gridData_10);
-        cJobchain = JOE_Cbo_ActionsJobCommandForm_JobChain.Control(new Combo(jobsAndOrdersGroup, SWT.NONE));
+        cJobchain = JOE_Cbo_ActionsJobCommandForm_JobChain.control(new Combo(jobsAndOrdersGroup, SWT.NONE));
         cJobchain.setEnabled(false);
         cJobchain.setItems(listener.getJobChains());
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -129,7 +129,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         lblJob = new Label(jobsAndOrdersGroup, SWT.NONE);
         lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
         lblJob.setText("Job / Order ID"); //
-        tJob = JOE_T_ActionsJobCommandForm_Job.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
+        tJob = JOE_T_ActionsJobCommandForm_Job.control(new Text(jobsAndOrdersGroup, SWT.BORDER));
         tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override
@@ -143,7 +143,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
         tJob.setLayoutData(gridData_3);
-        final Label startAtLabel = JOE_L_ActionsJobCommandForm_StartAt.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
+        final Label startAtLabel = JOE_L_ActionsJobCommandForm_StartAt.control(new Label(jobsAndOrdersGroup, SWT.NONE));
         startAtLabel.setLayoutData(new GridData());
         final Composite composite = new Composite(jobsAndOrdersGroup, SWT.NONE);
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, false);
@@ -155,7 +155,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout.marginHeight = 0;
         gridLayout.horizontalSpacing = 0;
         composite.setLayout(gridLayout);
-        txtYear = JOE_T_ActionsJobCommandForm_Year.Control(new Text(composite, SWT.BORDER));
+        txtYear = JOE_T_ActionsJobCommandForm_Year.control(new Text(composite, SWT.BORDER));
         txtYear.addModifyListener(new ModifyListener() {
 
             @Override
@@ -178,8 +178,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_7.widthHint = 40;
         txtYear.setLayoutData(gridData_7);
-        final Label label = JOE_L_Hyphen.Control(new Label(composite, SWT.NONE));
-        txtMonth = JOE_T_ActionsJobCommandForm_Year.Control(new Text(composite, SWT.BORDER));
+        final Label label = JOE_L_Hyphen.control(new Label(composite, SWT.NONE));
+        txtMonth = JOE_T_ActionsJobCommandForm_Year.control(new Text(composite, SWT.BORDER));
         txtMonth.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -212,8 +212,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_9.widthHint = 20;
         txtMonth.setLayoutData(gridData_9);
-        final Label label_1 = JOE_L_Hyphen.Control(new Label(composite, SWT.NONE));
-        txtDay = JOE_T_ActionsJobCommandForm_Day.Control(new Text(composite, SWT.BORDER));
+        final Label label_1 = JOE_L_Hyphen.control(new Label(composite, SWT.NONE));
+        txtDay = JOE_T_ActionsJobCommandForm_Day.control(new Text(composite, SWT.BORDER));
         txtDay.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -248,7 +248,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         txtDay.setLayoutData(gridData_13);
         final Label label_2 = new Label(composite, SWT.NONE);
         label_2.setText("      ");
-        txtHour = JOE_T_ActionsJobCommandForm_Hour.Control(new Text(composite, SWT.BORDER));
+        txtHour = JOE_T_ActionsJobCommandForm_Hour.control(new Text(composite, SWT.BORDER));
         txtHour.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -281,8 +281,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_14 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_14.widthHint = 20;
         txtHour.setLayoutData(gridData_14);
-        final Label label_3 = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
-        txtMin = JOE_T_ActionsJobCommandForm_Min.Control(new Text(composite, SWT.BORDER));
+        final Label label_3 = JOE_L_Colon.control(new Label(composite, SWT.NONE));
+        txtMin = JOE_T_ActionsJobCommandForm_Min.control(new Text(composite, SWT.BORDER));
         txtMin.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -315,8 +315,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_1.widthHint = 20;
         txtMin.setLayoutData(gridData_1);
-        final Label label_4 = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
-        txtSec = JOE_T_ActionsJobCommandForm_Sec.Control(new Text(composite, SWT.BORDER));
+        final Label label_4 = JOE_L_Colon.control(new Label(composite, SWT.NONE));
+        txtSec = JOE_T_ActionsJobCommandForm_Sec.control(new Text(composite, SWT.BORDER));
         txtSec.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -349,7 +349,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_6.widthHint = 20;
         txtSec.setLayoutData(gridData_6);
-        cboTimes = JOE_Cbo_ActionsJobCommandForm_Times.Control(new Combo(jobsAndOrdersGroup, SWT.READ_ONLY));
+        cboTimes = JOE_Cbo_ActionsJobCommandForm_Times.control(new Combo(jobsAndOrdersGroup, SWT.READ_ONLY));
         cboTimes.setVisibleItemCount(7);
         cboTimes.addSelectionListener(new SelectionAdapter() {
 
@@ -361,10 +361,10 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         cboTimes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        priorityLabel = JOE_L_ActionsJobCommandForm_Priority.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
+        priorityLabel = JOE_L_ActionsJobCommandForm_Priority.control(new Label(jobsAndOrdersGroup, SWT.NONE));
         final GridData gridData_11 = new GridData();
         priorityLabel.setLayoutData(gridData_11);
-        tPriority = JOE_T_ActionsJobCommandForm_Priority.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
+        tPriority = JOE_T_ActionsJobCommandForm_Priority.control(new Text(jobsAndOrdersGroup, SWT.BORDER));
         tPriority.setEnabled(false);
         tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -374,9 +374,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-        titleLabel = JOE_L_ActionsJobCommandForm_Title.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
+        titleLabel = JOE_L_ActionsJobCommandForm_Title.control(new Label(jobsAndOrdersGroup, SWT.NONE));
         titleLabel.setLayoutData(new GridData());
-        tTitle = JOE_T_ActionsJobCommandForm_Title.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
+        tTitle = JOE_T_ActionsJobCommandForm_Title.control(new Text(jobsAndOrdersGroup, SWT.BORDER));
         tTitle.setEnabled(false);
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -387,9 +387,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
         tTitle.setLayoutData(gridData_5);
-        stateLabel = JOE_L_ActionsJobCommandForm_State.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
+        stateLabel = JOE_L_ActionsJobCommandForm_State.control(new Label(jobsAndOrdersGroup, SWT.NONE));
         stateLabel.setLayoutData(new GridData());
-        tState = JOE_T_ActionsJobCommandForm_State.Control(new Combo(jobsAndOrdersGroup, SWT.BORDER));
+        tState = JOE_T_ActionsJobCommandForm_State.control(new Combo(jobsAndOrdersGroup, SWT.BORDER));
         tState.setEnabled(false);
         tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -402,9 +402,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
         tState.setLayoutData(gridData_2);
-        endStateLabel = JOE_L_ActionsJobCommandForm_EndState.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
+        endStateLabel = JOE_L_ActionsJobCommandForm_EndState.control(new Label(jobsAndOrdersGroup, SWT.NONE));
         endStateLabel.setLayoutData(new GridData());
-        cboEndstate = JOE_Cbo_ActionsJobCommandForm_EndState.Control(new Combo(jobsAndOrdersGroup, SWT.NONE));
+        cboEndstate = JOE_Cbo_ActionsJobCommandForm_EndState.control(new Combo(jobsAndOrdersGroup, SWT.NONE));
         cboEndstate.addModifyListener(new ModifyListener() {
 
             @Override
@@ -416,10 +416,10 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         cboEndstate.setEnabled(false);
         cboEndstate.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-        replaceLabel = JOE_L_ActionsJobCommandForm_Replace.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
+        replaceLabel = JOE_L_ActionsJobCommandForm_Replace.control(new Label(jobsAndOrdersGroup, SWT.NONE));
         final GridData gridData_12 = new GridData();
         replaceLabel.setLayoutData(gridData_12);
-        bReplace = JOE_B_ActionsJobCommandForm_Replace.Control(new Button(jobsAndOrdersGroup, SWT.CHECK));
+        bReplace = JOE_B_ActionsJobCommandForm_Replace.control(new Button(jobsAndOrdersGroup, SWT.CHECK));
         bReplace.setSelection(true);
         bReplace.setEnabled(true);
         bReplace.addSelectionListener(new SelectionAdapter() {

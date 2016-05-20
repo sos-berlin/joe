@@ -69,8 +69,8 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
         GridLayout gridLayout2 = new GridLayout(4, false);
         group = JOE_G_ProfilesForm_Profiles.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout2);
-        label3 = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
-        tName = JOE_T_ProfilesForm_Name.Control(new Text(group, SWT.BORDER));
+        label3 = JOE_L_Name.control(new SOSLabel(group, SWT.NONE));
+        tName = JOE_T_ProfilesForm_Name.control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -80,7 +80,7 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
                 getShell().setDefaultButton(bApply);
             }
         });
-        bNotes = JOE_B_ProfilesForm_ProfileNotes.Control(new Button(group, SWT.NONE));
+        bNotes = JOE_B_ProfilesForm_ProfileNotes.control(new Button(group, SWT.NONE));
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -90,7 +90,7 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
                         JOE_B_ProfilesForm_ProfileNotes.label());
             }
         });
-        bApply = JOE_B_ProfilesForm_ApplyProfile.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_ProfilesForm_ApplyProfile.control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData3);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -102,7 +102,7 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
         label4 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label4.setText("Label");
         label4.setLayoutData(gridData1);
-        tProfiles = JOE_Tbl_ProfilesForm_Profiles.Control(new Table(group, SWT.BORDER));
+        tProfiles = JOE_Tbl_ProfilesForm_Profiles.control(new Table(group, SWT.BORDER));
         tProfiles.setHeaderVisible(true);
         tProfiles.setLayoutData(gridData11);
         tProfiles.setLinesVisible(true);
@@ -118,9 +118,9 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_ProfilesForm_Name.Control(new TableColumn(tProfiles, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_ProfilesForm_Name.control(new TableColumn(tProfiles, SWT.NONE));
         tableColumn.setWidth(450);
-        bNew = JOE_B_ProfilesForm_NewProfile.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_ProfilesForm_NewProfile.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData4);
         bNew.addSelectionListener(new SelectionAdapter() {
 
@@ -136,7 +136,7 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener> {
         label5 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label5.setText("Label");
         label5.setLayoutData(gridData6);
-        bRemove = JOE_B_ProfilesForm_RemoveProfile.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_ProfilesForm_RemoveProfile.control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData5);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 

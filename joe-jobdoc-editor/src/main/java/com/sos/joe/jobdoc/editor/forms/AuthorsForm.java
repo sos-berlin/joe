@@ -70,11 +70,11 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
         GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 5;
-        label4 = JOE_L_Name.Control(new SOSLabel(authorsGroup, SWT.NONE));
+        label4 = JOE_L_Name.control(new SOSLabel(authorsGroup, SWT.NONE));
         label4.setLayoutData(new GridData());
         GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData7.widthHint = 121;
-        tName = JOE_T_AuthorsForm_Name.Control(new Text(authorsGroup, SWT.BORDER));
+        tName = JOE_T_AuthorsForm_Name.control(new Text(authorsGroup, SWT.BORDER));
         tName.setLayoutData(gridData7);
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -87,11 +87,11 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
                 Utils.setBackground(tName, bApply.isEnabled());
             }
         });
-        label5 = JOE_L_AuthorsForm_EMail.Control(new SOSLabel(authorsGroup, SWT.NONE));
+        label5 = JOE_L_AuthorsForm_EMail.control(new SOSLabel(authorsGroup, SWT.NONE));
         label5.setLayoutData(new GridData());
         GridData gridData8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData8.widthHint = 183;
-        tEmail = JOE_T_AuthorsForm_EMail.Control(new Text(authorsGroup, SWT.BORDER));
+        tEmail = JOE_T_AuthorsForm_EMail.control(new Text(authorsGroup, SWT.BORDER));
         tEmail.setLayoutData(gridData8);
         tEmail.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -105,7 +105,7 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
             }
         });
         GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-        bApply = JOE_B_AuthorsForm_Apply.Control(new Button(authorsGroup, SWT.NONE));
+        bApply = JOE_B_AuthorsForm_Apply.control(new Button(authorsGroup, SWT.NONE));
         bApply.setLayoutData(gridData9);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -120,7 +120,7 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
             }
         });
         GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
-        tAuthors = JOE_Tbl_AuthorsForm_Authors.Control(new Table(authorsGroup, SWT.FULL_SELECTION | SWT.BORDER));
+        tAuthors = JOE_Tbl_AuthorsForm_Authors.control(new Table(authorsGroup, SWT.FULL_SELECTION | SWT.BORDER));
         tAuthors.setHeaderVisible(true);
         tAuthors.setLinesVisible(true);
         tAuthors.setLayoutData(gridData11);
@@ -138,11 +138,11 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
                 bApply.setEnabled(false);
             }
         });
-        TableColumn tableColumn2 = JOE_TCl_AuthorsForm_Name.Control(new TableColumn(tAuthors, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_AuthorsForm_Name.control(new TableColumn(tAuthors, SWT.NONE));
         tableColumn2.setWidth(250);
-        TableColumn tableColumn11 = JOE_TCl_AuthorsForm_EMail.Control(new TableColumn(tAuthors, SWT.NONE));
+        TableColumn tableColumn11 = JOE_TCl_AuthorsForm_EMail.control(new TableColumn(tAuthors, SWT.NONE));
         tableColumn11.setWidth(60);
-        bRemoveAutho = JOE_B_AuthorsForm_Remove.Control(new Button(authorsGroup, SWT.NONE));
+        bRemoveAutho = JOE_B_AuthorsForm_Remove.control(new Button(authorsGroup, SWT.NONE));
         bRemoveAutho.setLayoutData(gridData12);
         bRemoveAutho.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 

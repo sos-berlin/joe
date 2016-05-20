@@ -110,11 +110,11 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
         gridLayout.numColumns = 5;
         group = JOE_G_ApplicationsForm_Applications.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
-        label = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
-        tName = JOE_T_ApplicationsForm_Name.Control(new Text(group, SWT.BORDER));
+        label = JOE_L_Name.control(new SOSLabel(group, SWT.NONE));
+        tName = JOE_T_ApplicationsForm_Name.control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData);
         tName.addModifyListener(modifyTextListener);
-        bApply = JOE_B_ApplicationsForm_ApplyApplication.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_ApplicationsForm_ApplyApplication.control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData2);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -123,15 +123,15 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
                 applyApp();
             }
         });
-        label1 = JOE_L_ApplicationsForm_ID.Control(new SOSLabel(group, SWT.NONE));
-        tID = JOE_T_ApplicationsForm_ID.Control(new Text(group, SWT.BORDER));
+        label1 = JOE_L_ApplicationsForm_ID.control(new SOSLabel(group, SWT.NONE));
+        tID = JOE_T_ApplicationsForm_ID.control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData4);
         tID.addModifyListener(modifyTextListener);
-        label2 = JOE_L_ApplicationsForm_Reference.Control(new SOSLabel(group, SWT.NONE));
+        label2 = JOE_L_ApplicationsForm_Reference.control(new SOSLabel(group, SWT.NONE));
         createCReference();
         label3 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label3.setLayoutData(gridData3);
-        table = JOE_Tbl_ApplicationsForm_Applications.Control(new Table(group, SWT.BORDER));
+        table = JOE_Tbl_ApplicationsForm_Applications.control(new Table(group, SWT.BORDER));
         table.setHeaderVisible(true);
         table.setLayoutData(gridData1);
         table.setLinesVisible(true);
@@ -145,13 +145,13 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_ApplicationsForm_Name.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_ApplicationsForm_Name.control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(200);
-        TableColumn tableColumn1 = JOE_TCl_ApplicationsForm_ID.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_ApplicationsForm_ID.control(new TableColumn(table, SWT.NONE));
         tableColumn1.setWidth(180);
-        TableColumn tableColumn2 = JOE_TCl_ApplicationsForm_Reference.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_ApplicationsForm_Reference.control(new TableColumn(table, SWT.NONE));
         tableColumn2.setWidth(180);
-        bNew = JOE_B_ApplicationsForm_NewApplication.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_ApplicationsForm_NewApplication.control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData6);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -165,7 +165,7 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
         });
         label4 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label4.setLayoutData(gridData7);
-        bRemove = JOE_B_ApplicationsForm_RemoveApplication.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_ApplicationsForm_RemoveApplication.control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData8);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -187,7 +187,7 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
         gridData5.horizontalAlignment = GridData.FILL;
         gridData5.grabExcessHorizontalSpace = true;
         gridData5.verticalAlignment = GridData.CENTER;
-        cReference = JOE_Cbo_ApplicationsForm_Reference.Control(new Combo(group, SWT.NONE));
+        cReference = JOE_Cbo_ApplicationsForm_Reference.control(new Combo(group, SWT.NONE));
         cReference.setLayoutData(gridData5);
         cReference.addModifyListener(modifyTextListener);
     }

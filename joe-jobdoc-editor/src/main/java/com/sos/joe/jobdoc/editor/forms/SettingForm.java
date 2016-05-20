@@ -77,10 +77,10 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
         GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
         GridLayout gridLayout1 = new GridLayout(6, false);
-        group1 = MsgHandler.newMsg("JOE_G_SettingForm_Settings").Control(new SOSGroup(this, SWT.NONE));
+        group1 = MsgHandler.newMsg("JOE_G_SettingForm_Settings").control(new SOSGroup(this, SWT.NONE));
         group1.setLayout(gridLayout1);
-        label6 = MsgHandler.newMsg("JOE_L_Name").Control(new SOSLabel(group1, SWT.NONE));
-        tName = MsgHandler.newMsg("JOE_T_SettingForm_Name").Control(new Text(group1, SWT.BORDER));
+        label6 = MsgHandler.newMsg("JOE_L_Name").control(new SOSLabel(group1, SWT.NONE));
+        tName = MsgHandler.newMsg("JOE_T_SettingForm_Name").control(new Text(group1, SWT.BORDER));
         tName.setLayoutData(gridData3);
         tName.addModifyListener(new ModifyListener() {
 
@@ -89,7 +89,7 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
                 applySettingStatus();
             }
         });
-        bApply = MsgHandler.newMsg("JOE_B_SettingForm_Apply").Control(new Button(group1, SWT.NONE));
+        bApply = MsgHandler.newMsg("JOE_B_SettingForm_Apply").control(new Button(group1, SWT.NONE));
         bApply.setLayoutData(gridData);
         bApply.addSelectionListener(new SelectionAdapter() {
 
@@ -98,8 +98,8 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
                 applySetting();
             }
         });
-        label7 = MsgHandler.newMsg("JOE_L_SettingForm_DefaultValue").Control(new SOSLabel(group1, SWT.NONE));
-        tDefault = MsgHandler.newMsg("JOE_T_SettingForm_DefaultValue").Control(new Text(group1, SWT.BORDER));
+        label7 = MsgHandler.newMsg("JOE_L_SettingForm_DefaultValue").control(new SOSLabel(group1, SWT.NONE));
+        tDefault = MsgHandler.newMsg("JOE_T_SettingForm_DefaultValue").control(new Text(group1, SWT.BORDER));
         tDefault.setLayoutData(gridData11);
         tDefault.addModifyListener(new ModifyListener() {
 
@@ -108,12 +108,12 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
                 applySettingStatus();
             }
         });
-        label13 = MsgHandler.newMsg("JOE_L_SettingForm_Type").Control(new SOSLabel(group1, SWT.NONE));
+        label13 = MsgHandler.newMsg("JOE_L_SettingForm_Type").control(new SOSLabel(group1, SWT.NONE));
         createCType();
-        label9 = MsgHandler.newMsg("JOE_L_SettingForm_Reference").Control(new SOSLabel(group1, SWT.NONE));
+        label9 = MsgHandler.newMsg("JOE_L_SettingForm_Reference").control(new SOSLabel(group1, SWT.NONE));
         createCReference();
-        label8 = MsgHandler.newMsg("JOE_L_SettingForm_ID").Control(new SOSLabel(group1, SWT.NONE));
-        tID = MsgHandler.newMsg("JOE_T_SettingForm_ID").Control(new Text(group1, SWT.BORDER));
+        label8 = MsgHandler.newMsg("JOE_L_SettingForm_ID").control(new SOSLabel(group1, SWT.NONE));
+        tID = MsgHandler.newMsg("JOE_T_SettingForm_ID").control(new Text(group1, SWT.BORDER));
         tID.setLayoutData(gridData12);
         tID.addModifyListener(new ModifyListener() {
 
@@ -122,8 +122,8 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
                 applySettingStatus();
             }
         });
-        label10 = MsgHandler.newMsg("JOE_L_SettingForm_Required").Control(new SOSLabel(group1, SWT.NONE));
-        cRequired = MsgHandler.newMsg("JOE_B_SettingForm_Required").Control(new Button(group1, SWT.CHECK));
+        label10 = MsgHandler.newMsg("JOE_L_SettingForm_Required").control(new SOSLabel(group1, SWT.NONE));
+        cRequired = MsgHandler.newMsg("JOE_B_SettingForm_Required").control(new Button(group1, SWT.CHECK));
         cRequired.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -138,7 +138,7 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
                 applySettingStatus();
             }
         });
-        bNotes = MsgHandler.newMsg("JOE_B_SettingForm_Notes").Control(new Button(group1, SWT.NONE));
+        bNotes = MsgHandler.newMsg("JOE_B_SettingForm_Notes").control(new Button(group1, SWT.NONE));
         bNotes.setLayoutData(gridData14);
         bNotes.addSelectionListener(new SelectionAdapter() {
 
@@ -152,7 +152,7 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
         label = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label");
         label.setLayoutData(gridData1);
-        tSettings = MsgHandler.newMsg("JOE_Tbl_SettingForm_Settings").Control(new Table(group1, SWT.BORDER));
+        tSettings = MsgHandler.newMsg("JOE_Tbl_SettingForm_Settings").control(new Table(group1, SWT.BORDER));
         tSettings.setHeaderVisible(true);
         tSettings.setLayoutData(gridData2);
         tSettings.setLinesVisible(true);
@@ -166,19 +166,19 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
                 }
             }
         });
-        TableColumn tableColumn = MsgHandler.newMsg("JOE_TCl_SettingForm_Name").Control(new TableColumn(tSettings, SWT.NONE));
+        TableColumn tableColumn = MsgHandler.newMsg("JOE_TCl_SettingForm_Name").control(new TableColumn(tSettings, SWT.NONE));
         tableColumn.setWidth(150);
-        TableColumn tableColumn31 = MsgHandler.newMsg("JOE_TCl_SettingForm_Default").Control(new TableColumn(tSettings, SWT.NONE));
+        TableColumn tableColumn31 = MsgHandler.newMsg("JOE_TCl_SettingForm_Default").control(new TableColumn(tSettings, SWT.NONE));
         tableColumn31.setWidth(120);
-        TableColumn tableColumn3 = MsgHandler.newMsg("JOE_TCl_SettingForm_Type").Control(new TableColumn(tSettings, SWT.NONE));
+        TableColumn tableColumn3 = MsgHandler.newMsg("JOE_TCl_SettingForm_Type").control(new TableColumn(tSettings, SWT.NONE));
         tableColumn3.setWidth(80);
-        TableColumn tableColumn4 = MsgHandler.newMsg("JOE_TCl_SettingForm_Required").Control(new TableColumn(tSettings, SWT.NONE));
+        TableColumn tableColumn4 = MsgHandler.newMsg("JOE_TCl_SettingForm_Required").control(new TableColumn(tSettings, SWT.NONE));
         tableColumn4.setWidth(70);
-        TableColumn tableColumn2 = MsgHandler.newMsg("JOE_TCl_SettingForm_Reference").Control(new TableColumn(tSettings, SWT.NONE));
+        TableColumn tableColumn2 = MsgHandler.newMsg("JOE_TCl_SettingForm_Reference").control(new TableColumn(tSettings, SWT.NONE));
         tableColumn2.setWidth(110);
-        TableColumn tableColumn1 = MsgHandler.newMsg("JOE_TCl_SettingForm_ID").Control(new TableColumn(tSettings, SWT.NONE));
+        TableColumn tableColumn1 = MsgHandler.newMsg("JOE_TCl_SettingForm_ID").control(new TableColumn(tSettings, SWT.NONE));
         tableColumn1.setWidth(120);
-        bNew = MsgHandler.newMsg("JOE_B_SettingForm_New").Control(new Button(group1, SWT.NONE));
+        bNew = MsgHandler.newMsg("JOE_B_SettingForm_New").control(new Button(group1, SWT.NONE));
         bNew.setLayoutData(gridData5);
         bNew.addSelectionListener(new SelectionAdapter() {
 
@@ -193,7 +193,7 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
         label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setText("Label");
         label1.setLayoutData(gridData6);
-        bRemove = MsgHandler.newMsg("JOE_B_SettingForm_Remove").Control(new Button(group1, SWT.NONE));
+        bRemove = MsgHandler.newMsg("JOE_B_SettingForm_Remove").control(new Button(group1, SWT.NONE));
         bRemove.setLayoutData(gridData4);
         bRemove.addSelectionListener(new SelectionAdapter() {
 
@@ -211,7 +211,7 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
 
     private void createCReference() {
         GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
-        cReference = MsgHandler.newMsg("JOE_Cbo_SettingForm_Reference").Control(new Combo(group1, SWT.NONE));
+        cReference = MsgHandler.newMsg("JOE_Cbo_SettingForm_Reference").control(new Combo(group1, SWT.NONE));
         cReference.setLayoutData(gridData13);
         cReference.addModifyListener(new ModifyListener() {
 
@@ -224,7 +224,7 @@ public class SettingForm extends JobDocBaseForm<SettingListener> {
 
     private void createCType() {
         GridData gridData15 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        cType = MsgHandler.newMsg("JOE_Cbo_SettingForm_Type").Control(new Combo(group1, SWT.READ_ONLY));
+        cType = MsgHandler.newMsg("JOE_Cbo_SettingForm_Type").control(new Combo(group1, SWT.READ_ONLY));
         cType.setLayoutData(gridData15);
         cType.addSelectionListener(new SelectionListener() {
 

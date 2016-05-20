@@ -61,12 +61,12 @@ public class JobEmailSettings extends FormBaseClass {
         gridLayout4EMailGroup.marginLeft = 5;
         gridLayout4EMailGroup.marginTop = 5;
         gridLayout4EMailGroup.numColumns = 2;
-        Group group4EMail = SOSJOEMessageCodes.JOE_G_JobEmailSettings_Notifications.Control(new Group(objParent, SWT.NONE));
+        Group group4EMail = SOSJOEMessageCodes.JOE_G_JobEmailSettings_Notifications.control(new Group(objParent, SWT.NONE));
         group4EMail.setLayout(gridLayout4EMailGroup);
         group4EMail.setLayoutData(gridData);
         @SuppressWarnings("unused")
-        Label labelMailOnError = SOSJOEMessageCodes.JOE_L_MailForm_MailOnError.Control(new Label(group4EMail, SWT.NONE));
-        mailOnError = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnError.Control(new Combo(group4EMail, SWT.READ_ONLY));
+        Label labelMailOnError = SOSJOEMessageCodes.JOE_L_MailForm_MailOnError.control(new Label(group4EMail, SWT.NONE));
+        mailOnError = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnError.control(new Combo(group4EMail, SWT.READ_ONLY));
         mailOnError.setItems(comboItems);
         mailOnError.addSelectionListener(new SelectionAdapter() {
 
@@ -78,8 +78,8 @@ public class JobEmailSettings extends FormBaseClass {
         GridData gd_mailOnError = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnError.minimumWidth = 150;
         mailOnError.setLayoutData(gd_mailOnError);
-        Label labelMailOnWarning = SOSJOEMessageCodes.JOE_L_MailForm_MailOnWarning.Control(new Label(group4EMail, SWT.NONE));
-        mailOnWarning = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnWarning.Control(new Combo(group4EMail, SWT.READ_ONLY));
+        Label labelMailOnWarning = SOSJOEMessageCodes.JOE_L_MailForm_MailOnWarning.control(new Label(group4EMail, SWT.NONE));
+        mailOnWarning = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnWarning.control(new Combo(group4EMail, SWT.READ_ONLY));
         mailOnWarning.setItems(comboItems);
         mailOnWarning.addSelectionListener(new SelectionAdapter() {
 
@@ -91,8 +91,8 @@ public class JobEmailSettings extends FormBaseClass {
         GridData gd_mailOnWarning = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnWarning.minimumWidth = 150;
         mailOnWarning.setLayoutData(gd_mailOnWarning);
-        Label label3 = SOSJOEMessageCodes.JOE_L_MailForm_MailOnSuccess.Control(new Label(group4EMail, SWT.NONE));
-        mailOnSuccess = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnSuccess.Control(new Combo(group4EMail, SWT.READ_ONLY));
+        Label label3 = SOSJOEMessageCodes.JOE_L_MailForm_MailOnSuccess.control(new Label(group4EMail, SWT.NONE));
+        mailOnSuccess = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnSuccess.control(new Combo(group4EMail, SWT.READ_ONLY));
         mailOnSuccess.setItems(comboItems);
         mailOnSuccess.addSelectionListener(new SelectionAdapter() {
 
@@ -103,8 +103,8 @@ public class JobEmailSettings extends FormBaseClass {
         GridData gd_mailOnSuccess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnSuccess.minimumWidth = 150;
         mailOnSuccess.setLayoutData(gd_mailOnSuccess);
-        final Label mailOnProcessLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailOnProcess.Control(new Label(group4EMail, SWT.NONE));
-        mailOnProcess = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnProcess.Control(new Combo(group4EMail, SWT.READ_ONLY));
+        final Label mailOnProcessLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailOnProcess.control(new Label(group4EMail, SWT.NONE));
+        mailOnProcess = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnProcess.control(new Combo(group4EMail, SWT.READ_ONLY));
         mailOnProcess.setItems(comboItems);
         mailOnProcess.addSelectionListener(new SelectionAdapter() {
 
@@ -115,8 +115,8 @@ public class JobEmailSettings extends FormBaseClass {
         GridData gd_mailOnProcess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_mailOnProcess.minimumWidth = 150;
         mailOnProcess.setLayoutData(gd_mailOnProcess);
-        final Label mailOnDelayLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailOnDelayAfterError.Control(new Label(group4EMail, SWT.NONE));
-        mailOnDelayAfterError = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnDelayAfterError.Control(new Combo(group4EMail, SWT.READ_ONLY));
+        final Label mailOnDelayLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailOnDelayAfterError.control(new Label(group4EMail, SWT.NONE));
+        mailOnDelayAfterError = SOSJOEMessageCodes.JOE_Cbo_MailForm_MailOnDelayAfterError.control(new Combo(group4EMail, SWT.READ_ONLY));
         mailOnDelayAfterError.setItems(new String[] { "all", "first_only", "last_only", "first_and_last_only", "" });
         mailOnDelayAfterError.setEnabled("yes".equals(mailOnError.getText()) || "yes".equals(mailOnWarning.getText()));
         mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
@@ -130,8 +130,8 @@ public class JobEmailSettings extends FormBaseClass {
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
         gridData_1.heightHint = 8;
         ddddLabel.setLayoutData(gridData_1);
-        final Label mailToLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailTo.Control(new Label(group4EMail, SWT.NONE));
-        mailTo = SOSJOEMessageCodes.JOE_T_MailForm_MailTo.Control(new Text(group4EMail, SWT.BORDER));
+        final Label mailToLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailTo.control(new Label(group4EMail, SWT.NONE));
+        mailTo = SOSJOEMessageCodes.JOE_T_MailForm_MailTo.control(new Text(group4EMail, SWT.BORDER));
         mailTo.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -139,8 +139,8 @@ public class JobEmailSettings extends FormBaseClass {
             }
         });
         mailTo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label mailCcLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailCC.Control(new Label(group4EMail, SWT.NONE));
-        mailCC = SOSJOEMessageCodes.JOE_T_MailForm_MailCC.Control(new Text(group4EMail, SWT.BORDER));
+        final Label mailCcLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailCC.control(new Label(group4EMail, SWT.NONE));
+        mailCC = SOSJOEMessageCodes.JOE_T_MailForm_MailCC.control(new Text(group4EMail, SWT.BORDER));
         mailCC.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -150,10 +150,10 @@ public class JobEmailSettings extends FormBaseClass {
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_2.minimumWidth = 60;
         mailCC.setLayoutData(gridData_2);
-        final Label mailBccLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailBCC.Control(new Label(group4EMail, SWT.NONE));
+        final Label mailBccLabel = SOSJOEMessageCodes.JOE_L_MailForm_MailBCC.control(new Label(group4EMail, SWT.NONE));
         gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData.minimumWidth = 60;
-        mailBCC = SOSJOEMessageCodes.JOE_T_MailForm_MailBCC.Control(new Text(group4EMail, SWT.BORDER));
+        mailBCC = SOSJOEMessageCodes.JOE_T_MailForm_MailBCC.control(new Text(group4EMail, SWT.BORDER));
         mailBCC.setLayoutData(gridData);
         mailBCC.addModifyListener(new ModifyListener() {
 

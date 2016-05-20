@@ -60,10 +60,10 @@ public class OrdersForm extends SOSJOEMessageCodes {
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        ordersGroup = JOE_G_OrdersForm_Orders.Control(new Group(this, SWT.NONE));
+        ordersGroup = JOE_G_OrdersForm_Orders.control(new Group(this, SWT.NONE));
         ordersGroup.setLayout(gridLayout);
         createTable();
-        bNewOrder = JOE_B_OrdersForm_NewOrder.Control(new Button(ordersGroup, SWT.NONE));
+        bNewOrder = JOE_B_OrdersForm_NewOrder.control(new Button(ordersGroup, SWT.NONE));
         bNewOrder.setLayoutData(gridData);
         getShell().setDefaultButton(bNewOrder);
         bNewOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -75,7 +75,7 @@ public class OrdersForm extends SOSJOEMessageCodes {
         });
         label = new Label(ordersGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setLayoutData(gridData4);
-        bRemoveOrder = JOE_B_OrdersForm_RemoveOrder.Control(new Button(ordersGroup, SWT.NONE));
+        bRemoveOrder = JOE_B_OrdersForm_RemoveOrder.control(new Button(ordersGroup, SWT.NONE));
         bRemoveOrder.setEnabled(false);
         bRemoveOrder.setLayoutData(gridData1);
         bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -93,7 +93,7 @@ public class OrdersForm extends SOSJOEMessageCodes {
     private void createTable() {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
-        table = JOE_Tbl_OrdersForm_Table.Control(new Table(ordersGroup, SWT.BORDER | SWT.FULL_SELECTION));
+        table = JOE_Tbl_OrdersForm_Table.control(new Table(ordersGroup, SWT.BORDER | SWT.FULL_SELECTION));
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -118,7 +118,7 @@ public class OrdersForm extends SOSJOEMessageCodes {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_OrdersForm_OrderNameID.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_OrdersForm_OrderNameID.control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(240);
     }
 

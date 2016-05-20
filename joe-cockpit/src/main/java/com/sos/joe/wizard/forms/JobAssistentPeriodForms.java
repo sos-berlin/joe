@@ -134,12 +134,12 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             });
             final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
             tabFolder.setLayoutData(gridData);
-            everyDayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_EveryDayTabItem.Control(new TabItem(tabFolder, SWT.NONE));
+            everyDayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_EveryDayTabItem.control(new TabItem(tabFolder, SWT.NONE));
             everyDayTabItem.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_EveryDay.label());
             final Group group1 = new Group(tabFolder, SWT.NONE);
             group1.setLayout(new GridLayout());
             everyDayTabItem.setControl(group1);
-            newPeriodButton = SOSJOEMessageCodes.JOE_B_JobAssistent_NewPeriod.Control(new Button(group1, SWT.NONE));
+            newPeriodButton = SOSJOEMessageCodes.JOE_B_JobAssistent_NewPeriod.control(new Button(group1, SWT.NONE));
             newPeriodButton.setFocus();
             newPeriodButton.addSelectionListener(new SelectionAdapter() {
 
@@ -154,13 +154,13 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             });
             newPeriodButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
             createPeriodForm(JobAssistentPeriodForms.EVERY_DAY, group1, everyDayTabItem);
-            weekdayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_WeekdayTabItem.Control(new TabItem(tabFolder, SWT.NONE));
+            weekdayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_WeekdayTabItem.control(new TabItem(tabFolder, SWT.NONE));
             weekdayTabItem.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_Weekday.label());
-            final Group group2 = SOSJOEMessageCodes.JOE_Group.Control(new Group(tabFolder, SWT.NONE));
+            final Group group2 = SOSJOEMessageCodes.JOE_Group.control(new Group(tabFolder, SWT.NONE));
             final GridLayout gridLayout_1 = new GridLayout();
             group2.setLayout(gridLayout_1);
             weekdayTabItem.setControl(group2);
-            comboWeekDay = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Weekday.Control(new Combo(group2, SWT.NONE));
+            comboWeekDay = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Weekday.control(new Combo(group2, SWT.NONE));
             comboWeekDay.setItems(DaysListener.getWeekdays());
             createPeriodForm(JobAssistentPeriodForms.WEEK_DAY, group2, weekdayTabItem);
             comboWeekDay.addSelectionListener(new SelectionAdapter() {
@@ -177,12 +177,12 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
                 }
             });
             comboWeekDay.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
-            monthDayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_MonthDayTabItem.Control(new TabItem(tabFolder, SWT.NONE));
+            monthDayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_MonthDayTabItem.control(new TabItem(tabFolder, SWT.NONE));
             monthDayTabItem.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_Monthday.label());
-            final Group group = SOSJOEMessageCodes.JOE_Group.Control(new Group(tabFolder, SWT.NONE));
+            final Group group = SOSJOEMessageCodes.JOE_Group.control(new Group(tabFolder, SWT.NONE));
             group.setLayout(new GridLayout());
             monthDayTabItem.setControl(group);
-            comboMonth = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Month.Control(new Combo(group, SWT.NONE));
+            comboMonth = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Month.control(new Combo(group, SWT.NONE));
             comboMonth.setItems(DaysListener.getMonthdays());
             comboMonth.addSelectionListener(new SelectionAdapter() {
 
@@ -199,9 +199,9 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             });
             comboMonth.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, true, false));
             createPeriodForm(JobAssistentPeriodForms.MONTH_DAY, group, monthDayTabItem);
-            specificDayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_SpecificDayTabItem.Control(new TabItem(tabFolder, SWT.NONE));
+            specificDayTabItem = SOSJOEMessageCodes.JOE_JobAssistent_SpecificDayTabItem.control(new TabItem(tabFolder, SWT.NONE));
             specificDayTabItem.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_SpecificDay.label());
-            final Group group3 = SOSJOEMessageCodes.JOE_Group.Control(new Group(tabFolder, SWT.NONE));
+            final Group group3 = SOSJOEMessageCodes.JOE_Group.control(new Group(tabFolder, SWT.NONE));
             group3.setLayout(new GridLayout());
             specificDayTabItem.setControl(group3);
             txtSpeDay = new SOSDateTime(group3, SWT.NONE);
@@ -232,7 +232,7 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             gridData_3.heightHint = 25;
             composite.setLayoutData(gridData_3);
             composite.setLayout(new GridLayout());
-            addPeriodButton = SOSJOEMessageCodes.JOE_B_JobAssistent_AddPeriod.Control(new Button(composite, SWT.NONE));
+            addPeriodButton = SOSJOEMessageCodes.JOE_B_JobAssistent_AddPeriod.control(new Button(composite, SWT.NONE));
             addPeriodButton.setLayoutData(new GridData());
             addPeriodButton.setEnabled(false);
             addPeriodButton.addSelectionListener(new SelectionAdapter() {
@@ -242,7 +242,7 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
                     apply();
                 }
             });
-            list = SOSJOEMessageCodes.JOE_JobAssistent_PeriodList.Control(new List(shell, SWT.V_SCROLL | SWT.BORDER));
+            list = SOSJOEMessageCodes.JOE_JobAssistent_PeriodList.control(new List(shell, SWT.V_SCROLL | SWT.BORDER));
             list.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -255,7 +255,7 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             final GridData gridData2 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
             gridData2.widthHint = 335;
             list.setLayoutData(gridData2);
-            removeButton = SOSJOEMessageCodes.JOE_B_JobAssistentPeriodForms_Remove.Control(new Button(shell, SWT.NONE));
+            removeButton = SOSJOEMessageCodes.JOE_B_JobAssistentPeriodForms_Remove.control(new Button(shell, SWT.NONE));
             removeButton.setEnabled(false);
             removeButton.addSelectionListener(new SelectionAdapter() {
 
@@ -269,7 +269,7 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
                 }
             });
             removeButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.Control(new Button(shell, SWT.NONE));
+            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.control(new Button(shell, SWT.NONE));
             butCancel.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -284,7 +284,7 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
             shell.open();
             Button butHelp = Utils.createHelpButton(shell, "JOE_M_JobAssistentPeriodForms_Help.label", shell);
             butHelp.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-            butNext = SOSJOEMessageCodes.JOE_B_JobAssistentPeriodForms_Apply.Control(new Button(shell, SWT.NONE));
+            butNext = SOSJOEMessageCodes.JOE_B_JobAssistentPeriodForms_Apply.control(new Button(shell, SWT.NONE));
             butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
             butNext.addSelectionListener(new SelectionAdapter() {

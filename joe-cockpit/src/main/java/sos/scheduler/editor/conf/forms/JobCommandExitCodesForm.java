@@ -125,9 +125,9 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
         gridLayout.numColumns = 2;
         gridLayout.marginHeight = 0;
         gridLayout.verticalSpacing = 0;
-        gMain = JOE_G_JobCommands_Commands.Control(new Group(sashForm, SWT.NONE));
+        gMain = JOE_G_JobCommands_Commands.control(new Group(sashForm, SWT.NONE));
         gMain.setLayout(gridLayout);
-        cExitcode = JOE_Cbo_JobCommands_Exitcode.Control(new Combo(gMain, SWT.NONE));
+        cExitcode = JOE_Cbo_JobCommands_Exitcode.control(new Combo(gMain, SWT.NONE));
         cExitcode.setItems(new String[] { "error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS",
                 "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP",
                 "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR",
@@ -153,7 +153,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
         gridLayout_1.marginHeight = 0;
         gridLayout_1.marginWidth = 0;
         composite.setLayout(gridLayout_1);
-        addJobButton = JOE_B_JobCommands_AddJob.Control(new Button(composite, SWT.NONE));
+        addJobButton = JOE_B_JobCommands_AddJob.control(new Button(composite, SWT.NONE));
         addJobButton.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -161,7 +161,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
             }
         });
         addJobButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-        addOrderButton = JOE_B_JobCommands_AddOrder.Control(new Button(composite, SWT.NONE));
+        addOrderButton = JOE_B_JobCommands_AddOrder.control(new Button(composite, SWT.NONE));
         addOrderButton.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
         addOrderButton.addSelectionListener(new SelectionAdapter() {
 
@@ -169,10 +169,10 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
                 addOrder();
             }
         });
-        final Label exitLabel = JOE_L_JobCommands_ExitCodes.Control(new Label(gMain, SWT.NONE));
+        final Label exitLabel = JOE_L_JobCommands_ExitCodes.control(new Label(gMain, SWT.NONE));
         exitLabel.setLayoutData(new GridData(73, SWT.DEFAULT));
         new Label(gMain, SWT.NONE);
-        tCommands = JOE_Tbl_JobCommands_Commands.Control(new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER));
+        tCommands = JOE_Tbl_JobCommands_Commands.control(new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER));
         tCommands.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -201,15 +201,15 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
         gridData9.heightHint = 149;
         tCommands.setLayoutData(gridData9);
         listener.fillCommands(tCommands);
-        final TableColumn tcJob = JOE_TCl_JobCommands_Command.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcJob = JOE_TCl_JobCommands_Command.control(new TableColumn(tCommands, SWT.NONE));
         tcJob.setWidth(167);
-        final TableColumn tcCommand = JOE_TCl_JobCommands_JobID.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcCommand = JOE_TCl_JobCommands_JobID.control(new TableColumn(tCommands, SWT.NONE));
         tcCommand.setWidth(154);
-        final TableColumn tcJobchain = JOE_TCl_JobCommands_JobChain.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcJobchain = JOE_TCl_JobCommands_JobChain.control(new TableColumn(tCommands, SWT.NONE));
         tcJobchain.setWidth(136);
-        final TableColumn tcStartAt = JOE_TCl_JobCommands_StartAt.Control(new TableColumn(tCommands, SWT.NONE));
+        final TableColumn tcStartAt = JOE_TCl_JobCommands_StartAt.control(new TableColumn(tCommands, SWT.NONE));
         tcStartAt.setWidth(139);
-        bRemoveExitcode = JOE_B_JobCommands_Remove.Control(new Button(gMain, SWT.NONE));
+        bRemoveExitcode = JOE_B_JobCommands_Remove.control(new Button(gMain, SWT.NONE));
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
         gridData.widthHint = 67;
         bRemoveExitcode.setLayoutData(gridData);

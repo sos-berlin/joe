@@ -50,7 +50,7 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener> {
                 DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", "", true, JOE_B_PayloadForm_PayloadNote.label());
             }
         });
-        bDocNotes = JOE_B_PayloadForm_DocNote.Control(new Button(group, SWT.NONE));
+        bDocNotes = JOE_B_PayloadForm_DocNote.control(new Button(group, SWT.NONE));
         bDocNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override

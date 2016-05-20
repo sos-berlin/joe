@@ -162,10 +162,10 @@ public class SOSTabJobChainNodes extends CTabItem {
             gridLayout_3.marginTop = 5;
             gridLayout_3.numColumns = 6;
             gNodes.setLayout(gridLayout_3);
-            label6 = JOE_L_JobChainNodes_State.Control(new Label(gNodes, SWT.NONE));
+            label6 = JOE_L_JobChainNodes_State.control(new Label(gNodes, SWT.NONE));
             label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
             new Label(gNodes, SWT.NONE);
-            tState = JOE_T_JobChainNodes_State.Control(new Text(gNodes, SWT.BORDER));
+            tState = JOE_T_JobChainNodes_State.control(new Text(gNodes, SWT.BORDER));
             tState.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -185,7 +185,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             final GridData gridData18 = new GridData(SWT.FILL, GridData.CENTER, false, false, 3, 1);
             gridData18.widthHint = 300;
             tState.setLayoutData(gridData18);
-            bApplyNode = JOE_B_JobChainNodes_ApplyNode.Control(new Button(gNodes, SWT.NONE));
+            bApplyNode = JOE_B_JobChainNodes_ApplyNode.control(new Button(gNodes, SWT.NONE));
             bApplyNode.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -195,8 +195,8 @@ public class SOSTabJobChainNodes extends CTabItem {
             });
             bApplyNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
             bApplyNode.setEnabled(false);
-            label7 = JOE_L_JCNodesForm_Job.Control(new Label(gNodes, SWT.NONE));
-            butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
+            label7 = JOE_L_JCNodesForm_Job.control(new Label(gNodes, SWT.NONE));
+            butGoto = JOE_B_JobChainNodes_Goto.control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
             butGoto.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -205,7 +205,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                 }
             });
             butGoto.setAlignment(SWT.RIGHT);
-            cJob = JOE_Cbo_JCNodesForm_Job.Control(new Combo(gNodes, SWT.BORDER));
+            cJob = JOE_Cbo_JCNodesForm_Job.control(new Combo(gNodes, SWT.BORDER));
             cJob.setVisibleItemCount(9);
             cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, jobchainDataProvider.getDom(), JOEConstants.JOB).getMenu());
             cJob.addMouseListener(new MouseAdapter() {
@@ -240,7 +240,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             final GridData gridData13 = new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1);
             gridData13.widthHint = 300;
             cJob.setLayoutData(gridData13);
-            butBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(gNodes, SWT.NONE));
+            butBrowse = JOE_B_JobChainNodes_Browse.control(new Button(gNodes, SWT.NONE));
             GridData gd_butBrowse = new GridData(GridData.FILL, SWT.BOTTOM, false, false);
             butBrowse.setLayoutData(gd_butBrowse);
             butBrowse.addSelectionListener(new SelectionAdapter() {
@@ -253,9 +253,9 @@ public class SOSTabJobChainNodes extends CTabItem {
                     }
                 }
             });
-            label8 = JOE_L_JobChainNodes_NextState.Control(new Label(gNodes, SWT.NONE));
+            label8 = JOE_L_JobChainNodes_NextState.control(new Label(gNodes, SWT.NONE));
             new Label(gNodes, SWT.NONE);
-            cNextState = JOE_Cbo_JobChainNodes_NextState.Control(new Combo(gNodes, SWT.NONE));
+            cNextState = JOE_Cbo_JobChainNodes_NextState.control(new Combo(gNodes, SWT.NONE));
             cNextState.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cNextState.addModifyListener(new ModifyListener() {
 
@@ -276,8 +276,8 @@ public class SOSTabJobChainNodes extends CTabItem {
                     }
                 }
             });
-            final Label delayLabel = JOE_L_JCNodesForm_Delay.Control(new Label(gNodes, SWT.NONE));
-            tDelay = JOE_T_JCNodesForm_Delay.Control(new Text(gNodes, SWT.BORDER));
+            final Label delayLabel = JOE_L_JCNodesForm_Delay.control(new Label(gNodes, SWT.NONE));
+            tDelay = JOE_T_JCNodesForm_Delay.control(new Text(gNodes, SWT.BORDER));
             tDelay.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -292,7 +292,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             gridData_8.minimumWidth = 35;
             gridData_8.widthHint = 222;
             tDelay.setLayoutData(gridData_8);
-            butImportJob = JOE_B_JCNodesForm_ImportJob.Control(new Button(gNodes, SWT.NONE));
+            butImportJob = JOE_B_JCNodesForm_ImportJob.control(new Button(gNodes, SWT.NONE));
             butImportJob.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             butImportJob.addSelectionListener(new SelectionAdapter() {
 
@@ -309,9 +309,9 @@ public class SOSTabJobChainNodes extends CTabItem {
                     refresh = true;
                 }
             });
-            Label label9 = JOE_L_JobChainNodes_ErrorState.Control(new Label(gNodes, SWT.NONE));
+            Label label9 = JOE_L_JobChainNodes_ErrorState.control(new Label(gNodes, SWT.NONE));
             new Label(gNodes, SWT.NONE);
-            cErrorState = JOE_Cbo_JobChainNodes_ErrorState.Control(new Combo(gNodes, SWT.NONE));
+            cErrorState = JOE_Cbo_JobChainNodes_ErrorState.control(new Combo(gNodes, SWT.NONE));
             cErrorState.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -334,8 +334,8 @@ public class SOSTabJobChainNodes extends CTabItem {
             final GridData gridData15 = new GridData(SWT.FILL, GridData.CENTER, false, false);
             gridData15.widthHint = 80;
             cErrorState.setLayoutData(gridData15);
-            final Label onErrorLabel = JOE_L_JCNodesForm_OnError.Control(new Label(gNodes, SWT.NONE));
-            cOnError = JOE_Cbo_JCNodesForm_OnError.Control(new Combo(gNodes, SWT.READ_ONLY));
+            final Label onErrorLabel = JOE_L_JCNodesForm_OnError.control(new Label(gNodes, SWT.NONE));
+            cOnError = JOE_Cbo_JCNodesForm_OnError.control(new Combo(gNodes, SWT.READ_ONLY));
             cOnError.setItems(new String[] { "", JOE_M_JCNodesForm_Setback.label(), JOE_M_JCNodesForm_Suspend.label() });
             cOnError.addModifyListener(new ModifyListener() {
 
@@ -360,7 +360,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             gridData_12.widthHint = 195;
             gridData_12.minimumWidth = 20;
             cOnError.setLayoutData(gridData_12);
-            bNewNode = JOE_B_JCNodesForm_NewNode.Control(new Button(gNodes, SWT.NONE));
+            bNewNode = JOE_B_JCNodesForm_NewNode.control(new Button(gNodes, SWT.NONE));
             bNewNode.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -382,7 +382,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             new Label(gNodes, SWT.NONE);
             new Label(gNodes, SWT.NONE);
             new Label(gNodes, SWT.NONE);
-            butInsert = JOE_B_JCNodesForm_Insert.Control(new Button(gNodes, SWT.NONE));
+            butInsert = JOE_B_JCNodesForm_Insert.control(new Button(gNodes, SWT.NONE));
             butInsert.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -406,8 +406,8 @@ public class SOSTabJobChainNodes extends CTabItem {
             new Label(gNodes, SWT.NONE);
             new Label(gNodes, SWT.NONE);
             new Label(gNodes, SWT.NONE);
-            final Label removeFileLabel = JOE_L_JCNodesForm_RemoveFile.Control(new Label(gNodes, SWT.NONE));
-            bRemoveFile = JOE_B_JCNodesForm_RemoveFile.Control(new Button(gNodes, SWT.CHECK));
+            final Label removeFileLabel = JOE_L_JCNodesForm_RemoveFile.control(new Label(gNodes, SWT.NONE));
+            bRemoveFile = JOE_B_JCNodesForm_RemoveFile.control(new Button(gNodes, SWT.CHECK));
             final GridData gridData_1 = new GridData();
             gridData_1.horizontalIndent = 5;
             bRemoveFile.setLayoutData(gridData_1);
@@ -435,7 +435,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             });
             bRemoveFile.setEnabled(false);
             new Label(gNodes, SWT.NONE);
-            bFullNode = JOE_B_JCNodesForm_FullNode.Control(new Button(gNodes, SWT.RADIO));
+            bFullNode = JOE_B_JCNodesForm_FullNode.control(new Button(gNodes, SWT.RADIO));
             bFullNode.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -444,7 +444,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                 }
             });
             bFullNode.setSelection(true);
-            bEndNode = JOE_B_JCNodesForm_EndNode.Control(new Button(gNodes, SWT.RADIO));
+            bEndNode = JOE_B_JCNodesForm_EndNode.control(new Button(gNodes, SWT.RADIO));
             bEndNode.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -490,7 +490,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     bApplyNode.setEnabled(isValidNode());
                 }
             });
-            bFileSink = JOE_B_JCNodesForm_FileSink.Control(new Button(gNodes, SWT.RADIO));
+            bFileSink = JOE_B_JCNodesForm_FileSink.control(new Button(gNodes, SWT.RADIO));
             final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
             gridData.widthHint = 71;
             bFileSink.setLayoutData(gridData);
@@ -515,8 +515,8 @@ public class SOSTabJobChainNodes extends CTabItem {
                     }
                 }
             });
-            final Label moveToLabel = JOE_L_JCNodesForm_MoveTo.Control(new Label(gNodes, SWT.NONE));
-            tMoveTo = JOE_T_JCNodesForm_MoveTo.Control(new Text(gNodes, SWT.BORDER));
+            final Label moveToLabel = JOE_L_JCNodesForm_MoveTo.control(new Label(gNodes, SWT.NONE));
+            tMoveTo = JOE_T_JCNodesForm_MoveTo.control(new Text(gNodes, SWT.BORDER));
             final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
             gridData_3.horizontalIndent = 5;
             tMoveTo.setLayoutData(gridData_3);
@@ -544,7 +544,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             });
             tMoveTo.setEnabled(false);
             new Label(gNodes, SWT.NONE);
-            tNodes = JOE_Tbl_JCNodesForm_Nodes.Control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));
+            tNodes = JOE_Tbl_JCNodesForm_Nodes.control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));
             tNodes.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -558,17 +558,17 @@ public class SOSTabJobChainNodes extends CTabItem {
             gridData4.widthHint = 451;
             gridData4.heightHint = 112;
             tNodes.setLayoutData(gridData4);
-            final TableColumn tableColumn3 = JOE_TCl_JCNodesForm_State.Control(new TableColumn(tNodes, SWT.NONE));
+            final TableColumn tableColumn3 = JOE_TCl_JCNodesForm_State.control(new TableColumn(tNodes, SWT.NONE));
             tableColumn3.setWidth(90);
-            final TableColumn newColumnTableColumn_3 = JOE_TCl_JCNodesForm_Node.Control(new TableColumn(tNodes, SWT.NONE));
+            final TableColumn newColumnTableColumn_3 = JOE_TCl_JCNodesForm_Node.control(new TableColumn(tNodes, SWT.NONE));
             newColumnTableColumn_3.setWidth(100);
-            final TableColumn tableColumn4 = JOE_TCl_JCNodesForm_JobDir.Control(new TableColumn(tNodes, SWT.NONE));
+            final TableColumn tableColumn4 = JOE_TCl_JCNodesForm_JobDir.control(new TableColumn(tNodes, SWT.NONE));
             tableColumn4.setWidth(200);
-            final TableColumn tableColumn5 = JOE_TCl_JCNodesForm_NextState.Control(new TableColumn(tNodes, SWT.NONE));
+            final TableColumn tableColumn5 = JOE_TCl_JCNodesForm_NextState.control(new TableColumn(tNodes, SWT.NONE));
             tableColumn5.setWidth(90);
-            final TableColumn tableColumn6 = JOE_TCl_JCNodesForm_ErrorState.Control(new TableColumn(tNodes, SWT.NONE));
+            final TableColumn tableColumn6 = JOE_TCl_JCNodesForm_ErrorState.control(new TableColumn(tNodes, SWT.NONE));
             tableColumn6.setWidth(90);
-            final TableColumn newColumnTableColumn_4 = JOE_TCl_JCNodesForm_OnError.Control(new TableColumn(tNodes, SWT.NONE));
+            final TableColumn newColumnTableColumn_4 = JOE_TCl_JCNodesForm_OnError.control(new TableColumn(tNodes, SWT.NONE));
             newColumnTableColumn_4.setWidth(100);
             final Composite composite_1 = new Composite(gNodes, SWT.NONE);
             composite_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -577,7 +577,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             gridLayout_5.marginHeight = 0;
             gridLayout_5.numColumns = 3;
             composite_1.setLayout(gridLayout_5);
-            butUp = JOE_B_Up.Control(new Button(composite_1, SWT.NONE));
+            butUp = JOE_B_Up.control(new Button(composite_1, SWT.NONE));
             butUp.setText("");
             butUp.addSelectionListener(new SelectionAdapter() {
 
@@ -595,7 +595,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                 }
             });
             butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
-            butDown = JOE_B_Down.Control(new Button(composite_1, SWT.NONE));
+            butDown = JOE_B_Down.control(new Button(composite_1, SWT.NONE));
             butDown.setText("");
             butDown.addSelectionListener(new SelectionAdapter() {
 
@@ -614,9 +614,9 @@ public class SOSTabJobChainNodes extends CTabItem {
             });
             butDown.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
-            reorderButton = JOE_B_JCNodesForm_Reorder.Control(new Button(composite_1, SWT.CHECK));
+            reorderButton = JOE_B_JCNodesForm_Reorder.control(new Button(composite_1, SWT.CHECK));
             reorderButton.setSelection(true);
-            butDetailsJob = JOE_B_JCNodesForm_Details.Control(new Button(gNodes, SWT.NONE));
+            butDetailsJob = JOE_B_JCNodesForm_Details.control(new Button(gNodes, SWT.NONE));
             butDetailsJob.setEnabled(false);
             butDetailsJob.addSelectionListener(new SelectionAdapter() {
 
@@ -639,7 +639,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     }
                 }
             });
-            butAddMissingNodes = JOE_B_JCNodesForm_AddMissingNodes.Control(new Button(gNodes, SWT.NONE));
+            butAddMissingNodes = JOE_B_JCNodesForm_AddMissingNodes.control(new Button(gNodes, SWT.NONE));
             butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -673,7 +673,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             });
             butAddMissingNodes.setEnabled(false);
             butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            butReturnCode = JOE_B_JCNodesForm_ReturnCodes.Control(new Button(gNodes, SWT.NONE));
+            butReturnCode = JOE_B_JCNodesForm_ReturnCodes.control(new Button(gNodes, SWT.NONE));
             butReturnCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             butReturnCode.addSelectionListener(new SelectionAdapter() {
 
@@ -690,7 +690,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     }
                 }
             });
-            bRemoveNode = JOE_B_JCNodesForm_Remove.Control(new Button(gNodes, SWT.NONE));
+            bRemoveNode = JOE_B_JCNodesForm_Remove.control(new Button(gNodes, SWT.NONE));
             new Label(gNodes, SWT.NONE);
             bRemoveNode.setEnabled(false);
             bRemoveNode.addSelectionListener(new SelectionAdapter() {

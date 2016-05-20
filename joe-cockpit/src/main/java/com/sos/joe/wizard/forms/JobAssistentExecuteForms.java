@@ -99,7 +99,7 @@ public class JobAssistentExecuteForms {
         new Label(jobGroup, SWT.NONE);
         new Label(jobGroup, SWT.NONE);
         new Label(jobGroup, SWT.NONE);
-        butScript = SOSJOEMessageCodes.JOE_B_JobAssistent_Script.Control(new Button(jobGroup, SWT.RADIO));
+        butScript = SOSJOEMessageCodes.JOE_B_JobAssistent_Script.control(new Button(jobGroup, SWT.RADIO));
         butScript.setSelection(job.getChild("script") != null);
         butScript.addSelectionListener(new SelectionAdapter() {
 
@@ -115,9 +115,9 @@ public class JobAssistentExecuteForms {
         final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.CENTER, false, true);
         gridData_3.widthHint = 69;
         butScript.setLayoutData(gridData_3);
-        final Label lblLanguage = SOSJOEMessageCodes.JOE_L_JobAssistent_Language.Control(new Label(jobGroup, SWT.NONE));
+        final Label lblLanguage = SOSJOEMessageCodes.JOE_L_JobAssistent_Language.control(new Label(jobGroup, SWT.NONE));
         lblLanguage.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
-        comLanguage = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Language.Control(new Combo(jobGroup, SWT.NONE));
+        comLanguage = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Language.control(new Combo(jobGroup, SWT.NONE));
         comLanguage.setItems(ScriptListener._languagesJob);
         comLanguage.addSelectionListener(new SelectionAdapter() {
 
@@ -130,7 +130,7 @@ public class JobAssistentExecuteForms {
                 }
             }
         });
-        txtInclude = SOSJOEMessageCodes.JOE_T_JobAssistent_Include.Control(new Text(jobGroup, SWT.BORDER));
+        txtInclude = SOSJOEMessageCodes.JOE_T_JobAssistent_Include.control(new Text(jobGroup, SWT.BORDER));
         txtInclude.setEditable(false);
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, true);
         txtInclude.setLayoutData(gridData_2);
@@ -153,7 +153,7 @@ public class JobAssistentExecuteForms {
         } else {
             comLanguage.setEnabled(false);
         }
-        final Label includeLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Include.Control(new Label(jobGroup, SWT.NONE));
+        final Label includeLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Include.control(new Label(jobGroup, SWT.NONE));
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, true);
         gridData_1.widthHint = 45;
         includeLabel.setLayoutData(gridData_1);
@@ -161,12 +161,12 @@ public class JobAssistentExecuteForms {
         shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width,
                 shell.getBounds().height);
         shell.open();
-        final Composite composite = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(shell, SWT.NONE));
+        final Composite composite = SOSJOEMessageCodes.JOE_Composite1.control(new Composite(shell, SWT.NONE));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.marginWidth = 0;
         gridLayout_2.horizontalSpacing = 0;
         composite.setLayout(gridLayout_2);
-        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
+        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.control(new Button(composite, SWT.NONE));
         butCancel.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -174,13 +174,13 @@ public class JobAssistentExecuteForms {
                 close();
             }
         });
-        final Composite composite2 = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(shell, SWT.NONE));
+        final Composite composite2 = SOSJOEMessageCodes.JOE_Composite2.control(new Composite(shell, SWT.NONE));
         composite2.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
         final GridLayout gridLayout_3 = new GridLayout();
         gridLayout_3.marginWidth = 0;
         gridLayout_3.numColumns = 5;
         composite2.setLayout(gridLayout_3);
-        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite2, SWT.NONE));
+        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.control(new Button(composite2, SWT.NONE));
         butShow.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -189,7 +189,7 @@ public class JobAssistentExecuteForms {
                 Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, false);
             }
         });
-        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite2, SWT.NONE));
+        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.control(new Button(composite2, SWT.NONE));
         butFinish.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -199,7 +199,7 @@ public class JobAssistentExecuteForms {
                 shell.dispose();
             }
         });
-        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite2, SWT.NONE));
+        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.control(new Button(composite2, SWT.NONE));
         butBack.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -215,7 +215,7 @@ public class JobAssistentExecuteForms {
                 shell.dispose();
             }
         });
-        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite2, SWT.NONE));
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.control(new Button(composite2, SWT.NONE));
         butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         butNext.addSelectionListener(new SelectionAdapter() {
 

@@ -78,17 +78,17 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        group1 = SOSJOEMessageCodes.JOE_G_JobOptionsForm_StartWhenDirectoryChanged.Control(new Group(objParent, SWT.NONE));
+        group1 = SOSJOEMessageCodes.JOE_G_JobOptionsForm_StartWhenDirectoryChanged.control(new Group(objParent, SWT.NONE));
         group1.setLayout(gridLayout1);
         group1.setLayoutData(gridData);
-        Label label = SOSJOEMessageCodes.JOE_L_JobOptionsForm_WatchDirectory.Control(new Label(group1, SWT.NONE));
+        Label label = SOSJOEMessageCodes.JOE_L_JobOptionsForm_WatchDirectory.control(new Label(group1, SWT.NONE));
         tDirectory = new FolderNameSelector(group1, SWT.BORDER);
         tDirectory.setParentForm(this);
         tDirectory.setDataProvider(objJobDataProvider);
-        label11 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_FileRegex.Control(new Label(group1, SWT.NONE));
-        tRegex = SOSJOEMessageCodes.JOE_T_JobOptionsForm_FileRegex.Control(new Text(group1, SWT.BORDER));
+        label11 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_FileRegex.control(new Label(group1, SWT.NONE));
+        tRegex = SOSJOEMessageCodes.JOE_T_JobOptionsForm_FileRegex.control(new Text(group1, SWT.BORDER));
         tRegex.setLayoutData(gridData4);
-        bApplyDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDir.Control(new Button(group1, SWT.NONE));
+        bApplyDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDir.control(new Button(group1, SWT.NONE));
         bApplyDirectory.setEnabled(false);
         bApplyDirectory.setLayoutData(gridData51);
         bApplyDirectory.addSelectionListener(new SelectionAdapter() {
@@ -100,7 +100,7 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setLayoutData(gridData110);
         createTable3();
-        bNewDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewDir.Control(new Button(group1, SWT.NONE));
+        bNewDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewDir.control(new Button(group1, SWT.NONE));
         bNewDirectory.setLayoutData(gridData41);
         bNewDirectory.addSelectionListener(new SelectionAdapter() {
 
@@ -113,7 +113,7 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         });
         label21 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label21.setLayoutData(gridData210);
-        bRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveDir.Control(new Button(group1, SWT.NONE));
+        bRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveDir.control(new Button(group1, SWT.NONE));
         bRemoveDirectory.setEnabled(false);
         bRemoveDirectory.setLayoutData(gridData31);
         bRemoveDirectory.addSelectionListener(new SelectionAdapter() {
@@ -194,7 +194,7 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
         gridData30.grabExcessHorizontalSpace = true;
         gridData30.grabExcessVerticalSpace = true;
         gridData30.verticalSpan = 3;
-        tDirectories = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_Dirs.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
+        tDirectories = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_Dirs.control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
         tDirectories.setHeaderVisible(true);
         tDirectories.setLayoutData(gridData30);
         tDirectories.setLinesVisible(true);
@@ -215,9 +215,9 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
                 tDirectory.selectAll();
             }
         });
-        TableColumn tableColumn5 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Dir.Control(new TableColumn(tDirectories, SWT.NONE));
+        TableColumn tableColumn5 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Dir.control(new TableColumn(tDirectories, SWT.NONE));
         tableColumn5.setWidth(300);
-        TableColumn tableColumn6 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Regex.Control(new TableColumn(tDirectories, SWT.NONE));
+        TableColumn tableColumn6 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Regex.control(new TableColumn(tDirectories, SWT.NONE));
         tableColumn6.setWidth(250);
     }
 

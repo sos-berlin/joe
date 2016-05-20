@@ -76,8 +76,8 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
         gridLayout3.numColumns = 5;
         composite1 = new SOSComposite(group, SWT.NONE);
         composite1.setLayout(gridLayout3);
-        label6 = JOE_L_Name.Control(new SOSLabel(composite1, SWT.NONE));
-        tDB = JOE_T_DBForm_Database.Control(new Text(composite1, SWT.BORDER));
+        label6 = JOE_L_Name.control(new SOSLabel(composite1, SWT.NONE));
+        tDB = JOE_T_DBForm_Database.control(new Text(composite1, SWT.BORDER));
         tDB.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tDB.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -88,7 +88,7 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
             }
         });
         new Label(composite1, SWT.NONE);
-        cRequired = JOE_B_DBForm_Required.Control(new Button(composite1, SWT.CHECK));
+        cRequired = JOE_B_DBForm_Required.control(new Button(composite1, SWT.CHECK));
         cRequired.setLayoutData(new GridData());
         cRequired.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -98,7 +98,7 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
                 getShell().setDefaultButton(bApply);
             }
         });
-        bApply = JOE_B_DBForm_Apply.Control(new Button(composite1, SWT.NONE));
+        bApply = JOE_B_DBForm_Apply.control(new Button(composite1, SWT.NONE));
         bApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -109,12 +109,12 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
         });
         label = new Label(composite1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
-        tDatabases = JOE_Tbl_DBForm_Databases.Control(new Table(composite1, SWT.FULL_SELECTION | SWT.BORDER));
-        TableColumn tableColumn2 = JOE_TCl_DBForm_Name.Control(new TableColumn(tDatabases, SWT.NONE));
+        tDatabases = JOE_Tbl_DBForm_Databases.control(new Table(composite1, SWT.FULL_SELECTION | SWT.BORDER));
+        TableColumn tableColumn2 = JOE_TCl_DBForm_Name.control(new TableColumn(tDatabases, SWT.NONE));
         tableColumn2.setWidth(300);
-        TableColumn tableColumn3 = JOE_TCl_DBForm_Required.Control(new TableColumn(tDatabases, SWT.NONE));
+        TableColumn tableColumn3 = JOE_TCl_DBForm_Required.control(new TableColumn(tDatabases, SWT.NONE));
         tableColumn3.setWidth(173);
-        bNew = JOE_B_DBForm_New.Control(new Button(composite1, SWT.NONE));
+        bNew = JOE_B_DBForm_New.control(new Button(composite1, SWT.NONE));
         bNew.setLayoutData(gridData8);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -141,7 +141,7 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
                 }
             }
         });
-        bRemove = JOE_B_DBForm_Remove.Control(new Button(composite1, SWT.NONE));
+        bRemove = JOE_B_DBForm_Remove.control(new Button(composite1, SWT.NONE));
         bRemove.setLayoutData(gridData2);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 

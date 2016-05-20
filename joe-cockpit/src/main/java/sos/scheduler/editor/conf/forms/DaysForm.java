@@ -113,7 +113,7 @@ public class DaysForm extends SOSJOEMessageCodes {
         lblWeekdays.setText(strT);
         GridData gd_cUnusedDays = new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1);
         gd_cUnusedDays.widthHint = 150;
-        cbUnusedDays = JOE_Cbo_DaysForm_UnusedDays.Control(new Combo(group, SWT.READ_ONLY));
+        cbUnusedDays = JOE_Cbo_DaysForm_UnusedDays.control(new Combo(group, SWT.READ_ONLY));
         cbUnusedDays.setVisibleItemCount(10);
         cbUnusedDays.setLayoutData(gd_cUnusedDays);
         btAddFromCombo = new Button(group, SWT.NONE);
@@ -162,7 +162,7 @@ public class DaysForm extends SOSJOEMessageCodes {
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-        lUsedDays = JOE_Lst_DaysForm_UsedDays.Control(new List(group, SWT.BORDER));
+        lUsedDays = JOE_Lst_DaysForm_UsedDays.control(new List(group, SWT.BORDER));
         GridData gd_lUsedDaysOben = new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1);
         gd_lUsedDaysOben.widthHint = 450;
         gd_lUsedDaysOben.heightHint = 120;
@@ -189,7 +189,7 @@ public class DaysForm extends SOSJOEMessageCodes {
                 newGroup = false;
             }
         });
-        btRemoveFromList = JOE_B_DaysForm_Remove.Control(new Button(group, SWT.NONE));
+        btRemoveFromList = JOE_B_DaysForm_Remove.control(new Button(group, SWT.NONE));
         btRemoveFromList.setEnabled(false);
         btRemoveFromList.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         btRemoveFromList.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -200,7 +200,7 @@ public class DaysForm extends SOSJOEMessageCodes {
                 listOfGroup.removeAll();
             }
         });
-        listOfDays = JOE_Lst_DaysForm_DaysList.Control(new List(group, SWT.BORDER));
+        listOfDays = JOE_Lst_DaysForm_DaysList.control(new List(group, SWT.BORDER));
         listOfDays.setItems(listener.getAllDays());
         GridData gd_listOfDays = new GridData(SWT.LEFT, SWT.FILL, false, false, 2, 3);
         gd_listOfDays.minimumWidth = 150;
@@ -228,7 +228,7 @@ public class DaysForm extends SOSJOEMessageCodes {
             new Label(group, SWT.NONE);
         }
 
-        listOfGroup = JOE_Lst_DaysForm_GroupsList.Control(new List(group, SWT.BORDER));
+        listOfGroup = JOE_Lst_DaysForm_GroupsList.control(new List(group, SWT.BORDER));
         GridData gd_listOfGroup = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 3);
         gd_listOfGroup.widthHint = 150;
         gd_listOfGroup.minimumWidth = 150;
@@ -242,7 +242,7 @@ public class DaysForm extends SOSJOEMessageCodes {
                 }
             }
         });
-        btNewGroup = JOE_B_DaysForm_NewGroup.Control(new Button(group, SWT.NONE));
+        btNewGroup = JOE_B_DaysForm_NewGroup.control(new Button(group, SWT.NONE));
         btNewGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btNewGroup.addSelectionListener(new SelectionAdapter() {
 
@@ -253,7 +253,7 @@ public class DaysForm extends SOSJOEMessageCodes {
                 listOfDays.deselectAll();
             }
         });
-        btAdd = JOE_B_DaysForm_Add.Control(new Button(group, SWT.NONE));
+        btAdd = JOE_B_DaysForm_Add.control(new Button(group, SWT.NONE));
         btAdd.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         btAdd.addSelectionListener(new SelectionAdapter() {
 
@@ -261,7 +261,7 @@ public class DaysForm extends SOSJOEMessageCodes {
                 addGroupDay();
             }
         });
-        btApplyGroup = JOE_B_DaysForm_ApplyGroup.Control(new Button(group, SWT.NONE));
+        btApplyGroup = JOE_B_DaysForm_ApplyGroup.control(new Button(group, SWT.NONE));
         btApplyGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
         btApplyGroup.addSelectionListener(new SelectionAdapter() {
 
@@ -269,7 +269,7 @@ public class DaysForm extends SOSJOEMessageCodes {
                 applyGroup();
             }
         });
-        btRemove = JOE_B_DaysForm_RemoveDay.Control(new Button(group, SWT.NONE));
+        btRemove = JOE_B_DaysForm_RemoveDay.control(new Button(group, SWT.NONE));
         btRemove.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true, 1, 1));
         new Label(group, SWT.NONE);
         btRemove.addSelectionListener(new SelectionAdapter() {

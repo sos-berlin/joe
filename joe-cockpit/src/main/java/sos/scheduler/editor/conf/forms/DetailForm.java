@@ -154,7 +154,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             gridLayout_3.marginHeight = 10;
             gridLayout_3.marginBottom = 10;
             gridLayout_3.numColumns = 3;
-            final Group composite = JOE_G_DetailForm_MainGroup.Control(new Group(this, SWT.NONE));
+            final Group composite = JOE_G_DetailForm_MainGroup.control(new Group(this, SWT.NONE));
             composite.addDisposeListener(new DisposeListener() {
 
                 @Override
@@ -168,7 +168,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, true, 3, 1);
             gridData_6.heightHint = 31;
             composite.setLayoutData(gridData_6);
-            parameterGroup = JOE_G_DetailForm_ParameterGroup.Control(new Group(composite, SWT.NONE));
+            parameterGroup = JOE_G_DetailForm_ParameterGroup.control(new Group(composite, SWT.NONE));
             parameterGroup.setEnabled(false);
             final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
             gridData_3.heightHint = 239;
@@ -177,8 +177,8 @@ public class DetailForm extends SOSJOEMessageCodes {
             gridLayout_2.numColumns = 6;
             parameterGroup.setLayout(gridLayout_2);
             @SuppressWarnings("unused")
-            final Label nameLabel = JOE_L_Name.Control(new Label(parameterGroup, SWT.NONE));
-            txtName = JOE_T_DetailForm_Name.Control(new Text(parameterGroup, SWT.BORDER));
+            final Label nameLabel = JOE_L_Name.control(new Label(parameterGroup, SWT.NONE));
+            txtName = JOE_T_DetailForm_Name.control(new Text(parameterGroup, SWT.BORDER));
             txtName.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -208,8 +208,8 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
             txtName.setFocus();
-            final Label valueLabel = JOE_L_Value.Control(new Label(parameterGroup, SWT.NONE));
-            txtValue = JOE_T_DetailForm_Value.Control(new Text(parameterGroup, SWT.BORDER));
+            final Label valueLabel = JOE_L_Value.control(new Label(parameterGroup, SWT.NONE));
+            txtValue = JOE_T_DetailForm_Value.control(new Text(parameterGroup, SWT.BORDER));
             txtValue.addKeyListener(new KeyAdapter() {
 
                 @Override
@@ -237,7 +237,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             txtValue.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-            butText = JOE_B_DetailForm_Text.Control(new Button(parameterGroup, SWT.NONE));
+            butText = JOE_B_DetailForm_Text.control(new Button(parameterGroup, SWT.NONE));
             butText.setEnabled(false);
             butText.addSelectionListener(new SelectionAdapter() {
 
@@ -265,7 +265,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                     butApply.setEnabled(true);
                 }
             });
-            butApplyParam = JOE_B_DetailForm_ApplyParam.Control(new Button(parameterGroup, SWT.NONE));
+            butApplyParam = JOE_B_DetailForm_ApplyParam.control(new Button(parameterGroup, SWT.NONE));
             butApplyParam.setEnabled(isEditableParam);
             butApplyParam.addSelectionListener(new SelectionAdapter() {
 
@@ -276,7 +276,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             final GridData gridData_9 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
             butApplyParam.setLayoutData(gridData_9);
-            tableParams = JOE_Tbl_DetailForm_Params.Control(new Table(parameterGroup, SWT.FULL_SELECTION | SWT.BORDER));
+            tableParams = JOE_Tbl_DetailForm_Params.control(new Table(parameterGroup, SWT.FULL_SELECTION | SWT.BORDER));
             tableParams.setEnabled(false);
             tableParams.addSelectionListener(new SelectionAdapter() {
 
@@ -316,7 +316,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             tableParams.setHeaderVisible(true);
             final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 7);
             tableParams.setLayoutData(gridData_4);
-            final TableColumn newColumnTableColumn = JOE_TCl_DetailForm_NameColumn.Control(new TableColumn(tableParams, SWT.NONE));
+            final TableColumn newColumnTableColumn = JOE_TCl_DetailForm_NameColumn.control(new TableColumn(tableParams, SWT.NONE));
             newColumnTableColumn.setWidth(118);
             newColumnTableColumn.addControlListener(new ControlAdapter() {
 
@@ -326,7 +326,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             w.restoreTableColumn("tableParams", newColumnTableColumn, 118);
-            final TableColumn newColumnTableColumn_1 = JOE_TCl_DetailForm_ValueColumn.Control(new TableColumn(tableParams, SWT.NONE));
+            final TableColumn newColumnTableColumn_1 = JOE_TCl_DetailForm_ValueColumn.control(new TableColumn(tableParams, SWT.NONE));
             newColumnTableColumn_1.setWidth(150);
             newColumnTableColumn_1.addControlListener(new ControlAdapter() {
 
@@ -336,7 +336,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             w.restoreTableColumn("tableParams", newColumnTableColumn_1, 150);
-            final TableColumn newColumnTableColumn_2 = JOE_TCl_DetailForm_TextColumn.Control(new TableColumn(tableParams, SWT.NONE));
+            final TableColumn newColumnTableColumn_2 = JOE_TCl_DetailForm_TextColumn.control(new TableColumn(tableParams, SWT.NONE));
             newColumnTableColumn_2.setWidth(100);
             newColumnTableColumn_2.addControlListener(new ControlAdapter() {
 
@@ -346,7 +346,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             w.restoreTableColumn("tableParams", newColumnTableColumn_2, 100);
-            final Button butNew = JOE_B_DetailForm_New.Control(new Button(parameterGroup, SWT.NONE));
+            final Button butNew = JOE_B_DetailForm_New.control(new Button(parameterGroup, SWT.NONE));
             butNew.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -361,12 +361,12 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            final Composite composite_2 = JOE_Composite1.Control(new Composite(parameterGroup, SWT.NONE));
+            final Composite composite_2 = JOE_Composite1.control(new Composite(parameterGroup, SWT.NONE));
             final GridData gridData_2_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
             gridData_2_1.heightHint = 67;
             composite_2.setLayoutData(gridData_2_1);
             composite_2.setLayout(new GridLayout());
-            butUp = JOE_B_DetailForm_Up.Control(new Button(composite_2, SWT.NONE));
+            butUp = JOE_B_DetailForm_Up.control(new Button(composite_2, SWT.NONE));
             butUp.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -376,7 +376,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             butUp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
-            butDown = JOE_B_DetailForm_Down.Control(new Button(composite_2, SWT.NONE));
+            butDown = JOE_B_DetailForm_Down.control(new Button(composite_2, SWT.NONE));
             butDown.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -386,7 +386,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             butDown.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
             butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
-            final Button parameterButton = JOE_B_DetailForm_Wizard.Control(new Button(parameterGroup, SWT.NONE));
+            final Button parameterButton = JOE_B_DetailForm_Wizard.control(new Button(parameterGroup, SWT.NONE));
             parameterButton.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -395,7 +395,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            butRemove = JOE_B_DetailForm_Remove.Control(new Button(parameterGroup, SWT.NONE));
+            butRemove = JOE_B_DetailForm_Remove.control(new Button(parameterGroup, SWT.NONE));
             butRemove.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -422,10 +422,10 @@ public class DetailForm extends SOSJOEMessageCodes {
             gridData_8.widthHint = 64;
             gridData_8.minimumWidth = 50;
             butRemove.setLayoutData(gridData_8);
-            final Button butTemp = JOE_B_DetailForm_TempDocumentation.Control(new Button(parameterGroup, SWT.NONE));
+            final Button butTemp = JOE_B_DetailForm_TempDocumentation.control(new Button(parameterGroup, SWT.NONE));
             butTemp.setLayoutData(new GridData());
             butTemp.setVisible(false);
-            butApply = JOE_B_DetailForm_ApplyDetails.Control(new Button(parameterGroup, SWT.NONE));
+            butApply = JOE_B_DetailForm_ApplyDetails.control(new Button(parameterGroup, SWT.NONE));
             butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             butApply.setEnabled(isEditable);
             FontData[] fontDatas = butApply.getFont().getFontData();
@@ -438,7 +438,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                     save();
                 }
             });
-            cancelButton = JOE_B_Cancel.Control(new Button(parameterGroup, SWT.NONE));
+            cancelButton = JOE_B_Cancel.control(new Button(parameterGroup, SWT.NONE));
             cancelButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             cancelButton.addSelectionListener(new SelectionAdapter() {
 
@@ -455,7 +455,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             txtParamNote =
-                    JOE_T_DetailForm_JobChainNote.Control(new Text(parameterGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
+                    JOE_T_DetailForm_JobChainNote.control(new Text(parameterGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
             txtParamNote.setEnabled(false);
             txtParamNote.addVerifyListener(new VerifyListener() {
 
@@ -477,7 +477,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 3);
             gridData_5.heightHint = 73;
             txtParamNote.setLayoutData(gridData_5);
-            comboLanguage = JOE_Cbo_DetailForm_Language.Control(new Combo(parameterGroup, SWT.READ_ONLY));
+            comboLanguage = JOE_Cbo_DetailForm_Language.control(new Combo(parameterGroup, SWT.READ_ONLY));
             comboLanguage.setItems(new String[] { "de", "en" });
             final GridData gridData_7 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
             comboLanguage.setLayoutData(gridData_7);
@@ -501,7 +501,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             comboLanguage.select(0);
-            butRefreshWizzardNoteParam = JOE_B_DetailForm_RefreshWizardNoteParam.Control(new Text(parameterGroup, SWT.CHECK));
+            butRefreshWizzardNoteParam = JOE_B_DetailForm_RefreshWizardNoteParam.control(new Text(parameterGroup, SWT.CHECK));
             butRefreshWizzardNoteParam.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -511,12 +511,12 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             butRefreshWizzardNoteParam.setVisible(false);
             butRefreshWizzardNoteParam.setLayoutData(new GridData());
-            paramText = JOE_T_DetailForm_Param.Control(new Text(parameterGroup, SWT.BORDER));
+            paramText = JOE_T_DetailForm_Param.control(new Text(parameterGroup, SWT.BORDER));
             paramText.setVisible(false);
             final GridData gridData_14 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
             gridData_14.widthHint = 27;
             paramText.setLayoutData(gridData_14);
-            jobChainGroup = JOE_G_DetailForm_NoteGroup.Control(new Group(parameterGroup, SWT.NONE));
+            jobChainGroup = JOE_G_DetailForm_NoteGroup.control(new Group(parameterGroup, SWT.NONE));
             jobChainGroup.setEnabled(false);
             final GridLayout gridLayout_1 = new GridLayout();
             gridLayout_1.numColumns = 2;
@@ -525,7 +525,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             gridData.horizontalIndent = -1;
             jobChainGroup.setLayoutData(gridData);
             txtJobchainNote =
-                    JOE_T_DetailForm_JobChainNote.Control(new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
+                    JOE_T_DetailForm_JobChainNote.control(new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
             txtJobchainNote.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -542,7 +542,7 @@ public class DetailForm extends SOSJOEMessageCodes {
             });
             final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, false, 1, 2);
             txtJobchainNote.setLayoutData(gridData_2);
-            butXML = JOE_B_DetailForm_XML.Control(new Button(jobChainGroup, SWT.NONE));
+            butXML = JOE_B_DetailForm_XML.control(new Button(jobChainGroup, SWT.NONE));
             butXML.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             butXML.setEnabled(false);
             butXML.addSelectionListener(new SelectionAdapter() {
@@ -580,7 +580,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                     }
                 }
             });
-            butDocumentation = JOE_B_DetailForm_Documentation.Control(new Button(jobChainGroup, SWT.NONE));
+            butDocumentation = JOE_B_DetailForm_Documentation.control(new Button(jobChainGroup, SWT.NONE));
             butDocumentation.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
             butDocumentation.addSelectionListener(new SelectionAdapter() {
 
@@ -614,9 +614,9 @@ public class DetailForm extends SOSJOEMessageCodes {
                     }
                 }
             });
-            final Label fileLabel = JOE_L_DetailForm_JobDocumentation.Control(new Label(parameterGroup, SWT.NONE));
+            final Label fileLabel = JOE_L_DetailForm_JobDocumentation.control(new Label(parameterGroup, SWT.NONE));
             fileLabel.setLayoutData(new GridData());
-            txtParamsFile = JOE_T_DetailForm_ParamsFile.Control(new Text(parameterGroup, SWT.BORDER));
+            txtParamsFile = JOE_T_DetailForm_ParamsFile.control(new Text(parameterGroup, SWT.BORDER));
             txtParamsFile.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -629,7 +629,7 @@ public class DetailForm extends SOSJOEMessageCodes {
                 }
             });
             txtParamsFile.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
-            statusBar = JOE_L_DetailForm_ConfigFile.Control(new Label(composite, SWT.BORDER));
+            statusBar = JOE_L_DetailForm_ConfigFile.control(new Label(composite, SWT.BORDER));
             final GridData gridData_11 = new GridData(GridData.FILL, GridData.END, false, false);
             gridData_11.widthHint = 496;
             gridData_11.heightHint = 18;

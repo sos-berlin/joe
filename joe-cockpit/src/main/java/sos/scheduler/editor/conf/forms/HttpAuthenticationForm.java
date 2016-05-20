@@ -59,14 +59,14 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
 
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
-        httpAuthenticationGroup = JOE_G_HttpAuthenticationForm_AuthGroup.Control(new Group(this, SWT.NONE));
+        httpAuthenticationGroup = JOE_G_HttpAuthenticationForm_AuthGroup.control(new Group(this, SWT.NONE));
         createGroup1();
         httpAuthenticationGroup.setLayout(gridLayout);
         new Label(httpAuthenticationGroup, SWT.NONE);
     }
 
     private void createGroup1() {
-        final Group group_1 = JOE_G_HttpAuthenticationForm_Group.Control(new Group(httpAuthenticationGroup, SWT.NONE));
+        final Group group_1 = JOE_G_HttpAuthenticationForm_Group.control(new Group(httpAuthenticationGroup, SWT.NONE));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
         gridData_2.heightHint = 427;
         gridData_2.widthHint = 525;
@@ -74,8 +74,8 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group_1.setLayout(gridLayout);
-        final Label lblUsername = JOE_L_HttpAuthenticationForm_UserName.Control(new Label(group_1, SWT.NONE));
-        txtUsername = JOE_T_HttpAuthenticationForm_UserName.Control(new Text(group_1, SWT.BORDER));
+        final Label lblUsername = JOE_L_HttpAuthenticationForm_UserName.control(new Label(group_1, SWT.NONE));
+        txtUsername = JOE_T_HttpAuthenticationForm_UserName.control(new Text(group_1, SWT.BORDER));
         txtUsername.addFocusListener(new FocusAdapter() {
 
             public void focusGained(final FocusEvent e) {
@@ -97,8 +97,8 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             }
         });
         txtUsername.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label lblPassword = JOE_L_HttpAuthenticationForm_Password.Control(new Label(group_1, SWT.NONE));
-        txtPassword = JOE_T_HttpAuthenticationForm_Password.Control(new Text(group_1, SWT.BORDER));
+        final Label lblPassword = JOE_L_HttpAuthenticationForm_Password.control(new Label(group_1, SWT.NONE));
+        txtPassword = JOE_T_HttpAuthenticationForm_Password.control(new Text(group_1, SWT.BORDER));
         txtPassword.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
@@ -114,7 +114,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             }
         });
         txtPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butEncrypt = JOE_B_HttpAuthenticationForm_Encrypt.Control(new Button(group_1, SWT.NONE));
+        butEncrypt = JOE_B_HttpAuthenticationForm_Encrypt.control(new Button(group_1, SWT.NONE));
         butEncrypt.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -127,8 +127,8 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         butEncrypt.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         new Label(group_1, SWT.NONE);
         new Label(group_1, SWT.NONE);
-        final Label md5PasswordLabel = JOE_L_HttpAuthenticationForm_MD5PW.Control(new Label(group_1, SWT.NONE));
-        txtMD5Password = JOE_T_HttpAuthenticationForm_MD5PW.Control(new Text(group_1, SWT.BORDER));
+        final Label md5PasswordLabel = JOE_L_HttpAuthenticationForm_MD5PW.control(new Label(group_1, SWT.NONE));
+        txtMD5Password = JOE_T_HttpAuthenticationForm_MD5PW.control(new Text(group_1, SWT.BORDER));
         txtMD5Password.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
@@ -144,7 +144,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             }
         });
         txtMD5Password.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butApplyHttpUser = JOE_B_HttpAuthenticationForm_Apply.Control(new Button(group_1, SWT.NONE));
+        butApplyHttpUser = JOE_B_HttpAuthenticationForm_Apply.control(new Button(group_1, SWT.NONE));
         butApplyHttpUser.setEnabled(false);
         butApplyHttpUser.addSelectionListener(new SelectionAdapter() {
 
@@ -153,7 +153,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
             }
         });
         butApplyHttpUser.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        tableHttpUsers = JOE_Tbl_HttpAuthenticationForm_Users.Control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
+        tableHttpUsers = JOE_Tbl_HttpAuthenticationForm_Users.control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
         tableHttpUsers.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -175,11 +175,11 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
         gridData_1.minimumHeight = 100;
         gridData_1.horizontalIndent = 4;
         tableHttpUsers.setLayoutData(gridData_1);
-        final TableColumn urlPathTableColumn = JOE_TCl_HttpAuthenticationForm_NameColumn.Control(new TableColumn(tableHttpUsers, SWT.NONE));
+        final TableColumn urlPathTableColumn = JOE_TCl_HttpAuthenticationForm_NameColumn.control(new TableColumn(tableHttpUsers, SWT.NONE));
         urlPathTableColumn.setWidth(150);
-        final TableColumn pathTableColumn = JOE_TCl_HttpAuthenticationForm_PWColumn.Control(new TableColumn(tableHttpUsers, SWT.NONE));
+        final TableColumn pathTableColumn = JOE_TCl_HttpAuthenticationForm_PWColumn.control(new TableColumn(tableHttpUsers, SWT.NONE));
         pathTableColumn.setWidth(250);
-        butRemoveHttpUser = JOE_B_HttpAuthenticationForm_Remove.Control(new Button(group_1, SWT.NONE));
+        butRemoveHttpUser = JOE_B_HttpAuthenticationForm_Remove.control(new Button(group_1, SWT.NONE));
         butRemoveHttpUser.setEnabled(false);
         butRemoveHttpUser.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butRemoveHttpUser.addSelectionListener(new SelectionAdapter() {

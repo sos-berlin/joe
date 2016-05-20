@@ -56,12 +56,12 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
-        group = JOE_G_SpecificWeekdaysForm_Monthdays.Control(new Group(this, SWT.NONE));
+        group = JOE_G_SpecificWeekdaysForm_Monthdays.control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
         createCombo();
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData2.widthHint = 90;
-        bAdd = JOE_B_SpecificWeekdaysForm_AddWeekday.Control(new Button(group, SWT.NONE));
+        bAdd = JOE_B_SpecificWeekdaysForm_AddWeekday.control(new Button(group, SWT.NONE));
         bAdd.setLayoutData(gridData2);
         getShell().setDefaultButton(bAdd);
         bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -79,7 +79,7 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
         });
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label2.setLayoutData(gridData5);
-        lUsedDays = JOE_Lst_SpecificWeekdaysForm_UsedDays.Control(new List(group, SWT.BORDER));
+        lUsedDays = JOE_Lst_SpecificWeekdaysForm_UsedDays.control(new List(group, SWT.BORDER));
         lUsedDays.setLayoutData(gridData);
         lUsedDays.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -87,7 +87,7 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
                 bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
             }
         });
-        bRemove = JOE_B_SpecificWeekdaysForm_RemoveWeekday.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_SpecificWeekdaysForm_RemoveWeekday.control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData3);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -105,13 +105,13 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes {
     private void createCombo() {
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData4.widthHint = 300;
-        cWeekdayNumber = JOE_Cbo_SpecificWeekdaysForm_Daynames.Control(new Combo(group, SWT.NONE));
+        cWeekdayNumber = JOE_Cbo_SpecificWeekdaysForm_Daynames.control(new Combo(group, SWT.NONE));
         cWeekdayNumber.setItems(SpecificWeekdaysListener._daynames);
         cWeekdayNumber.setVisibleItemCount(8);
         cWeekdayNumber.select(0);
         cWeekdayNumber.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         String[] strWeekdays = DaysListener.getWeekdays();
-        cWeekdays = JOE_Cbo_SpecificWeekdaysForm_Weekdays.Control(new Combo(group, SWT.READ_ONLY));
+        cWeekdays = JOE_Cbo_SpecificWeekdaysForm_Weekdays.control(new Combo(group, SWT.READ_ONLY));
         cWeekdays.setItems(strWeekdays);
         cWeekdays.setText(strWeekdays[0]);
         cWeekdays.setVisibleItemCount(7);

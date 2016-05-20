@@ -143,7 +143,7 @@ public class TestFTPProfileJadeClient {
         JSFile temporaryFile = new JSFile(dir + "/" + filename);
         temporaryFile.deleteOnExit();
         try {
-            temporaryFile.WriteLine("This is a test file nothing else");
+            temporaryFile.writeLine("This is a test file nothing else");
             temporaryFile.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);

@@ -77,7 +77,7 @@ public class RunTimeForm extends SOSJOEMessageCodes {
 
     private void createGroup() {
         GridLayout gridLayout3 = new GridLayout(2, false);
-        gRunTime = JOE_G_RunTimeForm_RunTime.Control(new Group(this, SWT.NONE));
+        gRunTime = JOE_G_RunTimeForm_RunTime.control(new Group(this, SWT.NONE));
         gRunTime.setLayout(gridLayout3);
         Label lblTimezone = new Label(gRunTime, SWT.NONE);
         lblTimezone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -109,12 +109,12 @@ public class RunTimeForm extends SOSJOEMessageCodes {
         } else {
             new Label(gRunTime, SWT.NONE);
         }
-        groupSchedule = JOE_G_RunTimeForm_Schedule.Control(new Group(gRunTime, SWT.NONE));
+        groupSchedule = JOE_G_RunTimeForm_Schedule.control(new Group(gRunTime, SWT.NONE));
         groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 2;
         groupSchedule.setLayout(gridLayout_2);
-        comSchedule = JOE_Cbo_RunTimeForm_Schedule.Control(new Combo(groupSchedule, SWT.NONE));
+        comSchedule = JOE_Cbo_RunTimeForm_Schedule.control(new Combo(groupSchedule, SWT.NONE));
         comSchedule.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -141,7 +141,7 @@ public class RunTimeForm extends SOSJOEMessageCodes {
             }
         });
         new Label(gRunTime, SWT.NONE);
-        butBrowse = JOE_B_RunTimeForm_Browse.Control(new Button(groupSchedule, SWT.NONE));
+        butBrowse = JOE_B_RunTimeForm_Browse.control(new Button(groupSchedule, SWT.NONE));
         butBrowse.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -151,12 +151,12 @@ public class RunTimeForm extends SOSJOEMessageCodes {
                 }
             }
         });
-        gComment = JOE_G_RunTimeForm_Comment.Control(new Group(gRunTime, SWT.NONE));
+        gComment = JOE_G_RunTimeForm_Comment.control(new Group(gRunTime, SWT.NONE));
         gComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 1));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 2;
         gComment.setLayout(gridLayout_1);
-        tComment = JOE_T_RunTimeForm_Comment.Control(new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
+        tComment = JOE_T_RunTimeForm_Comment.control(new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
         tComment.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
@@ -176,7 +176,7 @@ public class RunTimeForm extends SOSJOEMessageCodes {
                 listener.setComment(tComment.getText());
             }
         });
-        final Button button = JOE_B_RunTimeForm_Comment.Control(new Button(gComment, SWT.NONE));
+        final Button button = JOE_B_RunTimeForm_Comment.control(new Button(gComment, SWT.NONE));
         button.setAlignment(SWT.UP);
         final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true);
         gridData_1.widthHint = 29;

@@ -45,12 +45,12 @@ public class JobMainComposite extends SOSJOEMessageCodes {
         gridLayout = new GridLayout();
         gridLayout.marginHeight = 1;
         gridLayout.numColumns = 6;
-        gMain = JOE_G_JobMainComposite_MainOptions.Control(new Group(parent, SWT.NONE));
+        gMain = JOE_G_JobMainComposite_MainOptions.control(new Group(parent, SWT.NONE));
         gMain.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
         gMain.setLayout(gridLayout);
-        label = JOE_L_JobMainComposite_JobName.Control(new Label(gMain, SWT.NONE));
+        label = JOE_L_JobMainComposite_JobName.control(new Label(gMain, SWT.NONE));
         label.setLayoutData(new GridData(GridData.BEGINNING, GridData.END, false, false, intNoOfLabelColumns, 1));
-        tbxJobName = JOE_T_JobMainComposite_JobName.Control(new Text(gMain, SWT.BORDER));
+        tbxJobName = JOE_T_JobMainComposite_JobName.control(new Text(gMain, SWT.BORDER));
         tbxJobName.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -69,9 +69,9 @@ public class JobMainComposite extends SOSJOEMessageCodes {
                 parent.setText(jobDataProvider.getJobNameAndTitle());
             }
         });
-        lblJobTitlelabel1 = JOE_L_JobMainComposite_JobTitle.Control(new Label(gMain, SWT.NONE));
+        lblJobTitlelabel1 = JOE_L_JobMainComposite_JobTitle.control(new Label(gMain, SWT.NONE));
         lblJobTitlelabel1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, intNoOfLabelColumns, 1));
-        tbxJobTitle = JOE_T_JobMainComposite_JobTitle.Control(new Text(gMain, SWT.BORDER));
+        tbxJobTitle = JOE_T_JobMainComposite_JobTitle.control(new Text(gMain, SWT.BORDER));
         tbxJobTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1));
         tbxJobTitle.addModifyListener(new ModifyListener() {
 

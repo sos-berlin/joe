@@ -49,9 +49,9 @@ public class ActionsListForm extends SOSJOEMessageCodes {
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        actionsGroup = JOE_G_ActionsListForm_Actions.Control(new Group(this, SWT.NONE));
+        actionsGroup = JOE_G_ActionsListForm_Actions.control(new Group(this, SWT.NONE));
         actionsGroup.setLayout(gridLayout);
-        list = JOE_Tbl_ActionsListForm_ActionsList.Control(new Table(actionsGroup, SWT.BORDER));
+        list = JOE_Tbl_ActionsListForm_ActionsList.control(new Table(actionsGroup, SWT.BORDER));
         list.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -65,7 +65,7 @@ public class ActionsListForm extends SOSJOEMessageCodes {
             }
         });
         list.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
-        butNew = JOE_B_ActionsListForm_New.Control(new Button(actionsGroup, SWT.NONE));
+        butNew = JOE_B_ActionsListForm_New.control(new Button(actionsGroup, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -78,7 +78,7 @@ public class ActionsListForm extends SOSJOEMessageCodes {
             }
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        butRemove = JOE_B_ActionsListForm_Remove.Control(new Button(actionsGroup, SWT.NONE));
+        butRemove = JOE_B_ActionsListForm_Remove.control(new Button(actionsGroup, SWT.NONE));
         butRemove.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {

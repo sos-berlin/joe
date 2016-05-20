@@ -111,7 +111,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             runTimeSingleShell.setLayout(gridLayout);
             runTimeSingleShell.setSize(553, 489);
             runTimeSingleShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_RunTimeSingleStarts.label());
-            final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(runTimeSingleShell, SWT.NONE));
+            final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.control(new Group(runTimeSingleShell, SWT.NONE));
             final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, true, 2, 1);
             gridData_1.heightHint = 390;
             gridData_1.widthHint = 517;
@@ -125,7 +125,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             gridLayout_1.marginHeight = 10;
             gridLayout_1.marginBottom = 10;
             jobGroup.setLayout(gridLayout_1);
-            optEveryDay = SOSJOEMessageCodes.JOE_B_JobAssistent_EveryDay.Control(new Button(jobGroup, SWT.CHECK));
+            optEveryDay = SOSJOEMessageCodes.JOE_B_JobAssistent_EveryDay.control(new Button(jobGroup, SWT.CHECK));
             optEveryDay.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -143,12 +143,12 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                 }
             });
             new Label(jobGroup, SWT.NONE);
-            final Label atLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
+            final Label atLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_At.control(new Label(jobGroup, SWT.NONE));
             atLabel.setAlignment(SWT.RIGHT);
             final GridData gridData_15 = new GridData(GridData.END, GridData.CENTER, false, false);
             gridData_15.widthHint = 28;
             atLabel.setLayoutData(gridData_15);
-            txtDayAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtDayAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtDayAtHour.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -164,9 +164,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
             gridData.minimumWidth = 25;
             txtDayAtHour.setLayoutData(gridData);
-            final Label label = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label.setLayoutData(new GridData());
-            txtDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtDayAtMinutes.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -183,9 +183,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             gridData_3.widthHint = 12;
             gridData_3.minimumWidth = 25;
             txtDayAtMinutes.setLayoutData(gridData_3);
-            final Label label_1 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label_1 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label_1.setLayoutData(new GridData());
-            txtDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtDayAtSecound.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -201,9 +201,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
             gridData_4.minimumWidth = 25;
             txtDayAtSecound.setLayoutData(gridData_4);
-            final Label hhmmssLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
+            final Label hhmmssLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.control(new Label(jobGroup, SWT.NONE));
             hhmmssLabel.setLayoutData(new GridData());
-            optSpecificDay = SOSJOEMessageCodes.JOE_B_JobAssistent_SpecificDay.Control(new Button(jobGroup, SWT.CHECK));
+            optSpecificDay = SOSJOEMessageCodes.JOE_B_JobAssistent_SpecificDay.control(new Button(jobGroup, SWT.CHECK));
             optSpecificDay.setLayoutData(new GridData());
             optSpecificDay.addSelectionListener(new SelectionAdapter() {
 
@@ -223,14 +223,14 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                     }
                 }
             });
-            txtSpeDay = SOSJOEMessageCodes.JOE_JobAssistent_SpecificDayDateTime.Control(new SOSDateTime(jobGroup, SWT.NONE));
+            txtSpeDay = SOSJOEMessageCodes.JOE_JobAssistent_SpecificDayDateTime.control(new SOSDateTime(jobGroup, SWT.NONE));
             final GridData gridData_16 = new GridData(GridData.FILL, GridData.CENTER, true, false);
             gridData_16.widthHint = 131;
             txtSpeDay.setLayoutData(gridData_16);
             txtSpeDay.setEnabled(false);
-            final Label atLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
+            final Label atLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.control(new Label(jobGroup, SWT.NONE));
             atLabel_1.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-            txtSpeDayHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtSpeDayHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtSpeDayHour.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -247,9 +247,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             gridData_5.minimumWidth = 25;
             gridData_5.widthHint = 0;
             txtSpeDayHour.setLayoutData(gridData_5);
-            final Label label_2 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label_2 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label_2.setLayoutData(new GridData());
-            txtSpeDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtSpeDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtSpeDayAtMinutes.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -266,9 +266,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             gridData_3_1.widthHint = 7;
             gridData_3_1.minimumWidth = 25;
             txtSpeDayAtMinutes.setLayoutData(gridData_3_1);
-            final Label label_1_1 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label_1_1 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label_1_1.setLayoutData(new GridData());
-            txtSpeDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtSpeDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtSpeDayAtSecound.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -284,9 +284,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridData gridData_4_1 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
             gridData_4_1.minimumWidth = 25;
             txtSpeDayAtSecound.setLayoutData(gridData_4_1);
-            final Label hhmmssLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
+            final Label hhmmssLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.control(new Label(jobGroup, SWT.NONE));
             hhmmssLabel_1.setLayoutData(new GridData());
-            optEveryWeeksdays = SOSJOEMessageCodes.JOE_B_JobAssistent_WeekDay.Control(new Button(jobGroup, SWT.CHECK));
+            optEveryWeeksdays = SOSJOEMessageCodes.JOE_B_JobAssistent_WeekDay.control(new Button(jobGroup, SWT.CHECK));
             optEveryWeeksdays.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -305,17 +305,17 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                     }
                 }
             });
-            comboEveryWeekdays = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_WeekDayCombo.Control(new Combo(jobGroup, SWT.NONE));
+            comboEveryWeekdays = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_WeekDayCombo.control(new Combo(jobGroup, SWT.NONE));
             comboEveryWeekdays.setItems(DaysListener.getWeekdays());
             comboEveryWeekdays.select(0);
             comboEveryWeekdays.setEnabled(false);
             final GridData gridData_17 = new GridData(GridData.FILL, GridData.CENTER, true, false);
             gridData_17.widthHint = 148;
             comboEveryWeekdays.setLayoutData(gridData_17);
-            final Label atLabel_2 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
+            final Label atLabel_2 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.control(new Label(jobGroup, SWT.NONE));
             atLabel_2.setLayoutData(new GridData(37, SWT.DEFAULT));
             atLabel_2.setAlignment(SWT.RIGHT);
-            txtWeekAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtWeekAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtWeekAtHour.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -332,9 +332,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             gridData_6.minimumWidth = 25;
             gridData_6.widthHint = 0;
             txtWeekAtHour.setLayoutData(gridData_6);
-            final Label label_3 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label_3 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label_3.setLayoutData(new GridData());
-            txtWeekAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtWeekAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtWeekAtMinutes.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -355,9 +355,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridData gridData_3_2 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
             gridData_3_2.minimumWidth = 25;
             txtWeekAtMinutes.setLayoutData(gridData_3_2);
-            final Label label_1_2 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label_1_2 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label_1_2.setLayoutData(new GridData());
-            txtWeekAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtWeekAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtWeekAtSecound.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -378,9 +378,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridData gridData_4_2 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
             gridData_4_2.minimumWidth = 25;
             txtWeekAtSecound.setLayoutData(gridData_4_2);
-            final Label hhmmssLabel_2 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
+            final Label hhmmssLabel_2 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.control(new Label(jobGroup, SWT.NONE));
             hhmmssLabel_2.setLayoutData(new GridData());
-            optEveryMonths = SOSJOEMessageCodes.JOE_B_JobAssistent_MonthDay.Control(new Button(jobGroup, SWT.CHECK));
+            optEveryMonths = SOSJOEMessageCodes.JOE_B_JobAssistent_MonthDay.control(new Button(jobGroup, SWT.CHECK));
             optEveryMonths.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -399,16 +399,16 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                     }
                 }
             });
-            comboMonth = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_MonthCombo.Control(new Combo(jobGroup, SWT.NONE));
+            comboMonth = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_MonthCombo.control(new Combo(jobGroup, SWT.NONE));
             comboMonth.setItems(DaysListener.getMonthdays());
             comboMonth.select(0);
             comboMonth.setEnabled(false);
             comboMonth.select(0);
             comboMonth.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-            final Label atLabel_3 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
+            final Label atLabel_3 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.control(new Label(jobGroup, SWT.NONE));
             atLabel_3.setLayoutData(new GridData(37, SWT.DEFAULT));
             atLabel_3.setAlignment(SWT.RIGHT);
-            txtMonthAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtMonthAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtMonthAtHour.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -429,9 +429,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             gridData_7.minimumWidth = 25;
             gridData_7.widthHint = 0;
             txtMonthAtHour.setLayoutData(gridData_7);
-            final Label label_4 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label_4 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label_4.setLayoutData(new GridData());
-            txtMonthAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtMonthAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtMonthAtMinutes.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -450,9 +450,9 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridData gridData_3_3 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
             gridData_3_3.minimumWidth = 25;
             txtMonthAtMinutes.setLayoutData(gridData_3_3);
-            final Label label_1_3 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
+            final Label label_1_3 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(jobGroup, SWT.NONE));
             label_1_3.setLayoutData(new GridData());
-            txtMonthAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+            txtMonthAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
             txtMonthAtSecound.addModifyListener(new ModifyListener() {
 
                 @Override
@@ -468,7 +468,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridData gridData_4_3 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
             gridData_4_3.minimumWidth = 25;
             txtMonthAtSecound.setLayoutData(gridData_4_3);
-            final Label hhmmssLabel_3 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
+            final Label hhmmssLabel_3 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.control(new Label(jobGroup, SWT.NONE));
             hhmmssLabel_3.setLayoutData(new GridData());
             list = new List(jobGroup, SWT.BORDER);
             list.addSelectionListener(new SelectionAdapter() {
@@ -482,7 +482,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             });
             final GridData newGridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 8, 2);
             list.setLayoutData(newGridData_2);
-            butAdd = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Add.Control(new Button(jobGroup, SWT.NONE));
+            butAdd = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Add.control(new Button(jobGroup, SWT.NONE));
             butAdd.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -491,7 +491,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                 }
             });
             butAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            butRemove = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Remove.Control(new Button(jobGroup, SWT.NONE));
+            butRemove = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Remove.control(new Button(jobGroup, SWT.NONE));
             butRemove.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -503,7 +503,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                 }
             });
             butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.Control(new Button(runTimeSingleShell, SWT.NONE));
+            butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.control(new Button(runTimeSingleShell, SWT.NONE));
             butCancel.addSelectionListener(new SelectionAdapter() {
 
                 @Override
@@ -518,7 +518,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
             final GridLayout newGridLayout_1 = new GridLayout();
             newGridLayout_1.numColumns = 3;
             composite.setLayout(newGridLayout_1);
-            butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
+            butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.control(new Button(composite, SWT.NONE));
             butShow.setVisible(false);
             butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
             butShow.addSelectionListener(new SelectionAdapter() {
@@ -529,7 +529,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
                 }
             });
             Utils.createHelpButton(composite, "JOE_M_JobAssistentRunTimeForms_Help.label", runTimeSingleShell);
-            butNext = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Apply.Control(new Button(composite, SWT.NONE));
+            butNext = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Apply.control(new Button(composite, SWT.NONE));
             butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
             final GridData newGridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);
             newGridData_1.widthHint = 57;

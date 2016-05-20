@@ -111,7 +111,7 @@ public class SaveEventsDialogForm {
         _shell.setLayout(gridLayout);
         _shell.setSize(625, 325);
         _shell.setText(SOSJOEMessageCodes.JOE_M_SaveEventhandler.label());
-        eventgroup = SOSJOEMessageCodes.JOE_G_SaveEventsDialogForm_NameSpec.Control(new Group(_shell, SWT.NONE));
+        eventgroup = SOSJOEMessageCodes.JOE_G_SaveEventsDialogForm_NameSpec.control(new Group(_shell, SWT.NONE));
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, true, true);
         gridData.widthHint = 581;
         gridData.heightHint = 77;
@@ -127,9 +127,9 @@ public class SaveEventsDialogForm {
         gridLayout_1.marginHeight = 10;
         gridLayout_1.marginBottom = 10;
         eventgroup.setLayout(gridLayout_1);
-        final Label nameLabel = SOSJOEMessageCodes.JOE_L_Name.Control(new Label(eventgroup, SWT.NONE));
+        final Label nameLabel = SOSJOEMessageCodes.JOE_L_Name.control(new Label(eventgroup, SWT.NONE));
         nameLabel.setLayoutData(new GridData());
-        txtName = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_Name.Control(new Text(eventgroup, SWT.BORDER));
+        txtName = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_Name.control(new Text(eventgroup, SWT.BORDER));
         txtName.setBackground(SWTResourceManager.getColor(255, 255, 217));
         txtName.addModifyListener(new ModifyListener() {
 
@@ -138,9 +138,9 @@ public class SaveEventsDialogForm {
             }
         });
         txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
-        final Label jobketteLabel = SOSJOEMessageCodes.JOE_L_SaveEventsDialogForm_JobChain.Control(new Label(eventgroup, SWT.NONE));
+        final Label jobketteLabel = SOSJOEMessageCodes.JOE_L_SaveEventsDialogForm_JobChain.control(new Label(eventgroup, SWT.NONE));
         jobketteLabel.setLayoutData(new GridData());
-        txtJobChain = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_JobChain.Control(new Text(eventgroup, SWT.BORDER));
+        txtJobChain = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_JobChain.control(new Text(eventgroup, SWT.BORDER));
         txtJobChain.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -148,9 +148,9 @@ public class SaveEventsDialogForm {
             }
         });
         txtJobChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
-        final Label jobLabel = SOSJOEMessageCodes.JOE_L_SaveEventsDialogForm_Job.Control(new Label(eventgroup, SWT.NONE));
+        final Label jobLabel = SOSJOEMessageCodes.JOE_L_SaveEventsDialogForm_Job.control(new Label(eventgroup, SWT.NONE));
         jobLabel.setLayoutData(new GridData());
-        txtJob = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_Job.Control(new Text(eventgroup, SWT.BORDER));
+        txtJob = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_Job.control(new Text(eventgroup, SWT.BORDER));
         txtJob.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -158,9 +158,9 @@ public class SaveEventsDialogForm {
             }
         });
         txtJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
-        final Label eventClassLabel = SOSJOEMessageCodes.JOE_L_SaveEventsDialogForm_EventClass.Control(new Label(eventgroup, SWT.NONE));
+        final Label eventClassLabel = SOSJOEMessageCodes.JOE_L_SaveEventsDialogForm_EventClass.control(new Label(eventgroup, SWT.NONE));
         eventClassLabel.setLayoutData(new GridData());
-        txtEventClass = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_EventClass.Control(new Text(eventgroup, SWT.BORDER));
+        txtEventClass = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_EventClass.control(new Text(eventgroup, SWT.BORDER));
         txtEventClass.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -176,7 +176,7 @@ public class SaveEventsDialogForm {
         }
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
         lblDirectory.setLayoutData(gridData_1);
-        butDirectory = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Directory.Control(new Button(eventgroup, SWT.NONE));
+        butDirectory = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Directory.control(new Button(eventgroup, SWT.NONE));
         butDirectory.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -190,7 +190,7 @@ public class SaveEventsDialogForm {
             }
         });
         butDirectory.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-        butApply = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Save.Control(new Button(eventgroup, SWT.NONE));
+        butApply = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Save.control(new Button(eventgroup, SWT.NONE));
         butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butApply.setEnabled(false);
         butApply.addSelectionListener(new SelectionAdapter() {
@@ -221,7 +221,7 @@ public class SaveEventsDialogForm {
                 }
             }
         });
-        final Button cancelButton = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Cancel.Control(new Button(eventgroup, SWT.NONE));
+        final Button cancelButton = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Cancel.control(new Button(eventgroup, SWT.NONE));
         cancelButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false, 2, 1));
         cancelButton.addSelectionListener(new SelectionAdapter() {
 

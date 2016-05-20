@@ -40,10 +40,10 @@ public class ActionForm extends SOSJOEMessageCodes {
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        actionsGroup = JOE_G_ActionForm_Action.Control(new Group(this, SWT.NONE));
+        actionsGroup = JOE_G_ActionForm_Action.control(new Group(this, SWT.NONE));
         actionsGroup.setLayout(gridLayout);
-        final Label nameLabel = JOE_L_Name.Control(new Label(actionsGroup, SWT.NONE));
-        txtName = JOE_T_ActionForm_Name.Control(new Text(actionsGroup, SWT.BORDER));
+        final Label nameLabel = JOE_L_Name.control(new Label(actionsGroup, SWT.NONE));
+        txtName = JOE_T_ActionForm_Name.control(new Text(actionsGroup, SWT.BORDER));
         txtName.addModifyListener(new ModifyListener() {
 
             @Override

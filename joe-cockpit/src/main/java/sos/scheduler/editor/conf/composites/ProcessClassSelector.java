@@ -57,8 +57,8 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
     }
 
     private void createComposite(Composite parent) {
-        lblProcessClass = JOE_L_JobMainComposite_ProcessClass.Control(new Label(parent, SWT.NONE));
-        butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(parent, SWT.ARROW | SWT.DOWN));
+        lblProcessClass = JOE_L_JobMainComposite_ProcessClass.control(new Label(parent, SWT.NONE));
+        butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.control(new Button(parent, SWT.ARROW | SWT.DOWN));
         butShowProcessClass.setVisible(processClassDataProvider.get_dom() != null && !processClassDataProvider.get_dom().isLifeElement());
         butShowProcessClass.addSelectionListener(new SelectionAdapter() {
 
@@ -71,7 +71,7 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
         });
         butShowProcessClass.setAlignment(SWT.RIGHT);
         butShowProcessClass.setVisible(true);
-        cProcessClass = JOE_Cbo_JobMainComposite_ProcessClass.Control(new Combo(parent, intComboBoxStyle));
+        cProcessClass = JOE_Cbo_JobMainComposite_ProcessClass.control(new Combo(parent, intComboBoxStyle));
         cProcessClass.setMenu(new ContextMenu(cProcessClass, processClassDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES).getMenu());
         cProcessClass.addModifyListener(new ModifyListener() {
 
@@ -130,7 +130,7 @@ public class ProcessClassSelector extends SOSJOEMessageCodes {
                 }
             }
         });
-        butBrowse = JOE_B_JobMainComposite_BrowseProcessClass.Control(new Button(parent, SWT.NONE));
+        butBrowse = JOE_B_JobMainComposite_BrowseProcessClass.control(new Button(parent, SWT.NONE));
         butBrowse.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {

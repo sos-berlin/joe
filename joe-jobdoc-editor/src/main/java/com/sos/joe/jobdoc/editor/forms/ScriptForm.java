@@ -81,10 +81,10 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
         GridLayout gl_group = new GridLayout(2, false);
         group = JOE_G_ScriptForm_Script.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gl_group);
-        label = JOE_L_ScriptForm_Language.Control(new SOSLabel(group, SWT.NONE));
+        label = JOE_L_ScriptForm_Language.control(new SOSLabel(group, SWT.NONE));
         createComposite();
-        label1 = JOE_L_ScriptForm_JavaClass.Control(new SOSLabel(group, SWT.NONE));
-        tJavaClass = JOE_T_ScriptForm_JavaClass.Control(new Text(group, SWT.BORDER));
+        label1 = JOE_L_ScriptForm_JavaClass.control(new SOSLabel(group, SWT.NONE));
+        tJavaClass = JOE_T_ScriptForm_JavaClass.control(new Text(group, SWT.BORDER));
         tJavaClass.setLayoutData(gridData);
         tJavaClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -93,7 +93,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
                 listener.setJavaClass(tJavaClass.getText());
             }
         });
-        label3 = JOE_L_ScriptForm_ResourceID.Control(new SOSLabel(group, SWT.NONE));
+        label3 = JOE_L_ScriptForm_ResourceID.control(new SOSLabel(group, SWT.NONE));
         createCResource();
         createIncludeFilesForm();
     }
@@ -102,7 +102,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
         GridLayout gl_composite = new GridLayout(7, false);
         composite = new Composite(group, SWT.NONE);
         composite.setLayout(gl_composite);
-        rbJava = JOE_B_ScriptForm_JavaRB.Control(new Button(composite, SWT.RADIO));
+        rbJava = JOE_B_ScriptForm_JavaRB.control(new Button(composite, SWT.RADIO));
         rbJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -113,7 +113,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
                 }
             }
         });
-        rbJavascript = JOE_B_ScriptForm_JavaScriptRB.Control(new Button(composite, SWT.RADIO));
+        rbJavascript = JOE_B_ScriptForm_JavaScriptRB.control(new Button(composite, SWT.RADIO));
         rbJavascript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -124,7 +124,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
                 }
             }
         });
-        rbPerlscript = JOE_B_ScriptForm_PerlScriptRB.Control(new Button(composite, SWT.RADIO));
+        rbPerlscript = JOE_B_ScriptForm_PerlScriptRB.control(new Button(composite, SWT.RADIO));
         rbPerlscript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -135,7 +135,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
                 }
             }
         });
-        rbVBScript = JOE_B_ScriptForm_VBScriptRB.Control(new Button(composite, SWT.RADIO));
+        rbVBScript = JOE_B_ScriptForm_VBScriptRB.control(new Button(composite, SWT.RADIO));
         rbVBScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -146,7 +146,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
                 }
             }
         });
-        rbShell = JOE_B_ScriptForm_ShellRB.Control(new Button(composite, SWT.RADIO));
+        rbShell = JOE_B_ScriptForm_ShellRB.control(new Button(composite, SWT.RADIO));
         rbShell.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -157,7 +157,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
                 }
             }
         });
-        rbNone = JOE_B_ScriptForm_NoneRB.Control(new Button(composite, SWT.RADIO));
+        rbNone = JOE_B_ScriptForm_NoneRB.control(new Button(composite, SWT.RADIO));
         rbNone.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
@@ -173,7 +173,7 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
     private void createCResource() {
         GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData2.horizontalIndent = 7;
-        cResource = JOE_Cbo_ScriptForm_Resource.Control(new Combo(group, SWT.NONE));
+        cResource = JOE_Cbo_ScriptForm_Resource.control(new Combo(group, SWT.NONE));
         cResource.setLayoutData(gridData2);
         cResource.addModifyListener(new ModifyListener() {
 

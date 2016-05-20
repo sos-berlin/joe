@@ -61,10 +61,10 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        commandsGroup = JOE_G_JobCommand_Commands.Control(new Group(this, SWT.NONE));
+        commandsGroup = JOE_G_JobCommand_Commands.control(new Group(this, SWT.NONE));
         commandsGroup.setLayout(gridLayout);
         createTable();
-        bNewCommands = JOE_B_JobCommand_NewCommand.Control(new Button(commandsGroup, SWT.NONE));
+        bNewCommands = JOE_B_JobCommand_NewCommand.control(new Button(commandsGroup, SWT.NONE));
         bNewCommands.setLayoutData(gridData);
         getShell().setDefaultButton(bNewCommands);
         bNewCommands.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -76,7 +76,7 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
         });
         label = new Label(commandsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setLayoutData(gridData4);
-        bRemoveCommand = JOE_B_JobCommand_RemoveCommand.Control(new Button(commandsGroup, SWT.NONE));
+        bRemoveCommand = JOE_B_JobCommand_RemoveCommand.control(new Button(commandsGroup, SWT.NONE));
         bRemoveCommand.setEnabled(false);
         bRemoveCommand.setLayoutData(gridData1);
         bRemoveCommand.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -90,7 +90,7 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
     private void createTable() {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
-        table = JOE_Tbl_JobCommand_Table.Control(new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION));
+        table = JOE_Tbl_JobCommand_Table.control(new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION));
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -102,7 +102,7 @@ public class JobCommandsForm extends SOSJOEMessageCodes {
         table.setHeaderVisible(true);
         table.setLayoutData(gridData2);
         table.setLinesVisible(true);
-        TableColumn tableColumn = JOE_TCl_JobCommand_Exitcode.Control(new TableColumn(table, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_JobCommand_Exitcode.control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(240);
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 

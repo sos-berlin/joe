@@ -115,8 +115,8 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
         group = JOE_G_ParamsForm_Parameter.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
         group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        label = JOE_L_ParamsForm_ID.Control(new SOSLabel(group, SWT.NONE));
-        tParamsID = JOE_T_ParamsForm_ID.Control(new Text(group, SWT.BORDER));
+        label = JOE_L_ParamsForm_ID.control(new SOSLabel(group, SWT.NONE));
+        tParamsID = JOE_T_ParamsForm_ID.control(new Text(group, SWT.BORDER));
         tParamsID.setLayoutData(gridData);
         tParamsID.addModifyListener(new ModifyListener() {
 
@@ -125,9 +125,9 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
                 listener.setID(tParamsID.getText());
             }
         });
-        label1 = JOE_L_ParamsForm_Reference.Control(new SOSLabel(group, SWT.NONE));
+        label1 = JOE_L_ParamsForm_Reference.control(new SOSLabel(group, SWT.NONE));
         createCParamsReference();
-        bParamsNotes = JOE_B_ParamsForm_ParamsNote.Control(new Button(group, SWT.NONE));
+        bParamsNotes = JOE_B_ParamsForm_ParamsNote.control(new Button(group, SWT.NONE));
         bParamsNotes.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -141,7 +141,7 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
 
     private void createCParamsReference() {
         GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        cParamsReference = JOE_Cbo_ParamsForm_Reference.Control(new Combo(group, SWT.NONE));
+        cParamsReference = JOE_Cbo_ParamsForm_Reference.control(new Combo(group, SWT.NONE));
         cParamsReference.setLayoutData(gridData1);
         cParamsReference.addModifyListener(new ModifyListener() {
 
@@ -169,11 +169,11 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
         group1 = JOE_G_ParamsForm_ParamValues.Control(new SOSGroup(group, SWT.NONE));
         group1.setLayout(gridLayout1);
         group1.setLayoutData(gridData2);
-        label2 = JOE_L_Name.Control(new SOSLabel(group1, SWT.NONE));
-        tName = JOE_T_ParamsForm_Name.Control(new Text(group1, SWT.BORDER));
+        label2 = JOE_L_Name.control(new SOSLabel(group1, SWT.NONE));
+        tName = JOE_T_ParamsForm_Name.control(new Text(group1, SWT.BORDER));
         tName.setLayoutData(gridData3);
         tName.addModifyListener(modifyTextListener);
-        bApply = JOE_B_ParamsForm_Apply.Control(new Button(group1, SWT.NONE));
+        bApply = JOE_B_ParamsForm_Apply.control(new Button(group1, SWT.NONE));
         bApply.setLayoutData(gridData8);
         bApply.addSelectionListener(new SelectionAdapter() {
 
@@ -183,18 +183,18 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
                 newParam();
             }
         });
-        Label label = new SOSMsgJOE("JOE_L_ParamsForm_DataType").Control(new SOSLabel(group1, SWT.NONE));
-        cboDataType = new SOSMsgJOE("JOE_Cbo_ParamsForm_DataType").Control(new Combo(group1, SWT.NONE));
+        Label label = new SOSMsgJOE("JOE_L_ParamsForm_DataType").control(new SOSLabel(group1, SWT.NONE));
+        cboDataType = new SOSMsgJOE("JOE_Cbo_ParamsForm_DataType").control(new Combo(group1, SWT.NONE));
         cboDataType.setLayoutData(gridData4);
         cboDataType.addModifyListener(modifyTextListener);
-        label3 = JOE_L_ParamsForm_DefaultValue.Control(new SOSLabel(group1, SWT.NONE));
-        tDefault = JOE_T_ParamsForm_DefaultValue.Control(new Text(group1, SWT.BORDER));
+        label3 = JOE_L_ParamsForm_DefaultValue.control(new SOSLabel(group1, SWT.NONE));
+        tDefault = JOE_T_ParamsForm_DefaultValue.control(new Text(group1, SWT.BORDER));
         tDefault.setLayoutData(gridData4);
         tDefault.addModifyListener(modifyTextListener);
-        label6 = JOE_L_ParamsForm_Reference.Control(new SOSLabel(group1, SWT.NONE));
+        label6 = JOE_L_ParamsForm_Reference.control(new SOSLabel(group1, SWT.NONE));
         createCReference();
-        label4 = JOE_L_ParamsForm_Required.Control(new SOSLabel(group1, SWT.NONE));
-        cRequired = JOE_B_ParamsForm_Required.Control(new Button(group1, SWT.CHECK));
+        label4 = JOE_L_ParamsForm_Required.control(new SOSLabel(group1, SWT.NONE));
+        cRequired = JOE_B_ParamsForm_Required.control(new Button(group1, SWT.CHECK));
         cRequired.setLayoutData(gridData13);
         cRequired.addSelectionListener(new SelectionAdapter() {
 
@@ -203,11 +203,11 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
                 setApplyStatus();
             }
         });
-        label5 = JOE_L_ParamsForm_ID.Control(new SOSLabel(group1, SWT.NONE));
-        tID = JOE_T_ParamsForm_ID2.Control(new Text(group1, SWT.BORDER));
+        label5 = JOE_L_ParamsForm_ID.control(new SOSLabel(group1, SWT.NONE));
+        tID = JOE_T_ParamsForm_ID2.control(new Text(group1, SWT.BORDER));
         tID.setLayoutData(gridData5);
         tID.addModifyListener(modifyTextListener);
-        bNotes = JOE_B_ParamsForm_Notes.Control(new Button(group1, SWT.NONE));
+        bNotes = JOE_B_ParamsForm_Notes.control(new Button(group1, SWT.NONE));
         bNotes.setEnabled(false);
         bNotes.setLayoutData(gridData14);
         bNotes.addSelectionListener(new SelectionAdapter() {
@@ -226,7 +226,7 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
         label7 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label7.setText("Label");
         label7.setLayoutData(gridData7);
-        tParams = JOE_Tbl_ParamsForm_Params.Control(new Table(group1, SWT.BORDER));
+        tParams = JOE_Tbl_ParamsForm_Params.control(new Table(group1, SWT.BORDER));
         tParams.setHeaderVisible(true);
         tParams.setLayoutData(gridData12);
         tParams.setLinesVisible(true);
@@ -241,19 +241,19 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
                 bApply.setEnabled(false);
             }
         });
-        TableColumn tableColumn = JOE_TCl_ParamsForm_Name.Control(new TableColumn(tParams, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_ParamsForm_Name.control(new TableColumn(tParams, SWT.NONE));
         tableColumn.setWidth(200);
-        TableColumn tableColumn21 = JOE_TCl_ParamsForm_Default.Control(new TableColumn(tParams, SWT.NONE));
+        TableColumn tableColumn21 = JOE_TCl_ParamsForm_Default.control(new TableColumn(tParams, SWT.NONE));
         tableColumn21.setWidth(150);
-        TableColumn tableColumn3 = JOE_TCl_ParamsForm_Required.Control(new TableColumn(tParams, SWT.NONE));
+        TableColumn tableColumn3 = JOE_TCl_ParamsForm_Required.control(new TableColumn(tParams, SWT.NONE));
         tableColumn3.setWidth(70);
-        TableColumn tableColumn2 = JOE_TCl_ParamsForm_Reference.Control(new TableColumn(tParams, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_ParamsForm_Reference.control(new TableColumn(tParams, SWT.NONE));
         tableColumn2.setWidth(120);
-        TableColumn tableColumn1 = JOE_TCl_ParamsForm_ID.Control(new TableColumn(tParams, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_ParamsForm_ID.control(new TableColumn(tParams, SWT.NONE));
         tableColumn1.setWidth(120);
-        TableColumn tableColumnD = new SOSMsgJOE("JOE_TCl_ParamsForm_DataType").Control(new TableColumn(tParams, SWT.NONE));
+        TableColumn tableColumnD = new SOSMsgJOE("JOE_TCl_ParamsForm_DataType").control(new TableColumn(tParams, SWT.NONE));
         tableColumnD.setWidth(120);
-        bNew = JOE_B_ParamsForm_NewParam.Control(new Button(group1, SWT.NONE));
+        bNew = JOE_B_ParamsForm_NewParam.control(new Button(group1, SWT.NONE));
         bNew.setLayoutData(gridData11);
         bNew.addSelectionListener(new SelectionAdapter() {
 
@@ -265,7 +265,7 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
             }
         });
         label8 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        bRemove = JOE_B_ParamsForm_RemoveParam.Control(new Button(group1, SWT.NONE));
+        bRemove = JOE_B_ParamsForm_RemoveParam.control(new Button(group1, SWT.NONE));
         bRemove.setLayoutData(gridData9);
         bRemove.addSelectionListener(new SelectionAdapter() {
 
@@ -286,7 +286,7 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
 
     private void createCReference() {
         GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        cReference = JOE_Cbo_ParamsForm_Reference2.Control(new Combo(group1, SWT.NONE));
+        cReference = JOE_Cbo_ParamsForm_Reference2.control(new Combo(group1, SWT.NONE));
         cReference.setLayoutData(gridData6);
         cReference.addModifyListener(modifyTextListener);
     }

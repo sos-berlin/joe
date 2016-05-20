@@ -97,7 +97,7 @@ public class JobDocumentation extends FormBaseClass {
         group.setLayout(gridLayout2);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        gMain = SOSJOEMessageCodes.JOE_G_ConfigForm_Comment.Control(new Group(group, SWT.NONE));
+        gMain = SOSJOEMessageCodes.JOE_G_ConfigForm_Comment.control(new Group(group, SWT.NONE));
         gMain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gMain.setLayout(gridLayout);
         TextArea txtAreaComment = new TextArea(gMain, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
@@ -105,12 +105,12 @@ public class JobDocumentation extends FormBaseClass {
         tComment = txtAreaComment;
         GridLayout gridLayout3 = new GridLayout();
         gridLayout3.numColumns = 2;
-        gDescription = SOSJOEMessageCodes.JOE_G_JobDocumentation_JobDescription.Control(new Group(group, SWT.NONE));
+        gDescription = SOSJOEMessageCodes.JOE_G_JobDocumentation_JobDescription.control(new Group(group, SWT.NONE));
         gDescription.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gDescription.setLayout(gridLayout3);
         GridData gridData12 = new GridData(SWT.FILL, GridData.CENTER, true, false);
         gridData12.horizontalIndent = -1;
-        tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new Text(gDescription, SWT.BORDER));
+        tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.control(new Text(gDescription, SWT.BORDER));
         tFileName.setLayoutData(gridData12);
         tFileName.addModifyListener(new ModifyListener() {
 
@@ -135,7 +135,7 @@ public class JobDocumentation extends FormBaseClass {
                 restoreCursor();
             }
         });
-        butIsLiveFile = SOSJOEMessageCodes.JOE_B_JobDocumentation_IsLiveFile.Control(new Button(gDescription, SWT.CHECK));
+        butIsLiveFile = SOSJOEMessageCodes.JOE_B_JobDocumentation_IsLiveFile.control(new Button(gDescription, SWT.CHECK));
         butIsLiveFile.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -170,7 +170,7 @@ public class JobDocumentation extends FormBaseClass {
         txtAreaDescription.setDataProvider(objJobDataProvider, enuSourceTypes.JobDocu);
         tDescription.setToolTipText(SOSJOEMessageCodes.JOE_M_0050.label());
         tDescription.setText(objJobDataProvider.getDescription());
-        butShow = SOSJOEMessageCodes.JOE_B_JobDocumentation_Show.Control(new Button(gDescription, SWT.NONE));
+        butShow = SOSJOEMessageCodes.JOE_B_JobDocumentation_Show.control(new Button(gDescription, SWT.NONE));
         butShow.setEnabled(false);
         butShow.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butShow.addSelectionListener(new SelectionAdapter() {
@@ -202,7 +202,7 @@ public class JobDocumentation extends FormBaseClass {
             }
         });
         butShow.setEnabled(!tFileName.getText().trim().isEmpty());
-        butOpen = SOSJOEMessageCodes.JOE_B_JobDocumentation_Open.Control(new Button(gDescription, SWT.NONE));
+        butOpen = SOSJOEMessageCodes.JOE_B_JobDocumentation_Open.control(new Button(gDescription, SWT.NONE));
         butOpen.setEnabled(false);
         butOpen.addSelectionListener(new SelectionAdapter() {
 
@@ -230,7 +230,7 @@ public class JobDocumentation extends FormBaseClass {
         tComment.setToolTipText(SOSJOEMessageCodes.JOE_M_0051.label());
         butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
         tFileName.setText(objJobDataProvider.getInclude());
-        butWizard = SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard.Control(new Button(gDescription, SWT.NONE));
+        butWizard = SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard.control(new Button(gDescription, SWT.NONE));
         butWizard.addSelectionListener(new SelectionAdapter() {
 
             @Override

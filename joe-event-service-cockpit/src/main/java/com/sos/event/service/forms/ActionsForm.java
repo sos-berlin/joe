@@ -64,7 +64,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
     }
 
     private void createGroup() {
-        group = JOE_G_ActionsForm_ActionsElements.Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
+        group = JOE_G_ActionsForm_ActionsElements.control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
         group.setLayout(new FillLayout());
         tree = new Tree(group, SWT.NONE);
         tree.addListener(SWT.Selection, new Listener() {

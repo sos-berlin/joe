@@ -88,7 +88,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
     }
 
     private void createGTree() {
-        gTree = JOE_G_SchedulerForm_SchedulerElements.Control(new Group(sashForm, SWT.NONE));
+        gTree = JOE_G_SchedulerForm_SchedulerElements.control(new Group(sashForm, SWT.NONE));
         gTree.setLayout(new FillLayout());
         tree = new Tree(gTree, SWT.BORDER);
         tree.setMenu(new TreeMenu(tree, dom, this).getMenu());

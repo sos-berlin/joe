@@ -73,8 +73,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         gridLayout.numColumns = 3;
         actionsGroup = new Group(this, SWT.NONE);
         actionsGroup.setLayout(gridLayout);
-        final Label lblLogic = JOE_L_EventsForm_Logic.Control(new Label(actionsGroup, SWT.NONE));
-        txtLogic = JOE_T_EventsForm_Logic.Control(new Text(actionsGroup, SWT.BORDER));
+        final Label lblLogic = JOE_L_EventsForm_Logic.control(new Label(actionsGroup, SWT.NONE));
+        txtLogic = JOE_T_EventsForm_Logic.control(new Text(actionsGroup, SWT.BORDER));
         txtLogic.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -82,7 +82,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butEventsOperation = JOE_B_EventsForm_Operation.Control(new Button(actionsGroup, SWT.NONE));
+        butEventsOperation = JOE_B_EventsForm_Operation.control(new Button(actionsGroup, SWT.NONE));
         butEventsOperation.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -97,15 +97,15 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         label.setLayoutData(gridData_1);
         label.setText("label");
         new Label(actionsGroup, SWT.NONE);
-        final Group group = JOE_G_EventsForm_EventsGroup.Control(new Group(actionsGroup, SWT.NONE));
+        final Group group = JOE_G_EventsForm_EventsGroup.control(new Group(actionsGroup, SWT.NONE));
         final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
         group.setLayoutData(gridData);
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 4;
         group.setLayout(gridLayout_1);
         @SuppressWarnings("unused")
-        final Label groupLabel = JOE_L_EventsForm_Group.Control(new Label(group, SWT.NONE));
-        txtGroup = JOE_T_EventsForm_Group.Control(new Text(group, SWT.BORDER));
+        final Label groupLabel = JOE_L_EventsForm_Group.control(new Label(group, SWT.NONE));
+        txtGroup = JOE_T_EventsForm_Group.control(new Text(group, SWT.BORDER));
         txtGroup.setBackground(SWTResourceManager.getColor(255, 255, 217));
         txtGroup.addKeyListener(new KeyAdapter() {
 
@@ -123,7 +123,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
-        butApply = JOE_B_EventsForm_Apply.Control(new Button(group, SWT.NONE));
+        butApply = JOE_B_EventsForm_Apply.control(new Button(group, SWT.NONE));
         butApply.setEnabled(false);
         butApply.addSelectionListener(new SelectionAdapter() {
 
@@ -132,8 +132,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        final Label logicLabel = JOE_L_EventsForm_Logic.Control(new Label(group, SWT.NONE));
-        txtGroupLogic = JOE_T_EventsForm_LogicGroup.Control(new Text(group, SWT.BORDER));
+        final Label logicLabel = JOE_L_EventsForm_Logic.control(new Label(group, SWT.NONE));
+        txtGroupLogic = JOE_T_EventsForm_LogicGroup.control(new Text(group, SWT.BORDER));
         txtGroupLogic.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -149,7 +149,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtGroupLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butEventGroupOperation = JOE_B_EventsForm_Operation.Control(new Button(group, SWT.NONE));
+        butEventGroupOperation = JOE_B_EventsForm_Operation.control(new Button(group, SWT.NONE));
         butEventGroupOperation.setLayoutData(new GridData());
         butEventGroupOperation.setEnabled(false);
         butEventGroupOperation.addSelectionListener(new SelectionAdapter() {
@@ -161,7 +161,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
                 logicOperationDialog.open(txtGroupLogic, list);
             }
         });
-        butNew = JOE_B_EventsForm_New.Control(new Button(group, SWT.NONE));
+        butNew = JOE_B_EventsForm_New.control(new Button(group, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -175,8 +175,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        final Label eventClassLabel = JOE_L_EventsForm_EventClass.Control(new Label(group, SWT.NONE));
-        cboEventClass = JOE_Cbo_EventsForm_EventClass.Control(new Combo(group, SWT.BORDER));
+        final Label eventClassLabel = JOE_L_EventsForm_EventClass.control(new Label(group, SWT.NONE));
+        cboEventClass = JOE_Cbo_EventsForm_EventClass.control(new Combo(group, SWT.BORDER));
         cboEventClass.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -192,7 +192,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
-        butRemove = JOE_B_EventsForm_Remove.Control(new Button(group, SWT.NONE));
+        butRemove = JOE_B_EventsForm_Remove.control(new Button(group, SWT.NONE));
         butRemove.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -212,7 +212,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-        table = JOE_Tbl_EventsForm_Groups.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
+        table = JOE_Tbl_EventsForm_Groups.control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         table.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -235,11 +235,11 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1));
-        final TableColumn newColumnTableColumn = JOE_TCl_EventsForm_Group.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn = JOE_TCl_EventsForm_Group.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn.setWidth(140);
-        final TableColumn newColumnTableColumn_1 = JOE_TCl_EventsForm_Logic.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_1 = JOE_TCl_EventsForm_Logic.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_1.setWidth(136);
-        final TableColumn newColumnTableColumn_2 = JOE_TCl_EventsForm_EventClass.Control(new TableColumn(table, SWT.NONE));
+        final TableColumn newColumnTableColumn_2 = JOE_TCl_EventsForm_EventClass.control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_2.setWidth(189);
     }
 

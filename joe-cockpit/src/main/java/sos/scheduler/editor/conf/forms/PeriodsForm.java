@@ -81,10 +81,10 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData5.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        group = JOE_G_PeriodsForm_Periods.Control(new Group(this, SWT.NONE));
+        group = JOE_G_PeriodsForm_Periods.control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
         createPeriodForm();
-        bApply = JOE_B_PeriodsForm_ApplyPeriod.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_PeriodsForm_ApplyPeriod.control(new Button(group, SWT.NONE));
         bApply.setEnabled(false);
         bApply.setLayoutData(gridData1);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -96,7 +96,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setLayoutData(gridData3);
         createTable();
-        bNew = JOE_B_PeriodsForm_NewPeriod.Control(new Button(group, SWT.NONE));
+        bNew = JOE_B_PeriodsForm_NewPeriod.control(new Button(group, SWT.NONE));
         getShell().setDefaultButton(bNew);
         bNew.setLayoutData(gridData5);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -112,7 +112,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setLayoutData(gridData7);
-        bRemove = JOE_B_PeriodsForm_RemovePeriod.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_PeriodsForm_RemovePeriod.control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData6);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -131,7 +131,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData4.grabExcessVerticalSpace = true;
         gridData4.verticalSpan = 2;
         gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        tPeriods = JOE_Tbl_PeriodsForm_Periods.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
+        tPeriods = JOE_Tbl_PeriodsForm_Periods.control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         tPeriods.setHeaderVisible(true);
         tPeriods.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
         tPeriods.setLinesVisible(true);
@@ -141,11 +141,11 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
                 tPeriodSelect();
             }
         });
-        TableColumn tableColumn = JOE_TCl_PeriodsForm_LetRun.Control(new TableColumn(tPeriods, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_PeriodsForm_LetRun.control(new TableColumn(tPeriods, SWT.NONE));
         tableColumn.setWidth(59);
-        TableColumn tableColumn1 = JOE_TCl_PeriodsForm_Begin.Control(new TableColumn(tPeriods, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_PeriodsForm_Begin.control(new TableColumn(tPeriods, SWT.NONE));
         tableColumn1.setWidth(56);
-        TableColumn tableColumn2 = JOE_TCl_PeriodsForm_End.Control(new TableColumn(tPeriods, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_PeriodsForm_End.control(new TableColumn(tPeriods, SWT.NONE));
         tableColumn2.setWidth(55);
         TableColumn tableColumn3 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn3.setWidth(59);
@@ -156,7 +156,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         final TableColumn newColumnTableColumn = new TableColumn(tPeriods, SWT.NONE);
         newColumnTableColumn.setWidth(92);
         newColumnTableColumn.setText(PeriodForm.ABSOLUTE_TIME);
-        final TableColumn newColumnTableColumn_1 = JOE_TCl_PeriodsForm_WhenHoliday.Control(new TableColumn(tPeriods, SWT.NONE));
+        final TableColumn newColumnTableColumn_1 = JOE_TCl_PeriodsForm_WhenHoliday.control(new TableColumn(tPeriods, SWT.NONE));
         newColumnTableColumn_1.setWidth(100);
     }
 

@@ -102,7 +102,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         this.setLayout(new GridLayout());
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 1;
-        gJobParameter = JOE_G_ActionsParameterForm_Parameter.Control(new Group(this, SWT.NONE));
+        gJobParameter = JOE_G_ActionsParameterForm_Parameter.control(new Group(this, SWT.NONE));
         gJobParameter.setLayout(gridLayout2);
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gJobParameter.setLayoutData(gridData_1);
@@ -185,14 +185,14 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void createIncludes() {
-        final CTabItem includesTabItem = JOE_TI_ActionsParameterForm_Includes.Control(new CTabItem(tabFolder, SWT.BORDER));
+        final CTabItem includesTabItem = JOE_TI_ActionsParameterForm_Includes.control(new CTabItem(tabFolder, SWT.BORDER));
         final Group group_3 = new Group(tabFolder, SWT.NONE);
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 5;
         group_3.setLayout(gridLayout_2);
         includesTabItem.setControl(group_3);
         if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
-            butIsLifeFile = JOE_B_ActionsParameterForm_IsLifeFile.Control(new Button(group_3, SWT.CHECK));
+            butIsLifeFile = JOE_B_ActionsParameterForm_IsLifeFile.control(new Button(group_3, SWT.CHECK));
             butIsLifeFile.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
@@ -200,9 +200,9 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             });
         } else {
-            final Label lblNode_ = JOE_L_ActionsParameterForm_File.Control(new Label(group_3, SWT.NONE));
+            final Label lblNode_ = JOE_L_ActionsParameterForm_File.control(new Label(group_3, SWT.NONE));
         }
-        txtIncludeFilename = JOE_T_ActionsParameterForm_IncludeFilename.Control(new Text(group_3, SWT.BORDER));
+        txtIncludeFilename = JOE_T_ActionsParameterForm_IncludeFilename.control(new Text(group_3, SWT.BORDER));
         txtIncludeFilename.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -221,8 +221,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtIncludeFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        final Label lblNode = JOE_L_ActionsParameterForm_Node.Control(new Label(group_3, SWT.NONE));
-        txtIncludeNode = JOE_T_ActionsParameterForm_IncludeNode.Control(new Text(group_3, SWT.BORDER));
+        final Label lblNode = JOE_L_ActionsParameterForm_Node.control(new Label(group_3, SWT.NONE));
+        txtIncludeNode = JOE_T_ActionsParameterForm_IncludeNode.control(new Text(group_3, SWT.BORDER));
         txtIncludeNode.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
@@ -241,7 +241,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         txtIncludeNode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        butIncludesApply = JOE_B_ActionsParameterForm_IncludesApply.Control(new Button(group_3, SWT.NONE));
+        butIncludesApply = JOE_B_ActionsParameterForm_IncludesApply.control(new Button(group_3, SWT.NONE));
         butIncludesApply.setEnabled(false);
         butIncludesApply.addSelectionListener(new SelectionAdapter() {
 
@@ -252,7 +252,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         butIncludesApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         label4_3 = new Label(group_3, SWT.HORIZONTAL | SWT.SEPARATOR);
         label4_3.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
-        tableIncludeParams = JOE_Tbl_ActionsParameterForm_IncludeParams.Control(new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER));
+        tableIncludeParams = JOE_Tbl_ActionsParameterForm_IncludeParams.control(new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER));
         tableIncludeParams.addMouseListener(new MouseAdapter() {
 
             public void mouseDoubleClick(final MouseEvent e) {
@@ -279,17 +279,17 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         tableIncludeParams.setLinesVisible(true);
         tableIncludeParams.setHeaderVisible(true);
         tableIncludeParams.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3));
-        final TableColumn colParamColums = JOE_TCl_ActionsParameterForm_File.Control(new TableColumn(tableIncludeParams, SWT.NONE));
+        final TableColumn colParamColums = JOE_TCl_ActionsParameterForm_File.control(new TableColumn(tableIncludeParams, SWT.NONE));
         colParamColums.setWidth(250);
-        final TableColumn newColumnTableColumn_1 = JOE_TCl_ActionsParameterForm_Node.Control(new TableColumn(tableIncludeParams, SWT.NONE));
+        final TableColumn newColumnTableColumn_1 = JOE_TCl_ActionsParameterForm_Node.control(new TableColumn(tableIncludeParams, SWT.NONE));
         newColumnTableColumn_1.setWidth(400);
-        final TableColumn newColumnTableColumn = JOE_TCl_ActionsParameterForm_FileLifeFile.Control(new TableColumn(tableIncludeParams, SWT.NONE));
+        final TableColumn newColumnTableColumn = JOE_TCl_ActionsParameterForm_FileLifeFile.control(new TableColumn(tableIncludeParams, SWT.NONE));
         newColumnTableColumn.setWidth(100);
         if (type != JOEConstants.JOB && type != JOEConstants.COMMANDS && type != JOEConstants.JOB_COMMANDS) {
             newColumnTableColumn.setWidth(200);
             newColumnTableColumn.setResizable(false);
         }
-        butNewIncludes = JOE_B_ActionsParameterForm_NewIncludes.Control(new Button(group_3, SWT.NONE));
+        butNewIncludes = JOE_B_ActionsParameterForm_NewIncludes.control(new Button(group_3, SWT.NONE));
         butNewIncludes.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -306,7 +306,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         butNewIncludes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        butRemoveInclude = JOE_B_ActionsParameterForm_RemoveInclude.Control(new Button(group_3, SWT.NONE));
+        butRemoveInclude = JOE_B_ActionsParameterForm_RemoveInclude.control(new Button(group_3, SWT.NONE));
         butRemoveInclude.setEnabled(false);
         butRemoveInclude.addSelectionListener(new SelectionAdapter() {
 
@@ -334,15 +334,15 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     public void createJobCommandParameter() {
-        parameterJobCmdTabItem = JOE_TI_ActionsParameterForm_Parameter.Control(new CTabItem(tabFolder, SWT.BORDER));
+        parameterJobCmdTabItem = JOE_TI_ActionsParameterForm_Parameter.control(new CTabItem(tabFolder, SWT.BORDER));
         group = new Group(tabFolder, SWT.NONE);
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group.setLayout(gridLayout);
         parameterJobCmdTabItem.setControl(group);
-        label2 = JOE_L_ActionsParameterForm_Name.Control(new Label(group, SWT.NONE));
+        label2 = JOE_L_ActionsParameterForm_Name.control(new Label(group, SWT.NONE));
         label2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        tParaName = JOE_T_ActionsParameterForm_Name.Control(new Text(group, SWT.BORDER));
+        tParaName = JOE_T_ActionsParameterForm_Name.control(new Text(group, SWT.BORDER));
         final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_9.widthHint = 200;
         tParaName.setLayoutData(gridData_9);
@@ -367,7 +367,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        label6 = JOE_L_ActionsParameterForm_Value.Control(new Label(group, SWT.NONE));
+        label6 = JOE_L_ActionsParameterForm_Value.control(new Label(group, SWT.NONE));
         label6.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         final Composite composite = new Composite(group, SWT.NONE);
         composite.addControlListener(new ControlAdapter() {
@@ -378,7 +378,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-        cSource = JOE_Cbo_ActionsParameterForm_Source.Control(new Combo(composite, SWT.READ_ONLY));
+        cSource = JOE_Cbo_ActionsParameterForm_Source.control(new Combo(composite, SWT.READ_ONLY));
         cSource.setItems(new String[] { "order", "task" });
         cSource.setBounds(0, 0, 250, 21);
         cSource.addModifyListener(new ModifyListener() {
@@ -388,7 +388,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         cSource.setVisible(false);
-        tParaValue = JOE_T_ActionsParameterForm_Value.Control(new Text(composite, SWT.BORDER));
+        tParaValue = JOE_T_ActionsParameterForm_Value.control(new Text(composite, SWT.BORDER));
         tParaValue.setBounds(0, 0, 250, 21);
         tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 
@@ -404,7 +404,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(!"".equals(tParaName.getText()));
             }
         });
-        bApply = JOE_B_ActionsParameterForm_Apply.Control(new Button(group, SWT.NONE));
+        bApply = JOE_B_ActionsParameterForm_Apply.control(new Button(group, SWT.NONE));
         final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         bApply.setLayoutData(gridData_5);
         bApply.setEnabled(false);
@@ -414,7 +414,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 addParam();
             }
         });
-        tParameter = JOE_Tbl_ActionsParameterForm_Parameter.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
+        tParameter = JOE_Tbl_ActionsParameterForm_Parameter.control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, true, 4, 5);
         gridData_3.widthHint = 342;
         gridData_3.heightHint = 140;
@@ -443,11 +443,11 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setEnabled(false);
             }
         });
-        TableColumn tcName = JOE_TCl_ActionsParameterForm_Name.Control(new TableColumn(tParameter, SWT.NONE));
+        TableColumn tcName = JOE_TCl_ActionsParameterForm_Name.control(new TableColumn(tParameter, SWT.NONE));
         tcName.setWidth(252);
-        TableColumn tcValue = JOE_TCl_ActionsParameterForm_Value.Control(new TableColumn(tParameter, SWT.NONE));
+        TableColumn tcValue = JOE_TCl_ActionsParameterForm_Value.control(new TableColumn(tParameter, SWT.NONE));
         tcValue.setWidth(500);
-        butNewParam = JOE_B_ActionsParameterForm_NewParam.Control(new Button(group, SWT.NONE));
+        butNewParam = JOE_B_ActionsParameterForm_NewParam.control(new Button(group, SWT.NONE));
         butNewParam.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -464,7 +464,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData_2_1.heightHint = 67;
         composite_2.setLayoutData(gridData_2_1);
         composite_2.setLayout(new GridLayout());
-        butUp_1 = JOE_B_Up.Control(new Button(composite_2, SWT.NONE));
+        butUp_1 = JOE_B_Up.control(new Button(composite_2, SWT.NONE));
         butUp_1.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -473,7 +473,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         butUp_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         butUp_1.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
-        butDown_1 = JOE_B_Down.Control(new Button(composite_2, SWT.NONE));
+        butDown_1 = JOE_B_Down.control(new Button(composite_2, SWT.NONE));
         butDown_1.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -482,7 +482,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         butDown_1.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
         butDown_1.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
-        bRemove = JOE_B_ActionsParameterForm_Remove.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_ActionsParameterForm_Remove.control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         bRemove.setEnabled(false);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -502,7 +502,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
         gridData.widthHint = 74;
         composite_1.setLayoutData(gridData);
         composite_1.setLayout(new GridLayout());
-        final Button paramButton = JOE_B_ActionsParameterForm_Parameter.Control(new Button(composite_1, SWT.RADIO));
+        final Button paramButton = JOE_B_ActionsParameterForm_Parameter.control(new Button(composite_1, SWT.RADIO));
         paramButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         paramButton.addSelectionListener(new SelectionAdapter() {
 
@@ -513,7 +513,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
             }
         });
         paramButton.setSelection(true);
-        final Button fromTaskButton = JOE_B_ActionsParameterForm_FromTask.Control(new Button(composite_1, SWT.RADIO));
+        final Button fromTaskButton = JOE_B_ActionsParameterForm_FromTask.control(new Button(composite_1, SWT.RADIO));
         fromTaskButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         fromTaskButton.addSelectionListener(new SelectionAdapter() {
 
@@ -523,7 +523,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
                 bApply.setFocus();
             }
         });
-        final Button fromOrderButton = JOE_B_ActionsParameterForm_FromOrder.Control(new Button(composite_1, SWT.RADIO));
+        final Button fromOrderButton = JOE_B_ActionsParameterForm_FromOrder.control(new Button(composite_1, SWT.RADIO));
         final GridData gridData_2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
         fromOrderButton.setLayoutData(gridData_2);
         fromOrderButton.addSelectionListener(new SelectionAdapter() {

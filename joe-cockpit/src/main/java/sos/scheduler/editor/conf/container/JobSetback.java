@@ -88,11 +88,11 @@ public class JobSetback extends FormBaseClass {
         gridData2.grabExcessHorizontalSpace = true;
         gridData2.grabExcessVerticalSpace = true;
         gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        group = SOSJOEMessageCodes.JOE_G_JobOptionsForm_DelayOrderAfterSetBack.Control(new Group(objParent, SWT.NONE));
+        group = SOSJOEMessageCodes.JOE_G_JobOptionsForm_DelayOrderAfterSetBack.control(new Group(objParent, SWT.NONE));
         group.setLayout(gridLayout2);
         group.setLayoutData(gridData2);
-        label2 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_SetBackCount.Control(new Label(group, SWT.NONE));
-        sSetBackCount = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackCount.Control(new Text(group, SWT.BORDER));
+        label2 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_SetBackCount.control(new Label(group, SWT.NONE));
+        sSetBackCount = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackCount.control(new Text(group, SWT.BORDER));
         sSetBackCount.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
@@ -100,7 +100,7 @@ public class JobSetback extends FormBaseClass {
             }
         });
         sSetBackCount.setLayoutData(new GridData(48, SWT.DEFAULT));
-        bIsMaximum = SOSJOEMessageCodes.JOE_B_JobOptionsForm_IsMax.Control(new Button(group, SWT.CHECK));
+        bIsMaximum = SOSJOEMessageCodes.JOE_B_JobOptionsForm_IsMax.control(new Button(group, SWT.CHECK));
         bIsMaximum.setLayoutData(gridData6);
         bIsMaximum.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -109,15 +109,15 @@ public class JobSetback extends FormBaseClass {
                 bApplySetback.setEnabled(true);
             }
         });
-        final Label delayLabel = SOSJOEMessageCodes.JOE_L_JobOptionsForm_Delay.Control(new Label(group, SWT.NONE));
-        sSetBackHours = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackHours.Control(new Text(group, SWT.BORDER));
+        final Label delayLabel = SOSJOEMessageCodes.JOE_L_JobOptionsForm_Delay.control(new Label(group, SWT.NONE));
+        sSetBackHours = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackHours.control(new Text(group, SWT.BORDER));
         sSetBackHours.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label7 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(group, SWT.NONE));
+        label7 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(group, SWT.NONE));
         sSetBackCount.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -125,23 +125,23 @@ public class JobSetback extends FormBaseClass {
                 bApplySetback.setEnabled(true);
             }
         });
-        sSetBackMinutes = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackMinutes.Control(new Text(group, SWT.BORDER));
+        sSetBackMinutes = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackMinutes.control(new Text(group, SWT.BORDER));
         sSetBackMinutes.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label9 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(group, SWT.NONE));
-        sSetBackSeconds = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackMinutes.Control(new Text(group, SWT.BORDER));
+        label9 = SOSJOEMessageCodes.JOE_L_Colon.control(new Label(group, SWT.NONE));
+        sSetBackSeconds = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackMinutes.control(new Text(group, SWT.BORDER));
         sSetBackSeconds.addVerifyListener(new VerifyListener() {
 
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label10 = SOSJOEMessageCodes.JOE_L_JobSetback_TimeFormat.Control(new Label(group, SWT.NONE));
-        bApplySetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDelay.Control(new Button(group, SWT.NONE));
+        label10 = SOSJOEMessageCodes.JOE_L_JobSetback_TimeFormat.control(new Label(group, SWT.NONE));
+        bApplySetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDelay.control(new Button(group, SWT.NONE));
         bApplySetback.setEnabled(false);
         bApplySetback.setLayoutData(gridData29);
         bApplySetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -153,7 +153,7 @@ public class JobSetback extends FormBaseClass {
         label31 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label31.setLayoutData(gridData25);
         createTable();
-        bNewSetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewSetBack.Control(new Button(group, SWT.NONE));
+        bNewSetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewSetBack.control(new Button(group, SWT.NONE));
         bNewSetback.setEnabled(true);
         bNewSetback.setLayoutData(gridData28);
         bNewSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -169,7 +169,7 @@ public class JobSetback extends FormBaseClass {
         });
         label30 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label30.setLayoutData(gridData26);
-        bRemoveSetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveSetback.Control(new Button(group, SWT.NONE));
+        bRemoveSetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveSetback.control(new Button(group, SWT.NONE));
         bRemoveSetback.setEnabled(false);
         bRemoveSetback.setLayoutData(gridData27);
         bRemoveSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -227,7 +227,7 @@ public class JobSetback extends FormBaseClass {
     }
 
     private void createTable() {
-        tSetback = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_ErrorDelay.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
+        tSetback = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_ErrorDelay.control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         tSetback.setSortDirection(SWT.UP);
         tSetback.setHeaderVisible(true);
         tSetback.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 10, 3));
@@ -245,12 +245,12 @@ public class JobSetback extends FormBaseClass {
                 bRemoveSetback.setEnabled(tSetback.getSelectionCount() > 0);
             }
         });
-        TableColumn tableColumn2 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_SetBackCount.Control(new TableColumn(tSetback, SWT.NONE));
+        TableColumn tableColumn2 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_SetBackCount.control(new TableColumn(tSetback, SWT.NONE));
         tSetback.setSortColumn(tableColumn2);
         tableColumn2.setWidth(150);
-        TableColumn tableColumn3 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_IsMax.Control(new TableColumn(tSetback, SWT.NONE));
+        TableColumn tableColumn3 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_IsMax.control(new TableColumn(tSetback, SWT.NONE));
         tableColumn3.setWidth(80);
-        TableColumn tableColumn4 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Delayhhmmss.Control(new TableColumn(tSetback, SWT.NONE));
+        TableColumn tableColumn4 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Delayhhmmss.control(new TableColumn(tSetback, SWT.NONE));
         tableColumn4.setWidth(250);
     }
 

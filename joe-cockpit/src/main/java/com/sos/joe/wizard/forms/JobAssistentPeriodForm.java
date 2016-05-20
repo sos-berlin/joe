@@ -74,11 +74,11 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
         gridData2.horizontalSpan = 1;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 7;
-        gPeriod = JOE_G_JobAssistent_Period.Control(new Group(this, SWT.NONE));
+        gPeriod = JOE_G_JobAssistent_Period.control(new Group(this, SWT.NONE));
         gPeriod.setEnabled(true);
         gPeriod.setLayout(gridLayout);
-        label2 = JOE_L_JobAssistent_BeginTime.Control(new Label(gPeriod, SWT.NONE));
-        sBeginHours = JOE_T_JobAssistent_BeginHours.Control(new Text(gPeriod, SWT.BORDER));
+        label2 = JOE_L_JobAssistent_BeginTime.control(new Label(gPeriod, SWT.NONE));
+        sBeginHours = JOE_T_JobAssistent_BeginHours.control(new Text(gPeriod, SWT.BORDER));
         sBeginHours.addVerifyListener(new VerifyListener() {
 
             @Override
@@ -97,8 +97,8 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
                 listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(), sBeginSeconds.getText());
             }
         });
-        label3 = JOE_L_Colon.Control(new Label(gPeriod, SWT.NONE));
-        sBeginMinutes = JOE_T_JobAssistent_BeginMinutes.Control(new Text(gPeriod, SWT.BORDER));
+        label3 = JOE_L_Colon.control(new Label(gPeriod, SWT.NONE));
+        sBeginMinutes = JOE_T_JobAssistent_BeginMinutes.control(new Text(gPeriod, SWT.BORDER));
         sBeginMinutes.addVerifyListener(new VerifyListener() {
 
             @Override
@@ -131,8 +131,8 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
                 listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(), sBeginSeconds.getText());
             }
         });
-        label4 = JOE_L_Colon.Control(new Label(gPeriod, SWT.NONE));
-        sBeginSeconds = JOE_T_JobAssistent_BeginSeconds.Control(new Text(gPeriod, SWT.BORDER));
+        label4 = JOE_L_Colon.control(new Label(gPeriod, SWT.NONE));
+        sBeginSeconds = JOE_T_JobAssistent_BeginSeconds.control(new Text(gPeriod, SWT.BORDER));
         sBeginSeconds.addVerifyListener(new VerifyListener() {
 
             @Override
@@ -151,10 +151,10 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
                 listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(), sBeginSeconds.getText());
             }
         });
-        label5 = JOE_L_JobAssistent_TimeFormat.Control(new Label(gPeriod, SWT.NONE));
+        label5 = JOE_L_JobAssistent_TimeFormat.control(new Label(gPeriod, SWT.NONE));
         label5.setLayoutData(gridData2);
-        label6 = JOE_L_JobAssistent_EndTime.Control(new Label(gPeriod, SWT.NONE));
-        sEndHours = JOE_T_JobAssistent_EndHours.Control(new Text(gPeriod, SWT.BORDER));
+        label6 = JOE_L_JobAssistent_EndTime.control(new Label(gPeriod, SWT.NONE));
+        sEndHours = JOE_T_JobAssistent_EndHours.control(new Text(gPeriod, SWT.BORDER));
         sEndHours.addVerifyListener(new VerifyListener() {
 
             @Override
@@ -187,8 +187,8 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
                 listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds.getText());
             }
         });
-        label7 = JOE_L_Colon.Control(new Label(gPeriod, SWT.NONE));
-        sEndMinutes = JOE_T_JobAssistent_EndMinutes.Control(new Text(gPeriod, SWT.BORDER));
+        label7 = JOE_L_Colon.control(new Label(gPeriod, SWT.NONE));
+        sEndMinutes = JOE_T_JobAssistent_EndMinutes.control(new Text(gPeriod, SWT.BORDER));
         sEndMinutes.addVerifyListener(new VerifyListener() {
 
             @Override
@@ -221,8 +221,8 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
                 listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds.getText());
             }
         });
-        label8 = JOE_L_Colon.Control(new Label(gPeriod, SWT.NONE));
-        sEndSeconds = JOE_T_JobAssistent_EndSeconds.Control(new Text(gPeriod, SWT.BORDER));
+        label8 = JOE_L_Colon.control(new Label(gPeriod, SWT.NONE));
+        sEndSeconds = JOE_T_JobAssistent_EndSeconds.control(new Text(gPeriod, SWT.BORDER));
         sEndSeconds.addVerifyListener(new VerifyListener() {
 
             @Override
@@ -245,7 +245,7 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes {
             }
         });
         sEndSeconds.setLayoutData(gridData6);
-        label9 = JOE_L_JobAssistent_TimeFormat.Control(new Label(gPeriod, SWT.NONE));
+        label9 = JOE_L_JobAssistent_TimeFormat.control(new Label(gPeriod, SWT.NONE));
         sEndSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
             @Override

@@ -135,40 +135,40 @@ public class ScriptJobMainForm extends ScriptForm {
         objTabControlComposite = new Composite(tabFolder, SWT.NONE);
         objTabControlComposite.setLayout(new GridLayout());
         setResizableV(objTabControlComposite);
-        tabItemOptions = JOE_TI_ScriptJobMainForm_Options.Control(new CTabItem(tabFolder, SWT.NONE));
+        tabItemOptions = JOE_TI_ScriptJobMainForm_Options.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemOptionsComposite = new Composite(tabFolder, SWT.NONE);
         tabItemOptionsComposite.setLayout(new GridLayout());
         setResizableV(tabItemOptionsComposite);
         tabItemOptions.setControl(tabItemOptionsComposite);
-        tabItemEMail = JOE_TI_ScriptJobMainForm_EMail.Control(new CTabItem(tabFolder, SWT.NONE));
+        tabItemEMail = JOE_TI_ScriptJobMainForm_EMail.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemEMailComposite = new Composite(tabFolder, SWT.NONE);
         tabItemEMailComposite.setLayout(new GridLayout());
         setResizableV(tabItemEMailComposite);
         tabItemEMail.setControl(tabItemEMailComposite);
         if (objDataProvider.isOrderJob()) {
-            tabItemOrderSetBack = JOE_TI_ScriptJobMainForm_SetBack.Control(new CTabItem(tabFolder, SWT.NONE));
+            tabItemOrderSetBack = JOE_TI_ScriptJobMainForm_SetBack.control(new CTabItem(tabFolder, SWT.NONE));
             tabItemOrderSetBackComposite = new Composite(tabFolder, SWT.NONE);
             tabItemOrderSetBackComposite.setLayout(new GridLayout());
             setResizableV(tabItemOrderSetBackComposite);
             tabItemOrderSetBack.setControl(tabItemOrderSetBackComposite);
         } else {
-            tabItemDelayAfterError = JOE_TI_ScriptJobMainForm_OnError.Control(new CTabItem(tabFolder, SWT.NONE));
+            tabItemDelayAfterError = JOE_TI_ScriptJobMainForm_OnError.control(new CTabItem(tabFolder, SWT.NONE));
             tabItemDelayAfterErrorComposite = new Composite(tabFolder, SWT.NONE);
             tabItemDelayAfterErrorComposite.setLayout(new GridLayout());
             setResizableV(tabItemDelayAfterErrorComposite);
             tabItemDelayAfterError.setControl(tabItemDelayAfterErrorComposite);
-            tabItemDirChanged = JOE_TI_ScriptJobMainForm_FileWatcher.Control(new CTabItem(tabFolder, SWT.NONE));
+            tabItemDirChanged = JOE_TI_ScriptJobMainForm_FileWatcher.control(new CTabItem(tabFolder, SWT.NONE));
             tabItemDirChangedComposite = new Composite(tabFolder, SWT.NONE);
             tabItemDirChangedComposite.setLayout(new GridLayout());
             setResizableV(tabItemDirChangedComposite);
             tabItemDirChanged.setControl(tabItemDirChangedComposite);
         }
-        tabItemDocumentation = JOE_TI_ScriptJobMainForm_Doc.Control(new CTabItem(tabFolder, SWT.NONE));
+        tabItemDocumentation = JOE_TI_ScriptJobMainForm_Doc.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemDocumentationComposite = new Composite(tabFolder, SWT.NONE);
         tabItemDocumentationComposite.setLayout(new GridLayout());
         setResizableV(tabItemDocumentationComposite);
         tabItemDocumentation.setControl(tabItemDocumentationComposite);
-        tabItemSourceViewer = JOE_TI_ScriptJobMainForm_XML.Control(new CTabItem(tabFolder, SWT.NONE));
+        tabItemSourceViewer = JOE_TI_ScriptJobMainForm_XML.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemSourceViewerComposite = new Composite(tabFolder, SWT.NONE);
         tabItemSourceViewerComposite.setLayout(new GridLayout());
         setResizableV(tabItemSourceViewerComposite);

@@ -95,15 +95,15 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void createGroup() {
-        group = JOE_G_ProcessClassesForm_ProcessClasses.Control(new Group(this, SWT.NONE));
+        group = JOE_G_ProcessClassesForm_ProcessClasses.control(new Group(this, SWT.NONE));
         group.setLayout(new GridLayout(5, false));
-        Label lbProcessClass = JOE_L_ProcessClassesForm_ProcessClass.Control(new Label(group, SWT.NONE));
+        Label lbProcessClass = JOE_L_ProcessClassesForm_ProcessClass.control(new Label(group, SWT.NONE));
         lbProcessClass.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-        tProcessClass = JOE_T_ProcessClassesForm_ProcessClass.Control(new Text(group, SWT.BORDER));
+        tProcessClass = JOE_T_ProcessClassesForm_ProcessClass.control(new Text(group, SWT.BORDER));
         tProcessClass.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 4, 1));
         tProcessClass.setEnabled(false);
         tProcessClass.addTraverseListener(new TraverseListener() {
@@ -128,7 +128,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btApply.setEnabled(valid);
             }
         });
-        btApply = JOE_B_ProcessClassesForm_Apply.Control(new Button(group, SWT.NONE));
+        btApply = JOE_B_ProcessClassesForm_Apply.control(new Button(group, SWT.NONE));
         btApply.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btApply.setEnabled(false);
         btApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -137,7 +137,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 applyClass();
             }
         });
-        Label lbMaxProcesses = JOE_L_ProcessClassesForm_MaxProcesses.Control(new Label(group, SWT.NONE));
+        Label lbMaxProcesses = JOE_L_ProcessClassesForm_MaxProcesses.control(new Label(group, SWT.NONE));
         lbMaxProcesses.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
         final Label lbUrl = new Label(group, SWT.NONE);
         lbUrl.setText("Url");
@@ -171,7 +171,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        tRemoteUrl = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
+        tRemoteUrl = JOE_T_ProcessClassesForm_remoteExecution.control(new Text(group, SWT.BORDER));
         tRemoteUrl.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         tRemoteUrl.setEnabled(false);
         tRemoteUrl.addTraverseListener(new TraverseListener() {
@@ -186,7 +186,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 btApply.setEnabled(true);
             }
         });
-        cSelect = JOE_Cbo_JCNodesForm_OnError.Control(new Combo(group, SWT.READ_ONLY));
+        cSelect = JOE_Cbo_JCNodesForm_OnError.control(new Combo(group, SWT.READ_ONLY));
         cSelect.setItems(new String[] { "first", "next" });
         cSelect.addModifyListener(new ModifyListener() {
 
@@ -204,7 +204,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         createTableRemoteScheduler();
         GridData gridData3 = new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1);
         gridData3.widthHint = 100;
-        btNewRemoteScheduler = JOE_B_ProcessClassesForm_NewRemoteScheduler.Control(new Button(group, SWT.NONE));
+        btNewRemoteScheduler = JOE_B_ProcessClassesForm_NewRemoteScheduler.control(new Button(group, SWT.NONE));
         btNewRemoteScheduler.setLayoutData(gridData3);
         btNewRemoteScheduler.setEnabled(false);
         btNewRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -222,7 +222,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         lbSeperator.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         GridData gridData4 = new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1);
         gridData4.widthHint = 100;
-        btRemoveRemoteScheduler = JOE_B_ProcessClassesForm_RemoveRemoteScheduler.Control(new Button(group, SWT.NONE));
+        btRemoveRemoteScheduler = JOE_B_ProcessClassesForm_RemoveRemoteScheduler.control(new Button(group, SWT.NONE));
         btRemoveRemoteScheduler.setLayoutData(gridData4);
         btRemoveRemoteScheduler.setEnabled(false);
         btRemoveRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -252,7 +252,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         new Label(group, SWT.NONE);
         GridData layoutDataOkButton = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
         layoutDataOkButton.widthHint = 100;
-        btOkRemoteScheduler = JOE_B_ProcessClassesForm_ApplyRemoteScheduler.Control(new Button(group, SWT.NONE));
+        btOkRemoteScheduler = JOE_B_ProcessClassesForm_ApplyRemoteScheduler.control(new Button(group, SWT.NONE));
         btOkRemoteScheduler.setLayoutData(layoutDataOkButton);
         btOkRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -261,7 +261,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 
             }
         });
-        tRemoteSchedulerUrl = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
+        tRemoteSchedulerUrl = JOE_T_ProcessClassesForm_remoteExecution.control(new Text(group, SWT.BORDER));
         tRemoteSchedulerUrl.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false, 3, 1));
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
@@ -312,7 +312,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         createTableProcessClasses();
-        btNew = JOE_B_ProcessClassesForm_NewProcessClass.Control(new Button(group, SWT.NONE));
+        btNew = JOE_B_ProcessClassesForm_NewProcessClass.control(new Button(group, SWT.NONE));
         btNew.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1));
         getShell().setDefaultButton(btNew);
         btNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -325,7 +325,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         });
         Label lbSeperator2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbSeperator2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        btRemove = JOE_B_ProcessClassesForm_RemoveProcessClass.Control(new Button(group, SWT.NONE));
+        btRemove = JOE_B_ProcessClassesForm_RemoveProcessClass.control(new Button(group, SWT.NONE));
         btRemove.setEnabled(false);
         btRemove.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1));
         btRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -440,7 +440,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private void createTableProcessClasses() {
-        tableProcessClasses = JOE_Tbl_ProcessClassesForm_ProcessClasses.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
+        tableProcessClasses = JOE_Tbl_ProcessClassesForm_ProcessClasses.control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         tableProcessClasses.setHeaderVisible(true);
         tableProcessClasses.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4));
         tableProcessClasses.setLinesVisible(true);
@@ -467,11 +467,11 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             }
         });
-        TableColumn tableColumn = JOE_TCl_ProcessClassesForm_ProcessClass.Control(new TableColumn(tableProcessClasses, SWT.NONE));
+        TableColumn tableColumn = JOE_TCl_ProcessClassesForm_ProcessClass.control(new TableColumn(tableProcessClasses, SWT.NONE));
         tableColumn.setWidth(104);
-        TableColumn tableColumn1 = JOE_TCl_ProcessClassesForm_MaxProcesses.Control(new TableColumn(tableProcessClasses, SWT.NONE));
+        TableColumn tableColumn1 = JOE_TCl_ProcessClassesForm_MaxProcesses.control(new TableColumn(tableProcessClasses, SWT.NONE));
         tableColumn1.setWidth(91);
-        TableColumn tableColumn2 = JOE_TCl_ProcessClassesForm_RemoteExecution.Control(new TableColumn(tableProcessClasses, SWT.NONE));
+        TableColumn tableColumn2 = JOE_TCl_ProcessClassesForm_RemoteExecution.control(new TableColumn(tableProcessClasses, SWT.NONE));
         tableColumn2.setWidth(355);
     }
 

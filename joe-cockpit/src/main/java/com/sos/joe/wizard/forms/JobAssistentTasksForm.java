@@ -112,11 +112,11 @@ public class JobAssistentTasksForm {
         gridLayout_3.marginRight = 5;
         gridLayout_3.numColumns = 4;
         composite_1.setLayout(gridLayout_3);
-        final Label tasksLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Tasks.Control(new Label(composite_1, SWT.NONE));
+        final Label tasksLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Tasks.control(new Label(composite_1, SWT.NONE));
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_1.widthHint = 57;
         tasksLabel.setLayoutData(gridData_1);
-        txtTask = SOSJOEMessageCodes.JOE_T_JobAssistent_Tasks.Control(new Text(composite_1, SWT.BORDER));
+        txtTask = SOSJOEMessageCodes.JOE_T_JobAssistent_Tasks.control(new Text(composite_1, SWT.BORDER));
         txtTask.setFocus();
         txtTask.addModifyListener(new ModifyListener() {
 
@@ -138,11 +138,11 @@ public class JobAssistentTasksForm {
         gridData_5.minimumWidth = 100;
         txtTask.setLayoutData(gridData_5);
         txtTask.setText(joblistener.getTasks());
-        final Label minimumTasksLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_MinimumTasks.Control(new Label(composite_1, SWT.RIGHT));
+        final Label minimumTasksLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_MinimumTasks.control(new Label(composite_1, SWT.RIGHT));
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData_3.widthHint = 95;
         minimumTasksLabel.setLayoutData(gridData_3);
-        txtMinTasks = SOSJOEMessageCodes.JOE_T_JobAssistent_MinimumTasks.Control(new Text(composite_1, SWT.BORDER));
+        txtMinTasks = SOSJOEMessageCodes.JOE_T_JobAssistent_MinimumTasks.control(new Text(composite_1, SWT.BORDER));
         txtMinTasks.setText(joblistener.getMintasks());
         txtMinTasks.addModifyListener(new ModifyListener() {
 
@@ -165,7 +165,7 @@ public class JobAssistentTasksForm {
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.marginWidth = 0;
         composite.setLayout(gridLayout_2);
-        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
+        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.control(new Button(composite, SWT.NONE));
         butCancel.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -181,7 +181,7 @@ public class JobAssistentTasksForm {
         gridLayout_4.marginWidth = 0;
         gridLayout_4.numColumns = 5;
         composite_2.setLayout(gridLayout_4);
-        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
+        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.control(new Button(composite_2, SWT.NONE));
         butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butShow.addSelectionListener(new SelectionAdapter() {
 
@@ -194,7 +194,7 @@ public class JobAssistentTasksForm {
                 txtTask.setFocus();
             }
         });
-        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
+        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.control(new Button(composite_2, SWT.NONE));
         butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butFinish.addSelectionListener(new SelectionAdapter() {
 
@@ -203,7 +203,7 @@ public class JobAssistentTasksForm {
                 doFinish();
             }
         });
-        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
+        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.control(new Button(composite_2, SWT.NONE));
         butBack.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -218,7 +218,7 @@ public class JobAssistentTasksForm {
                 tasksShell.dispose();
             }
         });
-        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.control(new Button(composite_2, SWT.NONE));
         butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         butNext.addSelectionListener(new SelectionAdapter() {

@@ -70,7 +70,7 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         GridLayout gridLayout = new GridLayout(2, false);
         group = JOE_G_ResourcesForm_Resources.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
-        cMemory = JOE_B_ResourcesForm_Memory.Control(new Button(group, SWT.CHECK));
+        cMemory = JOE_B_ResourcesForm_Memory.control(new Button(group, SWT.CHECK));
         cMemory.setLayoutData(gridData2);
         cMemory.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -81,7 +81,7 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
             }
         });
         createGroup1();
-        cSpace = JOE_B_ResourcesForm_Space.Control(new Button(group, SWT.CHECK));
+        cSpace = JOE_B_ResourcesForm_Space.control(new Button(group, SWT.CHECK));
         cSpace.setLayoutData(gridData3);
         cSpace.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -103,8 +103,8 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         group1 = JOE_G_ResourcesForm_Memory.Control(new SOSGroup(group, SWT.NONE));
         group1.setLayoutData(gridData);
         group1.setLayout(gridLayout1);
-        label = JOE_L_ResourcesForm_Minimum.Control(new SOSLabel(group1, SWT.NONE));
-        tMemory = JOE_T_ResourcesForm_Memory.Control(new Text(group1, SWT.BORDER));
+        label = JOE_L_ResourcesForm_Minimum.control(new SOSLabel(group1, SWT.NONE));
+        tMemory = JOE_T_ResourcesForm_Memory.control(new Text(group1, SWT.BORDER));
         tMemory.setLayoutData(gridData11);
         tMemory.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -121,9 +121,9 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label2 = JOE_L_ResourcesForm_Unit.Control(new SOSLabel(group1, SWT.NONE));
+        label2 = JOE_L_ResourcesForm_Unit.control(new SOSLabel(group1, SWT.NONE));
         createCbMemory();
-        bMemoryNotes = JOE_B_ResourcesForm_MemoryNotes.Control(new Button(group1, SWT.NONE));
+        bMemoryNotes = JOE_B_ResourcesForm_MemoryNotes.control(new Button(group1, SWT.NONE));
         bMemoryNotes.setLayoutData(gridData10);
         bMemoryNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -144,8 +144,8 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
         group2 = JOE_G_ResourcesForm_Space.Control(new SOSGroup(group, SWT.NONE));
         group2.setLayoutData(gridData1);
         group2.setLayout(gridLayout2);
-        label1 = JOE_L_ResourcesForm_Minimum.Control(new SOSLabel(group2, SWT.NONE));
-        tSpace = JOE_T_ResourcesForm_Space.Control(new Text(group2, SWT.BORDER));
+        label1 = JOE_L_ResourcesForm_Minimum.control(new SOSLabel(group2, SWT.NONE));
+        tSpace = JOE_T_ResourcesForm_Space.control(new Text(group2, SWT.BORDER));
         tSpace.setLayoutData(gridData9);
         tSpace.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -162,9 +162,9 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label3 = JOE_L_ResourcesForm_Unit.Control(new SOSLabel(group2, SWT.NONE));
+        label3 = JOE_L_ResourcesForm_Unit.control(new SOSLabel(group2, SWT.NONE));
         createCbSpace();
-        bSpaceNotes = JOE_B_ResourcesForm_SpaceNotes.Control(new Button(group2, SWT.NONE));
+        bSpaceNotes = JOE_B_ResourcesForm_SpaceNotes.control(new Button(group2, SWT.NONE));
         bSpaceNotes.setLayoutData(gridData6);
         bSpaceNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -179,7 +179,7 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
     private void createCbMemory() {
         GridData gridData4 = new GridData();
         gridData4.widthHint = 90;
-        cbMemory = JOE_Cbo_ResourcesForm_Memory.Control(new Combo(group1, SWT.NONE));
+        cbMemory = JOE_Cbo_ResourcesForm_Memory.control(new Combo(group1, SWT.NONE));
         cbMemory.setLayoutData(gridData4);
         cbMemory.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
@@ -198,7 +198,7 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
     private void createCbSpace() {
         GridData gridData5 = new GridData();
         gridData5.widthHint = 90;
-        cbSpace = JOE_Cbo_ResourcesForm_Space.Control(new Combo(group2, SWT.NONE));
+        cbSpace = JOE_Cbo_ResourcesForm_Space.control(new Combo(group2, SWT.NONE));
         cbSpace.setLayoutData(gridData5);
         cbSpace.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 

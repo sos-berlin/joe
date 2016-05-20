@@ -36,7 +36,7 @@ public class JobSourceViewer extends FormBaseClass {
 
     private void createGroup() {
         showWaitCursor();
-        Group gSourceViewer = SOSJOEMessageCodes.JOE_G_JobSourceViewer_SourceViewer.Control(new Group(objParent, SWT.NONE));
+        Group gSourceViewer = SOSJOEMessageCodes.JOE_G_JobSourceViewer_SourceViewer.control(new Group(objParent, SWT.NONE));
         final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 13, 1);
         gridData_5.heightHint = 100;
         gridData_5.minimumHeight = 30;

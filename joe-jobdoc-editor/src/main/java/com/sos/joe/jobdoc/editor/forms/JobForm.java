@@ -66,8 +66,8 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
     private void createGroup() {
         SOSOptionFileName objJobDocFileName = new SOSOptionFileName(objJobDocJobDataProvider.getDom().getFilename());
         String strJobDocFileName = "nn";
-        if (objJobDocFileName.IsNotEmpty()) {
-            strJobDocFileName = objJobDocFileName.JSFile().getName();
+        if (objJobDocFileName.isNotEmpty()) {
+            strJobDocFileName = objJobDocFileName.getJSFile().getName();
         }
         String strPrefKey = conClassName + "/" + strJobDocFileName + "/";
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -75,8 +75,8 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
         group = new SOSMsgJOE("JOE_G_JobForm_Job").Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
         group.setLayoutData(gridData);
-        label = new SOSMsgJOE("JOE_L_Name").Control(new SOSLabel(group, SWT.NONE));
-        tbxJavaClassName = (SOSPreferenceStoreText) new SOSMsgJOE("JOE_T_JobForm_Name").Control(new SOSPreferenceStoreText(group, SWT.BORDER));
+        label = new SOSMsgJOE("JOE_L_Name").control(new SOSLabel(group, SWT.NONE));
+        tbxJavaClassName = (SOSPreferenceStoreText) new SOSMsgJOE("JOE_T_JobForm_Name").control(new SOSPreferenceStoreText(group, SWT.BORDER));
         tbxJavaClassName.setLayoutData(gridData);
         tbxJavaClassName.setPreferenceStoreKey(strPrefKey + "tbxJavaClassName");
         tbxJavaClassName.addModifyListener(new ModifyListener() {
@@ -87,8 +87,8 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
                 Utils.setBackground(tbxJavaClassName, true);
             }
         });
-        label1 = new SOSMsgJOE("JOE_L_JobForm_Title").Control(new SOSLabel(group, SWT.NONE));
-        tTitle = new SOSMsgJOE("JOE_T_JobForm_Title").Control(new Text(group, SWT.BORDER));
+        label1 = new SOSMsgJOE("JOE_L_JobForm_Title").control(new SOSLabel(group, SWT.NONE));
+        tTitle = new SOSMsgJOE("JOE_T_JobForm_Title").control(new Text(group, SWT.BORDER));
         tTitle.setLayoutData(gridData);
         tTitle.addModifyListener(new ModifyListener() {
 
@@ -98,10 +98,10 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
                 Utils.setBackground(tTitle, true);
             }
         });
-        label2 = new SOSMsgJOE("JOE_L_JobForm_Order").Control(new SOSLabel(group, SWT.NONE));
+        label2 = new SOSMsgJOE("JOE_L_JobForm_Order").control(new SOSLabel(group, SWT.NONE));
         createCOrder();
-        label3 = new SOSMsgJOE("JOE_L_JobForm_Tasks").Control(new SOSLabel(group, SWT.NONE));
-        cTasks = new SOSMsgJOE("JOE_Cbo_JobForm_Tasks").Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
+        label3 = new SOSMsgJOE("JOE_L_JobForm_Tasks").control(new SOSLabel(group, SWT.NONE));
+        cTasks = new SOSMsgJOE("JOE_Cbo_JobForm_Tasks").control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
         cTasks.setLayoutData(new GridData(200, SWT.DEFAULT));
         cTasks.addSelectionListener(new SelectionListener() {
 
@@ -116,7 +116,7 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
             }
         });
         new Label(group, SWT.NONE);
-        final Button vorschauButton = new SOSMsgJOE("JOE_B_JobForm_Preview").Control(new Button(group, SWT.NONE));
+        final Button vorschauButton = new SOSMsgJOE("JOE_B_JobForm_Preview").control(new Button(group, SWT.NONE));
         vorschauButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -126,26 +126,26 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
         });
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-        Label lblO = new SOSMsgJOE("JOE_L_JobForm_OutputPath").Control(new SOSLabel(group, SWT.NONE));
+        Label lblO = new SOSMsgJOE("JOE_L_JobForm_OutputPath").control(new SOSLabel(group, SWT.NONE));
         lblO.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-        tbxSourceOutputPathName = (SOSFileNameSelector) new SOSMsgJOE("JOE_T_JobForm_OutputPath").Control(new SOSFileNameSelector(group, SWT.BORDER));
+        tbxSourceOutputPathName = (SOSFileNameSelector) new SOSMsgJOE("JOE_T_JobForm_OutputPath").control(new SOSFileNameSelector(group, SWT.BORDER));
         tbxSourceOutputPathName.setPreferenceStoreKey(strPrefKey + "tbxSourceOutputPathName");
         tbxSourceOutputPathName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        Label lblPackageName = new SOSMsgJOE("JOE_L_JobForm_PackageName").Control(new SOSLabel(group, SWT.NONE));
+        Label lblPackageName = new SOSMsgJOE("JOE_L_JobForm_PackageName").control(new SOSLabel(group, SWT.NONE));
         tbxJavaPackageName =
-                (SOSPreferenceStoreText) new SOSMsgJOE("JOE_T_JobForm_PackageName").Control(new SOSPreferenceStoreText(group, SWT.BORDER));
+                (SOSPreferenceStoreText) new SOSMsgJOE("JOE_T_JobForm_PackageName").control(new SOSPreferenceStoreText(group, SWT.BORDER));
         tbxJavaPackageName.setPreferenceStoreKey(strPrefKey + "tbxJavaPackageName");
         tbxJavaPackageName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        Label lblJobType = new SOSMsgJOE("JOE_L_JobForm_JobType").Control(new SOSLabel(group, SWT.NONE));
+        Label lblJobType = new SOSMsgJOE("JOE_L_JobForm_JobType").control(new SOSLabel(group, SWT.NONE));
         lblJobType.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-        cbJobType = new SOSMsgJOE("JOE_Cbo_JobForm_JobType").Control(new Combo(group, SWT.NONE));
+        cbJobType = new SOSMsgJOE("JOE_Cbo_JobForm_JobType").control(new Combo(group, SWT.NONE));
         cbJobType.setItems(new String[] { "Job in a Job Chain", "Standalone Job" });
         GridData gd_cbJobType = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
         gd_cbJobType.widthHint = 190;
         cbJobType.setLayoutData(gd_cbJobType);
         cbJobType.setText(cbJobType.getItem(1));
         new Label(group, SWT.NONE);
-        Button btnNewButton = new SOSMsgJOE("JOE_B_JobForm_GenerateSource").Control(new Button(group, SWT.NONE));
+        Button btnNewButton = new SOSMsgJOE("JOE_B_JobForm_GenerateSource").control(new Button(group, SWT.NONE));
         btnNewButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -171,7 +171,7 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
                 tbxSourceOutputPathName.setText(strOutPath);
             }
             JSFolder objOutputFolder = new JSFolder(strOutPath);
-            objOutputFolder.CheckFolder(true);
+            objOutputFolder.checkFolder(true);
             objSourceGenerator.setOutputDir(objOutputFolder);
             objSourceGenerator.setPackageName(tbxJavaPackageName.getText());
             if ("no".equalsIgnoreCase(cOrder.getText()) && "Standalone Job".equalsIgnoreCase(cbJobType.getText())) {
@@ -191,7 +191,7 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
     private void createCOrder() {
         GridData gridData2 = new GridData(GridData.BEGINNING, GridData.CENTER);
         gridData2.widthHint = 200;
-        cOrder = new SOSMsgJOE("JOE_Cbo_JobForm_Order").Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
+        cOrder = new SOSMsgJOE("JOE_Cbo_JobForm_Order").control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
         cOrder.setLayoutData(gridData2);
         cOrder.addSelectionListener(new SelectionListener() {
 

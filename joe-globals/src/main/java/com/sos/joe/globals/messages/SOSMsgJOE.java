@@ -51,7 +51,7 @@ public class SOSMsgJOE extends SOSMsgControl {
     }
 
     @Override
-    public Text Control(final Text pobjC) {
+    public Text control(final Text pobjC) {
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
         pobjC.addFocusListener(new FocusAdapter() {
@@ -89,7 +89,7 @@ public class SOSMsgJOE extends SOSMsgControl {
     }
 
     @Override
-    public Label Control(final Label pobjC) {
+    public Label control(final Label pobjC) {
         pobjC.setText(label());
         pobjC.setToolTipText(this.tooltip());
         setKeyListener(pobjC);
@@ -104,7 +104,7 @@ public class SOSMsgJOE extends SOSMsgControl {
     }
 
     @Override
-    public Group Control(final Group pobjC) {
+    public Group control(final Group pobjC) {
         pobjC.setText(caption());
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
@@ -112,7 +112,7 @@ public class SOSMsgJOE extends SOSMsgControl {
     }
 
     @Override
-    public Button Control(final Button pobjC) {
+    public Button control(final Button pobjC) {
         pobjC.setText(caption());
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
@@ -120,7 +120,7 @@ public class SOSMsgJOE extends SOSMsgControl {
     }
 
     @Override
-    public Combo Control(final Combo pobjC) {
+    public Combo control(final Combo pobjC) {
         pobjC.setText(caption());
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
@@ -128,89 +128,89 @@ public class SOSMsgJOE extends SOSMsgControl {
     }
 
     @Override
-    public Composite Control(final Composite pobjC) {
+    public Composite control(final Composite pobjC) {
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
         return pobjC;
     }
 
     @Override
-    public CCombo Control(final CCombo pobjC) {
+    public CCombo control(final CCombo pobjC) {
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
         return pobjC;
     }
 
     @Override
-    public TableColumn Control(final TableColumn pobjC) {
+    public TableColumn control(final TableColumn pobjC) {
         pobjC.setText(caption());
         pobjC.setToolTipText(tooltip());
         return pobjC;
     }
 
     @Override
-    public Table Control(final Table pobjC) {
+    public Table control(final Table pobjC) {
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
         return pobjC;
     }
 
     @Override
-    public FileDialog Control(final FileDialog pobjC) {
+    public FileDialog control(final FileDialog pobjC) {
         pobjC.setText(caption());
         return pobjC;
     }
 
     @Override
-    public Spinner Control(final Spinner pobjC) {
+    public Spinner control(final Spinner pobjC) {
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
         return pobjC;
     }
 
     @Override
-    public MessageBox Control(final MessageBox pobjC) {
+    public MessageBox control(final MessageBox pobjC) {
         pobjC.setMessage(this.caption());
         return pobjC;
     }
 
     @Override
-    public List Control(final List pobjC) {
+    public List control(final List pobjC) {
         pobjC.setToolTipText(tooltip());
         setKeyListener(pobjC);
         return pobjC;
     }
 
     @Override
-    public Tree Control(final Tree pobjC) {
+    public Tree control(final Tree pobjC) {
         pobjC.setToolTipText(this.tooltip());
         setKeyListener(pobjC);
         return pobjC;
     }
 
     @Override
-    public TreeColumn Control(final TreeColumn pobjC) {
+    public TreeColumn control(final TreeColumn pobjC) {
         pobjC.setText(caption());
         pobjC.setToolTipText(tooltip());
         return pobjC;
     }
 
     @Override
-    public TabItem Control(final TabItem pobjC) {
+    public TabItem control(final TabItem pobjC) {
         pobjC.setText(caption());
         pobjC.setToolTipText(this.tooltip());
         return pobjC;
     }
 
     @Override
-    public CTabItem Control(final CTabItem pobjC) {
+    public CTabItem control(final CTabItem pobjC) {
         pobjC.setText(caption());
         pobjC.setToolTipText(this.tooltip());
         return pobjC;
     }
 
     @Override
-    public SOSDateTime Control(final SOSDateTime pobjC) {
+    public SOSDateTime control(final SOSDateTime pobjC) {
         pobjC.setToolTipText(this.tooltip());
         return pobjC;
     }

@@ -64,11 +64,11 @@ public class JobIncludeFile extends FormBaseClass {
         gridLayout1.marginWidth = 0;
         gridLayout1.marginHeight = 0;
         gridLayout1.numColumns = intNumColumns;
-        group = SOSJOEMessageCodes.JOE_G_JobIncludeFile_IncludeFiles.Control(new Group(objParent, SWT.NONE));
+        group = SOSJOEMessageCodes.JOE_G_JobIncludeFile_IncludeFiles.control(new Group(objParent, SWT.NONE));
         group.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, true, intNumColumns, 1));
         group.setLayout(gridLayout1);
         setResizableV(group);
-        butIsLiveFile = SOSJOEMessageCodes.JOE_B_ParameterForm_LifeFile.Control(new Button(group, SWT.CHECK));
+        butIsLiveFile = SOSJOEMessageCodes.JOE_B_ParameterForm_LifeFile.control(new Button(group, SWT.CHECK));
         final FileNameSelector fleFile2Include = new FileNameSelector(group, SWT.BORDER);
         fleFile2Include.setDataProvider(objJobDataProvider);
         tbxFile2Include = fleFile2Include;
@@ -90,7 +90,7 @@ public class JobIncludeFile extends FormBaseClass {
                 fleFile2Include.flgIsFileFromLiveFolder = butIsLiveFile.getSelection();
             }
         });
-        bAdd = SOSJOEMessageCodes.JOE_B_JobIncludeFile_Add.Control(new Button(group, SWT.NONE));
+        bAdd = SOSJOEMessageCodes.JOE_B_JobIncludeFile_Add.control(new Button(group, SWT.NONE));
         bAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         bAdd.setEnabled(false);
         bAdd.addSelectionListener(new SelectionAdapter() {
@@ -101,7 +101,7 @@ public class JobIncludeFile extends FormBaseClass {
         });
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false, 3, 1));
-        tableIncludes = SOSJOEMessageCodes.JOE_Tbl_JobIncludeFile_Includes.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
+        tableIncludes = SOSJOEMessageCodes.JOE_Tbl_JobIncludeFile_Includes.control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         tableIncludes.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -121,12 +121,12 @@ public class JobIncludeFile extends FormBaseClass {
         gridData_2.heightHint = 4;
         gridData_2.minimumHeight = 20;
         tableIncludes.setLayoutData(gridData_2);
-        final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_Name.Control(new TableColumn(tableIncludes, SWT.NONE));
+        final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_Name.control(new TableColumn(tableIncludes, SWT.NONE));
         newColumnTableColumn.setWidth(272);
         final TableColumn newColumnTableColumn_1 =
-                SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_FileLiveFile.Control(new TableColumn(tableIncludes, SWT.NONE));
+                SOSJOEMessageCodes.JOE_TCl_JobIncludeFile_FileLiveFile.control(new TableColumn(tableIncludes, SWT.NONE));
         newColumnTableColumn_1.setWidth(81);
-        final Button butNew = SOSJOEMessageCodes.JOE_B_JobIncludeFile_New.Control(new Button(group, SWT.NONE));
+        final Button butNew = SOSJOEMessageCodes.JOE_B_JobIncludeFile_New.control(new Button(group, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
@@ -155,7 +155,7 @@ public class JobIncludeFile extends FormBaseClass {
                 }
             }
         });
-        bRemove = SOSJOEMessageCodes.JOE_B_JobIncludeFile_Remove.Control(new Button(group, SWT.NONE));
+        bRemove = SOSJOEMessageCodes.JOE_B_JobIncludeFile_Remove.control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
         bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         bRemove.addSelectionListener(new SelectionAdapter() {

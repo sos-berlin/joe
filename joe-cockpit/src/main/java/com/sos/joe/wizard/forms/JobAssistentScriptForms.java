@@ -113,8 +113,8 @@ public class JobAssistentScriptForms {
         gridLayout_1.marginBottom = 10;
         gridLayout_1.numColumns = 2;
         jobGroup.setLayout(gridLayout_1);
-        final Label lblLanguage = SOSJOEMessageCodes.JOE_L_JobAssistent_Language.Control(new Label(jobGroup, SWT.NONE));
-        txtLanguage = SOSJOEMessageCodes.JOE_T_JobAssistent_Language.Control(new Text(jobGroup, SWT.BORDER));
+        final Label lblLanguage = SOSJOEMessageCodes.JOE_L_JobAssistent_Language.control(new Label(jobGroup, SWT.NONE));
+        txtLanguage = SOSJOEMessageCodes.JOE_T_JobAssistent_Language.control(new Text(jobGroup, SWT.BORDER));
         txtLanguage.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -142,11 +142,11 @@ public class JobAssistentScriptForms {
             txtLanguage.setText(lan);
         }
         if (scriptlistener.getComClass() != null && !scriptlistener.getComClass().isEmpty()) {
-            lblClass = SOSJOEMessageCodes.JOE_L_JobAssistent_ComClass.Control(new Label(jobGroup, SWT.NONE));
+            lblClass = SOSJOEMessageCodes.JOE_L_JobAssistent_ComClass.control(new Label(jobGroup, SWT.NONE));
         } else {
-            lblClass = SOSJOEMessageCodes.JOE_L_JobAssistent_JavaClass.Control(new Label(jobGroup, SWT.NONE));
+            lblClass = SOSJOEMessageCodes.JOE_L_JobAssistent_JavaClass.control(new Label(jobGroup, SWT.NONE));
         }
-        txtJavaClass = SOSJOEMessageCodes.JOE_T_JobAssistent_JavaClass.Control(new Text(jobGroup, SWT.BORDER));
+        txtJavaClass = SOSJOEMessageCodes.JOE_T_JobAssistent_JavaClass.control(new Text(jobGroup, SWT.BORDER));
         txtJavaClass.addModifyListener(new ModifyListener() {
 
             @Override
@@ -168,11 +168,11 @@ public class JobAssistentScriptForms {
             txtJavaClass.setEditable(true);
         }
         if (lblClass != null && "Com Class".equals(lblClass.getText())) {
-            final Label lblRessources = SOSJOEMessageCodes.JOE_L_JobAssistent_FileName.Control(new Label(jobGroup, SWT.NONE));
+            final Label lblRessources = SOSJOEMessageCodes.JOE_L_JobAssistent_FileName.control(new Label(jobGroup, SWT.NONE));
         } else {
-            final Label lblRessources = SOSJOEMessageCodes.JOE_L_JobAssistent_Resource.Control(new Label(jobGroup, SWT.NONE));
+            final Label lblRessources = SOSJOEMessageCodes.JOE_L_JobAssistent_Resource.control(new Label(jobGroup, SWT.NONE));
         }
-        final Text txtResource = SOSJOEMessageCodes.JOE_T_JobAssistent_Resource.Control(new Text(jobGroup, SWT.BORDER));
+        final Text txtResource = SOSJOEMessageCodes.JOE_T_JobAssistent_Resource.control(new Text(jobGroup, SWT.BORDER));
         txtResource.setEditable(false);
         txtResource.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         txtResource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -181,9 +181,9 @@ public class JobAssistentScriptForms {
         } else if (scriptlistener.getFilename() != null && !scriptlistener.getFilename().trim().isEmpty()) {
             txtResource.setText(scriptlistener.getFilename());
         }
-        final Label lblInclude = SOSJOEMessageCodes.JOE_L_JobAssistent_Include.Control(new Label(jobGroup, SWT.NONE));
+        final Label lblInclude = SOSJOEMessageCodes.JOE_L_JobAssistent_Include.control(new Label(jobGroup, SWT.NONE));
         lblInclude.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
-        tableInclude = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_Include.Control(new Table(jobGroup, SWT.BORDER));
+        tableInclude = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_Include.control(new Table(jobGroup, SWT.BORDER));
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gridData_1.widthHint = 322;
         gridData_1.heightHint = 55;
@@ -205,7 +205,7 @@ public class JobAssistentScriptForms {
         gridLayout_2.marginWidth = 0;
         gridLayout_2.horizontalSpacing = 0;
         composite.setLayout(gridLayout_2);
-        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
+        butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.control(new Button(composite, SWT.NONE));
         butCancel.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -219,7 +219,7 @@ public class JobAssistentScriptForms {
         gridLayout_3.marginWidth = 0;
         gridLayout_3.numColumns = 5;
         composite2.setLayout(gridLayout_3);
-        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite2, SWT.NONE));
+        butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.control(new Button(composite2, SWT.NONE));
         butShow.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -227,7 +227,7 @@ public class JobAssistentScriptForms {
                 Utils.showClipboard(Utils.getElementAsString(scriptlistener.getParent()), scriptShell, false, null, false, null, false);
             }
         });
-        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite2, SWT.NONE));
+        butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.control(new Button(composite2, SWT.NONE));
         butFinish.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -235,7 +235,7 @@ public class JobAssistentScriptForms {
                 doFinish();
             }
         });
-        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite2, SWT.NONE));
+        butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.control(new Button(composite2, SWT.NONE));
         butBack.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -243,7 +243,7 @@ public class JobAssistentScriptForms {
                 doBack();
             }
         });
-        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite2, SWT.NONE));
+        butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.control(new Button(composite2, SWT.NONE));
         butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
         butNext.addSelectionListener(new SelectionAdapter() {
 

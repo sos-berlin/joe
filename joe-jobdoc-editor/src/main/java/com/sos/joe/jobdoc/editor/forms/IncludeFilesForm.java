@@ -79,8 +79,8 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
         gridLayout.numColumns = 3;
         group = JOE_G_IncludeFilesForm_IncludeFiles.Control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
-        label = JOE_L_IncludeFilesForm_File.Control(new SOSLabel(group, SWT.NONE));
-        tFile = JOE_T_IncludeFilesForm_File.Control(new Text(group, SWT.BORDER));
+        label = JOE_L_IncludeFilesForm_File.control(new SOSLabel(group, SWT.NONE));
+        tFile = JOE_T_IncludeFilesForm_File.control(new Text(group, SWT.BORDER));
         tFile.setLayoutData(gridData);
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 
@@ -90,7 +90,7 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
                 getShell().setDefaultButton(bAdd);
             }
         });
-        bAdd = JOE_B_IncludeFilesForm_Add.Control(new Button(group, SWT.NONE));
+        bAdd = JOE_B_IncludeFilesForm_Add.control(new Button(group, SWT.NONE));
         bAdd.setLayoutData(gridData4);
         bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -102,10 +102,10 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setText("Label");
         label1.setLayoutData(gridData1);
-        label51 = JOE_L_IncludeFilesForm_Parameter.Control(new SOSLabel(group, SWT.NONE));
+        label51 = JOE_L_IncludeFilesForm_Parameter.control(new SOSLabel(group, SWT.NONE));
         label51.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         label51.setVisible(false);
-        fileList = JOE_Lst_IncludeFilesForm_Files.Control(new List(group, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL));
+        fileList = JOE_Lst_IncludeFilesForm_Files.control(new List(group, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL));
         fileList.setLayoutData(gridData2);
         fileList.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
@@ -119,7 +119,7 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
                 bRemove.setEnabled(selection);
             }
         });
-        bRemove = JOE_B_IncludeFilesForm_Remove.Control(new Button(group, SWT.NONE));
+        bRemove = JOE_B_IncludeFilesForm_Remove.control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData3);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
