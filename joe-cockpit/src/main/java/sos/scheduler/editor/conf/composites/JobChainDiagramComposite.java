@@ -141,7 +141,7 @@ public class JobChainDiagramComposite extends Composite {
             originalImage = new Image(gJobchainDiagramm.getDisplay(), fis);
             fis.close();
         } catch (FileNotFoundException e1) {
-            new ErrorLog(e1.getLocalizedMessage(), e1);
+            new ErrorLog(e1.getMessage(), e1);
         }
         double scale = 1;
         if (fitToScreen) {
@@ -290,7 +290,6 @@ public class JobChainDiagramComposite extends Composite {
         }
         inputTimer = new Timer();
         inputTimer.schedule(new InputTask(), 1 * 200, 1 * 200);
-
     }
 
 }
