@@ -74,11 +74,11 @@ public class JobAssistentImportJobParamsForm {
     private static final String KEY_PARAMETER_DESCRIPTION_ = "parameter_description_";
     private static final String KEY_PARAMETER_DESCRIPTION_EN = "parameter_description_en";
     private static final String KEY_PARAMETER_DESCRIPTION_DE = "parameter_description_de";
-    private static final String FALSE = "false";
     private static final String PARAM_ATTRIBUTE_DEFAULT_VALUE = "default_value";
     private static final String PARAM_ATTRIBUTE_REQUIRED = "required";
     private static final String PARAM_NAME = "name";
     private static final String TRUE = "true";
+    private static final String FALSE = "false";
     private static JAXBContext context = null;
     private static Unmarshaller unmarshaller = null;
     private Text txtDescription = null;
@@ -217,7 +217,7 @@ public class JobAssistentImportJobParamsForm {
             }
         } catch (Exception ex) {
             ErrorLog.message(jobParameterShell,
-                    SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " " + ex.getLocalizedMessage(), SWT.OK);
+                    SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " " + ex.getMessage(), SWT.OK);
             new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
         }
         return listOfParams1;
