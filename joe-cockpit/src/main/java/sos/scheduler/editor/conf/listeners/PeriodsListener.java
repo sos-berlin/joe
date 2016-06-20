@@ -254,21 +254,7 @@ public class PeriodsListener {
         return null;
     }
 
-    public boolean hasRepeatTimes() {
-        if (_parent != null) {
-            java.util.List l = _parent.getChildren("period");
-            for (int i = 0; i < l.size(); i++) {
-                Element p = (Element) l.get(i);
-                if (!Utils.getAttributeValue("repeat", p).isEmpty() || !Utils.getAttributeValue("absolute_repeat", p).isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isRepeatElement(Element p) {
-        return !Utils.getAttributeValue("repeat", p).trim().isEmpty() || !Utils.getAttributeValue("absolute_repeat", p).trim().isEmpty();
-    }
+    
+   
 
 }
