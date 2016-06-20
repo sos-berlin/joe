@@ -41,7 +41,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         initialize();
         listener.fillTable(tPeriods);
         periodForm.setEnabled(false);
-        periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+        periodForm.setCboStartTime();
         this.group.setEnabled(Utils.isElementEnabled("job", dom, element) && !Utils.hasSchedulesElement(dom, element));
     }
 
@@ -102,7 +102,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+                periodForm.setCboStartTime();
                 tPeriods.deselectAll();
                 getShell().setDefaultButton(bApply);
                 bApply.setEnabled(false);
@@ -188,7 +188,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         listener.fillTable(tPeriods);
         bRemove.setEnabled(false);
         fillPeriod(false);
-        periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+
         getShell().setDefaultButton(bNew);
         bApply.setEnabled(false);
     }
@@ -197,7 +197,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
         listener.fillTable(tPeriods);
         bRemove.setEnabled(false);
         fillPeriod(false);
-        periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+        periodForm.setCboStartTime();
         periodForm.setEnabled(false);
         bApply.setEnabled(false);
     }
@@ -220,11 +220,8 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
                 } else {
                     periodForm.setPeriod(currPeriod);
                 }
-                if (listener.isRepeatElement(currPeriod)) {
-                    periodForm.hasRepeatTimes(false);
-                } else {
-                    periodForm.hasRepeatTimes(listener.hasRepeatTimes());
-                }
+                periodForm.setCboStartTime();
+
             }
             bApply.setEnabled(false);
             periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
