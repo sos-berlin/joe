@@ -775,12 +775,8 @@ public class PeriodForm extends SOSJOEMessageCodes {
         this.event = event;
     }
 
-    public void hasRepeatTimes(boolean hasRepeatIntervall) {
-        if (hasRepeatIntervall) {
-            cboStarttime.setItems(new String[] { SINGLE_START });
-        } else {
-            cboStarttime.setItems(new String[] { EMPTY_STRING, SINGLE_START, REPEAT_TIME, ABSOLUTE_TIME });
-        }
+    public void setCboStartTime() {
+        cboStarttime.setItems(new String[] { EMPTY_STRING, SINGLE_START, REPEAT_TIME, ABSOLUTE_TIME });
     }
 
     private void setHours() {
