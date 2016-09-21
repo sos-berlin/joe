@@ -268,10 +268,7 @@ public class FTPProfileJadeClient {
             jadeOptions.getTarget().authMethod.setValue(ftpProfile.getAuthMethod());
             jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
         }
-        try {
-            removeRemoteHotFolderFiles(remoteDir);
-        } catch (Exception e) {
-        }
+ 
         jadeOptions.operation.setValue(enuJadeOperations.copy);
         jadeOptions.errorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);

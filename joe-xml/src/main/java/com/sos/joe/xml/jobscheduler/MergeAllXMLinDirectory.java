@@ -15,8 +15,10 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
+import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.util.SOSFile;
 
+import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Utils;
@@ -37,6 +39,18 @@ public class MergeAllXMLinDirectory {
     private HashMap<String, String> listOfChanges = null;
     private ArrayList<String> listOfReadOnly = null;
     private ArrayList<String> listOfChangeElementNames = null;
+    private SOSFileEntry sosFileEntry;
+    private sos.ftp.profiles.FTPProfile ftpProfile;
+
+    
+    public void setFtpProfile(sos.ftp.profiles.FTPProfile ftpProfile) {
+        this.ftpProfile = ftpProfile;
+    }
+
+    public void setSosFileEntry(SOSFileEntry sosFileEntry) {
+        this.sosFileEntry = sosFileEntry;
+    }
+    
 
     public MergeAllXMLinDirectory(final String path_) {
         path = path_;
@@ -459,6 +473,19 @@ public class MergeAllXMLinDirectory {
                 if (f.exists() && !f.delete()) {
                     ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                 }
+                
+                if (sosFileEntry != null) {
+                    FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+                    SOSFileEntry s = new SOSFileEntry();
+                    s.setFilename(f.getName());
+                    s.setParentPath(sosFileEntry.getParentPath() + "/" + sosFileEntry.getFilename());
+                    s.setDirectory(false);
+                    try {
+                      ftpProfileJadeClient.removeFile(s);
+                  } catch (Exception e) {
+                      LOGGER.error("error removing file with ftp: " + e.getMessage(),e);
+                  }
+              }
             }
         }
     }

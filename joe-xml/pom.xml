@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.sos-berlin</groupId>
@@ -17,11 +18,17 @@
 			<version>${project.version}</version>
 		</dependency>
 
-        <!-- to make the common resources from JobScheduler engine available -->
-        <dependency>
-            <groupId>com.sos-berlin.jobscheduler.enginedoc</groupId>
-            <artifactId>enginedoc-common</artifactId>
-        </dependency>
+		<!-- to make the common resources from JobScheduler engine available -->
+		<dependency>
+			<groupId>com.sos-berlin.jobscheduler.enginedoc</groupId>
+			<artifactId>enginedoc-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sos-berlin.joe</groupId>
+			<artifactId>ftp-profiles</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.sos-berlin.joe</groupId>

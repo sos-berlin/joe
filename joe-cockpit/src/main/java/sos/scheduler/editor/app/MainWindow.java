@@ -1539,6 +1539,12 @@ public class MainWindow {
                 save = new MergeAllXMLinDirectory(configFile.getPath());
             }
             if (type == SchedulerDom.DIRECTORY) {
+                SOSFileEntry sosFileEntry = (SOSFileEntry) MainWindow.getContainer().getCurrentTab().getData("sosFileEntry");
+                if (sosFileEntry != null) {
+                    save.setFtpProfile((sos.ftp.profiles.FTPProfile) container.getCurrentTab().getData("ftp_profile"));
+                    save.setSosFileEntry((SOSFileEntry) MainWindow.getContainer().getCurrentTab().getData("sosFileEntry"));
+                }
+
                 save.saveXMLDirectory(currDoc, ((SchedulerDom) dom).getChangedJob());
             } else {
                 org.jdom.Element elem = null;
