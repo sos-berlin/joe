@@ -829,37 +829,39 @@ public class Utils {
                 }
             }
         } else if (type == JOEConstants.JOBS) {
-            String strObject = Messages.getLabel(JOE_L_JOB);
-            String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
-            String strException = String.format(strM, strObject, name);
             XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
             List listOfElement_3 = x3.selectNodes(_dom.getDoc());
             if (!listOfElement_3.isEmpty()) {
+                String strObject = Messages.getLabel(JOE_L_JOB);
+                String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
+                String strException = String.format(strM, strObject, name);
                 return strException;
             }
         } else if (type == JOEConstants.LOCKS) {
-            String strObject = Messages.getLabel(JOE_L_LOCK);
-            String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
-            String strException = String.format(strM, strObject, name);
             XPath x3 = XPath.newInstance("//lock.use[@lock='" + name + "']");
             List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-            return strException;
+            if (!listOfElement_3.isEmpty()) {
+                String strObject = Messages.getLabel(JOE_L_LOCK);
+                String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
+                String strException = String.format(strM, strObject, name);
+                return strException;
+            }
         } else if (type == JOEConstants.PROCESS_CLASSES) {
-            String strObject = Messages.getLabel(JOE_L_PROCESS_CLASS);
-            String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
-            String strException = String.format(strM, strObject, name);
             XPath x3 = XPath.newInstance("//job[@process_class='" + name + "']");
             List listOfElement_3 = x3.selectNodes(_dom.getDoc());
             if (!listOfElement_3.isEmpty()) {
+                String strObject = Messages.getLabel(JOE_L_PROCESS_CLASS);
+                String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
+                String strException = String.format(strM, strObject, name);
                 return strException;
             }
         } else if (type == JOEConstants.SCHEDULES || type == JOEConstants.SCHEDULE) {
-            String strObject = Messages.getLabel(JOE_L_SCHEDULE);
-            String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
-            String strException = String.format(strM, strObject, name);
             XPath x3 = XPath.newInstance("//run_time[@schedule='" + name + "']");
             List listOfElement_3 = x3.selectNodes(_dom.getDoc());
             if (!listOfElement_3.isEmpty()) {
+                String strObject = Messages.getLabel(JOE_L_SCHEDULE);
+                String strM = Messages.getLabel(JOE_L_OBJECT_IN_USE);
+                String strException = String.format(strM, strObject, name);
                 return strException;
             }
         }
