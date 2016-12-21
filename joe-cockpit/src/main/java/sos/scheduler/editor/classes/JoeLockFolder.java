@@ -28,7 +28,12 @@ public class JoeLockFolder {
     
     public JoeLockFolder(String folderName_) {
         super();
-        this.folderName = folderName_;
+        File f = new File(folderName_);
+        if (f.isDirectory()){
+            this.folderName = folderName_;
+        }else{
+            this.folderName = f.getParent();
+        }
         lockFile = new File(folderName,JOE_XML_LOCK);
     }
 
