@@ -713,8 +713,8 @@ public class Options extends JSToolBox {
         p.putAll(_properties);
         if ("monitor_favorite_".equalsIgnoreCase(prefix)) {
             if (!p.containsKey("monitor_favorite_java_configuration_monitor")) {
-                p.put("monitor_favorite_java_configuration_monitor", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor");
-                setProperty("monitor_favorite_java_configuration_monitor", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor");
+                p.put("monitor_favorite_java_configuration_monitor", "com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor");
+                setProperty("monitor_favorite_java_configuration_monitor", "com.sos.jitl.jobchainnodeparameter.monitor.JobchainNodeSubstituteMonitor");
             }
             if (!p.containsKey("monitor_favorite_java_create_event_monitor")) {
                 p.put("monitor_favorite_java_create_event_monitor", "sos.scheduler.job.JobSchedulerSubmitEventMonitor");
