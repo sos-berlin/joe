@@ -498,6 +498,8 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
                 String m = String.format("The folder %s is open.\n\nUser: %s \nDate %s\n\n Do you want to take over", scheduler.getFilename(), joeLockFolder.getUserFromFile(), joeLockFolder.getSinceFromFile());
                 int c = MainWindow.message(m, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                 if (c != SWT.YES) {
+                    CTabItem tab = newItem(scheduler, "***");
+                    tab.dispose();
                     return null;
                 }
             }

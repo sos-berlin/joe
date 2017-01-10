@@ -28,6 +28,9 @@ public class JoeLockFolder {
     
     public JoeLockFolder(String folderName_) {
         super();
+        if (folderName_ == null){
+            folderName_ = "/";            
+        }
         File f = new File(folderName_);
         if (f.isDirectory()){
             this.folderName = folderName_;
