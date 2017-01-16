@@ -42,7 +42,7 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener> {
         GridLayout gridLayout = new GridLayout(2, false);
         group = JOE_G_PayloadForm_Payload.control(new SOSGroup(this, SWT.NONE));
         group.setLayout(gridLayout);
-        bNotes = JOE_B_PayloadForm_PayloadNote.Control(new Button(group, SWT.NONE));
+        bNotes = JOE_B_PayloadForm_PayloadNote.control(new Button(group, SWT.NONE));
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
             @Override
