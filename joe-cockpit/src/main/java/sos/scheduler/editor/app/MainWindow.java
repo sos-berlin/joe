@@ -497,10 +497,10 @@ public class MainWindow {
         });
         new MenuItem(mFile, SWT.SEPARATOR);
         MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);
-        mFTP.setText("FTP");
+        mFTP.setText("FTP/SFTP");
         Menu pmFTP = new Menu(mNew);
         MenuItem pOpenHotFolderFTP = new MenuItem(pmFTP, SWT.PUSH);
-        pOpenHotFolderFTP.setText("Open Hot Folder by FTP");
+        pOpenHotFolderFTP.setText("Open Hot Folder by FTP/SFTP");
         pOpenHotFolderFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -515,7 +515,7 @@ public class MainWindow {
         });
 
         MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
-        pOpenFTP.setText("Open By FTP");
+        pOpenFTP.setText("Open By FTP/SFTP");
         pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -531,7 +531,7 @@ public class MainWindow {
 
         new MenuItem(pmFTP, SWT.SEPARATOR);
         MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
-        pSaveFTP.setText("Save By FTP");
+        pSaveFTP.setText("Save By FTP/SFTP");
         pSaveFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -977,9 +977,9 @@ public class MainWindow {
         final Menu menuFTP = new Menu(toolBar);
         addDropDown(butFTP, menuFTP);
         butFTP.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_open_ftp.gif"));
-        butFTP.setToolTipText("FTP");
+        butFTP.setToolTipText("FTP/SFTP");
         MenuItem itemFTPOpenHotFolder = new MenuItem(menuFTP, SWT.PUSH);
-        itemFTPOpenHotFolder.setText("Open Hot Folder by FTP");
+        itemFTPOpenHotFolder.setText("Open Hot Folder by FTP/SFTP");
         itemFTPOpenHotFolder.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -993,7 +993,7 @@ public class MainWindow {
             }
         });
         MenuItem itemFTPOpen = new MenuItem(menuFTP, SWT.PUSH);
-        itemFTPOpen.setText("Open by FTP");
+        itemFTPOpen.setText("Open by FTP/SFTP");
         itemFTPOpen.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
@@ -1007,7 +1007,7 @@ public class MainWindow {
             }
         });
         MenuItem itemFTPSave = new MenuItem(menuFTP, SWT.PUSH);
-        itemFTPSave.setText("Save As By FTP");
+        itemFTPSave.setText("Save As By FTP/SFTP");
         itemFTPSave.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 
             @Override
