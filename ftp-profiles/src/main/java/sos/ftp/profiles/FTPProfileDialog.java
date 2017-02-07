@@ -577,8 +577,10 @@ public class FTPProfileDialog {
                 public void modifyText(final ModifyEvent e) {
                     if ("FTP".equalsIgnoreCase(cboProtokol.getText())) {
                         groupSftp.setEnabled(false);
+                        groupFtp.setEnabled(true);
                     } else {
                         groupSftp.setEnabled(true);
+                        groupFtp.setEnabled(false);
                     }
                     setEnabled();
                 }
