@@ -39,7 +39,7 @@ public class FTPProfileDialog {
     private Text txtFtpUsername = null;
     private Text txtFtpPassword = null;
     private Text txtSFtpUsername = null;
-    private Text txtPassphrase = null;
+    private Text txtSFtpPassphrase = null;
     private Text txtRoot = null;
     private Text txtLocalDirectory = null;
     private Button butAscii = null;
@@ -196,6 +196,33 @@ public class FTPProfileDialog {
             cboProtokol.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
             cboProtokol.setItems(new String[] { "FTP", "SFTP" });
             cboProtokol.select(0);
+
+            cboProtokol.addModifyListener(new ModifyListener() {
+
+                public void modifyText(final ModifyEvent e) {
+                    if ("FTP".equalsIgnoreCase(cboProtokol.getText())) {
+                        if ("".equals(txtFtpUsername.getText())) {
+                            txtFtpUsername.setText(txtSFtpUsername.getText());
+                            txtSFtpUsername.setText("");
+                        }
+                        if ("".equals(txtFtpPassword.getText())) {
+                            txtFtpPassword.setText(txtSFtpPassphrase.getText());
+                            txtSFtpPassphrase.setText("");
+                        }
+                    }else{
+                        if ("".equals(txtSFtpUsername.getText())) {
+                            txtSFtpUsername.setText(txtFtpUsername.getText());
+                            txtFtpUsername.setText("");
+                        }
+                        if ("".equals(txtSFtpPassphrase.getText())) {
+                            txtSFtpPassphrase.setText(txtFtpPassword.getText());
+                            txtFtpPassword.setText("");
+                        }
+                    }
+                    setEnabled();
+                }
+            });
+
             final Label hostnameOrIpLabel = new Label(groupProperties, SWT.NONE);
             hostnameOrIpLabel.setText("Host Name or IP Address");
             txtHost = new Text(groupProperties, SWT.BORDER);
@@ -350,7 +377,6 @@ public class FTPProfileDialog {
                 }
             });
 
-
             butAuthPassword.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
             butAuthPassword.setText("Password");
 
@@ -368,14 +394,14 @@ public class FTPProfileDialog {
 
             final Label passphraseLabel = new Label(groupSftp, SWT.NONE);
             passphraseLabel.setText("Passphrase");
-            txtPassphrase = new Text(groupSftp, SWT.PASSWORD | SWT.BORDER);
-            txtPassphrase.addModifyListener(new ModifyListener() {
+            txtSFtpPassphrase = new Text(groupSftp, SWT.PASSWORD | SWT.BORDER);
+            txtSFtpPassphrase.addModifyListener(new ModifyListener() {
 
                 public void modifyText(final ModifyEvent e) {
                     setEnabled();
                 }
             });
-            txtPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+            txtSFtpPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
             final Label pathToPublicLabel = new Label(groupSftp, SWT.NONE);
             pathToPublicLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
             pathToPublicLabel.setText("Private Key");
@@ -386,7 +412,7 @@ public class FTPProfileDialog {
                     setEnabled();
                 }
             });
-            txtDirPublicKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false,2,1));
+            txtDirPublicKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
             final Button button_4 = new Button(groupSftp, SWT.NONE);
             button_4.setVisible(false);
             button_4.addSelectionListener(new SelectionAdapter() {
@@ -602,7 +628,7 @@ public class FTPProfileDialog {
                 txtFtpPassword.setText(currProfile.getPassword());
             } else {
                 txtSFtpUsername.setText(currProfile.getUser());
-                txtPassphrase.setText(currProfile.getPassword());
+                txtSFtpPassphrase.setText(currProfile.getPassword());
             }
             txtRoot.setText(currProfile.getRoot());
             txtLocalDirectory.setText(currProfile.getLocaldirectory(getInitValueLocalDirectory()));
@@ -687,7 +713,7 @@ public class FTPProfileDialog {
                 prop.put("password", txtFtpPassword.getText());
             } else {
                 prop.put("user", txtSFtpUsername.getText());
-                prop.put("password", txtPassphrase.getText());
+                prop.put("password", txtSFtpPassphrase.getText());
             }
             prop.put("root", txtRoot.getText());
             if (!txtLocalDirectory.getText().isEmpty() && !new java.io.File(txtLocalDirectory.getText()).exists()) {
