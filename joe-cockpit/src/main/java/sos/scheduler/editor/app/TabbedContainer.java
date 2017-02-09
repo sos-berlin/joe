@@ -99,8 +99,10 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
                 }
                 if (event.doit) {
                     filelist.remove(editor.getFilename());
-                    JoeLockFolder joeLockFolder = new JoeLockFolder(editor.getFilename());
-                    joeLockFolder.unLockFolder();
+                    if (editor.getFilename() != null) {
+                        JoeLockFolder joeLockFolder = new JoeLockFolder(editor.getFilename());
+                        joeLockFolder.unLockFolder();
+                    }
                 }
             }
         });
@@ -344,12 +346,12 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         CTabItem tab = getCurrentTab();
         TabData t = (TabData) tab.getData();
         String title = t.caption;
-        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty()
-                && tab.getData("ftp_remote_directory") != null && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
+        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty() && tab.getData("ftp_remote_directory") != null && !tab.getData(
+                "ftp_remote_directory").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
         }
-        if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty()
-                && tab.getData("webdav_remote_directory") != null && !tab.getData("webdav_remote_directory").toString().isEmpty()) {
+        if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty() && tab.getData("webdav_remote_directory") != null && !tab
+                .getData("webdav_remote_directory").toString().isEmpty()) {
             title = tab.getData("webdav_remote_directory").toString();
         }
         tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
@@ -363,12 +365,12 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
         }
         TabData t = (TabData) tab.getData();
         String title = t.caption;
-        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty()
-                && tab.getData("ftp_remote_directory") != null && !tab.getData("ftp_remote_directory").toString().isEmpty()) {
+        if (tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty() && tab.getData("ftp_remote_directory") != null && !tab.getData(
+                "ftp_remote_directory").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
         }
-        if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty()
-                && tab.getData("webdav_remote_directory") != null && !tab.getData("webdav_remote_directory").toString().isEmpty()) {
+        if (tab.getData("webdav_profile_name") != null && !tab.getData("webdav_profile_name").toString().isEmpty() && tab.getData("webdav_remote_directory") != null && !tab
+                .getData("webdav_remote_directory").toString().isEmpty()) {
             title = tab.getData("webdav_remote_directory").toString();
         }
         tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
@@ -388,8 +390,8 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
             filelist.add(filename);
         }
         String title = setSuffix(tab, Utils.getFileFromURL(filename));
-        if (tab.getData("ftp_remote_directory") != null && !tab.getData("ftp_remote_directory").toString().isEmpty()
-                && tab.getData("ftp_profile_name") != null && !tab.getData("ftp_profile_name").toString().isEmpty()) {
+        if (tab.getData("ftp_remote_directory") != null && !tab.getData("ftp_remote_directory").toString().isEmpty() && tab.getData("ftp_profile_name") != null && !tab.getData(
+                "ftp_profile_name").toString().isEmpty()) {
             title = tab.getData("ftp_remote_directory").toString();
         }
         tab.setText(title);
@@ -467,8 +469,10 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
             folder.setSelection(i);
             if (((IEditor) tab.getControl()).close()) {
                 String s = ((IEditor) tab.getControl()).getFilename();
-                JoeLockFolder joeLockFolder = new JoeLockFolder(s);
-                joeLockFolder.unLockFolder();
+                if (s != null) {
+                    JoeLockFolder joeLockFolder = new JoeLockFolder(s);
+                    joeLockFolder.unLockFolder();
+                }
                 tab.dispose();
                 i--;
             } else {
@@ -495,7 +499,8 @@ public class TabbedContainer implements IContainer, IEditorAdapter {
             JoeLockFolder joeLockFolder = new JoeLockFolder(scheduler.getFilename());
             if (joeLockFolder.isFolderLocked()) {
                 joeLockFolder.getDataFromFile(new File(scheduler.getFilename()));
-                String m = String.format("The folder %s is open.\n\nUser: %s \nDate %s\n\n Do you want to take over", scheduler.getFilename(), joeLockFolder.getUserFromFile(), joeLockFolder.getSinceFromFile());
+                String m = String.format("The folder %s is open.\n\nUser: %s \nDate %s\n\n Do you want to take over", scheduler.getFilename(), joeLockFolder.getUserFromFile(),
+                        joeLockFolder.getSinceFromFile());
                 int c = MainWindow.message(m, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                 if (c != SWT.YES) {
                     CTabItem tab = newItem(scheduler, "***");

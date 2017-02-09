@@ -96,79 +96,68 @@ public class MainWindow {
             @I18NMessage(value = "Konfiguration", locale = "de", explanation = "Configuration"),
             @I18NMessage(value = "Configuration", locale = "es", explanation = "Configuration"),
             @I18NMessage(value = "Configuration", locale = "fr", explanation = "Configuration"),
-            @I18NMessage(value = "Configuration", locale = "it", explanation = "Configuration") }, msgnum = "MENU_Configuration",
-            msgurl = "Menu-Configuration")
+            @I18NMessage(value = "Configuration", locale = "it", explanation = "Configuration") }, msgnum = "MENU_Configuration", msgurl = "Menu-Configuration")
     public static final String MENU_Configuration = "MENU_Configuration";
     @I18NMessages(value = { @I18NMessage("New"), @I18NMessage(value = "New Object", locale = "en_UK", explanation = "New"),
-            @I18NMessage(value = "Neues Objekt erstellen", locale = "de", explanation = "New"),
-            @I18NMessage(value = "New", locale = "es", explanation = "New"), @I18NMessage(value = "New", locale = "fr", explanation = "New"),
+            @I18NMessage(value = "Neues Objekt erstellen", locale = "de", explanation = "New"), @I18NMessage(value = "New", locale = "es", explanation = "New"),
+            @I18NMessage(value = "New", locale = "fr", explanation = "New"),
             @I18NMessage(value = "New", locale = "it", explanation = "New") }, msgnum = "MENU_New", msgurl = "Menu-New")
     public static final String MENU_New = "MENU_New";
-    @I18NMessages(value = { @I18NMessage("Documentation"),
-            @I18NMessage(value = "Modify Documentation", locale = "en_UK", explanation = "Modify Documentation of a job template"),
+    @I18NMessages(value = { @I18NMessage("Documentation"), @I18NMessage(value = "Modify Documentation", locale = "en_UK", explanation = "Modify Documentation of a job template"),
             @I18NMessage(value = "Dokumentation bearbeiten", locale = "de", explanation = "Dokumentation eines Job Templates bearbeiten"),
             @I18NMessage(value = "Modify Documentation", locale = "es", explanation = "Modify Documentation of a job template"),
             @I18NMessage(value = "Modify Documentation", locale = "fr", explanation = "Modify Documentation of a job template"),
-            @I18NMessage(value = "Modify Documentation", locale = "it", explanation = "Modify Documentation of a job template") },
-            msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
+            @I18NMessage(value = "Modify Documentation", locale = "it", explanation = "Modify Documentation of a job template") }, msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
     public static final String MENU_Documentation = "MENU_Documentation";
     @I18NMessages(value = { @I18NMessage("EventHandler"), @I18NMessage(value = "xEventHandler", locale = "en_UK", explanation = "EventHandler"),
             @I18NMessage(value = "Ereignis-Behandlung", locale = "de", explanation = "EventHandler"),
-            @I18NMessage(value = "EventHandler", locale = "es", explanation = "EventHandler"),
-            @I18NMessage(value = "EventHandler", locale = "fr", explanation = "EventHandler"),
-            @I18NMessage(value = "EventHandler", locale = "it", explanation = "EventHandler") }, msgnum = "MENU_EventHandler",
-            msgurl = "Menu-EventHandler")
+            @I18NMessage(value = "EventHandler", locale = "es", explanation = "EventHandler"), @I18NMessage(value = "EventHandler", locale = "fr", explanation = "EventHandler"),
+            @I18NMessage(value = "EventHandler", locale = "it", explanation = "EventHandler") }, msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")
     public static final String MENU_EventHandler = "MENU_EventHandler";
-    @I18NMessages(value = { @I18NMessage("HotFolderObject"),
-            @I18NMessage(value = "HotFolderObject", locale = "en_UK", explanation = "HotFolderObject"),
+    @I18NMessages(value = { @I18NMessage("HotFolderObject"), @I18NMessage(value = "HotFolderObject", locale = "en_UK", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolder-Objekt", locale = "de", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "es", explanation = "HotFolderObject"),
             @I18NMessage(value = "HotFolderObject", locale = "fr", explanation = "HotFolderObject"),
-            @I18NMessage(value = "HotFolderObject", locale = "it", explanation = "HotFolderObject") }, msgnum = "MENU_HotFolderObject",
-            msgurl = "Menu-HotFolderObject")
+            @I18NMessage(value = "HotFolderObject", locale = "it", explanation = "HotFolderObject") }, msgnum = "MENU_HotFolderObject", msgurl = "Menu-HotFolderObject")
     public static final String MENU_HotFolderObject = "MENU_HotFolderObject";
     @I18NMessages(value = { @I18NMessage("Job"), @I18NMessage(value = "Job", locale = "en_UK", explanation = "Job"),
             @I18NMessage(value = "Job", locale = "de", explanation = "Job"), @I18NMessage(value = "Job", locale = "es", explanation = "Job"),
-            @I18NMessage(value = "Job", locale = "fr", explanation = "Job"), @I18NMessage(value = "Job", locale = "it", explanation = "Job") },
-            msgnum = "MENU_Job", msgurl = "Menu-Job")
+            @I18NMessage(value = "Job", locale = "fr", explanation = "Job"),
+            @I18NMessage(value = "Job", locale = "it", explanation = "Job") }, msgnum = "MENU_Job", msgurl = "Menu-Job")
     public static final String MENU_Job = "MENU_Job";
     @I18NMessages(value = { @I18NMessage("JobChain"), @I18NMessage(value = "JobChain", locale = "en_UK", explanation = "JobChain"),
-            @I18NMessage(value = "Job-Kette", locale = "de", explanation = "Job-Kette"),
-            @I18NMessage(value = "JobChain", locale = "es", explanation = "JobChain"),
+            @I18NMessage(value = "Job-Kette", locale = "de", explanation = "Job-Kette"), @I18NMessage(value = "JobChain", locale = "es", explanation = "JobChain"),
             @I18NMessage(value = "JobChain", locale = "fr", explanation = "JobChain"),
             @I18NMessage(value = "JobChain", locale = "it", explanation = "JobChain") }, msgnum = "MENU_JobChain", msgurl = "Menu-JobChain")
     public static final String MENU_JobChain = "MENU_JobChain";
     @I18NMessages(value = { @I18NMessage("ProcessClass"), @I18NMessage(value = "ProcessClass", locale = "en_UK", explanation = "ProcessClass"),
-            @I18NMessage(value = "Prozess Klasse", locale = "de", explanation = "ProcessClass"),
-            @I18NMessage(value = "ProcessClass", locale = "es", explanation = "ProcessClass"),
+            @I18NMessage(value = "Prozess Klasse", locale = "de", explanation = "ProcessClass"), @I18NMessage(value = "ProcessClass", locale = "es", explanation = "ProcessClass"),
             @I18NMessage(value = "ProcessClass", locale = "fr", explanation = "ProcessClass"),
-            @I18NMessage(value = "ProcessClass", locale = "it", explanation = "ProcessClass") }, msgnum = "MENU_ProcessClass",
-            msgurl = "Menu-ProcessClass")
+            @I18NMessage(value = "ProcessClass", locale = "it", explanation = "ProcessClass") }, msgnum = "MENU_ProcessClass", msgurl = "Menu-ProcessClass")
     public static final String MENU_ProcessClass = "MENU_ProcessClass";
     @I18NMessages(value = { @I18NMessage("Lock"), @I18NMessage(value = "Lock", locale = "en_UK", explanation = "Lock"),
-            @I18NMessage(value = "Sperre", locale = "de", explanation = "Sperren verwalten bzw anlegen"),
-            @I18NMessage(value = "Lock", locale = "es", explanation = "Lock"), @I18NMessage(value = "Lock", locale = "fr", explanation = "Lock"),
+            @I18NMessage(value = "Sperre", locale = "de", explanation = "Sperren verwalten bzw anlegen"), @I18NMessage(value = "Lock", locale = "es", explanation = "Lock"),
+            @I18NMessage(value = "Lock", locale = "fr", explanation = "Lock"),
             @I18NMessage(value = "Lock", locale = "it", explanation = "Lock") }, msgnum = "MENU_Lock", msgurl = "Menu-Lock")
     public static final String MENU_Lock = "MENU_Lock";
     @I18NMessages(value = { @I18NMessage("File"), @I18NMessage(value = "File", locale = "en_UK", explanation = "File"),
-            @I18NMessage(value = "Datei", locale = "de", explanation = "Menü der Dateioperationen"),
-            @I18NMessage(value = "File", locale = "es", explanation = "File"), @I18NMessage(value = "File", locale = "fr", explanation = "File"),
+            @I18NMessage(value = "Datei", locale = "de", explanation = "Menü der Dateioperationen"), @I18NMessage(value = "File", locale = "es", explanation = "File"),
+            @I18NMessage(value = "File", locale = "fr", explanation = "File"),
             @I18NMessage(value = "File", locale = "it", explanation = "File") }, msgnum = "MENU_File", msgurl = "Menu-File")
     public static final String MENU_File = "MENU_File";
     @I18NMessages(value = { @I18NMessage("Options"), @I18NMessage(value = "Options", locale = "en_UK", explanation = "Options"),
-            @I18NMessage(value = "Einstellungen", locale = "de", explanation = "Einstellungen für JOE"),
-            @I18NMessage(value = "Options", locale = "es", explanation = "Options"),
+            @I18NMessage(value = "Einstellungen", locale = "de", explanation = "Einstellungen für JOE"), @I18NMessage(value = "Options", locale = "es", explanation = "Options"),
             @I18NMessage(value = "Options", locale = "fr", explanation = "Options"),
             @I18NMessage(value = "Options", locale = "it", explanation = "Options") }, msgnum = "MENU_Options", msgurl = "Menu-Options")
     public static final String MENU_Options = "MENU_Options";
     @I18NMessages(value = { @I18NMessage("Help"), @I18NMessage(value = "Help", locale = "en_UK", explanation = "Help"),
-            @I18NMessage(value = "Hilfe", locale = "de", explanation = "Hilfe zu JOE"),
-            @I18NMessage(value = "Help", locale = "es", explanation = "Help"), @I18NMessage(value = "Help", locale = "fr", explanation = "Help"),
+            @I18NMessage(value = "Hilfe", locale = "de", explanation = "Hilfe zu JOE"), @I18NMessage(value = "Help", locale = "es", explanation = "Help"),
+            @I18NMessage(value = "Help", locale = "fr", explanation = "Help"),
             @I18NMessage(value = "Help", locale = "it", explanation = "Help") }, msgnum = "MENU_Help", msgurl = "Menu-Help")
     public static final String MENU_Help = "MENU_Help";
     @I18NMessages(value = { @I18NMessage("About"), @I18NMessage(value = "About", locale = "en_UK", explanation = "About"),
-            @I18NMessage(value = "Über", locale = "de", explanation = "Liefert Informationen über ..."),
-            @I18NMessage(value = "About", locale = "es", explanation = "About"), @I18NMessage(value = "About", locale = "fr", explanation = "About"),
+            @I18NMessage(value = "Über", locale = "de", explanation = "Liefert Informationen über ..."), @I18NMessage(value = "About", locale = "es", explanation = "About"),
+            @I18NMessage(value = "About", locale = "fr", explanation = "About"),
             @I18NMessage(value = "About", locale = "it", explanation = "About") }, msgnum = "MENU_About", msgurl = "Menu-About")
     public static final String MENU_About = "MENU_About";
     public static final String MENU_Reset_Dialog = "MENU_ResetDialog";
@@ -391,9 +380,8 @@ public class MainWindow {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 Utils.startCursor(getSShell());
-                String globalSchedulerPath =
-                        Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData()
-                                : Options.getSchedulerData() + "/";
+                String globalSchedulerPath = Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData()
+                        : Options.getSchedulerData() + "/";
                 globalSchedulerPath = globalSchedulerPath + "config/remote/_all";
                 File f = new java.io.File(globalSchedulerPath);
                 if (!f.exists() && !f.mkdirs()) {
@@ -736,11 +724,11 @@ public class MainWindow {
     }
 
     public static void setSaveStatus() {
-	    if (container.getCurrentEditor() != null){
-    	    String s = container.getCurrentEditor().getFilename();
-    	    JoeLockFolder joeLockFolder = new JoeLockFolder(s);
-            if (!joeLockFolder.isFolderLocked()){
-                joeLockFolder.lockFolder();  
+        if (container.getCurrentEditor() != null) {
+            String s = container.getCurrentEditor().getFilename();
+            JoeLockFolder joeLockFolder = new JoeLockFolder(s);
+            if (!joeLockFolder.isFolderLocked()) {
+                joeLockFolder.lockFolder();
             }
         }
         setMenuStatus();
@@ -856,18 +844,20 @@ public class MainWindow {
             currdom.setLastModifiedFile(0);
             changes = (java.util.HashMap) currdom.getChangedJob().clone();
         }
-		
-		 JoeLockFolder joeLockFolder = new JoeLockFolder(container.getCurrentEditor().getFilename());
-         
-         if (joeLockFolder.userChanged()){
-             String m = String.format("The folder %s is open.\n\nUser: %s \nDate %s\n\n Do you want to save it nevertheless?",container.getCurrentEditor().getFilename(),joeLockFolder.getUserFromFile(), joeLockFolder.getSinceFromFile());
-             int c = MainWindow.message(m, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-             if (c != SWT.YES){
-                 Utils.stopCursor(getSShell());
-                 return;
-             }
-         }                   
-         
+        JoeLockFolder joeLockFolder;
+        if (container.getCurrentEditor().getFilename() != null) {
+            joeLockFolder = new JoeLockFolder(container.getCurrentEditor().getFilename());
+            if (joeLockFolder.userChanged()) {
+                String m = String.format("The folder %s is open.\n\nUser: %s \nDate %s\n\n Do you want to save it nevertheless?", container.getCurrentEditor().getFilename(),
+                        joeLockFolder.getUserFromFile(), joeLockFolder.getSinceFromFile());
+                int c = MainWindow.message(m, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                if (c != SWT.YES) {
+                    Utils.stopCursor(getSShell());
+                    return;
+                }
+            }
+        }
+
         if (container.getCurrentEditor().applyChanges()) {
             saveJobChainNodeParameter();
             container.getCurrentEditor().save();
@@ -1049,9 +1039,7 @@ public class MainWindow {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                int c =
-                        MainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES
-                                | SWT.NO);
+                int c = MainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
                 if (c != SWT.YES) {
                     return;
                 }
@@ -1149,8 +1137,8 @@ public class MainWindow {
                         String newName = newConfigFile.getName().replaceAll(".config.xml", EMPTY);
                         sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
                         if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
-                            MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename
-                                    + "].\n" + "Please try later by Hand.", SWT.ICON_WARNING);
+                            MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
+                                    + "Please try later by Hand.", SWT.ICON_WARNING);
                         }
                     }
                 }
@@ -1272,7 +1260,7 @@ public class MainWindow {
             }
             libExist = true;
         } catch (Exception e) {
-			
+
         }
         return libExist;
     }
@@ -1345,8 +1333,7 @@ public class MainWindow {
                                     int pos1 = fName.indexOf(".");
                                     int pos2 = fName.lastIndexOf(".");
                                     String n = fName.substring(pos1, pos2) + "_" + fName.substring(0, pos1);
-                                    if (!(((SchedulerDom) dom).getChangedJob().get(n) != null && ((SchedulerDom) dom).getChangedJob().get(n).equals(
-                                            SchedulerDom.DELETE))) {
+                                    if (!(((SchedulerDom) dom).getChangedJob().get(n) != null && ((SchedulerDom) dom).getChangedJob().get(n).equals(SchedulerDom.DELETE))) {
                                         newFFiles.add(fFile);
                                     }
                                 }
@@ -1522,8 +1509,7 @@ public class MainWindow {
         }
     }
 
-    public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement,
-            final IContainer container) {
+    public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement, final IContainer container) {
         Document currDoc = dom.getDoc();
         File configFile = null;
         try {
@@ -1537,9 +1523,7 @@ public class MainWindow {
                 }
                 File _file = null;
                 if ("order".equals(dom.getRoot().getName()) || "add_order".equals(dom.getRoot().getName())) {
-                    _file =
-                            new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + ","
-                                    + Utils.getAttributeValue("id", dom.getRoot()) + ".order.xml");
+                    _file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + "," + Utils.getAttributeValue("id", dom.getRoot()) + ".order.xml");
                 } else {
                     _file = new File(path + "//" + Utils.getAttributeValue("name", dom.getRoot()) + "." + dom.getRoot().getName() + ".xml");
                 }
@@ -1582,9 +1566,7 @@ public class MainWindow {
                 } else {
                     elem = currDoc.getRootElement();
                 }
-                String name =
-                        save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getChangedJob(),
-                                ((SchedulerDom) dom).getListOfChangeElementNames());
+                String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getChangedJob(), ((SchedulerDom) dom).getListOfChangeElementNames());
                 Options.setLastDirectory(new File(name), dom);
                 try {
                     dom.setFilename(new java.io.File(name).getCanonicalPath());
