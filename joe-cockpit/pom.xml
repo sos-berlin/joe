@@ -99,11 +99,6 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
         </dependency>
@@ -111,11 +106,6 @@
         <dependency>
             <groupId>org.eclipse.swt</groupId>
             <artifactId>org.eclipse.swt.${swtSuffix}</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.trilead</groupId>
-            <artifactId>sos-trilead-ssh2</artifactId>
         </dependency>
 
         <dependency>
@@ -128,11 +118,6 @@
             <artifactId>commons-net</artifactId>
         </dependency>
 
-        <!--  https://change.sos-berlin.com/browse/JITL-128 -->
-        <!-- dependency>
-            <groupId>slide</groupId>
-            <artifactId>slide-webdavlib</artifactId>
-        </dependency-->
         <dependency>
             <groupId>webdavclient4j</groupId>
             <artifactId>webdavclient4j-core</artifactId>
