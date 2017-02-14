@@ -257,7 +257,7 @@ public class MainListener extends JOEListener {
             if (sosConnection != null) {
                 return;
             }
-            sosConnection = SOSConnection.createInstance(iniFile, ErrorLog.getLogger());
+            sosConnection = SOSConnection.createInstance(iniFile);
             sosConnection.connect();
         } catch (Exception e) {
             new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
