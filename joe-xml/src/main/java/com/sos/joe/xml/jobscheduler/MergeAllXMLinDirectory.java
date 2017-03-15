@@ -425,11 +425,13 @@ public class MergeAllXMLinDirectory {
     }
 
     private void deleteFiles() {
+        HashMap <String,HashMap<String, SOSFileEntry>> directoryContent = new HashMap<String,HashMap<String, SOSFileEntry>>();
         String filename = "";
         String prefix = "";
         Iterator<String> keys1 = listOfChanges.keySet().iterator();
         Iterator<String> values1 = listOfChanges.values().iterator();
         while (keys1.hasNext()) {
+            
             String key = keys1.next();
             String listOfChangesValue = values1.next();
             if (listOfChangesValue == null) {
@@ -481,9 +483,18 @@ public class MergeAllXMLinDirectory {
                     s.setParentPath(sosFileEntry.getParentPath() + "/" + sosFileEntry.getFilename());
                     s.setDirectory(false);
                     try {
-                      ftpProfileJadeClient.removeFile(s);
+                        if (directoryContent.get(s.getParentPath()) == null){
+                            HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(s.getParentPath());
+                            directoryContent.put(s.getParentPath(), h);
+                        }
+                      HashMap<String, SOSFileEntry>h = directoryContent.get(s.getParentPath());
+                      if (h.get(s.getFilename()) != null){
+                          ftpProfileJadeClient.removeFile(s);
+                      }
                   } catch (Exception e) {
                       LOGGER.error("error removing file with ftp: " + e.getMessage(),e);
+                  }finally{
+                      ftpProfileJadeClient.disconnect();
                   }
               }
             }

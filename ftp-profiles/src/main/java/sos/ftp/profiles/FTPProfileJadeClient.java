@@ -24,8 +24,7 @@ public class FTPProfileJadeClient {
     protected ISOSVfsFileTransfer ftpClient = null;
     protected enuTransferTypes enuSourceTransferType = enuTransferTypes.local;
     protected enuTransferTypes enuTargetTransferType = enuTransferTypes.local;
-    private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS =
-            "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
+    private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS = "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
     private JADEOptions jadeOptions;
     private FTPProfile ftpProfile = null;
     SOSConnection2OptionsAlternate virtuelFileSystemOptions;
@@ -39,17 +38,22 @@ public class FTPProfileJadeClient {
         this.ftpProfile = ftpProfile_;
     }
 
-    public void disconnect() throws Exception {
-        if (objVFS != null) {
-            objVFS.closeConnection();
-            objVFS.closeSession();
-            objVFS = null;
+    public void disconnect() {
+        try {
+            if (objVFS != null) {
+                objVFS.closeConnection();
+                objVFS.closeSession();
+                objVFS = null;
+            }
+            if (ftpClient != null) {
+                ftpClient.disconnect();
+                ftpClient.close();
+                ftpClient = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (ftpClient != null) {
-            ftpClient.disconnect();
-            ftpClient.close();
-            ftpClient = null;
-        }
+
     }
 
     private void connect() throws RuntimeException, Exception {
@@ -268,7 +272,7 @@ public class FTPProfileJadeClient {
             jadeOptions.getTarget().authMethod.setValue(ftpProfile.getAuthMethod());
             jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
         }
- 
+
         jadeOptions.operation.setValue(enuJadeOperations.copy);
         jadeOptions.errorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
