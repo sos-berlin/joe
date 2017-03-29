@@ -115,7 +115,7 @@ public class JobOptions extends FormBaseClass {
                             || !sos.scheduler.editor.app.Utils.getAttributeValue("let_run", job.getChild("run_time")).isEmpty()
                             || !sos.scheduler.editor.app.Utils.getAttributeValue("once", job.getChild("run_time")).isEmpty()) {
                         if (bOrderYes.isVisible()) {
-                            _deleteRuntimeAttribute = Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB, 
+                            _deleteRuntimeAttribute = Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB,
                                     "change_order");
                         }
                         if (_deleteRuntimeAttribute) {
@@ -136,7 +136,7 @@ public class JobOptions extends FormBaseClass {
                 if (init) {
                     return;
                 }
-                if (objJobDataProvider.getOrder() 
+                if (objJobDataProvider.getOrder()
                         && !Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB, "change_order")) {
                     init = true;
                     bOrderNo.setSelection(false);
@@ -179,12 +179,26 @@ public class JobOptions extends FormBaseClass {
         gd_LogLevel.minimumWidth = 150;
         logLevel.setLayoutData(gd_LogLevel);
         logLevel.setText(objJobDataProvider.getValue("log_level"));
-        logLevel.addSelectionListener(new SelectionAdapter() {
+        
 
-            public void widgetSelected(final SelectionEvent e) {
-                objJobDataProvider.setValue("log_level", logLevel.getText());
+        logLevel.addModifyListener(new ModifyListener() {
+
+            public void modifyText(final ModifyEvent e) {
+                if (init) {
+                    return;
+                }
+                boolean inList = false;
+                for (int i = 0; i < logLevel.getItems().length - 1; i++) {
+                    if (logLevel.getItem(i).equals(logLevel.getText())) {
+                        inList = true;
+                    }
+                }
+                if ("".equals(logLevel.getText().trim()) || inList) {
+                    objJobDataProvider.setValue("log_level", logLevel.getText());
+                }
             }
         });
+
         logLevel.setItems(new String[] { "info", "debug1", "debug2", "debug3", "debug4", "debug5", "debug6", "debug7", "debug8", "debug9", "" });
         new Label(gOptionsGroup, SWT.NONE);
         final Label label_2 = new Label(gOptionsGroup, SWT.HORIZONTAL | SWT.SEPARATOR);
@@ -195,12 +209,18 @@ public class JobOptions extends FormBaseClass {
         cboHistory = SOSJOEMessageCodes.JOE_Cbo_MailForm_History.Control(new Combo(gOptionsGroup, intComboBoxStyle));
         cboHistory.setText(objJobDataProvider.getHistory());
         cboHistory.setItems(new String[] { "yes", "no", "" });
-        cboHistory.addSelectionListener(new SelectionAdapter() {
+        cboHistory.addModifyListener(new ModifyListener() {
 
-            public void widgetSelected(final SelectionEvent e) {
-                objJobDataProvider.setHistory(cboHistory.getText());
+            public void modifyText(final ModifyEvent e) {
+                if (init) {
+                    return;
+                }
+                if ("".equals(cboHistory.getText().trim()) || "yes".equals(cboHistory.getText()) || "no".equals(cboHistory.getText())) {
+                    objJobDataProvider.setHistory(cboHistory.getText().trim());
+                }
             }
         });
+
         GridData gd_cboHistory = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         gd_cboHistory.minimumWidth = 150;
         cboHistory.setLayoutData(gd_cboHistory);
@@ -249,10 +269,16 @@ public class JobOptions extends FormBaseClass {
         cboHistoryWithLog = SOSJOEMessageCodes.JOE_Cbo_MailForm_HistoryWithLog.Control(new Combo(gOptionsGroup, intComboBoxStyle));
         cboHistoryWithLog.setText(objJobDataProvider.getHistoryWithLog());
         cboHistoryWithLog.setItems(new String[] { "yes", "no", "gzip", "" });
-        cboHistoryWithLog.addSelectionListener(new SelectionAdapter() {
+        cboHistoryWithLog.addModifyListener(new ModifyListener() {
 
-            public void widgetSelected(final SelectionEvent e) {
-                objJobDataProvider.setHistoryWithLog(cboHistoryWithLog.getText());
+            public void modifyText(final ModifyEvent e) {
+                if (init) {
+                    return;
+                }
+                if ("".equals(cboHistoryWithLog.getText().trim()) || "yes".equals(cboHistoryWithLog.getText()) || "no".equals(cboHistoryWithLog.getText())
+                        || "gzip".equals(cboHistoryWithLog.getText())) {
+                    objJobDataProvider.setHistoryWithLog(cboHistoryWithLog.getText().trim());
+                }
             }
         });
         GridData gd_cboHistoryWithLog = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
