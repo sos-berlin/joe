@@ -534,6 +534,7 @@ public class SchedulerListener {
                                 item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
                             }
                             treeFillOrder(item, e, false);
+                           
                         }
                     }
                 }
@@ -1043,6 +1044,11 @@ public class SchedulerListener {
 
     public boolean treeSelection(final Tree tree, final Composite c) {
         try {
+            
+
+            boolean updateOrders = false;            
+            Element objElement = null;
+
             if (tree.getSelectionCount() > 0) {
                 // dispose the old form
                 Control[] children = c.getChildren();
@@ -1056,10 +1062,11 @@ public class SchedulerListener {
                 TreeData objTreeItemUserdata = (TreeData) objSelectedTreeItem.getData();
                 if (objTreeItemUserdata != null) {
                     objSchedulerDom.setInit(true);
-                    Element objElement = objTreeItemUserdata.getElement();
+                    objElement = objTreeItemUserdata.getElement();
                     objElement = convertPeriodToEveryDay(objElement);
                     int intType = objTreeItemUserdata.getType();
                     c.setLayout(new FillLayout());
+                    
                     switch (intType) {
                     case JOEConstants.CONFIG:
                         new ConfigForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
@@ -1084,27 +1091,35 @@ public class SchedulerListener {
                         new SchedulerBaseFileForm(c, SWT.NONE, objSchedulerDom);
                         break;
                     case JOEConstants.PROCESS_CLASSES:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new ProcessClassesForm(c, SWT.NONE, objSchedulerDom, objElement);
                         break;
                     case JOEConstants.LOCKS:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new LocksForm(c, SWT.NONE, objSchedulerDom, objElement);
                         break;
                     case JOEConstants.MONITORS:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new ScriptsForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm, objElement);
                         break;
                     case JOEConstants.MONITOR:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new ScriptFormPreProcessing(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.SCRIPT:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new ScriptFormSchedulerStartScript(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.JOB:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new ScriptJobMainForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.JOB_OPTION:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobMainOptionForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.JOB_DOCUMENTATION:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobDocumentationForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.SETTINGS:
@@ -1112,17 +1127,22 @@ public class SchedulerListener {
                         break;
                     case JOEConstants.ORDERS:
                         new OrdersForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm, objElement);
+                        objSchedulerForm.setEditOrders(true);
                         break;
                     case JOEConstants.ORDER:
                         new OrderForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+                        objSchedulerForm.setEditOrders(true);
                         break;
                     case JOEConstants.JOB_COMMAND_EXIT_CODES:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new sos.scheduler.editor.conf.forms.JobCommandExitCodesForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.JOB_COMMAND:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobCommandForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.JOB_COMMANDS:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobCommandsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, this);
                         break;
                     case JOEConstants.RUNTIME:
@@ -1147,6 +1167,7 @@ public class SchedulerListener {
                         new PeriodsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.JOBS:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobsForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
                         break;
                     case JOEConstants.HOLIDAYS:
@@ -1174,32 +1195,41 @@ public class SchedulerListener {
                         new JobOptionsForm(c, SWT.NONE, objSchedulerDom, objElement);
                         break;
                     case JOEConstants.LOCKUSE:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobLockUseForm(c, SWT.NONE, objSchedulerDom, objElement);
                         break;
                     case JOEConstants.MONITORUSE:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobMonitorUseForm(c, SWT.NONE, objSchedulerDom, objElement);
                         break;
                     case JOEConstants.JOB_CHAINS:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new JobChainsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.JOB_CHAIN:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         JobChainForm jc_ = new JobChainForm(c, SWT.NONE, objSchedulerDom, objElement);
                         jc_.setISchedulerUpdate(objSchedulerForm);
                         break;
                     case JOEConstants.JOB_CHAIN_NODES:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         JobChainNodesForm jcn_ = new JobChainNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
                         jcn_.setISchedulerUpdate(objSchedulerForm);
                         break;
                     case JOEConstants.JOB_CHAIN_NESTED_NODES:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         JobChainNestedNodesForm j = new JobChainNestedNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
                         j.setISchedulerUpdate(objSchedulerForm);
                         break;
                     case JOEConstants.COMMANDS:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         break;
                     case JOEConstants.SCHEDULES:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new sos.scheduler.editor.conf.forms.SchedulesForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
                         break;
                     case JOEConstants.SCHEDULE:
+                        updateOrders = objSchedulerForm.isEditOrders();
                         new sos.scheduler.editor.conf.forms.ScheduleForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
                     case JOEConstants.HTTP_SERVER:
@@ -1209,6 +1239,11 @@ public class SchedulerListener {
                     }
                 }
                 c.layout();
+                if (updateOrders){
+                    OrderListener listener = new OrderListener(objSchedulerDom, objElement, objSchedulerForm);
+                    listener.updateOrders();
+                    objSchedulerForm.setEditOrders(false);
+                }
             }
         } catch (Exception e) {
             new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);

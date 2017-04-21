@@ -52,7 +52,8 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
     private Group gTree = null;
     private Tree tree = null;
     private Composite cMainForm = null;
-
+    private boolean editOrders=false;
+    
     public SchedulerForm(final IContainer container1, final Composite parent, final int style) {
         super(parent, style);
         container = container1;
@@ -770,4 +771,13 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
         }
     }
 
+    
+    public boolean isEditOrders() {
+        return editOrders;
+    }
+
+    
+    public void setEditOrders(boolean editOrders) {
+        this.editOrders = editOrders;
+    }
 }
