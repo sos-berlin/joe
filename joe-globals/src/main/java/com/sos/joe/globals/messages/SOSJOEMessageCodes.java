@@ -212,6 +212,8 @@ public class SOSJOEMessageCodes extends SOSComposite {
     @I18NMsg
     public static final SOSMsgJOE JOE_L_ConfigForm_CentralConfigDir = new SOSMsgJOE("JOE_L_ConfigForm_CentralConfigDir");
     @I18NMsg
+    public static final SOSMsgJOE JOE_L_ConfigForm_ConfigDir = new SOSMsgJOE("JOE_L_ConfigForm_ConfigDir");
+    @I18NMsg
     public static final SOSMsgJOE JOE_T_ConfigForm_CentralConfigDir = new SOSMsgJOE("JOE_T_ConfigForm_CentralConfigDir");
     @I18NMsg
     public static final SOSMsgJOE JOE_G_ConfigForm_Event = new SOSMsgJOE("JOE_G_ConfigForm_Event");
