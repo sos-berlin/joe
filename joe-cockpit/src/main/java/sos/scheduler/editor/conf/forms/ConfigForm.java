@@ -73,6 +73,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
     private Text tIpAddress = null;
     private Button button = null;
     private Text txtCentralConfigDir = null;
+    private Text txtConfigDir = null;
 
     public ConfigForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate _update) {
         super(parent, style);
@@ -93,6 +94,7 @@ public class ConfigForm extends SOSJOEMessageCodes {
         tLogDir.setText(listener.getLogDir());
         tMailXSLTStylesheet.setText(listener.getMailXSLTStylesheet());
         txtCentralConfigDir.setText(listener.getCentralConfigDir());
+        txtConfigDir.setText(listener.getConfigDir());
         cSamePorts.setSelection(listener.isPort());
         if (listener.isPort()) {
             sPort.setText(listener.getPort());
@@ -202,6 +204,20 @@ public class ConfigForm extends SOSJOEMessageCodes {
             }
         });
         txtCentralConfigDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+
+        final Label centralDirectoryLabel = JOE_L_ConfigForm_ConfigDir.control(new Label(group_1, SWT.NONE));
+        centralDirectoryLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        txtConfigDir = JOE_T_ConfigForm_CentralConfigDir.control(new Text(group_1, SWT.BORDER));
+        txtConfigDir.addModifyListener(new ModifyListener() {
+
+            public void modifyText(final ModifyEvent e) {
+                listener.setConfigDir(txtConfigDir.getText());
+            }
+        });
+        txtConfigDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        
         createGPorts();
         createGMainScheduler();
         createGJavaOptions();
