@@ -33,14 +33,11 @@ import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.JobCommandFormAddOrder;
 import sos.scheduler.editor.conf.forms.JobCommandFormStartJob;
 import sos.scheduler.editor.conf.forms.JobCommandsForm;
-import sos.scheduler.editor.conf.forms.JobDocumentationForm;
 import sos.scheduler.editor.conf.forms.JobLockUseForm;
-import sos.scheduler.editor.conf.forms.JobMainOptionForm;
 import sos.scheduler.editor.conf.forms.JobMonitorUseForm;
 import sos.scheduler.editor.conf.forms.JobOptionsForm;
 import sos.scheduler.editor.conf.forms.JobsForm;
 import sos.scheduler.editor.conf.forms.LocksForm;
-import sos.scheduler.editor.conf.forms.MailForm;
 import sos.scheduler.editor.conf.forms.OrderForm;
 import sos.scheduler.editor.conf.forms.OrdersForm;
 import sos.scheduler.editor.conf.forms.PeriodsForm;
@@ -629,7 +626,7 @@ public class SchedulerListener {
         parent.removeAll();
         ArrayList<String> l = new ArrayList<String>();
         Color isColor4ReadOnlyFiles = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
-        TreeItem item = new TreeItem(parent, SWT.NONE);
+/*        TreeItem item = new TreeItem(parent, SWT.NONE);
         item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Options.label());
         item.setImage(getImage("options.gif"));
         item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -638,9 +635,10 @@ public class SchedulerListener {
         item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
         item.setData(conItemDataKeyCOPY_ELEMENT, job);
         if (flgIsReadOnlyFile) {
-            item.setForeground(isColor4ReadOnlyFiles);
+            setDisabled(item);
         }
-        item = new TreeItem(parent, SWT.NONE);
+        */
+        TreeItem item = new TreeItem(parent, SWT.NONE);
         item.setData(new TreeData(JOEConstants.PARAMETER, job, Options.getHelpURL("parameter")));
         item.setData(conItemDataKeyKEY, "params_@_param");
         ArrayList ll = new ArrayList();
@@ -650,13 +648,20 @@ public class SchedulerListener {
         item.setData(conItemDataKeyCOPY_ELEMENT, job);
         item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Parameter.label());
         item.setImage(getImage("parameter.gif"));
-        item = new TreeItem(parent, SWT.NONE);
+
+        if (flgIsReadOnlyFile) {
+            setDisabled(item);
+        }
+       
+        /*item = new TreeItem(parent, SWT.NONE);
         item.setData(new TreeData(JOEConstants.SETTINGS, job, Options.getHelpURL("settings")));
         item.setData(conItemDataKeyKEY, "settings");
         item.setData(conItemDataKeyCOPY_ELEMENT, job);
         item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_JobSettings.label());
         item.setData(conItemDataKeyMAX_OCCUR, "1");
         item.setImage(getImage("10036.gif"));
+        */
+        
         item = new TreeItem(parent, SWT.NONE);
         item.setText(MONITORS);
         item.setImage(getImage("source_attach_attrib.gif"));
@@ -713,7 +718,8 @@ public class SchedulerListener {
         item.setData(conItemDataKeyKEY, "commands");
         item.setData(conItemDataKeyCOPY_ELEMENT, job);
         parent.setExpanded(expand);
-        item = new TreeItem(parent, SWT.NONE);
+        
+        /*item = new TreeItem(parent, SWT.NONE);
         item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Documentation.label());
         item.setImage(getImage("11020.gif"));
         item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -723,6 +729,7 @@ public class SchedulerListener {
         if (flgIsReadOnlyFile) {
             item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
         }
+        */
     }
 
     private Image getImage(final String pstrImageFileName) {
@@ -1107,17 +1114,9 @@ public class SchedulerListener {
                         updateOrders = objSchedulerForm.isEditOrders();
                         new ScriptJobMainForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                         break;
-                    case JOEConstants.JOB_OPTION:
-                        updateOrders = objSchedulerForm.isEditOrders();
-                        new JobMainOptionForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
-                        break;
-                    case JOEConstants.JOB_DOCUMENTATION:
-                        updateOrders = objSchedulerForm.isEditOrders();
-                        new JobDocumentationForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
-                        break;
-                    case JOEConstants.SETTINGS:
-                        new MailForm(c, SWT.NONE, objSchedulerDom, objElement);
-                        break;
+                    case JOEConstants.OPTIONS:
+                        new JobOptionsForm(c, SWT.NONE, objSchedulerDom, objElement);
+                        break;                        
                     case JOEConstants.ORDERS:
                         new OrdersForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm, objElement);
                         objSchedulerForm.setEditOrders(true);
@@ -1187,9 +1186,6 @@ public class SchedulerListener {
                         break;
                     case JOEConstants.HTTP_AUTHENTICATION:
                         new HttpAuthenticationForm(c, SWT.NONE, objSchedulerDom, objElement);
-                        break;
-                    case JOEConstants.OPTIONS:
-                        new JobOptionsForm(c, SWT.NONE, objSchedulerDom, objElement);
                         break;
                     case JOEConstants.LOCKUSE:
                         updateOrders = objSchedulerForm.isEditOrders();
