@@ -53,6 +53,7 @@ public class JobOptions extends FormBaseClass {
     private Label label15 = null;
     private Label label17 = null;
     private Text tMintasks = null;
+    private Text tCredentialKey = null;
     private Button bForceIdletimeout = null;
     private Combo cSignals = null;
     private Combo comVisible = null;
@@ -218,6 +219,20 @@ public class JobOptions extends FormBaseClass {
                 }
             }
         });
+        
+        stdErrlogLevel.addModifyListener(new ModifyListener() {
+
+            public void modifyText(final ModifyEvent e) {
+                if (init) {
+                    return;
+                }
+                if ("".equals(stdErrlogLevel.getText().trim()) || "info".equals(stdErrlogLevel.getText()) || "error".equals(stdErrlogLevel.getText())) {
+                    objJobDataProvider.setStdErrLogLevel(stdErrlogLevel.getText().trim());
+                }
+            }
+        });
+        
+        
         new Label(gOptionsGroup, SWT.NONE);
         final Label label_2 = new Label(gOptionsGroup, SWT.HORIZONTAL | SWT.SEPARATOR);
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
@@ -318,6 +333,29 @@ public class JobOptions extends FormBaseClass {
         gMainOptionsGroup.setLayout(gridLayout_2);
         final GridData gridData_12 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gridData_12.heightHint = 353;
+
+        
+        final Label credentialKeyLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_CredentialKey.control(new Label(gMainOptionsGroup, SWT.NONE));
+        credentialKeyLabel.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
+        tCredentialKey = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_MinTasks.control(new Text(gMainOptionsGroup, SWT.BORDER));
+       
+        tCredentialKey.addModifyListener(new ModifyListener() {
+
+            public void modifyText(final ModifyEvent e) {
+                if (init) {
+                    return;
+                }
+                objJobDataProvider.setCredentialKey(tCredentialKey.getText());
+            }
+        });
+        tCredentialKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        new Label(gMainOptionsGroup, SWT.NONE);
+        new Label(gMainOptionsGroup, SWT.NONE);
+
+        
+        
+        
+        
         final Label ignore_signalLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_IgnoreSignals.control(new Label(gMainOptionsGroup, SWT.NONE));
         ignore_signalLabel.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
         tIgnoreSignals = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_IgnoreSignals.control(new Text(gMainOptionsGroup, SWT.BORDER));
@@ -555,6 +593,9 @@ public class JobOptions extends FormBaseClass {
         sTasks.setText(objJobDataProvider.getTasks());
         if (objJobDataProvider.getMintasks() != null) {
             tMintasks.setText(objJobDataProvider.getMintasks());
+        }
+        if (objJobDataProvider.getCredentialKey() != null) {
+            tCredentialKey.setText(objJobDataProvider.getCredentialKey());
         }
         if (objJobDataProvider.getPriority() != null) {
             sPriority.setText(objJobDataProvider.getPriority());
