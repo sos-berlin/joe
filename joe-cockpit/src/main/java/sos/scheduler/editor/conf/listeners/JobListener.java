@@ -992,7 +992,7 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
     }
 
     public void setCredentialKey(final String credentialKey) {
-        Utils.setAttribute("credential_key",credentialKey, _job);
+        Utils.setAttribute("credentials_key",credentialKey, _job);
         _dom.setChanged(true);
 
         if (_dom.isDirectory() || _dom.isLifeElement()) {
@@ -1001,6 +1001,6 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
     }
 
     public String getCredentialKey() {
-        return Utils.getAttributeValue("credential_key", _job);
+        return Utils.getAttributeValue("credentials_key", _job);
     }
 }
