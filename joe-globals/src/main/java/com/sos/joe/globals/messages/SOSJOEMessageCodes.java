@@ -2518,7 +2518,11 @@ public class SOSJOEMessageCodes extends SOSComposite {
     @I18NMsg
     public static final SOSMsgJOE JOE_L_JobOptions_StopOnError = new SOSMsgJOE("JOE_L_JobOptions_StopOnError");
     @I18NMsg
+    public static final SOSMsgJOE JOE_L_JobOptions_LoadUserProfile = new SOSMsgJOE("JOE_L_JobOptions_LoadUserProfile");
+    @I18NMsg
     public static final SOSMsgJOE JOE_B_JobOptions_StopOnError = new SOSMsgJOE("JOE_B_JobOptions_StopOnError");
+    @I18NMsg
+    public static final SOSMsgJOE JOE_B_JobOptions_LoadUserProfile = new SOSMsgJOE("JOE_B_JobOptions_LoadUserProfile");
     // JobProcessFile
     @I18NMsg
     public static final SOSMsgJOE JOE_G_JobProcessFile_RunExecutable = new SOSMsgJOE("JOE_G_JobProcessFile_RunExecutable");
