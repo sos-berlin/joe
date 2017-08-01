@@ -26,8 +26,10 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
+import com.sos.i18n.annotation.I18NMsg;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.messages.SOSMsgJOE;
 
 public class JobOptions extends FormBaseClass {
 
@@ -54,6 +56,7 @@ public class JobOptions extends FormBaseClass {
     private Label label17 = null;
     private Text tMintasks = null;
     private Text tCredentialKey = null;
+    private Button bLoadUserProfile = null;
     private Button bForceIdletimeout = null;
     private Combo cSignals = null;
     private Combo comVisible = null;
@@ -337,7 +340,7 @@ public class JobOptions extends FormBaseClass {
         
         final Label credentialKeyLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_CredentialKey.control(new Label(gMainOptionsGroup, SWT.NONE));
         credentialKeyLabel.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
-        tCredentialKey = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_MinTasks.control(new Text(gMainOptionsGroup, SWT.BORDER));
+        tCredentialKey = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_CredentialKey.control(new Text(gMainOptionsGroup, SWT.BORDER));
        
         tCredentialKey.addModifyListener(new ModifyListener() {
 
@@ -349,13 +352,32 @@ public class JobOptions extends FormBaseClass {
             }
         });
         tCredentialKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        new Label(gMainOptionsGroup, SWT.NONE);
-        new Label(gMainOptionsGroup, SWT.NONE);
+        
+                
+        final Label loadUserProfileLable = SOSJOEMessageCodes.JOE_L_JobOptions_LoadUserProfile.control(new Label(gMainOptionsGroup, SWT.NONE));
+        bLoadUserProfile = SOSJOEMessageCodes.JOE_B_JobOptions_LoadUserProfile.control(new Button(gMainOptionsGroup, SWT.CHECK));
+        bLoadUserProfile.setSelection(objJobDataProvider.getLoadUserProfile());
+        bLoadUserProfile.addKeyListener(new KeyAdapter() {
+
+            public void keyPressed(KeyEvent event) {
+                if (objJobDataProvider.Check4HelpKey(event.keyCode, "job", "load_user_profile")) {
+                    event.doit = true;
+                    return;
+                }
+            }
+        });
+        bLoadUserProfile.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(final SelectionEvent e) {
+                if (init) {
+                    return;
+                }
+                objJobDataProvider.setLoadUserProfle(bLoadUserProfile.getSelection());
+            }
+        });
 
         
-        
-        
-        
+      
         final Label ignore_signalLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_IgnoreSignals.control(new Label(gMainOptionsGroup, SWT.NONE));
         ignore_signalLabel.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
         tIgnoreSignals = SOSJOEMessageCodes.JOE_T_JobMainOptionForm_IgnoreSignals.control(new Text(gMainOptionsGroup, SWT.BORDER));
@@ -569,6 +591,8 @@ public class JobOptions extends FormBaseClass {
         bOrderYes.setSelection(objJobDataProvider.getOrder());
         bOrderNo.setSelection(!objJobDataProvider.getOrder());
         bStopOnError.setSelection(objJobDataProvider.getStopOnError());
+     //   bLoadUserProfile.setSelection(objJobDataProvider.getLoadUserProfile());
+        
         logLevel.setText(objJobDataProvider.getValue("log_level"));
         stdErrlogLevel.setText(objJobDataProvider.getStdErrLogLevel());
         cboHistory.setText(objJobDataProvider.getValue("history"));

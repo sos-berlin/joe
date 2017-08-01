@@ -991,16 +991,24 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
         setChangedForDirectory();
     }
 
-    public void setCredentialKey(final String credentialKey) {
-        Utils.setAttribute("credentials_key",credentialKey, _job);
-        _dom.setChanged(true);
-
-        if (_dom.isDirectory() || _dom.isLifeElement()) {
-            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-        }
+    public void setCredentialKey(String credentialKey) {
+        setValue("credentials_key", credentialKey);
     }
 
     public String getCredentialKey() {
         return Utils.getAttributeValue("credentials_key", _job);
+    }
+
+    public void setLoadUserProfle(final boolean loadUserProfile) {
+        if (loadUserProfile) {
+            Utils.setAttribute("load_user_profile", "true", "false", _job, _dom);
+            }else {
+                Utils.setAttribute("load_user_profile", "false", "false", _job, _dom);
+            }
+    }
+
+    public boolean getLoadUserProfile() {
+        String loadUserProfile = _job.getAttributeValue("load_user_profile");
+        return loadUserProfile == null ? false : "true".equalsIgnoreCase(loadUserProfile);
     }
 }
