@@ -22,6 +22,10 @@ public class LanguageSelector extends Combo {
         return "java".equalsIgnoreCase(this.getText());
     }
 
+    public boolean isDotNet() {
+        return "dotnet".equalsIgnoreCase(this.getText());
+    }
+
     public boolean isShell() {
         return "shell".equalsIgnoreCase(this.getText());
     }

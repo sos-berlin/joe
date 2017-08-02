@@ -55,56 +55,49 @@ public class JobJavaAPI extends FormBaseClass {
 
     private void createGroup() {
         showWaitCursor();
-        Group gScript_2 = new Group(objParent, SWT.NONE);
+        Group gScript = new Group(objParent, SWT.NONE);
         GridLayout lgridLayout = new GridLayout();
-        lgridLayout.numColumns = 13;
-        gScript_2.setLayout(lgridLayout);
-        setResizableV(gScript_2);
-        Label lblClassNameLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classname.control(new Label(gScript_2, SWT.NONE));
+        lgridLayout.numColumns = 2;
+        gScript.setLayout(lgridLayout);
+        setResizableV(gScript);
+        Label lblClassNameLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classname.control(new Label(gScript, SWT.NONE));
         GridData labelGridData = new GridData(SWT.BEGINNING, SWT.CENTER, false, false, 1, 1);
         lblClassNameLabel.setLayoutData(labelGridData);
-        tbxClassName = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classname.control(new Text(gScript_2, SWT.BORDER));
+        tbxClassName = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classname.control(new Text(gScript, SWT.BORDER));
         tbxClassName.setEnabled(true);
         tbxClassName.setText(objJobDataProvider.getJavaClass());
         GridData gd_tClass = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gd_tClass.horizontalSpan = 8;
         tbxClassName.setLayoutData(gd_tClass);
         tbxClassName.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
-                if (!init && objJobDataProvider.isJava()) {
+                if (!init) {
                     objJobDataProvider.setJavaClass(tbxClassName.getText());
                 }
             }
         });
-        Group gScript_1 = gScript_2;
-        new Label(gScript_1, SWT.NONE);
-        new Label(gScript_1, SWT.NONE);
-        new Label(gScript_1, SWT.NONE);
-        new Label(gScript_1, SWT.NONE);
-        Label lblNewLabel_1 = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classpath.control(new Label(gScript_2, SWT.NONE));
+
+
+        Label lblNewLabel_1 = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classpath.control(new Label(gScript, SWT.NONE));
         lblNewLabel_1.setLayoutData(labelGridData);
-        tClasspath = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classpath.control(new Text(gScript_2, SWT.BORDER));
+        tClasspath = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classpath.control(new Text(gScript, SWT.BORDER));
         tClasspath.setEnabled(true);
         tClasspath.setText(objJobDataProvider.getClasspath());
         GridData gd_tClasspath = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gd_tClasspath.horizontalSpan = 8;
         tClasspath.setLayoutData(gd_tClasspath);
         tClasspath.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
-                if (!init && objJobDataProvider.isJava()) {
+                if (!init) {
                     objJobDataProvider.setClasspath(tClasspath.getText());
                 }
             }
         });
-        new Label(gScript_2, SWT.NONE);
-        new Label(gScript_2, SWT.NONE);
-        new Label(gScript_2, SWT.NONE);
-        new Label(gScript_2, SWT.NONE);
-        final Label java_optionsLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Options.control(new Label(gScript_2, SWT.NONE));
+
+
+        final Label java_optionsLabel = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Options.control(new Label(gScript, SWT.NONE));
         java_optionsLabel.setLayoutData(labelGridData);
-        txtJavaOptions = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Options.control(new Text(gScript_2, SWT.BORDER));
+        txtJavaOptions = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Options.control(new Text(gScript, SWT.BORDER));
         txtJavaOptions.setText(objJobDataProvider.getJavaOptions());
         txtJavaOptions.addModifyListener(new ModifyListener() {
 
@@ -115,8 +108,8 @@ public class JobJavaAPI extends FormBaseClass {
             }
         });
         txtJavaOptions.setLayoutData(gd_tClass);
-        gScript_1.setVisible(true);
-        gScript_1.redraw();
+        gScript.setVisible(true);
+        gScript.redraw();
         restoreCursor();
     }
 

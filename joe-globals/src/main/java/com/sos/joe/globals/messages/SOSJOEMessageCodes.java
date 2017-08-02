@@ -1987,6 +1987,8 @@ public class SOSJOEMessageCodes extends SOSComposite {
     @I18NMsg
     public static final SOSMsgJOE JOE_ScriptForm_TabItemJavaAPI = new SOSMsgJOE("JOE_ScriptForm_TabItemJavaAPI");
     @I18NMsg
+    public static final SOSMsgJOE JOE_ScriptForm_TabItemDotNetAPI = new SOSMsgJOE("JOE_ScriptForm_TabItemDotNetAPI");
+    @I18NMsg
     public static final SOSMsgJOE JOE_ScriptForm_TabItemIncludes = new SOSMsgJOE("JOE_ScriptForm_TabItemIncludes");
     @I18NMsg
     public static final SOSMsgJOE JOE_L_ScriptForm_Language = new SOSMsgJOE("JOE_L_ScriptForm_Language");
@@ -2506,6 +2508,19 @@ public class SOSJOEMessageCodes extends SOSComposite {
     public static final SOSMsgJOE JOE_L_JobJavaAPI_Options = new SOSMsgJOE("JOE_L_JobJavaAPI_Options");
     @I18NMsg
     public static final SOSMsgJOE JOE_T_JobJavaAPI_Options = new SOSMsgJOE("JOE_T_JobJavaAPI_Options");
+    
+    @I18NMsg
+    public static final SOSMsgJOE JOE_L_JobDotNet_API_Class = new SOSMsgJOE("JOE_L_JobDotNetAPI_Class");
+    @I18NMsg
+    public static final SOSMsgJOE JOE_T_JobDotNetAPI_Class = new SOSMsgJOE("JOE_T_JobDotNetAPI_Class");
+    @I18NMsg
+    public static final SOSMsgJOE JOE_L_JobDotNetAPI_DLL = new SOSMsgJOE("JOE_L_JobDotNetAPI_Dll");
+    @I18NMsg
+    public static final SOSMsgJOE JOE_T_JobDotNetAPI_DLL = new SOSMsgJOE("JOE_T_JobDotNetAPI_Dll");
+
+
+    
+    
     // JobOptions
     @I18NMsg
     public static final SOSMsgJOE JOE_G_JobOptions_Options = new SOSMsgJOE("JOE_G_JobOptions_Options");

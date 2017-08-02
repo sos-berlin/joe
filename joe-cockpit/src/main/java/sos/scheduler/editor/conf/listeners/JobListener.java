@@ -834,6 +834,10 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
         return "java".equalsIgnoreCase(languageAsString(getLanguage()));
     }
 
+    public boolean isDotNet() {
+        return "dotnet".equalsIgnoreCase(languageAsString(getLanguage()));
+    }
+
     public void newDirectory() {
         _directory = new Element("start_when_directory_changed");
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
@@ -1002,13 +1006,37 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
     public void setLoadUserProfle(final boolean loadUserProfile) {
         if (loadUserProfile) {
             Utils.setAttribute("load_user_profile", "true", "false", _job, _dom);
-            }else {
-                Utils.setAttribute("load_user_profile", "false", "false", _job, _dom);
-            }
+        } else {
+            Utils.setAttribute("load_user_profile", "false", "false", _job, _dom);
+        }
     }
 
     public boolean getLoadUserProfile() {
         String loadUserProfile = _job.getAttributeValue("load_user_profile");
-        return loadUserProfile == null ? false : "true".equalsIgnoreCase(loadUserProfile);
+        if (loadUserProfile == null) {
+            return false;
+        } else {
+            return "true".equalsIgnoreCase(loadUserProfile);
+        }
     }
+
+    public void setDotNetDll(String dll) {
+        setAttributeValue("dll", dll.trim(), languageAsInt("dotnet"));
+        setChangedForDirectory();
+
+    }
+
+    public void setDotNetClass(String dotNetClass) {
+        setAttributeValue("dotnet_class", dotNetClass.trim(), languageAsInt("dotnet"));
+        setChangedForDirectory();
+    }
+
+    public String getDotNetDll() {
+        return Utils.getAttributeValue("dll", _script);
+    }
+
+    public String getDotNetClass() {
+        return Utils.getAttributeValue("dotnet_class", _script);
+    }
+
 }

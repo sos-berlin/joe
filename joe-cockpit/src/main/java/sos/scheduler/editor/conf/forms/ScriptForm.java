@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Label;
 import org.jdom.Element;
 
 import sos.scheduler.editor.classes.LanguageSelector;
+import sos.scheduler.editor.conf.container.JobDotNetAPI;
 import sos.scheduler.editor.conf.container.JobIncludeFile;
 import sos.scheduler.editor.conf.container.JobJavaAPI;
 import sos.scheduler.editor.conf.container.JobScript;
@@ -40,19 +41,25 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
     private final int intNoOfLabelColumns = 2;
     private boolean init = true;
     private Composite tabItemJavaAPIComposite = null;
+    private Composite tabItemDotNetAPIComposite = null;
     private Composite tabItemIncludedFilesComposite = null;
     private Composite objTabControlComposite = null;
     private Composite tabItemScriptComposite = null;
     private CTabItem tabItemScript = null;
     private CTabItem tabItemJavaAPI = null;
+    private CTabItem tabItemDotNetAPI = null;
     private CTabItem tabItemIncludedFiles = null;
-    private JobJavaAPI objJobJAPI = null;
+    private JobJavaAPI objJobJavaAPI = null;
+    private JobDotNetAPI objJobDotNetAPI = null;
     private JobIncludeFile objJobIncludeFile = null;
     private final SchedulerDom dom;
 
     protected abstract void initForm();
+
     protected abstract void createGroup();
+
     protected abstract String getPredefinedFunctionNames();
+
     protected abstract String[] getScriptLanguages();
 
     public ScriptForm(Composite parent, int style, SchedulerDom dom_, Element job_, ISchedulerUpdate main) {
@@ -98,6 +105,9 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
         if (tabItemJavaAPI != null) {
             tabItemJavaAPI.dispose();
         }
+        if (tabItemDotNetAPI != null) {
+            tabItemDotNetAPI.dispose();
+        }
         if (tabItemIncludedFiles != null) {
             tabItemIncludedFiles.dispose();
         }
@@ -128,6 +138,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 
     private void createTabPages() {
         tabItemJavaAPIComposite = null;
+        tabItemDotNetAPIComposite = null;
         tabItemIncludedFilesComposite = null;
         tabItemScriptComposite = null;
         objTabControlComposite = new Composite(tabFolder, SWT.NONE);
@@ -145,12 +156,21 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
             setResizableV(tabItemJavaAPIComposite);
             tabItemJavaAPI.setControl(tabItemJavaAPIComposite);
         }
-        tabItemIncludedFiles = JOE_ScriptForm_TabItemIncludes.control(new CTabItem(tabFolder, SWT.NONE));
+        if (objDataProvider.isDotNet()) {
+            tabItemDotNetAPI = JOE_ScriptForm_TabItemDotNetAPI.control(new CTabItem(tabFolder, SWT.NONE));
+            tabItemDotNetAPIComposite = new Composite(tabFolder, SWT.NONE);
+            tabItemDotNetAPIComposite.setLayout(new GridLayout());
+            setResizableV(tabItemDotNetAPIComposite);
+            tabItemDotNetAPI.setControl(tabItemDotNetAPIComposite);
+        }
         tabItemIncludedFilesComposite = new Composite(tabFolder, SWT.NONE);
         tabItemIncludedFilesComposite.setLayout(new GridLayout());
         setResizableV(tabItemIncludedFilesComposite);
+        tabItemIncludedFiles = JOE_ScriptForm_TabItemIncludes.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemIncludedFiles.setControl(tabItemIncludedFilesComposite);
         createJavaAPITab(tabItemJavaAPIComposite);
+        createDotNetAPITab(tabItemDotNetAPIComposite);
+
         createTabItemIncludeFile(tabItemIncludedFilesComposite);
         createScriptTab(tabItemScriptComposite);
     }
@@ -167,7 +187,16 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
         if (pParentComposite == null) {
             return;
         }
-        objJobJAPI = new JobJavaAPI(pParentComposite, objDataProvider, objJobJAPI);
+        objJobJavaAPI = new JobJavaAPI(pParentComposite, objDataProvider, objJobJavaAPI);
+        pParentComposite.layout();
+    }
+
+
+    private void createDotNetAPITab(final Composite pParentComposite) {
+        if (pParentComposite == null) {
+            return;
+        }
+        objJobDotNetAPI = new JobDotNetAPI(pParentComposite, objDataProvider, objJobDotNetAPI);
         pParentComposite.layout();
     }
 
@@ -193,26 +222,34 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
                     disposeTabPages();
                     createTabPages();
                     objJobScript.getCboPrefunction().setEnabled(false);
-                    if (languageSelector.isJava() && objJobJAPI.getTbxClassName() != null) {
-                        objJobJAPI.getTbxClassName().setFocus();
-                        objJobJAPI.getTClasspath().setText(objDataProvider.getClasspath());
-                        if (!"".equals(objJobJAPI.getTbxClassName().getText()) && "".equals(objDataProvider.getJavaClass())) {
-                            objDataProvider.setJavaClass(objJobJAPI.getTbxClassName().getText());
+                    if (languageSelector.isJava() && objJobJavaAPI.getTbxClassName() != null) {
+                        objJobJavaAPI.getTbxClassName().setFocus();
+                        objJobJavaAPI.getTClasspath().setText(objDataProvider.getClasspath());
+                        if (!"".equals(objJobJavaAPI.getTbxClassName().getText()) && "".equals(objDataProvider.getJavaClass())) {
+                            objDataProvider.setJavaClass(objJobJavaAPI.getTbxClassName().getText());
                         }
-                        objJobJAPI.getTbxClassName().setText(objDataProvider.getJavaClass());
+                        objJobJavaAPI.getTbxClassName().setText(objDataProvider.getJavaClass());
                         tabFolder.setSelection(tabItemJavaAPI);
                     } else {
-                        String lan = "";
-                        if (languageSelector.isScriptLanguage()) {
-                            lan = getPredefinedFunctionNames();
-                            objJobScript.getCboPrefunction().setItems(lan.split(";"));
-                            objJobScript.getCboPrefunction().setEnabled(true);
-                        }
-                        if (languageSelector.isJava()) {
-                            tabFolder.setSelection(tabItemJavaAPI);
+                        if (languageSelector.isDotNet() && objJobDotNetAPI.getDotNetDll() != null) {
+                            objJobDotNetAPI.getDotNetDll().setFocus();
+                            objJobDotNetAPI.getDotNetClass().setText(objDataProvider.getClasspath());
+                            if (!"".equals(objJobDotNetAPI.getDotNetDll().getText()) && "".equals(objDataProvider.getJavaClass())) {
+                                objDataProvider.setDotNetDll(objJobDotNetAPI.getDotNetDll().getText());
+                                objDataProvider.setDotNetClass(objJobDotNetAPI.getDotNetDll().getText());
+
+                            }
+                            objJobDotNetAPI.getDotNetDll().setText(objDataProvider.getJavaClass());
+                            tabFolder.setSelection(tabItemDotNetAPI);
                         } else {
+                            String lan = "";
                             tabFolder.setSelection(tabItemScript);
                             objJobScript.gettSource().setFocus();
+                            if (languageSelector.isScriptLanguage()) {
+                                lan = getPredefinedFunctionNames();
+                                objJobScript.getCboPrefunction().setItems(lan.split(";"));
+                                objJobScript.getCboPrefunction().setEnabled(true);
+                            }
                         }
                     }
                 }
@@ -253,7 +290,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
     }
 
     public JobJavaAPI getObjJobJAPI() {
-        return objJobJAPI;
+        return objJobJavaAPI;
     }
 
     public JobIncludeFile getObjJobIncludeFile() {
