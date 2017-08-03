@@ -191,7 +191,6 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
         pParentComposite.layout();
     }
 
-
     private void createDotNetAPITab(final Composite pParentComposite) {
         if (pParentComposite == null) {
             return;
@@ -283,8 +282,12 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
         if (languageSelector.isJava()) {
             tabFolder.setSelection(tabItemJavaAPI);
         } else {
-            tabFolder.setSelection(tabItemScript);
-            objJobScript.gettSource().setFocus();
+            if (languageSelector.isDotNet()) {
+                tabFolder.setSelection(tabItemDotNetAPI);
+            } else {
+                tabFolder.setSelection(tabItemScript);
+                objJobScript.gettSource().setFocus();
+            }
         }
         init = false;
     }
