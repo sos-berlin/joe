@@ -834,6 +834,10 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
         return "java".equalsIgnoreCase(languageAsString(getLanguage()));
     }
 
+    public boolean isDotNet() {
+        return "dotnet".equalsIgnoreCase(languageAsString(getLanguage()));
+    }
+
     public void newDirectory() {
         _directory = new Element("start_when_directory_changed");
         _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
@@ -991,20 +995,20 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
         setChangedForDirectory();
     }
 
-    public void setCredentialKey(String credentialKey) {
-        setValue("credentials_key", credentialKey);
+    public void setCredentialsKey(String credentialsKey) {
+        Utils.setAttribute("credentials_key", credentialsKey, "", _job, _dom);
     }
 
-    public String getCredentialKey() {
+    public String getCredentialsKey() {
         return Utils.getAttributeValue("credentials_key", _job);
     }
 
     public void setLoadUserProfle(final boolean loadUserProfile) {
         if (loadUserProfile) {
             Utils.setAttribute("load_user_profile", "true", "false", _job, _dom);
-            }else {
-                Utils.setAttribute("load_user_profile", "false", "false", _job, _dom);
-            }
+        } else {
+            Utils.setAttribute("load_user_profile", "false", "false", _job, _dom);
+        }
     }
 
     public boolean getLoadUserProfile() {

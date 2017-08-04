@@ -55,7 +55,7 @@ public class JobOptions extends FormBaseClass {
     private Label label15 = null;
     private Label label17 = null;
     private Text tMintasks = null;
-    private Text tCredentialKey = null;
+    private Text tCredentialsKey = null;
     private Button bLoadUserProfile = null;
     private Button bForceIdletimeout = null;
     private Combo cSignals = null;
@@ -338,20 +338,20 @@ public class JobOptions extends FormBaseClass {
         gridData_12.heightHint = 353;
 
         
-        final Label credentialKeyLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_CredentialKey.control(new Label(gMainOptionsGroup, SWT.NONE));
-        credentialKeyLabel.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
-        tCredentialKey = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_CredentialKey.control(new Text(gMainOptionsGroup, SWT.BORDER));
+        final Label credentialsKeyLabel = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_CredentialsKey.control(new Label(gMainOptionsGroup, SWT.NONE));
+        credentialsKeyLabel.setLayoutData(new GridData(SWT.LEFT, GridData.CENTER, false, false));
+        tCredentialsKey = SOSJOEMessageCodes.JOE_L_JobMainOptionForm_CredentialsKey.control(new Text(gMainOptionsGroup, SWT.BORDER));
        
-        tCredentialKey.addModifyListener(new ModifyListener() {
+        tCredentialsKey.addModifyListener(new ModifyListener() {
 
             public void modifyText(final ModifyEvent e) {
                 if (init) {
                     return;
                 }
-                objJobDataProvider.setCredentialKey(tCredentialKey.getText());
+                objJobDataProvider.setCredentialsKey(tCredentialsKey.getText());
             }
         });
-        tCredentialKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        tCredentialsKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         
                 
         final Label loadUserProfileLable = SOSJOEMessageCodes.JOE_L_JobOptions_LoadUserProfile.control(new Label(gMainOptionsGroup, SWT.NONE));
@@ -618,8 +618,8 @@ public class JobOptions extends FormBaseClass {
         if (objJobDataProvider.getMintasks() != null) {
             tMintasks.setText(objJobDataProvider.getMintasks());
         }
-        if (objJobDataProvider.getCredentialKey() != null) {
-            tCredentialKey.setText(objJobDataProvider.getCredentialKey());
+        if (objJobDataProvider.getCredentialsKey() != null) {
+            tCredentialsKey.setText(objJobDataProvider.getCredentialsKey());
         }
         if (objJobDataProvider.getPriority() != null) {
             sPriority.setText(objJobDataProvider.getPriority());

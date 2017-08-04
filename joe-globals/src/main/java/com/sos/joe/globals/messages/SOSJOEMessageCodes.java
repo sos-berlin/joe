@@ -1425,7 +1425,7 @@ public class SOSJOEMessageCodes extends SOSComposite {
     @I18NMsg
     public static final SOSMsgJOE JOE_T_JobMainOptionForm_MinTasks = new SOSMsgJOE("JOE_T_JobMainOptionForm_MinTasks");
     @I18NMsg
-    public static final SOSMsgJOE JOE_L_JobMainOptionForm_CredentialKey = new SOSMsgJOE("JOE_L_JobMainOptionForm_CredentialKey");
+    public static final SOSMsgJOE JOE_L_JobMainOptionForm_CredentialsKey = new SOSMsgJOE("JOE_L_JobMainOptionForm_CredentialKey");
     @I18NMsg
     public static final SOSMsgJOE JOE_T_JobMainOptionForm_CredentialKey = new SOSMsgJOE("JOE_T_JobMainOptionForm_CredentialKey");
     @I18NMsg
