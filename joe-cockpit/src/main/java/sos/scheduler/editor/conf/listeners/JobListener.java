@@ -995,11 +995,11 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
         setChangedForDirectory();
     }
 
-    public void setCredentialKey(String credentialKey) {
-        setValue("credentials_key", credentialKey);
+    public void setCredentialsKey(String credentialsKey) {
+        Utils.setAttribute("credentials_key", credentialsKey, "", _job, _dom);
     }
 
-    public String getCredentialKey() {
+    public String getCredentialsKey() {
         return Utils.getAttributeValue("credentials_key", _job);
     }
 
