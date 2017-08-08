@@ -320,8 +320,8 @@ public class TreeMenu {
                 elem = getElement();
                 if (!"".equals(newName) && !Utils.getAttributeValue("name", elem).equals(newName)
                         && ("order".equals(elem.getName()) || "add_order".equals(elem.getName()))) {
-                    ((SchedulerDom) _dom).setChangedForDirectory(elem.getName(), Utils.getAttributeValue("job_chain", elem) + ","
-                            + Utils.getAttributeValue("id", elem), SchedulerDom.DELETE);
+                    ((SchedulerDom) _dom).setChangedForDirectory(elem.getName(),
+                            Utils.getAttributeValue("job_chain", elem) + "," + Utils.getAttributeValue("id", elem), SchedulerDom.DELETE);
                     ((SchedulerDom) _dom).setChangedForDirectory(elem.getName(), newName, SchedulerDom.NEW);
                 } else if (!"".equals(newName) && !Utils.getAttributeValue("name", elem).equals(newName)) {
                     ((SchedulerDom) _dom).setChangedForDirectory(elem.getName(), Utils.getAttributeValue("name", elem), SchedulerDom.DELETE);
@@ -343,8 +343,8 @@ public class TreeMenu {
                 } else {
                     newFilename = new File(parent, newName + "." + getElement().getName() + ".xml");
                 }
-                int c = MainWindow.message(MainWindow.getSShell(), "Do you want really rename Hot Folder File from " + oldFilename + " to " + newFilename + "?", SWT.ICON_WARNING
-                        | SWT.YES | SWT.NO);
+                int c = MainWindow.message(MainWindow.getSShell(), "Do you want really rename Hot Folder File from " + oldFilename + " to " + newFilename + "?",
+                        SWT.ICON_WARNING | SWT.YES | SWT.NO);
                 if (c == SWT.YES) {
                     _gui.updateJob(newName);
                     if (_dom.getFilename() != null) {
@@ -389,16 +389,19 @@ public class TreeMenu {
             public void handleEvent(Event e) {
                 String name = getParentItemName();
                 if (name.equals(SchedulerListener.JOBS)) {
-                    sos.scheduler.editor.conf.listeners.JobsListener listeners = new sos.scheduler.editor.conf.listeners.JobsListener((SchedulerDom) _dom, _gui);
+                    sos.scheduler.editor.conf.listeners.JobsListener listeners = new sos.scheduler.editor.conf.listeners.JobsListener((SchedulerDom) _dom,
+                            _gui);
                     listeners.newJob(sos.scheduler.editor.conf.forms.JobsForm.getTable(), false);
                 } else if (name.equals(SchedulerListener.MONITORS)) {
                     TreeData data = (TreeData) _tree.getSelection()[0].getData();
                     org.eclipse.swt.widgets.Table table = sos.scheduler.editor.conf.forms.ScriptsForm.getTable();
-                    sos.scheduler.editor.conf.listeners.ScriptsListener listener = new sos.scheduler.editor.conf.listeners.ScriptsListener((SchedulerDom) _dom, _gui, data.getElement());
+                    sos.scheduler.editor.conf.listeners.ScriptsListener listener = new sos.scheduler.editor.conf.listeners.ScriptsListener((SchedulerDom) _dom,
+                            _gui, data.getElement());
                     listener.save(table, "monitor" + table.getItemCount(), String.valueOf(table.getItemCount()), null);
                 } else if (name.equals(SchedulerListener.JOB_CHAINS)) {
                     TreeData data = (TreeData) _tree.getSelection()[0].getData();
-                    sos.scheduler.editor.conf.listeners.JobChainsListener listeners = new sos.scheduler.editor.conf.listeners.JobChainsListener((SchedulerDom) _dom, data.getElement(), _gui);
+                    sos.scheduler.editor.conf.listeners.JobChainsListener listeners = new sos.scheduler.editor.conf.listeners.JobChainsListener(
+                            (SchedulerDom) _dom, data.getElement(), _gui);
                     listeners.newChain();
                     int i = 1;
                     if (data.getElement().getChild("job_chains") != null) {
@@ -407,20 +410,24 @@ public class TreeMenu {
                     listeners.applyChain("job_chain" + i, true, true);
                     listeners.fillChains(JobChainsForm.getTableChains());
                 } else if (name.equals(SchedulerListener.SCHEDULES)) {
-                    sos.scheduler.editor.conf.listeners.SchedulesListener listener = new sos.scheduler.editor.conf.listeners.SchedulesListener((SchedulerDom) _dom, _gui);
+                    sos.scheduler.editor.conf.listeners.SchedulesListener listener = new sos.scheduler.editor.conf.listeners.SchedulesListener(
+                            (SchedulerDom) _dom, _gui);
                     listener.newSchedule(sos.scheduler.editor.conf.forms.SchedulesForm.getTable());
                 } else if (name.equals(SchedulerListener.ORDERS)) {
                     TreeData data = (TreeData) _tree.getSelection()[0].getData();
-                    sos.scheduler.editor.conf.listeners.OrdersListener listener = new sos.scheduler.editor.conf.listeners.OrdersListener((SchedulerDom) _dom, _gui, data.getElement());
+                    sos.scheduler.editor.conf.listeners.OrdersListener listener = new sos.scheduler.editor.conf.listeners.OrdersListener((SchedulerDom) _dom,
+                            _gui, data.getElement());
                     listener.newCommands(sos.scheduler.editor.conf.forms.OrdersForm.getTable());
                 } else if (name.equals(SchedulerListener.WEB_SERVICES)) {
                     TreeData data = (TreeData) _tree.getSelection()[0].getData();
-                    sos.scheduler.editor.conf.listeners.WebservicesListener listener = new sos.scheduler.editor.conf.listeners.WebservicesListener((SchedulerDom) _dom, data.getElement(), _gui);
+                    sos.scheduler.editor.conf.listeners.WebservicesListener listener = new sos.scheduler.editor.conf.listeners.WebservicesListener(
+                            (SchedulerDom) _dom, data.getElement(), _gui);
                     listener.newService(sos.scheduler.editor.conf.forms.WebservicesForm.getTable());
                 } else if (name.equals(SchedulerListener.LOCKS)) {
                     try {
                         TreeData data = (TreeData) _tree.getSelection()[0].getData();
-                        sos.scheduler.editor.conf.listeners.LocksListener listener = new sos.scheduler.editor.conf.listeners.LocksListener((SchedulerDom) _dom, data.getElement());
+                        sos.scheduler.editor.conf.listeners.LocksListener listener = new sos.scheduler.editor.conf.listeners.LocksListener((SchedulerDom) _dom,
+                                data.getElement());
                         listener.newLock();
                         int i = 1;
                         if (data.getElement().getChild("locks") != null) {
@@ -435,7 +442,8 @@ public class TreeMenu {
                 } else if (name.equals(SchedulerListener.PROCESS_CLASSES)) {
                     TreeData data = (TreeData) _tree.getSelection()[0].getData();
                     try {
-                        sos.scheduler.editor.conf.listeners.ProcessClassesListener listener = new sos.scheduler.editor.conf.listeners.ProcessClassesListener((SchedulerDom) _dom, data.getElement());
+                        sos.scheduler.editor.conf.listeners.ProcessClassesListener listener = new sos.scheduler.editor.conf.listeners.ProcessClassesListener(
+                                (SchedulerDom) _dom, data.getElement());
                         listener.newProcessClass();
                         int i = 1;
                         if (data.getElement().getChild("process_classes") != null) {
@@ -505,8 +513,8 @@ public class TreeMenu {
                     _gui.updateSchedules();
                     _gui.updateCMainForm();
                 } else if ("order".equals(name) || "add_order".equals(name)) {
-                    ((SchedulerDom) _dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain", elem) + ","
-                            + Utils.getAttributeValue("id", elem), SchedulerDom.DELETE);
+                    ((SchedulerDom) _dom).setChangedForDirectory("order",
+                            Utils.getAttributeValue("job_chain", elem) + "," + Utils.getAttributeValue("id", elem), SchedulerDom.DELETE);
                     elem.detach();
                     TreeItem parentItem = _tree.getSelection()[0].getParentItem();
                     _tree.setSelection(new TreeItem[] { parentItem });
@@ -589,9 +597,6 @@ public class TreeMenu {
                     for (int i = 0; i < keys.size(); i++) {
                         paste(keys.get(i).toString(), data, override);
                     }
-                }
-                if (_dom instanceof SchedulerDom && (((SchedulerDom) _dom).isDirectory() || ((SchedulerDom) _dom).isLifeElement())) {
-                    Utils.setChangedForDirectory(data.getElement(), (SchedulerDom) _dom);
                 }
             }
         };
@@ -758,6 +763,10 @@ public class TreeMenu {
                 String append = "copy(" + (elem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("id", copyClone);
                 copyClone.setAttribute("id", append);
             }
+
+            _dom.setChanged(true);
+            Utils.setChangedForDirectory(copyClone, (SchedulerDom) _dom);
+
             elem.addContent(copyClone);
         }
         updateTreeView(data);

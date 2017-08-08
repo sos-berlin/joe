@@ -867,6 +867,8 @@ public class Utils {
     }
 
     public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
+        //                    _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
+
         if (dom.isDirectory() || dom.isLifeElement()) {
             Element e = Utils.getHotFolderParentElement(elem);
             if ("order".equals(e.getName()) || "add_order".equals(e.getName())) {
