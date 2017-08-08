@@ -317,9 +317,8 @@ public class TreeMenu {
                 } else {
                     newFilename = new File(parent, newName + "." + getElement().getName() + ".xml");
                 }
-                int c =
-                        MainWindow.message(MainWindow.getSShell(), "Do you want really rename Hot Folder File from " + oldFilename + " to "
-                                + newFilename + "?", SWT.ICON_WARNING | SWT.YES | SWT.NO);
+                int c = MainWindow.message(MainWindow.getSShell(), "Do you want really rename Hot Folder File from " + oldFilename + " to " + newFilename + "?",
+                        SWT.ICON_WARNING | SWT.YES | SWT.NO);
                 if (c == SWT.YES) {
                     _gui.updateJob(newName);
                     if (_dom.getFilename() != null) {
@@ -571,10 +570,7 @@ public class TreeMenu {
                         paste(keys.get(i).toString(), data, override);
                     }
                 }
-                if (_dom instanceof SchedulerDom && (((SchedulerDom) _dom).isDirectory() || ((SchedulerDom) _dom).isLifeElement())) {
-                    Utils.setChangedForDirectory(data.getElement(), (SchedulerDom) _dom);
                 }
-            }
         };
     }
 
@@ -742,6 +738,10 @@ public class TreeMenu {
                 String append = "copy(" + (elem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("id", copyClone);
                 copyClone.setAttribute("id", append);
             }
+
+            _dom.setChanged(true);
+            Utils.setChangedForDirectory(copyClone, (SchedulerDom) _dom);
+
             elem.addContent(copyClone);
         }
         updateTreeView(data);
