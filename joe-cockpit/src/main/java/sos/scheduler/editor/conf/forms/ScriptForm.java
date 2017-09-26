@@ -232,13 +232,11 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
                     } else {
                         if (languageSelector.isDotNet() && objJobDotNetAPI.getDotNetDll() != null) {
                             objJobDotNetAPI.getDotNetDll().setFocus();
-                            objJobDotNetAPI.getDotNetClass().setText(objDataProvider.getClasspath());
-                            if (!"".equals(objJobDotNetAPI.getDotNetDll().getText()) && "".equals(objDataProvider.getJavaClass())) {
+                            objJobDotNetAPI.getDotNetClass().setText(objDataProvider.getDotNetClass());
+                            if (!"".equals(objJobDotNetAPI.getDotNetDll().getText()) && "".equals(objDataProvider.getDotNetDll())) {
                                 objDataProvider.setDotNetDll(objJobDotNetAPI.getDotNetDll().getText());
-                                objDataProvider.setDotNetClass(objJobDotNetAPI.getDotNetDll().getText());
-
                             }
-                            objJobDotNetAPI.getDotNetDll().setText(objDataProvider.getJavaClass());
+                            objJobDotNetAPI.getDotNetDll().setText(objDataProvider.getDotNetDll());
                             tabFolder.setSelection(tabItemDotNetAPI);
                         } else {
                             String lan = "";
