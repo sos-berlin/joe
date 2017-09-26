@@ -573,9 +573,21 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
             if (language != NONE) {
                 Utils.setAttribute("language", languageAsString(language), _script, _dom);
             }
-            if (!isJava()) {
+            if (!isJava() && !isDotNet()) {
                 _script.removeAttribute("java_class");
                 _script.removeAttribute("java_class_path");
+                _job.removeAttribute("java_options");
+                _script.removeAttribute("dotnet_class");
+                _script.removeAttribute("dll");
+            }
+            if (isJava()) {
+                _script.removeAttribute("dotnet_class");
+                _script.removeAttribute("dll");
+            }
+            if (isDotNet()) {
+                _script.removeAttribute("java_class");
+                _script.removeAttribute("java_class_path");
+                _job.removeAttribute("java_options");
             }
             _dom.setChanged(true);
             setChangedForDirectory();
