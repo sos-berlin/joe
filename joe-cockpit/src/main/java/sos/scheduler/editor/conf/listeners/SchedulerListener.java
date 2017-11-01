@@ -520,7 +520,7 @@ public class SchedulerListener {
                     while (it.hasNext()) {
                         Element e = (Element) it.next();
                         if ("order".equals(e.getName()) && e.getAttributeValue("id") != null
-                                && ("".equals(jobChainName) || e.getAttributeValue("job_chain").equals(jobChainName))) {
+                                && ("".equals(jobChainName) || jobChainName.equals(e.getAttributeValue("job_chain")))) {
                             TreeItem item = new TreeItem(orders, SWT.NONE);
                             String strT = getNameAndTitle(e, "treeitem.Order");
                             item.setImage(getImage("order.gif"));
