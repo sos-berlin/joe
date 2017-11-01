@@ -186,7 +186,7 @@ public class JobCommandListener {
             c.remove(j);
         }
         _dom.setChanged(true);
-        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.DELETE);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
     }
 
     public void saveEnvironment(Table table, String name, String value) {
