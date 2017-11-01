@@ -101,7 +101,7 @@ public class JobCommandExitCodesListener {
         }
         _main.updateExitCodesCommand();
         _dom.setChanged(true);
-        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.DELETE);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
     }
 
     public String getCommandAttribute(Table table, String attribute) {
