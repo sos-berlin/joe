@@ -256,7 +256,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
             jobChainDiagramComposite.setLayoutData(gd_jobChainDiagramComposite);
             try {
                 String xml = Utils.getElementAsString(jobchainDataProvider.getChain());
-                File inputFile = new File(jobchainDataProvider.getDom().getFilename(), jobchainDataProvider.getChainName() + ".job_chain.xml~");
+                File inputFile = new File(jobchainDataProvider.getDom().getFilename(), jobchainDataProvider.getChainName() + ".job_chain.xml");
                 jobChainDiagramComposite.jobChainDiagram(xml, inputFile);
             } catch (Exception e1) {
                 new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e1);

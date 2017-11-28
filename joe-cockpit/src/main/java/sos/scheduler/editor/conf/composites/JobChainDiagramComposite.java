@@ -27,18 +27,16 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
-import sos.scheduler.editor.classes.JobChainDiagramCreator;
 import com.sos.dialog.components.SOSMenuItem;
+import com.sos.graphviz.jobchain.diagram.JobChainDiagramCreator;
 import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainDiagramComposite extends Composite {
 
     private static final Logger LOGGER = Logger.getLogger(JobChainDiagramComposite.class);
     private Group gJobchainDiagramm;
     private File inputFile;
-    private File outputDir;
-    private JobChainDiagramCreator jobChainDiagramCreator;
+    private File liveFolder;
     private String xml = "";
     private File diagramFile;
     private Display display;
@@ -86,28 +84,14 @@ public class JobChainDiagramComposite extends Composite {
         gJobchainDiagramm.setText("Jobchain Diagram");
     }
 
-    private boolean saveXML(final String xml, String filename) {
-        boolean saveFile = false;
-        try {
-            SAXBuilder builder2 = new SAXBuilder();
-            Document doc = builder2.build(new StringReader(xml));
-            SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
-            saveFile = dom.writeElement(filename, doc);
-        } catch (Exception e) {
-            ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-            saveFile = false;
-        }
-        return saveFile;
-    }
-
+   
     public void jobChainDiagram(String xml_, File inputFile_) throws Exception {
         xml = xml_;
-        inputFile = inputFile_;
-        outputDir = inputFile_.getParentFile();
+        this.inputFile = inputFile_;
+        liveFolder = inputFile_.getParentFile();
         if (!xml_.contains("<job_chain_node")) {
             return;
         }
-        saveXML(xml, inputFile.getAbsolutePath());
         this.getShell().addListener(SWT.Resize, new Listener() {
 
             public void handleEvent(Event e) {
@@ -120,18 +104,14 @@ public class JobChainDiagramComposite extends Composite {
         this.setLayout(layout);
         createContents();
         createMenue();
-        diagramFile = generateDiagram(inputFile, outputDir);
+        diagramFile = generateDiagram(xml, liveFolder);
         showDiagram(diagramFile);
-        if (inputFile.getAbsolutePath().endsWith("~")) {
-            inputFile.delete();
-        }
         this.layout();
     }
 
-    private File generateDiagram(File inputFile, File outputDir) throws Exception {
-        jobChainDiagramCreator = new JobChainDiagramCreator(inputFile, outputDir);
-        jobChainDiagramCreator.createGraphwizFile(showErrorNodes);
-        return jobChainDiagramCreator.getOutfile();
+    private File generateDiagram(String jobChainXml, File liveFolder) throws Exception {
+        JobChainDiagramCreator jobChainDiagramCreator = new JobChainDiagramCreator(jobChainXml, liveFolder);
+        return jobChainDiagramCreator.createGraphVizFile(showErrorNodes);
     }
 
     private void showDiagram(File diagramFile) throws Exception {
