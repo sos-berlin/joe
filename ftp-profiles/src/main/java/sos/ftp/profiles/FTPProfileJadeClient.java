@@ -168,7 +168,7 @@ public class FTPProfileJadeClient {
     public void copyLocalFileToRemote(String localDir, String targetDir, String filename) throws Exception {
         jadeOptions = new JADEOptions();
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-        jadeOptions.targetDir.setValue(targetDir);
+        jadeOptions.getTarget().directory.setValue(targetDir);
         jadeOptions.getTarget().host.setValue(ftpProfile.getHost());
         jadeOptions.filePath.setValue(filename);
         jadeOptions.getTarget().port.setValue(ftpProfile.getPort());
@@ -186,7 +186,7 @@ public class FTPProfileJadeClient {
             jadeOptions.getTarget().authMethod.setValue(ftpProfile.getAuthMethod());
             jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
         }
-        jadeOptions.sourceDir.setValue(localDir);
+        jadeOptions.getSource().directory.setValue(localDir);
         jadeOptions.getSource().protocol.setValue("local");
         jadeOptions.operation.setValue(enuJadeOperations.copy);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
@@ -239,7 +239,6 @@ public class FTPProfileJadeClient {
         }
         jadeOptions.filePath.setValue("");
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
-        jadeOptions.sourceDir.setValue(remoteDir);
         jadeOptions.operation.setValue("delete");
         jadeOptions.errorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
@@ -251,9 +250,9 @@ public class FTPProfileJadeClient {
         jadeOptions = new JADEOptions();
         String remoteDir = targetDir + "/" + sourceHotFolder;
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-        jadeOptions.sourceDir.setValue(sourceDir);
+        jadeOptions.getSource().directory.setValue(sourceDir);
         jadeOptions.getSource().protocol.setValue("local");
-        jadeOptions.targetDir.setValue(remoteDir);
+        jadeOptions.getTarget().directory.setValue(remoteDir);
         jadeOptions.createFoldersOnTarget.value(true);
         jadeOptions.getTarget().host.setValue(ftpProfile.getHost());
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
@@ -283,7 +282,7 @@ public class FTPProfileJadeClient {
     public File copyRemoteFileToLocal(SOSFileEntry sosFileEntry) throws Exception {
         jadeOptions = new JADEOptions();
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-        jadeOptions.sourceDir.setValue(sosFileEntry.getParentPath());
+        jadeOptions.getSource().directory.setValue(sosFileEntry.getParentPath());
         jadeOptions.getSource().host.setValue(ftpProfile.getHost());
         jadeOptions.filePath.setValue(sosFileEntry.getFilename());
         jadeOptions.getSource().port.setValue(ftpProfile.getPort());
@@ -301,7 +300,7 @@ public class FTPProfileJadeClient {
             jadeOptions.getSource().authMethod.setValue(ftpProfile.getAuthMethod());
             jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
         }
-        jadeOptions.targetDir.setValue(ftpProfile.getLocaldirectory());
+        jadeOptions.getTarget().directory.setValue(ftpProfile.getLocaldirectory());
         jadeOptions.getTarget().protocol.setValue("local");
         jadeOptions.operation.setValue(enuJadeOperations.copy);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
@@ -329,7 +328,7 @@ public class FTPProfileJadeClient {
         jadeOptions.getConnectionOptions().getSource().protocol.setValue("local");
         jadeOptions.filePath.setValue("");
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
-        jadeOptions.sourceDir.setValue(sourceDir);
+        jadeOptions.getSource().directory.setValue(sourceDir);
         jadeOptions.operation.setValue("delete");
         jadeOptions.errorOnNoDataFound.value(false);
         JadeEngine jadeEngine = new JadeEngine(jadeOptions);
@@ -347,7 +346,7 @@ public class FTPProfileJadeClient {
         } catch (Exception e) {
         }
         enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
-        jadeOptions.sourceDir.setValue(remoteDir);
+        jadeOptions.getSource().directory.setValue(remoteDir);
         jadeOptions.getSource().host.setValue(ftpProfile.getHost());
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
         jadeOptions.getSource().port.setValue(ftpProfile.getPort());
@@ -365,7 +364,7 @@ public class FTPProfileJadeClient {
             jadeOptions.getSource().authMethod.setValue(ftpProfile.getAuthMethod());
             jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
         }
-        jadeOptions.targetDir.setValue(localDir);
+        jadeOptions.getTarget().directory.setValue(localDir);
         jadeOptions.createFoldersOnTarget.value(true);
         jadeOptions.getTarget().protocol.setValue("local");
         jadeOptions.operation.setValue(enuJadeOperations.copy);
