@@ -34,7 +34,7 @@ import com.sos.joe.globals.options.Options;
 
 public class SOSMsgJOE extends SOSMsgControl {
 
-//    private static String conClassName = "SOSMsgJOE";
+    // private static String conClassName = "SOSMsgJOE";
 
     public SOSMsgJOE(String pstrMessageCode) {
         super(pstrMessageCode);
@@ -230,7 +230,7 @@ public class SOSMsgJOE extends SOSMsgControl {
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
                     + com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
-            ErrorLog.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), 
+            ErrorLog.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
                     SWT.ICON_ERROR | SWT.OK);
         }
     }

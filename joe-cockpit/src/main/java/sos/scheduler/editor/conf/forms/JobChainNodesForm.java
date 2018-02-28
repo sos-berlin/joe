@@ -602,9 +602,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                     if (tNodes.getSelectionCount() > 0) {
                         int index = tNodes.getSelectionIndex();
                         if (index > 0) {
-                            listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), 
-                                    tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), 
-                                    index, reorderButton.getSelection());
+                            listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
+                                    tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index,
+                                    reorderButton.getSelection());
                             selectNodes();
                         }
                     }
@@ -620,8 +620,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                     if (tNodes.getSelectionCount() > 0) {
                         int index = tNodes.getSelectionIndex();
                         if (index >= 0) {
-                            listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), 
-                                    tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index, 
+                            listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
+                                    tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index,
                                     reorderButton.getSelection());
                             selectNodes();
                         }
@@ -1057,10 +1057,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 MainWindow.message(msg, SWT.ICON_INFORMATION);
             } else {
                 if (isInsert) {
-                    listener.applyInsertNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), 
+                    listener.applyInsertNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
                             cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
                 } else {
-                    listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), 
+                    listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
                             cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
                 }
                 DetailsListener.checkDetailsParameter(tState.getText(), listener.getChainName(), cJob.getText(), dom, update);
@@ -1135,8 +1135,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             enableNode(true);
             fillNode(false);
             butDetailsJob.setEnabled(true);
-            butAddMissingNodes.setEnabled(!listener.checkForState(tNodes.getSelection()[0].getText(3))
-                    || !listener.checkForState(tNodes.getSelection()[0].getText(4)));
+            butAddMissingNodes
+                    .setEnabled(!listener.checkForState(tNodes.getSelection()[0].getText(3)) || !listener.checkForState(tNodes.getSelection()[0].getText(4)));
         } else {
             butDetailsJob.setEnabled(false);
             butAddMissingNodes.setEnabled(false);

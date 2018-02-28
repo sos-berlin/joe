@@ -34,7 +34,7 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobChainListener {
+public class JobChainListener extends JOEListener {
 
     private static final Logger LOGGER = Logger.getLogger(JobChainListener.class);
     private SchedulerDom _dom = null;
