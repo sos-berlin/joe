@@ -4,7 +4,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
@@ -42,7 +41,7 @@ public class TreeData {
         return objHotFolderObject;
     }
 
-    @Deprecated
+     
     public TreeData(final int type, final Element element, final String helpKey, final String child) {
         _type = type;
         _element = element;
@@ -65,8 +64,7 @@ public class TreeData {
         objTreeItem.setFont(font);
     }
 
-    @Deprecated
-    public TreeData(final int type, final Element element, final String helpKey) {
+     public TreeData(final int type, final Element element, final String helpKey) {
         this(type, element, helpKey, null);
     }
 
@@ -99,12 +97,12 @@ public class TreeData {
         _type = type;
     }
 
-    @Deprecated
+     
     public Element getElement() {
         return _element;
     }
 
-    @Deprecated
+     
     public void setElement(final Element element) {
         _element = element;
     }
