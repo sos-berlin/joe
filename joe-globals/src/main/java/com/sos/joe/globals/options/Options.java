@@ -446,13 +446,11 @@ public class Options extends JSToolBox {
         return retVal;
     }
 
-    @Deprecated
-    public static void saveSash(final String name, final int[] sash) {
+     public static void saveSash(final String name, final int[] sash) {
         setProperty(name + ".sash.layout", sash[0] + "," + sash[1]);
     }
 
-    @Deprecated
-    public static void loadSash(final String name, final SashForm sash) {
+     public static void loadSash(final String name, final SashForm sash) {
         try {
             String value = getProperty(name + ".sash.layout");
             if (value != null && !value.isEmpty()) {
