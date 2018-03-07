@@ -67,7 +67,7 @@ public class JobChainNodeReturnCodeAddOrder extends FormBaseClass {
 
         GridData gd_grpGroup = new GridData(SWT.FILL, SWT.CENTER, false, true, 5, 1);
         gd_grpGroup.widthHint = 950;
-        gd_grpGroup.heightHint = 680;
+        gd_grpGroup.heightHint = 650;
         grpGroup.setLayoutData(gd_grpGroup);
         GridLayout gl_grpGroup = new GridLayout(5, false);
  
@@ -328,13 +328,7 @@ public class JobChainNodeReturnCodeAddOrder extends FormBaseClass {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-    }
+     }
 
     private void createTableAddOrder() {
 

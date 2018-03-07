@@ -24,7 +24,6 @@ import sos.scheduler.editor.conf.listeners.JobChainListener;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 
 public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
 
