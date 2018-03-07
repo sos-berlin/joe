@@ -10,9 +10,11 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+ 
 class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 
     private Object result;
@@ -50,29 +52,38 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         gridLayout.marginHeight = 10;
         gridLayout.marginWidth = 10;
         gridLayout.marginTop = 10;
-        gridLayout.numColumns = 2;
+        gridLayout.numColumns = 3;
         newFolderShell.setLayout(gridLayout);
-        newFolderShell.setText("Create New Folder");
-        newFolderShell.setText(getText());
+        newFolderShell.setText("Please enter the Password");
         newFolderShell.pack();
+        
+        final Label passwordLabel = new Label(newFolderShell, SWT.NONE);
+        passwordLabel.setText("Password");
+
         text = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
         text.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
                 if (e.keyCode == SWT.CR) {
-                    doSomethings();
+                	assignPasswort();
                 }
             }
         });
         text.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+        new Label(newFolderShell, SWT.NONE);
+
         final Button butOK = new Button(newFolderShell, SWT.NONE);
         butOK.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(final SelectionEvent e) {
-                doSomethings();
+            	assignPasswort();
             }
         });
         butOK.setText("OK");
+        GridData gd_btOk = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
+        gd_btOk.widthHint = 60;
+        butOK.setLayoutData(gd_btOk);
+        
         final Button butCancel = new Button(newFolderShell, SWT.NONE);
         butCancel.addSelectionListener(new SelectionAdapter() {
 
@@ -80,8 +91,10 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
                 close();
             }
         });
-        butCancel.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
         butCancel.setText("Cancel");
+        GridData gd_btCancel = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
+        gd_btCancel.widthHint = 60;
+        butOK.setLayoutData(gd_btCancel);
         newFolderShell.open();
         newFolderShell.setSize(241, 107);
         org.eclipse.swt.widgets.Display display = parent.getDisplay();
@@ -104,7 +117,7 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         getParent().close();
     }
 
-    public void doSomethings() {
+    public void assignPasswort() {
         if (obj instanceof FTPProfile) {
             FTPProfile prof = (FTPProfile) obj;
             prof.setPassword(text.getText());

@@ -47,7 +47,6 @@ public class FTPProfileDialog {
     private Button butPassive = null;
     private Text txtHost = null;
     private boolean newProfile = false;
-    private Button butSavePassword = null;
     private FTPDialogListener listener = null;
     private Button useProxyButton = null;
     private Text txtProxyServer = null;
@@ -263,24 +262,7 @@ public class FTPProfileDialog {
                 }
             });
             txtLocalDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-            final Label savePasswordLabel = new Label(groupProperties, SWT.NONE);
-            final GridData gridData_5 = new GridData(SWT.DEFAULT, 24);
-            gridData_5.verticalIndent = 5;
-            savePasswordLabel.setLayoutData(gridData_5);
-            savePasswordLabel.setText("Save Password");
-            butSavePassword = new Button(groupProperties, SWT.CHECK);
-            butSavePassword.setSelection(true);
-            butSavePassword.addSelectionListener(new SelectionAdapter() {
-
-                public void widgetDefaultSelected(final SelectionEvent e) {
-                    //
-                }
-
-                public void widgetSelected(final SelectionEvent e) {
-                    setEnabled();
-                }
-            });
-            butSavePassword.setLayoutData(new GridData());
+          
             new Label(groupProperties, SWT.NONE);
             final Label transferModeLabel = new Label(groupProperties, SWT.NONE);
             final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.END, false, false);
@@ -348,7 +330,10 @@ public class FTPProfileDialog {
                 }
             });
             txtFtpPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-
+            new Label(groupFtp, SWT.NONE);
+            final Label passwordHint= new Label(groupFtp, SWT.NONE);
+            passwordHint.setText("If left empty then the user will be prompted for keyboard input");
+            
             sFtpTabItem = new TabItem(tabFolderProperties, SWT.NONE);
             sFtpTabItem.setText("SFTP");
             groupSftp = new Group(tabFolderProperties, SWT.NONE);
@@ -393,7 +378,7 @@ public class FTPProfileDialog {
             txtSFtpUsername.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
             final Label passphraseLabel = new Label(groupSftp, SWT.NONE);
-            passphraseLabel.setText("Passphrase");
+            passphraseLabel.setText("Passphrase/Password. If left empty then the user will be prompted for keyboard input");
             txtSFtpPassphrase = new Text(groupSftp, SWT.PASSWORD | SWT.BORDER);
             txtSFtpPassphrase.addModifyListener(new ModifyListener() {
 
@@ -401,6 +386,8 @@ public class FTPProfileDialog {
                     setEnabled();
                 }
             });
+            
+            
             txtSFtpPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
             final Label pathToPublicLabel = new Label(groupSftp, SWT.NONE);
             pathToPublicLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -412,6 +399,7 @@ public class FTPProfileDialog {
                     setEnabled();
                 }
             });
+            
             txtDirPublicKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
             final Button button_4 = new Button(groupSftp, SWT.NONE);
             button_4.setVisible(false);
@@ -525,7 +513,6 @@ public class FTPProfileDialog {
                     butAscii.setSelection(true);
                     butbinary.setSelection(false);
                     butPassive.setSelection(true);
-                    butSavePassword.setSelection(true);
                     txtHost.setText("");
                     txtProxyPort.setText("");
                     txtProxyServer.setText("");
@@ -634,7 +621,6 @@ public class FTPProfileDialog {
             }
             txtRoot.setText(currProfile.getRoot());
             txtLocalDirectory.setText(currProfile.getLocaldirectory(getInitValueLocalDirectory()));
-            butSavePassword.setSelection(currProfile.isSavePassword());
             useProxyButton.setSelection(currProfile.getUseProxy());
             if (useProxyButton.getSelection()) {
                 txtProxyServer.setEnabled(true);
@@ -724,7 +710,6 @@ public class FTPProfileDialog {
             prop.put("localdirectory", txtLocalDirectory.getText());
             prop.put("transfermode", butbinary.getSelection() ? "binary" : "ASCII");
             prop.put("passivemode", butPassive.getSelection() ? "true" : "false");
-            prop.put("save_password", butSavePassword.getSelection() ? "yes" : "no");
             prop.put("protocol", cboProtokol.getText());
             if (useProxyButton.getSelection()) {
                 prop.put("use_proxy", "yes");
@@ -788,7 +773,7 @@ public class FTPProfileDialog {
                 }
             }
             if (saveSettings) {
-                listener.saveProfile(butSavePassword.getSelection());
+                listener.saveProfile();
             }
             if (combo != null) {
                 String[] profileNames = listener.getProfileNames();
