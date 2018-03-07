@@ -328,12 +328,6 @@ public class JobChainNodeReturnCodeAddOrder extends FormBaseClass {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
     }
 
     private void createTableAddOrder() {
