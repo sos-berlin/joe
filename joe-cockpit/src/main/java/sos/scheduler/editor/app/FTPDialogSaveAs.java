@@ -1,7 +1,6 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -104,7 +103,6 @@ public class FTPDialogSaveAs extends FTPDialog {
     private void copyHotFolder2Remote() throws Exception {
         String remoteDir = txtDir.getText() + "";
         String localFullPath = new File(MainWindow.getContainer().getCurrentEditor().getFilename()).getCanonicalPath();
-        String localFilename = new File(MainWindow.getContainer().getCurrentEditor().getFilename()).getName();
         String remoteFilename = txtFilename.getText();
         sosRemoteFileEntry = new SOSFileEntry();
         sosRemoteFileEntry.setDirectory(true);

@@ -51,6 +51,7 @@ public class FTPProfile {
             transfermode = sosString.parseToString(prop, "transfermode");
             protocol = sosString.parseToString(prop, "protocol");
             useProxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
+            
             passiveMode = sosString.parseToBoolean(sosString.parseToString(prop, "passivemode"));
             proxyServer = sosString.parseToString(prop, "proxy_server");
             proxyPort = sosString.parseToString(prop, "proxy_port");
@@ -143,6 +144,7 @@ public class FTPProfile {
     public boolean getUseProxy() {
         return useProxy;
     }
+    
 
     public boolean isPassiveMode() {
         return passiveMode;
