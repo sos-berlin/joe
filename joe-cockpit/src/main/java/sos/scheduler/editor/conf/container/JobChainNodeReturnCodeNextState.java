@@ -154,7 +154,7 @@ public class JobChainNodeReturnCodeNextState extends FormBaseClass {
         tableJobchainNodeReturnCodesNextState.setLinesVisible(true);
         GridData gd_tableJobchainNodeReturnCodesNextState = new GridData(SWT.FILL, SWT.FILL, false, false, 5, 3);
         gd_tableJobchainNodeReturnCodesNextState.widthHint = 900;
-        gd_tableJobchainNodeReturnCodesNextState.heightHint = 112;
+        gd_tableJobchainNodeReturnCodesNextState.heightHint = 120;
         tableJobchainNodeReturnCodesNextState.setLayoutData(gd_tableJobchainNodeReturnCodesNextState);
         tableJobchainNodeReturnCodesNextState.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 
