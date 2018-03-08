@@ -68,7 +68,7 @@ public class FTPProfileJadeClient {
 
 	private String getPassword() throws Exception {
 		String password = ftpProfile.getDecryptetPassword();
-		if (password == null || password.isEmpty()) {
+		if (!ftpProfile.getAuthMethod().equals("keyboard-interactive") && (password == null || password.isEmpty())) {
 			getPasswordFromDialog();
 		}
 		return ftpProfile.getDecryptetPassword();
@@ -85,6 +85,7 @@ public class FTPProfileJadeClient {
 			virtuelFileSystemOptions.password.setValue(getPassword());
 			virtuelFileSystemOptions.protocol.setValue(enuSourceTransferType);
 			virtuelFileSystemOptions.passiveMode.value(ftpProfile.isPassiveMode());
+			virtuelFileSystemOptions.user_info.value(new JOEUserInfo());
 			if (!"".equals(ftpProfile.getAuthMethod())) {
 				virtuelFileSystemOptions.authMethod.setValue(ftpProfile.getAuthMethod());
 				virtuelFileSystemOptions.authFile.setValue(ftpProfile.getAuthFile());
@@ -204,6 +205,7 @@ public class FTPProfileJadeClient {
 			jadeOptions.getTarget().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
 		}
+		jadeOptions.getTarget().user_info.value(new JOEUserInfo());
 		jadeOptions.getSource().directory.setValue(localDir);
 		jadeOptions.getSource().protocol.setValue("local");
 		jadeOptions.operation.setValue(enuJadeOperations.copy);
@@ -248,6 +250,7 @@ public class FTPProfileJadeClient {
 			jadeOptions.getTarget().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
 		}
+		jadeOptions.getTarget().user_info.value(new JOEUserInfo());
 
 		jadeOptions.operation.setValue(enuJadeOperations.copy);
 		jadeOptions.errorOnNoDataFound.value(false);
@@ -277,6 +280,7 @@ public class FTPProfileJadeClient {
 			jadeOptions.getSource().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
 		}
+		jadeOptions.getSource().user_info.value(new JOEUserInfo());
 		jadeOptions.getTarget().directory.setValue(ftpProfile.getLocaldirectory());
 		jadeOptions.getTarget().protocol.setValue("local");
 		jadeOptions.operation.setValue(enuJadeOperations.copy);
@@ -341,6 +345,8 @@ public class FTPProfileJadeClient {
 			jadeOptions.getSource().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
 		}
+		jadeOptions.getSource().user_info.value(new JOEUserInfo());
+
 		jadeOptions.getTarget().directory.setValue(localDir);
 		jadeOptions.createFoldersOnTarget.value(true);
 		jadeOptions.getTarget().protocol.setValue("local");

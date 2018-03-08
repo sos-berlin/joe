@@ -19,7 +19,8 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 
     private Object result;
     private Object obj = null;
-    private Text text = null;
+    private Text password = null;
+    private String passwordPrompt = "Password";
 
     public FTPPopUpDialog(Shell parent, int style) {
         super(parent, style);
@@ -27,6 +28,10 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 
     public FTPPopUpDialog(Shell parent) {
         this(parent, 0);
+    }
+    public FTPPopUpDialog(Shell parent, String passwordPrompt) {
+        this(parent, 0);
+    	this.passwordPrompt = passwordPrompt;
     }
 
     public Object open(Object obj_) {
@@ -58,10 +63,10 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         newFolderShell.pack();
         
         final Label passwordLabel = new Label(newFolderShell, SWT.NONE);
-        passwordLabel.setText("Password");
+        passwordLabel.setText(passwordPrompt);
 
-        text = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
-        text.addKeyListener(new KeyAdapter() {
+        password = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
+        password.addKeyListener(new KeyAdapter() {
 
             public void keyPressed(final KeyEvent e) {
                 if (e.keyCode == SWT.CR) {
@@ -69,7 +74,7 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
                 }
             }
         });
-        text.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+        password.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
         new Label(newFolderShell, SWT.NONE);
 
         final Button butOK = new Button(newFolderShell, SWT.NONE);
@@ -117,10 +122,18 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         getParent().close();
     }
 
+    public String getPassword() {
+    	return password.getText();
+    }
+    
     public void assignPasswort() {
         if (obj instanceof FTPProfile) {
             FTPProfile prof = (FTPProfile) obj;
-            prof.setPassword(text.getText());
+            prof.setPassword(password.getText());
+        }
+        if (obj instanceof JOEUserInfo) {
+        	JOEUserInfo j = (JOEUserInfo) obj;
+            j.setPassword(password.getText());
         }
         close();
     }
