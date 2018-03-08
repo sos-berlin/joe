@@ -50,7 +50,6 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
                 }
             }
         });
-
         final GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
@@ -88,7 +87,8 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         GridData gd_btOk = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
         gd_btOk.widthHint = 60;
         butOK.setLayoutData(gd_btOk);
-        
+        newFolderShell.setDefaultButton(butOK);
+
         final Button butCancel = new Button(newFolderShell, SWT.NONE);
         butCancel.addSelectionListener(new SelectionAdapter() {
 
