@@ -26,7 +26,7 @@ public class TestFTPProfileJadeClient {
 
     private void cleanupFolder(String dir) {
         SOSFileEntry sosFileEntry = new SOSFileEntry();
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         try {
             sosFileEntry.setDirectory(false);
             sosFileEntry.setFilename("1.job.xml");
@@ -51,7 +51,7 @@ public class TestFTPProfileJadeClient {
 
     @Test
     public void testFTPProfileJadeClient() throws Exception {
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(new FTPProfile(new Properties()));
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
     }
 
     public void testMkdir() throws RuntimeException, Exception {
@@ -59,7 +59,7 @@ public class TestFTPProfileJadeClient {
         String folder = "newfolder";
         String path = dir + "/" + folder;
         cleanupFolder(path);
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         SOSFileEntry sosFileEntry = new SOSFileEntry();
         sosFileEntry.setDirectory(true);
         sosFileEntry.setFilename(folder);
@@ -77,7 +77,7 @@ public class TestFTPProfileJadeClient {
     }
 
     public void testGetList() throws Exception {
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         Vector<String> v = ftpProfileJadeClient.getList(ftpProfile.getRoot());
         Iterator<String> iter = v.iterator();
         String s = (String) iter.next();
@@ -86,7 +86,7 @@ public class TestFTPProfileJadeClient {
     }
 
     public void testGetDirectoryContent() throws Exception {
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(ftpProfile.getRoot());
         Iterator<String> it = h.keySet().iterator();
         String key = it.next();
@@ -99,7 +99,7 @@ public class TestFTPProfileJadeClient {
         String folder = "newfolderRemoveFile";
         String path = dir + "/" + folder;
         cleanupFolder(path);
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(dir, folder);
         assertTrue("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(path));
         SOSFileEntry sosFileEntry = new SOSFileEntry();
@@ -116,7 +116,7 @@ public class TestFTPProfileJadeClient {
         String folder = "newfolder";
         String path = dir + "/" + folder;
         cleanupFolder(path);
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(dir, folder);
         assertTrue("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(path));
         SOSFileEntry sosFileEntry = new SOSFileEntry();
@@ -157,7 +157,7 @@ public class TestFTPProfileJadeClient {
         String folder = "newfolder";
         String path = targetDir + "/" + folder;
         cleanupFolder(path);
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(targetDir, folder);
         assertTrue("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(path));
         CreateTestFile(localDir, filename);
@@ -175,7 +175,7 @@ public class TestFTPProfileJadeClient {
         String folder = "newfolder";
         String path = targetDir + "/" + folder;
         cleanupFolder(path);
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(targetDir, folder);
         assertTrue("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(path));
         CreateTestFile(localDir, filename);
@@ -194,7 +194,7 @@ public class TestFTPProfileJadeClient {
         String targetDir = ftpProfile.getRoot();
         String folder = "newfolder";
         String path = targetDir + "/" + folder;
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(targetDir, folder);
         assertTrue("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(path));
         CreateTestFile(localDir, filename);
@@ -212,7 +212,7 @@ public class TestFTPProfileJadeClient {
         String path = sourceDir + "/" + folder;
         File targetFile = new File(ftpProfile.getLocaldirectory(), filename);
         targetFile.delete();
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(sourceDir, folder);
         SOSFileEntry sosFileEntry = new SOSFileEntry();
         sosFileEntry.setDirectory(true);
@@ -232,7 +232,7 @@ public class TestFTPProfileJadeClient {
         File testFile = new File(ftpProfile.getLocaldirectory() + "/" + folder, filenameTest);
         testFile.createNewFile();
         targetFile.delete();
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(sourceDir, folder);
         testCopyLocalFilesToRemote();
         ftpProfileJadeClient.copyRemoteFilesToLocal(sourceDir, folder);

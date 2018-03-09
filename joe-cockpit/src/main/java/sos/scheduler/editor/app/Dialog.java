@@ -113,7 +113,7 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
         try {
             if (obj instanceof FTPDialog) {
                 FTPDialog ftpDialog = (FTPDialog) obj;
-                FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpDialog.getListener().getCurrProfile());
+                FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpDialog.getListener().getCurrProfile(),MainWindow.joeUserInfo);
                 ftpProfileJadeClient.mkdir(ftpDialog.txtDir.getText(), text.getText());
                 ftpDialog.refresh();
             } else if (obj instanceof WebDavDialog) {

@@ -34,6 +34,7 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.ftp.profiles.FTPProfileJadeClient;
+import sos.ftp.profiles.JOEUserInfo;
 import sos.scheduler.editor.classes.JoeLockFolder;
 import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
@@ -46,7 +47,6 @@ import com.sos.event.service.forms.ActionsForm;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
-import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -163,6 +163,7 @@ public class MainWindow {
     public static final String MENU_Reset_Dialog = "MENU_ResetDialog";
     public static final String MENU_Order = "MENU_Order";
     public static IContainer container = null;
+	public static JOEUserInfo joeUserInfo = new JOEUserInfo();
 
     public MainWindow() {
         LOGGER.debug(conSVNVersion);
@@ -1161,7 +1162,7 @@ public class MainWindow {
                 sos.ftp.profiles.FTPProfile profile = (sos.ftp.profiles.FTPProfile) container.getCurrentTab().getData("ftp_profile");
                 Text txtLog = new Text(getSShell(), SWT.NONE);
                 profile.setLogText(txtLog);
-                FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(profile);
+                FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(profile,MainWindow.joeUserInfo);
                 if (((SchedulerDom) currdom).isLifeElement()) {
                     ftpProfileJadeClient.copyLocalFileToRemote(profile.getLocaldirectory(), remoteDir, aktFilename);
                     if (aktFilename.length() > 0 && !aktFilename.equalsIgnoreCase(oldFilename)) {
@@ -1539,9 +1540,9 @@ public class MainWindow {
             }
             MergeAllXMLinDirectory save = null;
             if (dom instanceof SchedulerDom && ((SchedulerDom) dom).isLifeElement() && configFile.isFile()) {
-                save = new MergeAllXMLinDirectory(configFile.getParent());
+                save = new MergeAllXMLinDirectory(configFile.getParent(), MainWindow.joeUserInfo);
             } else {
-                save = new MergeAllXMLinDirectory(configFile.getPath());
+                save = new MergeAllXMLinDirectory(configFile.getPath(), MainWindow.joeUserInfo);
             }
             if (type == SchedulerDom.DIRECTORY) {
                 SOSFileEntry sosFileEntry = (SOSFileEntry) MainWindow.getContainer().getCurrentTab().getData("sosFileEntry");

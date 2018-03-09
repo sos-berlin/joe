@@ -17,11 +17,13 @@ public class JOEUserInfo implements UserInfo, UIKeyboardInteractive {
 
 	public String[] promptKeyboardInteractive(String destination, String name, String instruction, String[] prompt,
 			boolean[] echo) {
-		final Shell shell = new Shell();
-		shell.pack();
-		FTPPopUpDialog fTPPopUpDialog = new FTPPopUpDialog(shell, prompt[0]);
+		if (passwd == null) {
+			final Shell shell = new Shell();
+			shell.pack();
+			FTPPopUpDialog fTPPopUpDialog = new FTPPopUpDialog(shell, prompt[0]);
 
-		fTPPopUpDialog.open(this);
+			fTPPopUpDialog.open(this);
+		}
 		String[] response = new String[prompt.length];
 		response[0] = passwd;
 		return response;
@@ -79,7 +81,5 @@ public class JOEUserInfo implements UserInfo, UIKeyboardInteractive {
 	public void setPassword(String passwd) {
 		this.passwd = passwd;
 	}
-
- 
 
 }
