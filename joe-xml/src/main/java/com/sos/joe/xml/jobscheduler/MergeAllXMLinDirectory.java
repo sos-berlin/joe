@@ -16,6 +16,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import sos.ftp.profiles.FTPProfileJadeClient;
+import sos.ftp.profiles.JOEUserInfo;
 import sos.util.SOSFile;
 
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
@@ -41,6 +42,7 @@ public class MergeAllXMLinDirectory {
     private ArrayList<String> listOfChangeElementNames = null;
     private SOSFileEntry sosFileEntry;
     private sos.ftp.profiles.FTPProfile ftpProfile;
+	private JOEUserInfo joeUserInfo;
 
     
     public void setFtpProfile(sos.ftp.profiles.FTPProfile ftpProfile) {
@@ -59,7 +61,12 @@ public class MergeAllXMLinDirectory {
     public MergeAllXMLinDirectory() {
     }
 
-    public String parseDocuments() {
+    public MergeAllXMLinDirectory(String path_, JOEUserInfo joeUserInfo) {
+        path = path_;
+        this.joeUserInfo = joeUserInfo;
+ 	}
+
+	public String parseDocuments() {
         Element root = null;
         Document parentDoc = null;
         Element jobs = null;
@@ -477,7 +484,7 @@ public class MergeAllXMLinDirectory {
                 }
                 
                 if (sosFileEntry != null) {
-                    FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+                    FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile,joeUserInfo);
                     SOSFileEntry s = new SOSFileEntry();
                     s.setFilename(f.getName());
                     s.setParentPath(sosFileEntry.getParentPath() + "/" + sosFileEntry.getFilename());

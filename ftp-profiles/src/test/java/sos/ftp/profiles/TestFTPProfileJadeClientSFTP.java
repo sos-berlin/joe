@@ -26,7 +26,7 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
 
     @Test
     public void testFTPProfileJadeClient() throws Exception {
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(new FTPProfile(new Properties()));
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
     }
 
     @Test

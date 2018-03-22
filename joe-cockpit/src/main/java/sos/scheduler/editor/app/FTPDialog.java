@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import sos.ftp.profiles.FTPDialogListener;
 import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.ftp.profiles.FTPProfilePicker;
+import sos.ftp.profiles.JOEUserInfo;
 import sos.util.SOSString;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
@@ -72,7 +73,7 @@ public abstract class FTPDialog {
     abstract void execute();
 
     public FTPDialog() {
-    }
+     }
 
     public void showForm() {
         try {
@@ -119,6 +120,20 @@ public abstract class FTPDialog {
                 ftpProfilePicker.getProfileByName(ftpProfilePicker.getSelectedProfilename());
                 listener = ftpProfilePicker.getListener();
             }
+            
+            ftpProfilePicker.addSelectionListenerInitMainWindow(new SelectionAdapter() {
+
+                public void widgetSelected(final SelectionEvent e) {
+                    try {
+                        MainWindow.joeUserInfo = new JOEUserInfo();
+                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(),MainWindow.joeUserInfo);
+                    } catch (Exception r) {
+                        MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
+                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                    }
+                }
+            });
+             
             ftpProfilePicker.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
@@ -127,7 +142,6 @@ public abstract class FTPDialog {
                         directoryTable.removeAll();
                         txtFilename.setText("");
                         listener.setCurrProfileName(ftpProfilePicker.getSelectedProfilename());
-                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
                         initForm();
                         butExecute.setEnabled(!txtFilename.getText().isEmpty());
                         _setEnabled(true);
@@ -150,7 +164,7 @@ public abstract class FTPDialog {
                         }
                         disconnect();
                         txtDir.setText(listener.getCurrProfile().getRoot());
-                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
+                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(),MainWindow.joeUserInfo);
                         fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
                         _setEnabled(true);
                     } catch (Exception ex) {

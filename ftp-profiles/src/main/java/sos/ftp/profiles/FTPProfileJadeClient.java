@@ -29,15 +29,17 @@ public class FTPProfileJadeClient {
 	private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS = "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
 	private JADEOptions jadeOptions;
 	private FTPProfile ftpProfile = null;
-	private String passwordFromDialog;
 	SOSConnection2OptionsAlternate virtuelFileSystemOptions;
+	JOEUserInfo joeUserInfo;
 
 	public ISOSVfsFileTransfer getFtpClient() {
 		return ftpClient;
 	}
 
-	public FTPProfileJadeClient(FTPProfile ftpProfile_) {
+	public FTPProfileJadeClient(FTPProfile ftpProfile_, JOEUserInfo joeUserInfo) {
 		super();
+		
+		this.joeUserInfo = joeUserInfo;
 		this.ftpProfile = ftpProfile_;
 	}
 
@@ -74,6 +76,12 @@ public class FTPProfileJadeClient {
 		return ftpProfile.getDecryptetPassword();
 	}
 
+	private JOEUserInfo getUserInfo() {
+		if (joeUserInfo == null){
+			joeUserInfo = new JOEUserInfo();
+		}
+		return joeUserInfo;
+	}
 	private void connect() throws RuntimeException, Exception {
 		if (objVFS == null) {
 			jadeOptions = new JADEOptions();
@@ -85,7 +93,7 @@ public class FTPProfileJadeClient {
 			virtuelFileSystemOptions.password.setValue(getPassword());
 			virtuelFileSystemOptions.protocol.setValue(enuSourceTransferType);
 			virtuelFileSystemOptions.passiveMode.value(ftpProfile.isPassiveMode());
-			virtuelFileSystemOptions.user_info.value(new JOEUserInfo());
+			virtuelFileSystemOptions.user_info.value(getUserInfo());
 			if (!"".equals(ftpProfile.getAuthMethod())) {
 				virtuelFileSystemOptions.authMethod.setValue(ftpProfile.getAuthMethod());
 				virtuelFileSystemOptions.authFile.setValue(ftpProfile.getAuthFile());
@@ -205,7 +213,7 @@ public class FTPProfileJadeClient {
 			jadeOptions.getTarget().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
 		}
-		jadeOptions.getTarget().user_info.value(new JOEUserInfo());
+		jadeOptions.getTarget().user_info.value(getUserInfo());
 		jadeOptions.getSource().directory.setValue(localDir);
 		jadeOptions.getSource().protocol.setValue("local");
 		jadeOptions.operation.setValue(enuJadeOperations.copy);
@@ -250,7 +258,7 @@ public class FTPProfileJadeClient {
 			jadeOptions.getTarget().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
 		}
-		jadeOptions.getTarget().user_info.value(new JOEUserInfo());
+		jadeOptions.getTarget().user_info.value(getUserInfo());
 
 		jadeOptions.operation.setValue(enuJadeOperations.copy);
 		jadeOptions.errorOnNoDataFound.value(false);
@@ -280,7 +288,7 @@ public class FTPProfileJadeClient {
 			jadeOptions.getSource().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
 		}
-		jadeOptions.getSource().user_info.value(new JOEUserInfo());
+		jadeOptions.getSource().user_info.value(getUserInfo());
 		jadeOptions.getTarget().directory.setValue(ftpProfile.getLocaldirectory());
 		jadeOptions.getTarget().protocol.setValue("local");
 		jadeOptions.operation.setValue(enuJadeOperations.copy);
@@ -345,7 +353,7 @@ public class FTPProfileJadeClient {
 			jadeOptions.getSource().authMethod.setValue(ftpProfile.getAuthMethod());
 			jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
 		}
-		jadeOptions.getSource().user_info.value(new JOEUserInfo());
+		jadeOptions.getSource().user_info.value(getUserInfo());
 
 		jadeOptions.getTarget().directory.setValue(localDir);
 		jadeOptions.createFoldersOnTarget.value(true);

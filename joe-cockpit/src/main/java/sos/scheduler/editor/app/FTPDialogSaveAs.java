@@ -95,7 +95,7 @@ public class FTPDialogSaveAs extends FTPDialog {
         sosRemoteFileEntry.setDirectory(false);
         sosRemoteFileEntry.setFilename(remoteFilename);
         sosRemoteFileEntry.setParentPath(remoteDir);
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(),MainWindow.joeUserInfo);
         ftpProfileJadeClient.copyLocalFileToRemote(localParentPath, remoteDir, localFilename);
         ftpProfileJadeClient.renameFile(remoteDir, localFilename, remoteFilename);
     }
@@ -108,7 +108,7 @@ public class FTPDialogSaveAs extends FTPDialog {
         sosRemoteFileEntry.setDirectory(true);
         sosRemoteFileEntry.setFilename(remoteFilename);
         sosRemoteFileEntry.setParentPath(remoteDir);
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(),MainWindow.joeUserInfo);
         ftpProfileJadeClient.copyLocalFilesToRemote(localFullPath, remoteDir, remoteFilename);
     }
 
