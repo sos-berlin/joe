@@ -79,7 +79,7 @@ public class JobOptions extends FormBaseClass {
     private void createGroup() {
         gOptionsGroup = SOSJOEMessageCodes.JOE_G_JobOptions_Options.control(new Group(objParent, SWT.NONE));
         final GridData gridDataGroup = new GridData(GridData.FILL, GridData.FILL, true, false, 8, 5);
-        gridDataGroup.heightHint = 180;
+        gridDataGroup.heightHint = 220;
         gridDataGroup.minimumHeight = 30;
         gOptionsGroup.setLayoutData(gridDataGroup);
         final GridLayout gridLayout_2 = new GridLayout();
