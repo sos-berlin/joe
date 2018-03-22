@@ -136,6 +136,9 @@ public class JobChainDiagramComposite extends Composite {
 
     private void showDiagram(File diagramFile) throws Exception {
         Image originalImage = null;
+        if (!diagramFile.exists()) {
+            return;
+        }
         try {
             FileInputStream fis = new FileInputStream(diagramFile);
             originalImage = new Image(gJobchainDiagramm.getDisplay(), fis);
