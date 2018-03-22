@@ -116,7 +116,7 @@ public class JobChainDiagramComposite extends Composite {
 
     private void showDiagram(File diagramFile) throws Exception {
         Image originalImage = null;
-        if (diagramFile != null || !diagramFile.exists()) {
+        if (diagramFile == null || !diagramFile.exists()) {
             return;
         }
         try {
