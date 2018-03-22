@@ -1,7 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import java.io.File;
-import java.io.StringReader;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -17,11 +16,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.jdom.Document;
-import org.jdom.Element;
+import org.eclipse.swt.widgets.Text;import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
