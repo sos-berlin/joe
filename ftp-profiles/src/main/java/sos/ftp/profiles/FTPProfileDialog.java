@@ -279,6 +279,8 @@ public class FTPProfileDialog {
 			});
 			butAscii.setLayoutData(new GridData());
 			butAscii.setText("ASCII");
+			new Label(groupProperties, SWT.NONE);
+			new Label(groupProperties, SWT.NONE);
 			butbinary = new Button(groupProperties, SWT.RADIO);
 			butbinary.addSelectionListener(new SelectionAdapter() {
 
@@ -286,8 +288,10 @@ public class FTPProfileDialog {
 					setEnabled();
 				}
 			});
-			butbinary.setLayoutData(new GridData());
+            butbinary.setLayoutData(new GridData());
 			butbinary.setText("Binary");
+
+			new Label(groupProperties, SWT.NONE);
 			final Label passiveMode = new Label(groupProperties, SWT.NONE);
 			final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.END, false, false);
 			gridData_3.heightHint = 21;
@@ -300,7 +304,7 @@ public class FTPProfileDialog {
 					setEnabled();
 				}
 			});
-			butPassive.setLayoutData(new GridData());
+             butPassive.setLayoutData(new GridData());
 
 			ftpTabItem = new TabItem(tabFolderProperties, SWT.NONE);
 			ftpTabItem.setText("FTP");

@@ -25,7 +25,7 @@ public class JOEUserInfo implements UserInfo, UIKeyboardInteractive {
 			fTPPopUpDialog.open(this);
 		}
 		String[] response = new String[prompt.length];
-		response[0] = passwd;
+    	response[0] = passwd;
 		return response;
 	}
 

@@ -57,6 +57,7 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         gridLayout.marginWidth = 10;
         gridLayout.marginTop = 10;
         gridLayout.numColumns = 3;
+     
         newFolderShell.setLayout(gridLayout);
         newFolderShell.setText("Please enter the Password");
         newFolderShell.pack();
@@ -94,6 +95,7 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 
             public void widgetSelected(final SelectionEvent e) {
                 close();
+                throw new RuntimeException ("Authorization has been cancelled by user");
             }
         });
         butCancel.setText("Cancel");
@@ -101,7 +103,7 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
         gd_btCancel.widthHint = 60;
         butOK.setLayoutData(gd_btCancel);
         newFolderShell.open();
-        newFolderShell.setSize(241, 107);
+        newFolderShell.setSize(241, 133);
         org.eclipse.swt.widgets.Display display = parent.getDisplay();
         while (!newFolderShell.isDisposed()) {
             if (!display.readAndDispatch()) {
