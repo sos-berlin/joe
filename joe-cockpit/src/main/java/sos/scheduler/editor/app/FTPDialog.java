@@ -169,7 +169,6 @@ public abstract class FTPDialog {
                         _setEnabled(true);
                     } catch (Exception ex) {
                         MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
-                        new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
                     }
                     Utils.stopCursor(schedulerConfigurationShell);
                 }
