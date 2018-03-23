@@ -137,7 +137,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         
         tAgentTimeout = JOE_T_ProcessClassesForm_AgentTimeout.integerField(new IntegerField(group, SWT.BORDER));
         tAgentTimeout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        tAgentTimeout.setEnabled(true);
+        tAgentTimeout.setEnabled(false);
         tAgentTimeout.addTraverseListener(new TraverseListener() {
 
             public void keyTraversed(final TraverseEvent e) {
@@ -238,6 +238,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 tableRemoteScheduler.setSelection(-1);
                 tRemoteSchedulerUrl.setText("");
+                tAgentTimeout.setText(0);
                 tHttpHeartBeatPeriod.setText("");
                 tHttpHeartBeatTimeout.setText("");
                 tRemoteSchedulerUrl.setFocus();
@@ -535,6 +536,8 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         tRemoteUrl.setEnabled(enabled);
         tHttpHeartBeatPeriod.setEnabled(enabled);
         tHttpHeartBeatTimeout.setEnabled(enabled);
+        tAgentTimeout.setEnabled(enabled);
+
 
         if (enabled) {
             tProcessClass.setText(listener.getProcessClass());
