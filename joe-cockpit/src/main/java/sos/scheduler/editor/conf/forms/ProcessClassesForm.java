@@ -486,6 +486,10 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
     }
 
     private boolean checkRemote() {
+        if (tProcessClass.getText().isEmpty()) {
+            MainWindow.message(getShell(), "Missing Name", SWT.ICON_WARNING | SWT.OK);
+            return false;
+        }
         if (!tRemoteHost.getText().trim().isEmpty() && tRemotePort.getText().trim().isEmpty()) {
             MainWindow.message(getShell(), JOE_M_ProcessClassesForm_MissingPort.label(), SWT.ICON_WARNING | SWT.OK);
             return false;
