@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.Manifest;
 
 import org.apache.log4j.Logger;
@@ -154,7 +156,7 @@ public class MainListener extends JOEListener {
             String data = new File(Options.getDefaultOptionFilename()).getParent();
             data = data.endsWith("/") || data.endsWith("\\") ? data : data + "/";
             iniFile = data + iniFile;
-            ArrayList jobTitleList = new ArrayList();
+            List<Map<String, String>> jobTitleList = new ArrayList<Map<String, String>>();
             try {
                 getConnection(iniFile);
                 jobTitleList = sosConnection.getArray(titleFile);
@@ -163,7 +165,7 @@ public class MainListener extends JOEListener {
             }
             String[] titles = new String[jobTitleList.size()];
             for (int i = 0; i < jobTitleList.size(); i++) {
-                HashMap hash = (HashMap) jobTitleList.get(i);
+                Map<String, String> hash = jobTitleList.get(i);
                 titles[i] = sosString.parseToString(hash, "description");
             }
             Options.setJobTitleList(titles);
@@ -218,7 +220,7 @@ public class MainListener extends JOEListener {
             String home = new File(Options.getDefaultOptionFilename()).getParent();
             home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
             iniFile = home + iniFile;
-            ArrayList holidayList = new ArrayList();
+            List<Map<String, String>> holidayList = new ArrayList<Map<String, String>>();
             try {
                 getConnection(iniFile);
                 holidayList = sosConnection.getArray(holidayDescriptionFile);
@@ -228,7 +230,7 @@ public class MainListener extends JOEListener {
             String holidayId = "";
             String field2 = "";
             for (int i = 0; i < holidayList.size(); i++) {
-                HashMap hash = (HashMap) holidayList.get(i);
+                Map<String, String> hash = holidayList.get(i);
                 if (!sosString.parseToString(hash, "holiday_id").isEmpty()) {
                     holidayId = sosString.parseToString(hash, "holiday_id");
                 }
