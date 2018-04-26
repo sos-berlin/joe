@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import com.sos.joe.globals.misc.ResourceManager;
+
+import sos.ftp.profiles.SOSProfileCrypt;
 import sos.scheduler.editor.app.MainWindow;
 import sos.util.SOSString;
 import java.util.*;
@@ -157,7 +159,7 @@ public class WebDavDialogProfiles {
                             }
                             String password = txtPassword.getText();
                             if (!password.isEmpty() && !sosString.parseToString(key).isEmpty()) {
-                                password = SOSCrypt.decrypt(key, password);
+                                password = SOSProfileCrypt.decrypt(key, password);
                             }
                             txtPassword.setText(password);
                         }
