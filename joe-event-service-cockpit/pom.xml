@@ -1,128 +1,123 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.sos-berlin</groupId>
-        <artifactId>joe</artifactId>
-        <version>1.10.10-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>com.sos-berlin</groupId>
+		<artifactId>joe</artifactId>
+		<version>1.10.10-SNAPSHOT</version>
+	</parent>
 
-    <groupId>com.sos-berlin.joe</groupId>
-    <artifactId>joe-event-service-cockpit</artifactId>
-    <name>${project.artifactId}</name>
+	<groupId>com.sos-berlin.joe</groupId>
+	<artifactId>joe-event-service-cockpit</artifactId>
+	<name>${project.artifactId}</name>
 
-    <dependencies>
+	<dependencies>
 
-        <dependency>
-            <groupId>com.sos-berlin.joe</groupId>
-            <artifactId>joe-globals</artifactId>
-            <version>${project.version}</version>
+		<dependency>
+			<groupId>com.sos-berlin.joe</groupId>
+			<artifactId>joe-globals</artifactId>
+			<version>${project.version}</version>
 
-        </dependency>
+		</dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.joe</groupId>
-            <artifactId>joe-xml</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.sos-berlin.joe</groupId>
+			<artifactId>joe-xml</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.jobscheduler</groupId>
-            <artifactId>jobscheduler-helper</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.sos-berlin.jobscheduler</groupId>
+			<artifactId>jobscheduler-helper</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.commons</groupId>
-            <artifactId>sos-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.sos-berlin.commons</groupId>
+			<artifactId>sos-util</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.commons</groupId>
-            <artifactId>sos-settings</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.sos-berlin.commons</groupId>
+			<artifactId>sos-settings</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.commons</groupId>
-            <artifactId>sos-connection</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.sos-berlin.commons</groupId>
+			<artifactId>sos-connection</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.jobscheduler</groupId>
-            <artifactId>sos-dialog</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.sos-berlin.jobscheduler</groupId>
+			<artifactId>sos-dialog</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.jobscheduler</groupId>
-            <artifactId>jobscheduler-object-model</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.sos-berlin.jobscheduler</groupId>
+			<artifactId>jobscheduler-object-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.eclipse.swt</groupId>
-            <artifactId>org.eclipse.swt.${swtSuffix}</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.eclipse.swt</groupId>
+			<artifactId>org.eclipse.swt.${swtSuffix}</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+		</dependency>
 
-        <!--  https://change.sos-berlin.com/browse/JITL-128 -->
-        <!-- dependency>
-            <groupId>slide</groupId>
-            <artifactId>slide-webdavlib</artifactId>
-        </dependency-->
-        <dependency>
-            <groupId>webdavclient4j</groupId>
-            <artifactId>webdavclient4j-core</artifactId>
-        </dependency>
+		<!-- https://change.sos-berlin.com/browse/JITL-128 -->
+		<!-- dependency> <groupId>slide</groupId> <artifactId>slide-webdavlib</artifactId> 
+			</dependency -->
+		<dependency>
+			<groupId>webdavclient4j</groupId>
+			<artifactId>webdavclient4j-core</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>jaxen</groupId>
-            <artifactId>jaxen</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.eclipse.jface</groupId>
-            <artifactId>org.eclipse.jface</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.eclipse.jface</groupId>
+			<artifactId>org.eclipse.jface</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 </project>
