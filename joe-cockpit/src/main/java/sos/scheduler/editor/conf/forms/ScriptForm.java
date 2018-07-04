@@ -149,7 +149,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
         tabItemScriptComposite.setLayout(new GridLayout());
         setResizableV(tabItemScriptComposite);
         tabItemScript.setControl(tabItemScriptComposite);
-        if (objDataProvider.isJava()) {
+        if (objDataProvider.isJvm()) {
             tabItemJavaAPI = JOE_ScriptForm_TabItemJavaAPI.control(new CTabItem(tabFolder, SWT.NONE));
             tabItemJavaAPIComposite = new Composite(tabFolder, SWT.NONE);
             tabItemJavaAPIComposite.setLayout(new GridLayout());

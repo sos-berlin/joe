@@ -573,14 +573,14 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
             if (language != NONE) {
                 Utils.setAttribute("language", languageAsString(language), _script, _dom);
             }
-            if (!isJava() && !isDotNet()) {
+            if (!isJvm() && !isDotNet()) {
                 _script.removeAttribute("java_class");
                 _script.removeAttribute("java_class_path");
                 _job.removeAttribute("java_options");
                 _script.removeAttribute("dotnet_class");
                 _script.removeAttribute("dll");
             }
-            if (isJava()) {
+            if (isJvm()) {
                 _script.removeAttribute("dotnet_class");
                 _script.removeAttribute("dll");
             }
@@ -844,6 +844,15 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 
     public boolean isJava() {
         return "java".equalsIgnoreCase(languageAsString(getLanguage()));
+        		
+    }
+    
+    public boolean isJvm() {
+        return "java".equalsIgnoreCase(languageAsString(getLanguage())) || 
+        		"javax.script:rhino".equalsIgnoreCase(languageAsString(getLanguage())) ||
+        		"javax.script:ecmascript".equalsIgnoreCase(languageAsString(getLanguage())) ||
+        		"java:javascript".equalsIgnoreCase(languageAsString(getLanguage()));
+        		
     }
 
     public boolean isDotNet() {
