@@ -123,11 +123,7 @@
             <groupId>org.eclipse.jface</groupId>
             <artifactId>org.eclipse.jface</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-        </dependency>
+ 
 
         <dependency>
             <groupId>xml-apis</groupId>
