@@ -100,7 +100,7 @@ public class JobsListener extends JOEListener {
 		File template = null;
 		Element templateElement = null;
 		String liveFolder = Options.getSchedulerHotFolder();
-		String path = liveFolder + "/.sos-templates/defaults";
+		String path = liveFolder + "/.sos-defaults";
 		LOGGER.debug("Looking for templates in:" + path);
 
 		if (isOrder) {
