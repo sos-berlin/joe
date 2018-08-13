@@ -104,7 +104,7 @@ public class JobsListener extends JOEListener {
 		LOGGER.debug("Looking for templates in:" + path);
 
 		if (isOrder) {
-			template = new File(path, "/order.template.job.xml");
+			template = new File(path, "/orderjob.template.job.xml");
 		} else {
 			template = new File(path, "/standalone.template.job.xml");
 		}
