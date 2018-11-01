@@ -181,7 +181,7 @@ public class TestFTPProfileJadeClient {
         CreateTestFile(localDir, filename);
         ftpProfileJadeClient.copyLocalFileToRemote(localDir, path, filename);
         HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(path);
-        assertEquals("File should have been deleted ", 1, h.size());
+        assertEquals("One file expected in " + folder, 1, h.size());
         ftpProfileJadeClient.disconnect();
     }
 
@@ -200,7 +200,7 @@ public class TestFTPProfileJadeClient {
         CreateTestFile(localDir, filename);
         ftpProfileJadeClient.copyLocalFilesToRemote(localDir, targetDir, folder);
         HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(path);
-        assertEquals("File should have been transfered ", 1, h.size());
+        assertEquals("File should have been transfered ", 2, h.size());
         ftpProfileJadeClient.disconnect();
     }
 
