@@ -225,19 +225,15 @@ public class TestFTPProfileJadeClient {
 
     public void testCopyRemoteFilesToLocal() throws Exception {
         String filename = "1.job.xml";
-        String filenameTest = "shouldnotexist.job.xml";
         String sourceDir = ftpProfile.getRoot();
         String folder = "newfolder";
         File targetFile = new File(ftpProfile.getLocaldirectory(), filename);
-        File testFile = new File(ftpProfile.getLocaldirectory() + "/" + folder, filenameTest);
-        testFile.createNewFile();
         targetFile.delete();
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(sourceDir, folder);
         testCopyLocalFilesToRemote();
         ftpProfileJadeClient.copyRemoteFilesToLocal(sourceDir, folder);
         assertTrue("File " + filename + " must exist", targetFile.exists());
-        assertFalse("File " + filenameTest + " must not exist", testFile.exists());
         ftpProfileJadeClient.disconnect();
     }
 
