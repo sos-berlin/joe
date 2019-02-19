@@ -366,6 +366,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
                     isInsert = false;
+                    jobchainDataProvider.setJobchainListOfReturnCodeElements(new JobchainListOfReturnCodeElements());
                     getShell().setDefaultButton(null);
                     tNodes.deselectAll();
                     butDetailsJob.setEnabled(false);
@@ -388,6 +389,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
                     isInsert = true;
+                    jobchainDataProvider.setJobchainListOfReturnCodeElements(new JobchainListOfReturnCodeElements());
                     String state = tState.getText();
                     cNextState.setItems(initStateCombo());
                     cErrorState.setItems(initStateCombo());
