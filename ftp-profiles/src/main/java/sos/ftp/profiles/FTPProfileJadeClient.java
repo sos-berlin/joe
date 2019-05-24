@@ -22,7 +22,7 @@ import com.sos.VirtualFileSystem.common.SOSFileEntry;
 
 public class FTPProfileJadeClient {
 
-	protected ISOSVFSHandler objVFS = null;
+	protected ISOSVFSHandler oVFS = null;
 	protected ISOSVfsFileTransfer ftpClient = null;
 	protected enuTransferTypes enuSourceTransferType = enuTransferTypes.local;
 	protected enuTransferTypes enuTargetTransferType = enuTransferTypes.local;
@@ -45,10 +45,10 @@ public class FTPProfileJadeClient {
 
 	public void disconnect() {
 		try {
-			if (objVFS != null) {
-				objVFS.closeConnection();
-				objVFS.closeSession();
-				objVFS = null;
+			if (oVFS != null) {
+				oVFS.closeConnection();
+				oVFS.closeSession();
+				oVFS = null;
 			}
 			if (ftpClient != null) {
 				ftpClient.disconnect();
@@ -83,7 +83,7 @@ public class FTPProfileJadeClient {
 		return joeUserInfo;
 	}
 	private void connect() throws RuntimeException, Exception {
-		if (objVFS == null) {
+		if (oVFS == null) {
 			jadeOptions = new JADEOptions();
 			enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
 			virtuelFileSystemOptions = jadeOptions.getConnectionOptions().getSource();
@@ -97,6 +97,8 @@ public class FTPProfileJadeClient {
 			if (!"".equals(ftpProfile.getAuthMethod())) {
 				virtuelFileSystemOptions.authMethod.setValue(ftpProfile.getAuthMethod());
 				virtuelFileSystemOptions.authFile.setValue(ftpProfile.getAuthFile());
+	            virtuelFileSystemOptions.useKeyAgent.value(ftpProfile.isUseKeyAgent());
+
 			}
 			if (ftpProfile.getUseProxy()) {
 				virtuelFileSystemOptions.proxyHost.setValue(ftpProfile.getProxyServer());
@@ -105,10 +107,10 @@ public class FTPProfileJadeClient {
 				virtuelFileSystemOptions.proxyProtocol.setValue(ftpProfile.getProxyProtocol());
 				virtuelFileSystemOptions.proxyPort.setValue(ftpProfile.getProxyPort());
 			}
-			objVFS = VFSFactory.getHandler(enuSourceTransferType);
-			ftpClient = (ISOSVfsFileTransfer) objVFS;
-			objVFS.connect(virtuelFileSystemOptions);
-			objVFS.authenticate(virtuelFileSystemOptions);
+			oVFS = VFSFactory.getHandler(enuSourceTransferType);
+			ftpClient = (ISOSVfsFileTransfer) oVFS;
+			oVFS.connect(virtuelFileSystemOptions);
+			oVFS.authenticate(virtuelFileSystemOptions);
 		}
 	}
 

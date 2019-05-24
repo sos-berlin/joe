@@ -257,6 +257,8 @@ public class FTPDialogListener {
 			s2 = s2 + "proxy_protocol=" + profile.getProxyProtocol() + "\n";
 			s2 = s2 + "auth_method=" + profile.getAuthMethod() + "\n";
 			s2 = s2 + "auth_file=" + profile.getAuthFile() + "\n";
+            s2 = s2 + "use_key_agent=" + profile.getUseKeyAgent() + "\n";
+
 			s2 = s2 + "\n\n";
 			s2 = s2 + s.substring(pos2);
 			java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());

@@ -18,6 +18,7 @@ public class FTPProfile {
     private String port = null;
     private String user = null;
     private boolean savePassword = false;
+    private boolean useKeyAgent = false;
     private String password = null;
     private String root = null;
     private String localdirectory = null;
@@ -51,6 +52,7 @@ public class FTPProfile {
             transfermode = sosString.parseToString(prop, "transfermode");
             protocol = sosString.parseToString(prop, "protocol");
             useProxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
+            useKeyAgent = sosString.parseToBoolean(sosString.parseToString(prop, "use_key_agent"));
             
             passiveMode = sosString.parseToBoolean(sosString.parseToString(prop, "passivemode"));
             proxyServer = sosString.parseToString(prop, "proxy_server");
@@ -150,6 +152,13 @@ public class FTPProfile {
         return passiveMode;
     }
 
+    public String getUseKeyAgent() {
+        if (isUseKeyAgent()) {
+            return "true";
+        } else {
+            return "false";
+        }
+    }
     public String getProxyServer() {
         return proxyServer;
     }
@@ -236,6 +245,16 @@ public class FTPProfile {
 
     public void setLogger(SOSLogger logger) {
         FTPProfile.logger = logger;
+    }
+
+    
+    public boolean isUseKeyAgent() {
+        return useKeyAgent;
+    }
+
+    
+    public void setUseKeyAgent(boolean useKeyAgent) {
+        this.useKeyAgent = useKeyAgent;
     }
 
 }

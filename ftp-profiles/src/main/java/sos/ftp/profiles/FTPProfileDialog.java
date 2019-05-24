@@ -50,6 +50,8 @@ public class FTPProfileDialog {
 	private FTPDialogListener listener = null;
 	private Button useProxyButton = null;
 	private Text txtProxyServer = null;
+	private Button useKeyAgent = null;
+
 	private Text txtProxyUser = null;
 	private Combo cboProxyProtocol = null;
 	private Text txtProxyPassword = null;
@@ -63,7 +65,7 @@ public class FTPProfileDialog {
 	private Button butAuthPublicKey = null;
 	private Button butAuthPassword = null;
 	private Button butAuthKeyboardInteractive = null;
-	private Text txtDirPublicKey = null;
+	private Text txtPathToPrivateKey = null;
 	private boolean saved = false;
 	private Combo combo = null;
 	private static boolean emptyItem = false;
@@ -408,18 +410,32 @@ public class FTPProfileDialog {
 			});
 
 			txtSFtpPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
-			final Label pathToPublicLabel = new Label(groupSftp, SWT.NONE);
-			pathToPublicLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-			pathToPublicLabel.setText("Private Key");
-			txtDirPublicKey = new Text(groupSftp, SWT.BORDER);
-			txtDirPublicKey.addModifyListener(new ModifyListener() {
+			final Label pathToPrivateKeyLabel = new Label(groupSftp, SWT.NONE);
+			pathToPrivateKeyLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+			pathToPrivateKeyLabel.setText("Private Key");
+			txtPathToPrivateKey = new Text(groupSftp, SWT.BORDER);
+			txtPathToPrivateKey.addModifyListener(new ModifyListener() {
 
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
 			});
 
-			txtDirPublicKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+			txtPathToPrivateKey.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+		
+			
+			 useKeyAgent = new Button(groupSftp, SWT.CHECK);
+			 useKeyAgent.addSelectionListener(new SelectionAdapter() {
+
+	                public void widgetSelected(final SelectionEvent e) {
+	                    setEnabled();
+	                }
+	            });
+			 useKeyAgent.setLayoutData(new GridData(SWT.DEFAULT, 52));
+			 useKeyAgent.setText("or use Key Agent");
+			
+			
+			
 			final Button button_4 = new Button(groupSftp, SWT.NONE);
 			button_4.setVisible(false);
 			button_4.addSelectionListener(new SelectionAdapter() {
@@ -540,10 +556,11 @@ public class FTPProfileDialog {
 					txtProxyUser.setEnabled(false);
 					txtProxyPassword.setEnabled(false);
 					cboProxyProtocol.setEnabled(false);
-					useProxyButton.setSelection(false);
+                    useProxyButton.setSelection(false);
+                    useKeyAgent.setSelection(false);
 					cboProtokol.select(0);
 					cboConnectname.setFocus();
-					txtDirPublicKey.setText("");
+					txtPathToPrivateKey.setText("");
 					butAuthPublicKey.setSelection(false);
 					butAuthPassword.setSelection(false);
 				}
@@ -640,7 +657,8 @@ public class FTPProfileDialog {
 			}
 			txtRoot.setText(currProfile.getRoot());
 			txtLocalDirectory.setText(currProfile.getLocaldirectory(getInitValueLocalDirectory()));
-			useProxyButton.setSelection(currProfile.getUseProxy());
+            useKeyAgent.setSelection(currProfile.isUseKeyAgent());
+            useProxyButton.setSelection(currProfile.getUseProxy());
 			if (useProxyButton.getSelection()) {
 				txtProxyServer.setEnabled(true);
 				txtProxyPort.setEnabled(true);
@@ -678,7 +696,7 @@ public class FTPProfileDialog {
 			cboProtokol.setText(protocol);
 			if ("SFTP".equalsIgnoreCase(protocol)) {
 				groupSftp.setEnabled(true);
-				txtDirPublicKey.setText(sosString.parseToString(currProfile.getAuthFile()));
+				txtPathToPrivateKey.setText(sosString.parseToString(currProfile.getAuthFile()));
 				String method = sosString.parseToString(currProfile.getAuthMethod());
 				if ("publickey".equalsIgnoreCase(method)) {
 					butAuthPublicKey.setSelection(true);
@@ -695,7 +713,7 @@ public class FTPProfileDialog {
 				}
 			} else {
 				groupSftp.setEnabled(false);
-				txtDirPublicKey.setText("");
+				txtPathToPrivateKey.setText("");
 				butAuthPublicKey.setSelection(false);
 				butAuthPassword.setSelection(false);
 			}
@@ -744,10 +762,13 @@ public class FTPProfileDialog {
 				prop.put("proxy_password", txtProxyPassword.getText());
 				prop.put("proxy_protocol", cboProxyProtocol.getText());
 			}
+			if (useKeyAgent.getSelection()) {
+                prop.put("use_key_agent", "yes");
+            }
 			if ("SFTP".equalsIgnoreCase(cboProtokol.getText())) {
 				String method = getAuthMethod();
 				prop.put("auth_method", method);
-				prop.put("auth_file", txtDirPublicKey.getText());
+				prop.put("auth_file", txtPathToPrivateKey.getText());
 			}
 			if (newProfile && !listener.getProfiles().containsKey(cboConnectname.getText())
 					|| listener.getProfiles().isEmpty()) {
