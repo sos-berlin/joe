@@ -31,7 +31,14 @@ public class FTPProfile {
     private String proxyUser = null;
     private String proxyPassword = null;
     private String proxyProtocol = null;
-    private String auth_method = null;
+    private boolean publicKeyAuthentication;
+    private boolean passwordAuthentication;
+    private boolean keyboardInteractive;
+    private boolean twoFactorAuthentication;
+    private boolean promptForPassphrase;
+    private boolean promptForPassword;
+    private String sftpPassphrase = null;
+
     private String auth_file = null;
     private SOSString sosString = new SOSString();
     private boolean hasError = false;
@@ -43,9 +50,8 @@ public class FTPProfile {
             host = sosString.parseToString(prop, "host");
             port = sosString.parseToString(prop, "port");
             user = sosString.parseToString(prop, "user");
-            savePassword =
-                    sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true" : sosString.parseToString(prop,
-                            "save_password"));
+            savePassword = sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true" : sosString.parseToString(
+                    prop, "save_password"));
             password = sosString.parseToString(prop, "password");
             root = sosString.parseToString(prop, "root");
             localdirectory = sosString.parseToString(prop, "localdirectory");
@@ -53,14 +59,22 @@ public class FTPProfile {
             protocol = sosString.parseToString(prop, "protocol");
             useProxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
             useKeyAgent = sosString.parseToBoolean(sosString.parseToString(prop, "use_key_agent"));
-            
+
             passiveMode = sosString.parseToBoolean(sosString.parseToString(prop, "passivemode"));
             proxyServer = sosString.parseToString(prop, "proxy_server");
             proxyPort = sosString.parseToString(prop, "proxy_port");
             proxyUser = sosString.parseToString(prop, "proxy_user");
             proxyPassword = sosString.parseToString(prop, "proxy_password");
             proxyProtocol = sosString.parseToString(prop, "proxy_protocol");
-            auth_method = sosString.parseToString(prop, "auth_method");
+
+            publicKeyAuthentication = sosString.parseToBoolean(sosString.parseToString(prop, "publickey_authentication"));
+            passwordAuthentication = sosString.parseToBoolean(sosString.parseToString(prop, "password_authentication"));
+            keyboardInteractive = sosString.parseToBoolean(sosString.parseToString(prop, "keyboard_interactive"));
+            twoFactorAuthentication = sosString.parseToBoolean(sosString.parseToString(prop, "twofactor_authentication"));
+            promptForPassphrase = sosString.parseToBoolean(sosString.parseToString(prop, "_for_passphrase"));
+            promptForPassword = sosString.parseToBoolean(sosString.parseToString(prop, "prompt_for_password"));
+            sftpPassphrase = sosString.parseToString(sosString.parseToString(prop, "sftp_passphrase"));
+
             auth_file = sosString.parseToString(prop, "auth_file");
         } catch (Exception e) {
             throw new Exception("error in FTPProfile.init(), cause: " + e.toString(), e);
@@ -146,7 +160,6 @@ public class FTPProfile {
     public boolean getUseProxy() {
         return useProxy;
     }
-    
 
     public boolean isPassiveMode() {
         return passiveMode;
@@ -159,16 +172,13 @@ public class FTPProfile {
             return "false";
         }
     }
+
     public String getProxyServer() {
         return proxyServer;
     }
 
     public String getProxyPort() {
         return proxyPort;
-    }
-
-    public String getAuthMethod() {
-        return auth_method;
     }
 
     public String getAuthFile() {
@@ -247,14 +257,48 @@ public class FTPProfile {
         FTPProfile.logger = logger;
     }
 
-    
     public boolean isUseKeyAgent() {
         return useKeyAgent;
     }
 
-    
     public void setUseKeyAgent(boolean useKeyAgent) {
         this.useKeyAgent = useKeyAgent;
+    }
+
+    public boolean isPublicKeyAuthentication() {
+        return publicKeyAuthentication;
+    }
+
+    public boolean isPasswordAuthentication() {
+        return passwordAuthentication;
+    }
+
+    public boolean isKeyboardInteractive() {
+        return keyboardInteractive;
+    }
+
+    public boolean isTwoFactorAuthentication() {
+        return twoFactorAuthentication;
+    }
+
+    public boolean isPromptForPassphrase() {
+        return promptForPassphrase;
+    }
+
+    public boolean isPromptForPassword() {
+        return promptForPassword;
+    }
+
+    public String getSftpPassphrase() {
+        return sftpPassphrase;
+    }
+
+    public String getAuth_file() {
+        return auth_file;
+    }
+
+    public void setSftpPassphrase(String sftpPassphrase) {
+        this.sftpPassphrase = sftpPassphrase;
     }
 
 }
