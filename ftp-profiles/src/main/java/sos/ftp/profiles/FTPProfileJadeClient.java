@@ -76,8 +76,6 @@ public class FTPProfileJadeClient {
         return ftpProfile.getDecryptetPassword();
     }
 
- 
-
     private String getSftpPassPhrase() throws Exception {
         if (ftpProfile.isPromptForPassphrase()) {
             getPasswordFromDialog();
@@ -101,11 +99,11 @@ public class FTPProfileJadeClient {
             virtuelFileSystemOptions.port.setValue(ftpProfile.getPort());
             virtuelFileSystemOptions.user.setValue(ftpProfile.getUser());
             virtuelFileSystemOptions.password.setValue(getPassword());
- 
+
             virtuelFileSystemOptions.protocol.setValue(enuSourceTransferType);
             virtuelFileSystemOptions.passiveMode.value(ftpProfile.isPassiveMode());
             virtuelFileSystemOptions.user_info.value(getUserInfo());
- 
+
             if (ftpProfile.isPublicKeyAuthentication()) {
                 virtuelFileSystemOptions.authMethod.setValue("publickey");
                 virtuelFileSystemOptions.authFile.setValue(ftpProfile.getAuthFile());
@@ -114,11 +112,27 @@ public class FTPProfileJadeClient {
             }
 
             if (ftpProfile.isPasswordAuthentication()) {
-                virtuelFileSystemOptions.authMethod.setValue("password");
+                if (ftpProfile.isKeyboardInteractive()) {
+                    virtuelFileSystemOptions.authMethod.setValue("keyboard-interactive");
+                } else {
+                    virtuelFileSystemOptions.authMethod.setValue("password");
+                }
             }
-            
+
             if (ftpProfile.isTwoFactorAuthentication() && ftpProfile.isPasswordAuthentication() && ftpProfile.isPublicKeyAuthentication()) {
-                virtuelFileSystemOptions.required_authentications.setValue("password,publickey");
+                if (ftpProfile.isKeyboardInteractive()) {
+                    virtuelFileSystemOptions.required_authentications.setValue("publickey,keyboard-interactive");
+                } else {
+                    virtuelFileSystemOptions.required_authentications.setValue("publickey,password");
+                }
+            }
+
+            if (ftpProfile.isPasswordAuthentication() && ftpProfile.isPublicKeyAuthentication()) {
+                if (ftpProfile.isKeyboardInteractive()) {
+                    virtuelFileSystemOptions.preferred_authentications.setValue("publickey,keyboard-interactive");
+                } else {
+                    virtuelFileSystemOptions.preferred_authentications.setValue("publickey,password");
+                }
             }
 
             if (ftpProfile.getUseProxy()) {

@@ -1,5 +1,9 @@
 package sos.ftp.profiles;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Properties;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -12,7 +16,6 @@ import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -26,9 +29,6 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.util.SOSLogger;
 import sos.util.SOSString;
-
-import java.util.*;
-import java.io.File;
 
 public class FTPProfileDialog {
 
@@ -76,6 +76,7 @@ public class FTPProfileDialog {
     private Button butAuthPasswordInteractive = null;
     private Button butAuthFtpPasswordInteractive = null;
     private Button butAuthPasswordInput = null;
+    private Button butAuthFtpPasswordInput = null;
     private Text txtPathToPrivateKey = null;
     private boolean saved = false;
     private Combo combo = null;
@@ -350,7 +351,7 @@ public class FTPProfileDialog {
 
                 public void widgetSelected(final SelectionEvent e) {
                     setEnabled();
-                    txtFtpPassword.setEnabled(butAuthFtpPasswordInteractive.getSelection());
+                    txtFtpPassword.setEnabled(!butAuthFtpPasswordInteractive.getSelection());
                 }
             });
             new Label(ftpPasswordRadio, SWT.NONE);
@@ -359,17 +360,17 @@ public class FTPProfileDialog {
             butAuthFtpPasswordInteractive.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
             butAuthFtpPasswordInteractive.setText("Password Interactive");
 
-            butAuthPasswordInput = new Button(ftpPasswordRadio, SWT.RADIO);
-            butAuthPasswordInput.addSelectionListener(new SelectionAdapter() {
+            butAuthFtpPasswordInput = new Button(ftpPasswordRadio, SWT.RADIO);
+            butAuthFtpPasswordInput.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
                     setEnabled();
-                    txtFtpPassword.setEnabled(butAuthPasswordInput.getSelection());
+                    txtFtpPassword.setEnabled(butAuthFtpPasswordInput.getSelection());
                 }
             });
 
-            butAuthPasswordInput.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
-            butAuthPasswordInput.setText("Use Password stored with JOE");
+            butAuthFtpPasswordInput.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
+            butAuthFtpPasswordInput.setText("Use Password stored with JOE");
 
             txtFtpPassword = new Text(ftpPasswordRadio, SWT.PASSWORD | SWT.BORDER);
             txtFtpPassword.addModifyListener(new ModifyListener() {
@@ -730,6 +731,7 @@ public class FTPProfileDialog {
                     butAuthPasswordInteractive.setSelection(false);
                     butAuthFtpPasswordInteractive.setSelection(false);
                     butAuthPasswordInput.setSelection(false);
+                    butAuthFtpPasswordInput.setSelection(false);
                     txtSftpPassword.setText("");
 
                 }
@@ -891,8 +893,9 @@ public class FTPProfileDialog {
                 butAuthPassword.setSelection(false);
                 butPublickeyPassphraseInteractive.setSelection(false);
                 butAuthKeyboardInteractive.setSelection(false);
+                butAuthPasswordInteractive.setSelection(false);
                 butAuthFtpPasswordInteractive.setSelection(currProfile.isPromptForPassword());
-                butAuthPasswordInput.setSelection(!currProfile.isPromptForPassword() );
+                butAuthFtpPasswordInput.setSelection(!currProfile.isPromptForPassword() );             
             }
             butApply.setEnabled(false);
             combo.setText(listener.getCurrProfileName());
@@ -901,7 +904,7 @@ public class FTPProfileDialog {
             txtSFtpPassphrase.setEnabled(butAuthPublicKey.getSelection() && butPublickeyPassphraseInteractive.getSelection());
             txtPathToPrivateKey.setEnabled(butAuthPublicKey.getSelection() && butPrivateKeyFile.getSelection());
             txtSftpPassword.setEnabled(butAuthPassword.getSelection() && butAuthPasswordInput.getSelection());
-            txtFtpPassword.setEnabled(butAuthPasswordInput.getSelection());
+            txtFtpPassword.setEnabled(butAuthFtpPasswordInput.getSelection());
 
             butUseKeyAgent.setEnabled(butAuthPublicKey.getSelection());
             butPrivateKeyFile.setEnabled(butAuthPublicKey.getSelection());
@@ -910,14 +913,17 @@ public class FTPProfileDialog {
 
             butAuthKeyboardInteractive.setEnabled(butAuthPassword.getSelection());
             butAuthPasswordInteractive.setEnabled(butAuthPassword.getSelection());
-            butAuthFtpPasswordInteractive.setEnabled(true);
-            butAuthPasswordInput.setEnabled(butAuthPassword.getSelection() || ("FTP".equalsIgnoreCase(protocol)));
+            butAuthPasswordInput.setEnabled(butAuthPassword.getSelection());
+            butAuthFtpPasswordInput.setEnabled("FTP".equalsIgnoreCase(protocol));
+            butAuthFtpPasswordInteractive.setEnabled("FTP".equalsIgnoreCase(protocol));
 
             txtProxyServer.setEnabled(useProxyButton.getSelection());
             txtProxyPort.setEnabled(useProxyButton.getSelection());
             txtProxyUser.setEnabled(useProxyButton.getSelection());
             txtProxyPassword.setEnabled(useProxyButton.getSelection());
             cboProxyProtocol.setEnabled(useProxyButton.getSelection());
+            
+            
 
         } catch (
 
