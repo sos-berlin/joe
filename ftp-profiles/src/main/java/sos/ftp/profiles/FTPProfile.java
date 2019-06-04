@@ -8,11 +8,14 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.util.SOSLogger;
 import sos.util.SOSString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FTPProfile {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FTPProfile.class);
+
     protected static Text logtext = null;
-    protected static SOSLogger logger = null;
     private String profilename = null;
     private String host = null;
     private String port = null;
@@ -198,63 +201,37 @@ public class FTPProfile {
     }
 
     public static void log(String txt, int level) {
-        if (logger == null) {
-            if (level > -1 || level < 10) {
-                System.out.println(txt);
-            } else {
-                System.err.println(txt);
-            }
-            return;
-        }
+
         try {
             switch (level) {
+            case 0:
             case 1:
-                logger.debug1(txt);
-                break;
             case 2:
-                logger.debug2(txt);
-                break;
             case 3:
-                logger.debug3(txt);
-                break;
             case 4:
-                logger.debug4(txt);
-                break;
             case 5:
-                logger.debug5(txt);
-                break;
             case 6:
-                logger.debug6(txt);
-                break;
             case 7:
-                logger.debug7(txt);
-                break;
             case 8:
-                logger.debug8(txt);
-                break;
             case 9:
-                logger.debug9(txt);
+                LOGGER.debug(txt);
                 break;
             case 10:
-                logger.info(txt);
+                LOGGER.info(txt);
                 break;
             case SOSLogger.WARN:
-                logger.warn(txt);
+                LOGGER.warn(txt);
                 break;
             case SOSLogger.ERROR:
-                logger.error(txt);
+                LOGGER.error(txt);
                 break;
             default:
-                logger.debug(txt);
+                LOGGER.info(txt);
                 break;
             }
         } catch (Exception e) {
             System.out.print(txt);
         }
-    }
-
-    public void setLogger(SOSLogger logger) {
-        FTPProfile.logger = logger;
     }
 
     public boolean isUseKeyAgent() {

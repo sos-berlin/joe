@@ -174,9 +174,6 @@ public class FTPProfilePicker extends Composite {
         }
     }
 
-    public void setLogger(SOSLogger logger_) {
-        FTPProfile.logger = logger_;
-    }
 
     public void setLogText(Text text_) {
         FTPProfile.logtext = text_;

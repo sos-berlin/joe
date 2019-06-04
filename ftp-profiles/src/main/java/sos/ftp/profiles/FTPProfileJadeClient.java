@@ -125,13 +125,14 @@ public class FTPProfileJadeClient {
                 } else {
                     virtuelFileSystemOptions.required_authentications.setValue("publickey,password");
                 }
-            }
+            } else {
 
-            if (ftpProfile.isPasswordAuthentication() && ftpProfile.isPublicKeyAuthentication()) {
-                if (ftpProfile.isKeyboardInteractive()) {
-                    virtuelFileSystemOptions.preferred_authentications.setValue("publickey,keyboard-interactive");
-                } else {
-                    virtuelFileSystemOptions.preferred_authentications.setValue("publickey,password");
+                if (ftpProfile.isPasswordAuthentication() && ftpProfile.isPublicKeyAuthentication()) {
+                    if (ftpProfile.isKeyboardInteractive()) {
+                        virtuelFileSystemOptions.preferred_authentications.setValue("publickey,keyboard-interactive");
+                    } else {
+                        virtuelFileSystemOptions.preferred_authentications.setValue("publickey,password");
+                    }
                 }
             }
 
