@@ -105,9 +105,7 @@ public class FTPProfileDialog {
             }
             combo.setItems(profileNames);
             combo.setText(listener.getCurrProfileName() != null ? listener.getCurrProfileName() : "");
-            if (profileNames.length > 0) {
-                combo.select(0);
-            }
+            
             combo.setData(listener);
             sosString = new SOSString();
             if (emptyItem) {
@@ -418,7 +416,7 @@ public class FTPProfileDialog {
             });
             final GridData gridData_pk = new GridData(GridData.BEGINNING, GridData.END, false, false, 3, 1);
             butTwoFactor.setLayoutData(gridData_pk);
-            butTwoFactor.setText("Two-factor Authentication (Password and Public/Private Key are required)");
+            butTwoFactor.setText("Two-factor Authentication (Public/Private Key and Password are required)");
 
             new Label(groupSftp, SWT.NONE);
             new Label(groupSftp, SWT.NONE);
@@ -478,7 +476,7 @@ public class FTPProfileDialog {
                 }
             });
             butPrivateKeyFile.setLayoutData(gridData_pk2);
-            butPrivateKeyFile.setText("Use Private Keyfile");
+            butPrivateKeyFile.setText("Use Private Key File");
 
             txtPathToPrivateKey = new Text(publickeyRadio, SWT.BORDER);
             txtPathToPrivateKey.addModifyListener(new ModifyListener() {
@@ -495,7 +493,10 @@ public class FTPProfileDialog {
             gridLayoutPublickeyPassPhrase.numColumns = 3;
             publickeyPassphrase.setLayout(gridLayoutPublickeyPassPhrase);
             publickeyPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
+           
 
+            Label col = new Label(publickeyPassphrase, SWT.NONE);
+            col.setText("                                         ");
             butPublickeyPassphraseInteractive = new Button(publickeyPassphrase, SWT.RADIO);
             butPublickeyPassphraseInteractive.addSelectionListener(new SelectionAdapter() {
 
@@ -505,9 +506,11 @@ public class FTPProfileDialog {
                 }
             });
 
-            butPublickeyPassphraseInteractive.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
+            butPublickeyPassphraseInteractive.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
             butPublickeyPassphraseInteractive.setText("Passphrase Interactive");
 
+            col = new Label(publickeyPassphrase, SWT.NONE);
+            col.setText("                                         ");            
             butPublickeyPassphraseInput = new Button(publickeyPassphrase, SWT.RADIO);
             butPublickeyPassphraseInput.addSelectionListener(new SelectionAdapter() {
 
@@ -527,7 +530,7 @@ public class FTPProfileDialog {
                 }
             });
 
-            txtSFtpPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+            txtSFtpPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 
             separator = new Label(groupSftp, SWT.HORIZONTAL | SWT.SEPARATOR);
             separator.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));

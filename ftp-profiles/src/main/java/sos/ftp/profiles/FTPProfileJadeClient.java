@@ -173,6 +173,10 @@ public class FTPProfileJadeClient {
         if ("".equals(remoteDir)) {
             remoteDir = "/";
         }
+        
+        if (!ftpClient.isDirectory(remoteDir)) {
+            return null;
+        }
         ftpClient.nList(remoteDir);
         SOSFileEntries sosFileList = ftpClient.getSOSFileEntries();
         HashMap<String, SOSFileEntry> h = new HashMap<String, SOSFileEntry>();
