@@ -169,7 +169,7 @@ public abstract class FTPDialog {
                         if (h == null) {
                             MainWindow.message(listener.getCurrProfile().getRoot() + " is not a directory", SWT.ICON_WARNING);
                         } else {
-                            fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
+                            fillTable(h);
                         }
                         _setEnabled(true);
                     } catch (Exception ex) {
