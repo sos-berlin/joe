@@ -181,7 +181,7 @@ public class TestFTPProfileJadeClient {
         CreateTestFile(localDir, filename);
         ftpProfileJadeClient.copyLocalFileToRemote(localDir, path, filename);
         HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(path);
-        assertEquals("File should have been deleted ", 1, h.size());
+        assertEquals("One file expected in " + folder, 1, h.size());
         ftpProfileJadeClient.disconnect();
     }
 
@@ -200,7 +200,7 @@ public class TestFTPProfileJadeClient {
         CreateTestFile(localDir, filename);
         ftpProfileJadeClient.copyLocalFilesToRemote(localDir, targetDir, folder);
         HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(path);
-        assertEquals("File should have been transfered ", 1, h.size());
+        assertEquals("File should have been transfered ", 2, h.size());
         ftpProfileJadeClient.disconnect();
     }
 
@@ -225,19 +225,15 @@ public class TestFTPProfileJadeClient {
 
     public void testCopyRemoteFilesToLocal() throws Exception {
         String filename = "1.job.xml";
-        String filenameTest = "shouldnotexist.job.xml";
         String sourceDir = ftpProfile.getRoot();
         String folder = "newfolder";
         File targetFile = new File(ftpProfile.getLocaldirectory(), filename);
-        File testFile = new File(ftpProfile.getLocaldirectory() + "/" + folder, filenameTest);
-        testFile.createNewFile();
         targetFile.delete();
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(sourceDir, folder);
         testCopyLocalFilesToRemote();
         ftpProfileJadeClient.copyRemoteFilesToLocal(sourceDir, folder);
         assertTrue("File " + filename + " must exist", targetFile.exists());
-        assertFalse("File " + filenameTest + " must not exist", testFile.exists());
         ftpProfileJadeClient.disconnect();
     }
 

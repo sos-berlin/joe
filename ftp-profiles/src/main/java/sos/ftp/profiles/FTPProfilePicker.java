@@ -58,7 +58,7 @@ public class FTPProfilePicker extends Composite {
             }
             profileDialog = new FTPProfileDialog(configFile);
             profileDialog.fillCombo(cboProfile);
-         } catch (Exception e) {
+        } catch (Exception e) {
             throw new Exception("error in " + sos.util.SOSClassUtil.getClassName() + ", cause: " + e.toString());
         }
     }
@@ -174,9 +174,6 @@ public class FTPProfilePicker extends Composite {
         }
     }
 
-    public void setLogger(SOSLogger logger_) {
-        FTPProfile.logger = logger_;
-    }
 
     public void setLogText(Text text_) {
         FTPProfile.logtext = text_;

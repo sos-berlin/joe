@@ -8,16 +8,20 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.util.SOSLogger;
 import sos.util.SOSString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FTPProfile {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FTPProfile.class);
+
     protected static Text logtext = null;
-    protected static SOSLogger logger = null;
     private String profilename = null;
     private String host = null;
     private String port = null;
     private String user = null;
     private boolean savePassword = false;
+    private boolean useKeyAgent = false;
     private String password = null;
     private String root = null;
     private String localdirectory = null;
@@ -30,7 +34,14 @@ public class FTPProfile {
     private String proxyUser = null;
     private String proxyPassword = null;
     private String proxyProtocol = null;
-    private String auth_method = null;
+    private boolean publicKeyAuthentication;
+    private boolean passwordAuthentication;
+    private boolean keyboardInteractive;
+    private boolean twoFactorAuthentication;
+    private boolean promptForPassphrase;
+    private boolean promptForPassword;
+    private String sftpPassphrase = null;
+
     private String auth_file = null;
     private SOSString sosString = new SOSString();
     private boolean hasError = false;
@@ -42,23 +53,31 @@ public class FTPProfile {
             host = sosString.parseToString(prop, "host");
             port = sosString.parseToString(prop, "port");
             user = sosString.parseToString(prop, "user");
-            savePassword =
-                    sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true" : sosString.parseToString(prop,
-                            "save_password"));
+            savePassword = sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true" : sosString.parseToString(
+                    prop, "save_password"));
             password = sosString.parseToString(prop, "password");
             root = sosString.parseToString(prop, "root");
             localdirectory = sosString.parseToString(prop, "localdirectory");
             transfermode = sosString.parseToString(prop, "transfermode");
             protocol = sosString.parseToString(prop, "protocol");
             useProxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
-            
+            useKeyAgent = sosString.parseToBoolean(sosString.parseToString(prop, "use_key_agent"));
+
             passiveMode = sosString.parseToBoolean(sosString.parseToString(prop, "passivemode"));
             proxyServer = sosString.parseToString(prop, "proxy_server");
             proxyPort = sosString.parseToString(prop, "proxy_port");
             proxyUser = sosString.parseToString(prop, "proxy_user");
             proxyPassword = sosString.parseToString(prop, "proxy_password");
             proxyProtocol = sosString.parseToString(prop, "proxy_protocol");
-            auth_method = sosString.parseToString(prop, "auth_method");
+
+            publicKeyAuthentication = sosString.parseToBoolean(sosString.parseToString(prop, "publickey_authentication"));
+            passwordAuthentication = sosString.parseToBoolean(sosString.parseToString(prop, "password_authentication"));
+            keyboardInteractive = sosString.parseToBoolean(sosString.parseToString(prop, "keyboard_interactive"));
+            twoFactorAuthentication = sosString.parseToBoolean(sosString.parseToString(prop, "twofactor_authentication"));
+            promptForPassphrase = sosString.parseToBoolean(sosString.parseToString(prop, "_for_passphrase"));
+            promptForPassword = sosString.parseToBoolean(sosString.parseToString(prop, "prompt_for_password"));
+            sftpPassphrase = sosString.parseToString(sosString.parseToString(prop, "sftp_passphrase"));
+
             auth_file = sosString.parseToString(prop, "auth_file");
         } catch (Exception e) {
             throw new Exception("error in FTPProfile.init(), cause: " + e.toString(), e);
@@ -144,10 +163,17 @@ public class FTPProfile {
     public boolean getUseProxy() {
         return useProxy;
     }
-    
 
     public boolean isPassiveMode() {
         return passiveMode;
+    }
+
+    public String getUseKeyAgent() {
+        if (isUseKeyAgent()) {
+            return "true";
+        } else {
+            return "false";
+        }
     }
 
     public String getProxyServer() {
@@ -156,10 +182,6 @@ public class FTPProfile {
 
     public String getProxyPort() {
         return proxyPort;
-    }
-
-    public String getAuthMethod() {
-        return auth_method;
     }
 
     public String getAuthFile() {
@@ -179,54 +201,32 @@ public class FTPProfile {
     }
 
     public static void log(String txt, int level) {
-        if (logger == null) {
-            if (level > -1 || level < 10) {
-                System.out.println(txt);
-            } else {
-                System.err.println(txt);
-            }
-            return;
-        }
+
         try {
             switch (level) {
+            case 0:
             case 1:
-                logger.debug1(txt);
-                break;
             case 2:
-                logger.debug2(txt);
-                break;
             case 3:
-                logger.debug3(txt);
-                break;
             case 4:
-                logger.debug4(txt);
-                break;
             case 5:
-                logger.debug5(txt);
-                break;
             case 6:
-                logger.debug6(txt);
-                break;
             case 7:
-                logger.debug7(txt);
-                break;
             case 8:
-                logger.debug8(txt);
-                break;
             case 9:
-                logger.debug9(txt);
+                LOGGER.debug(txt);
                 break;
             case 10:
-                logger.info(txt);
+                LOGGER.info(txt);
                 break;
             case SOSLogger.WARN:
-                logger.warn(txt);
+                LOGGER.warn(txt);
                 break;
             case SOSLogger.ERROR:
-                logger.error(txt);
+                LOGGER.error(txt);
                 break;
             default:
-                logger.debug(txt);
+                LOGGER.info(txt);
                 break;
             }
         } catch (Exception e) {
@@ -234,8 +234,48 @@ public class FTPProfile {
         }
     }
 
-    public void setLogger(SOSLogger logger) {
-        FTPProfile.logger = logger;
+    public boolean isUseKeyAgent() {
+        return useKeyAgent;
+    }
+
+    public void setUseKeyAgent(boolean useKeyAgent) {
+        this.useKeyAgent = useKeyAgent;
+    }
+
+    public boolean isPublicKeyAuthentication() {
+        return publicKeyAuthentication;
+    }
+
+    public boolean isPasswordAuthentication() {
+        return passwordAuthentication;
+    }
+
+    public boolean isKeyboardInteractive() {
+        return keyboardInteractive;
+    }
+
+    public boolean isTwoFactorAuthentication() {
+        return twoFactorAuthentication;
+    }
+
+    public boolean isPromptForPassphrase() {
+        return promptForPassphrase;
+    }
+
+    public boolean isPromptForPassword() {
+        return promptForPassword;
+    }
+
+    public String getSftpPassphrase() {
+        return sftpPassphrase;
+    }
+
+    public String getAuth_file() {
+        return auth_file;
+    }
+
+    public void setSftpPassphrase(String sftpPassphrase) {
+        this.sftpPassphrase = sftpPassphrase;
     }
 
 }

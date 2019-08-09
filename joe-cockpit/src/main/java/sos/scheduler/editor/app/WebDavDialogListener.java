@@ -11,6 +11,8 @@ import org.apache.commons.httpclient.HttpURL;
 import org.apache.webdav.lib.WebdavResource;
 import org.apache.webdav.lib.WebdavResources;
 import org.eclipse.swt.SWT;
+
+import sos.ftp.profiles.SOSProfileCrypt;
 import sos.settings.SOSProfileSettings;
 import sos.util.SOSString;
 import sos.util.SOSUniqueID;
@@ -248,7 +250,7 @@ public class WebDavDialogListener {
                 key = key.substring(key.length() - 8);
             }
             if (!password.isEmpty() && !sosString.parseToString(key).isEmpty()) {
-                password = SOSCrypt.decrypt(key, password);
+                password = SOSProfileCrypt.decrypt(key, password);
             }
             if (password.isEmpty()) {
                 Shell shell = new Shell();
@@ -513,7 +515,7 @@ public class WebDavDialogListener {
                     if (pass.length() > 8) {
                         pass = pass.substring(pass.length() - 8);
                     }
-                    String encrypt = SOSCrypt.encrypt(pass, sosString.parseToString(profile.get("password")));
+                    String encrypt = SOSProfileCrypt.encrypt(pass, sosString.parseToString(profile.get("password")));
                     s2 += "password=" + encrypt + "\n";
                     profile.put("password", encrypt);
                     this.password = encrypt;

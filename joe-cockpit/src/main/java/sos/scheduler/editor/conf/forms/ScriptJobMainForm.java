@@ -1,11 +1,16 @@
 package sos.scheduler.editor.conf.forms;
 
+ 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -136,10 +141,25 @@ public class ScriptJobMainForm extends ScriptForm {
         objTabControlComposite.setLayout(new GridLayout());
         setResizableV(objTabControlComposite);
         tabItemOptions = JOE_TI_ScriptJobMainForm_Options.control(new CTabItem(tabFolder, SWT.NONE));
-        tabItemOptionsComposite = new Composite(tabFolder, SWT.NONE);
+        ScrolledComposite scroller = new ScrolledComposite(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+
+        tabItemOptionsComposite = new Composite(scroller, SWT.NONE);
+        scroller.setContent(tabItemOptionsComposite);
+
+        scroller.setExpandVertical(true);
+        scroller.setExpandHorizontal(true);
+        scroller.setMinSize(tabItemOptionsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+        scroller.addControlListener(new ControlAdapter() {
+            @Override
+            public void controlResized(ControlEvent e) {
+                scroller.setMinSize(new Point(500,580));
+            }
+        });
+        
+        tabItemOptions.setControl(scroller);
         tabItemOptionsComposite.setLayout(new GridLayout());
         setResizableV(tabItemOptionsComposite);
-        tabItemOptions.setControl(tabItemOptionsComposite);
         tabItemEMail = JOE_TI_ScriptJobMainForm_EMail.control(new CTabItem(tabFolder, SWT.NONE));
         tabItemEMailComposite = new Composite(tabFolder, SWT.NONE);
         tabItemEMailComposite.setLayout(new GridLayout());

@@ -2,6 +2,7 @@ package sos.ftp.profiles;
 
 import java.security.Provider;
 import java.security.Security;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -36,9 +37,11 @@ public class SOSProfileCrypt {
             Cipher encrypt = Cipher.getInstance("DESede/ECB/NoPadding", "BC");
             SecretKey key = new SecretKeySpec(pass.getBytes(), "DESede");
             encrypt.init(Cipher.ENCRYPT_MODE, key);
+
+            Base64.Encoder mimeEncoder = java.util.Base64.getMimeEncoder();
             byte[] utf8 = str.getBytes(SOSProfileCrypt.CHARSET);
             byte[] enc = encrypt.doFinal(utf8);
-            return new sun.misc.BASE64Encoder().encode(enc);
+            return mimeEncoder.encodeToString(enc);
         } catch (Exception e) {
             throw new Exception("Could not encrypt: " + e.getMessage());
         }
@@ -52,7 +55,9 @@ public class SOSProfileCrypt {
             Cipher decrypt = Cipher.getInstance("DESede/ECB/NoPadding", "BC");
             SecretKey key = new SecretKeySpec(pass.getBytes(), "DESede");
             decrypt.init(Cipher.DECRYPT_MODE, key);
-            byte[] dec = new sun.misc.BASE64Decoder().decodeBuffer(str);
+            Base64.Decoder mimeDecoder = java.util.Base64.getMimeDecoder();
+
+            byte[] dec = mimeDecoder.decode(str);
             byte[] utf8 = decrypt.doFinal(dec);
             return new String(utf8, SOSProfileCrypt.CHARSET).trim();
         } catch (Exception e) {

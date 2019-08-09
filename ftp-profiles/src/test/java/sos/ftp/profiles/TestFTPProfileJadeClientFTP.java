@@ -18,15 +18,13 @@ public class TestFTPProfileJadeClientFTP extends TestFTPProfileJadeClient {
         ftpProperties.put("root", "/home/test");
         ftpProperties.put("transfertype", "ASCII");
         ftpProperties.put("localdirectory", System.getProperty("java.io.tmpdir") + "/jobschedulertest");
-        ftpProperties.put("profilename", "test");
-        ftpProperties.put("protocol", "ftp");
+        ftpProperties.put("protocol", "ftps");
         ftpProperties.put("auth_method", "password");
         ftpProfile = new FTPProfile(ftpProperties);
     }
 
     @Test
     public void testFTPProfileJadeClient() throws Exception {
-        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
     }
 
     @Test

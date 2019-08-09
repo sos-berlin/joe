@@ -492,7 +492,9 @@ public class MergeAllXMLinDirectory {
                     try {
                         if (directoryContent.get(s.getParentPath()) == null){
                             HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(s.getParentPath());
-                            directoryContent.put(s.getParentPath(), h);
+                            if (h != null) {
+                                directoryContent.put(s.getParentPath(), h);
+                            }
                         }
                       HashMap<String, SOSFileEntry>h = directoryContent.get(s.getParentPath());
                       if (h.get(s.getFilename()) != null){

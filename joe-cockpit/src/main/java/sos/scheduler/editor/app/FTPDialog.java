@@ -73,7 +73,7 @@ public abstract class FTPDialog {
     abstract void execute();
 
     public FTPDialog() {
-     }
+    }
 
     public void showForm() {
         try {
@@ -120,20 +120,20 @@ public abstract class FTPDialog {
                 ftpProfilePicker.getProfileByName(ftpProfilePicker.getSelectedProfilename());
                 listener = ftpProfilePicker.getListener();
             }
-            
+
             ftpProfilePicker.addSelectionListenerInitMainWindow(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
                     try {
                         MainWindow.joeUserInfo = new JOEUserInfo();
-                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(),MainWindow.joeUserInfo);
+                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(), MainWindow.joeUserInfo);
                     } catch (Exception r) {
                         MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
                         new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                     }
                 }
             });
-             
+
             ftpProfilePicker.addSelectionListener(new SelectionAdapter() {
 
                 public void widgetSelected(final SelectionEvent e) {
@@ -164,8 +164,13 @@ public abstract class FTPDialog {
                         }
                         disconnect();
                         txtDir.setText(listener.getCurrProfile().getRoot());
-                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(),MainWindow.joeUserInfo);
-                        fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
+                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile(), MainWindow.joeUserInfo);
+                        HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot());
+                        if (h == null) {
+                            MainWindow.message(listener.getCurrProfile().getRoot() + " is not a directory", SWT.ICON_WARNING);
+                        } else {
+                            fillTable(h);
+                        }
                         _setEnabled(true);
                     } catch (Exception ex) {
                         MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
@@ -397,12 +402,14 @@ public abstract class FTPDialog {
     }
 
     protected void fillTable(HashMap<String, SOSFileEntry> h) {
-        Utils.startCursor(schedulerConfigurationShell);
-        directoryTable.removeAll();
-        fillTable(directoryTable, h);
-        directoryTable.setSortDirection(SWT.UP);
-        sort(newColumnTableColumn_2);
-        Utils.stopCursor(schedulerConfigurationShell);
+        if (h != null) {
+            Utils.startCursor(schedulerConfigurationShell);
+            directoryTable.removeAll();
+            fillTable(directoryTable, h);
+            directoryTable.setSortDirection(SWT.UP);
+            sort(newColumnTableColumn_2);
+            Utils.stopCursor(schedulerConfigurationShell);
+        }
     }
 
     public FTPDialogListener getListener() {
