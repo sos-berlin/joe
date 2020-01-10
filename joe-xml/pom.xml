@@ -90,8 +90,6 @@
 			<artifactId>org.eclipse.jface</artifactId>
 		</dependency>
 
- 
-
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
@@ -100,11 +98,6 @@
 		<dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
 		</dependency>
 
 	</dependencies>
