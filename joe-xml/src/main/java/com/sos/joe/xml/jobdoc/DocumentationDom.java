@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -15,6 +14,9 @@ import org.jdom.JDOMException;
 import org.jdom.output.Format;
 import org.jdom.output.SAXOutputter;
 import org.jdom.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
@@ -22,7 +24,7 @@ import com.sos.joe.xml.DomParser;
 
 public class DocumentationDom extends DomParser {
 
-    private static final Logger LOGGER = Logger.getLogger(DocumentationDom.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentationDom.class);
     private static final String[] DESCRIPTION_ORDER = { "job", "releases", "resources", "configuration", "documentation" };
     private static final String[] JOB_ORDER = { "script", "process", "monitor" };
     private static final String[] RELEASE_ORDER = { "title", "author", "note", "changes" };

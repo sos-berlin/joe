@@ -5,7 +5,6 @@ import static sos.util.SOSClassUtil.getMethodName;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -34,6 +33,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.JSHelper.Basics.VersionInfo;
 import com.sos.dialog.classes.WindowsSaver;
@@ -53,7 +54,7 @@ import com.sos.joe.xml.Utils;
 public class MainWindow implements IEditorAdapter {
 
     private static final String EDITOR = "editor";
-    private static final Logger LOGGER = Logger.getLogger(MainWindow.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
     private static final String EMPTY = "";
     private static final String NEW_DOCUMENTATION_TITLE = "Unknown";
     private static Shell sShell = null;

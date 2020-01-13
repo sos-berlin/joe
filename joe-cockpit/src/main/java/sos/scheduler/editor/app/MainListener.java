@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Manifest;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.SelectionEvent;

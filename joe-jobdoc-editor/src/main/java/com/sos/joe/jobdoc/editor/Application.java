@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
@@ -45,6 +44,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.dialog.BrowserViewForm;
 import com.sos.dialog.Globals;
@@ -65,7 +66,7 @@ public class Application extends ApplicationWindow {
     private static final String conI18NKey_JOE_L_JOB_DOC_XML = "JOE_L_JobDoc.XML";
     private static final String conI18NKey_JOE_L_JOB_DOC_FORMAT = "JOE_L_JobDoc.Format";
     private static final String conI18NKey_JOE_L_JOB_DOC_DESIGN = "JOE_L_JobDoc.Design";
-    private static final Logger LOGGER = Logger.getLogger(Application.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
     private WindowsSaver objPersistenceStore;
     private String strBaseDir = "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
     private SOSCTabFolder tabFolder = null;

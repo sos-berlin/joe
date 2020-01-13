@@ -2,7 +2,6 @@ package sos.scheduler.editor.conf.forms;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -13,6 +12,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.composites.SOSTabFileOrderSource;
@@ -33,8 +34,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved {
 
     private final String conClassName = "JobChainNodesForm";
     final String conMethodName = conClassName + "::enclosing_method";
-    @SuppressWarnings("unused")
-    private static final Logger LOGGER = Logger.getLogger(JobChainNodesForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobChainNodesForm.class);
     private JobChainListener listener = null;
     private SchedulerDom dom = null;
     private CTabFolder mainTabFolder = null;

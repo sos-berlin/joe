@@ -1,17 +1,19 @@
 package com.sos.joe.jobdoc.editor.listeners;
 
 import java.util.Iterator;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sos.joe.xml.ElementWrapper;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ApplicationsListener extends JobDocBaseListener<DocumentationDom> {
 
-    private final static Logger LOGGER = Logger.getLogger(ApplicationsListener.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ApplicationsListener.class);
     private Element _application;
     private boolean _newApp;
 

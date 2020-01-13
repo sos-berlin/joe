@@ -3,13 +3,10 @@ package sos.scheduler.editor.conf.composites;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.StringReader;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
-
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -25,15 +22,16 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.jdom.Document;
-import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sos.dialog.components.SOSMenuItem;
 import com.sos.graphviz.jobchain.diagram.JobChainDiagramCreator;
 import com.sos.joe.globals.messages.ErrorLog;
 
 public class JobChainDiagramComposite extends Composite {
 
-    private static final Logger LOGGER = Logger.getLogger(JobChainDiagramComposite.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobChainDiagramComposite.class);
     private Group gJobchainDiagramm;
     private File inputFile;
     private File liveFolder;

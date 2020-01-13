@@ -1,6 +1,5 @@
 package com.sos.joe.jobdoc.editor;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -9,6 +8,9 @@ import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sos.joe.xml.Utils;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
@@ -17,7 +19,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class NoteDialog extends Dialog {
 
-    private static final Logger LOGGER = Logger.getLogger(NoteDialog.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoteDialog.class);
     private Shell _shell;
     private Image _image;
     private int _shellStyle = SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.RESIZE;

@@ -5,10 +5,12 @@ import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sos.util.SOSClassUtil;
 
 import java.io.InputStream;
@@ -18,7 +20,7 @@ import java.lang.reflect.Method;
 public class Editor {
 
     private final static String conSVNVersion = "$Id$";
-    private final static Logger LOGGER = Logger.getLogger(JOEConstants.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(JOEConstants.class);
     @SuppressWarnings("unused")
     private final String conClassName = "Editor";
     public static MainWindow objMainWindow = null;
@@ -52,7 +54,7 @@ public class Editor {
             }, objImage4Splash, objApplicationMainMethod, 2000);
         } catch (Exception e) {
             try {
-                LOGGER.fatal("sudden death", e);
+                LOGGER.error("sudden death", e);
                 LOGGER.error(e.getMessage(), e);
                 new ErrorLog("error in " + SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
             } catch (Exception ee) {

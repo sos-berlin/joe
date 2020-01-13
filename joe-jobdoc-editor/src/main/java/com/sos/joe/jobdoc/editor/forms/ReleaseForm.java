@@ -15,7 +15,6 @@ import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ReleaseForm_
 import java.text.ParseException;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -26,6 +25,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.dialog.classes.SOSGroup;
 import com.sos.dialog.classes.SOSLabel;
@@ -37,7 +38,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ReleaseForm extends JobDocBaseForm<ReleaseListener> implements IUnsaved {
 
-    private static final Logger LOGGER = Logger.getLogger(ReleaseForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReleaseForm.class);
     private Group group = null;
     private Label label = null;
     private Label label1 = null;

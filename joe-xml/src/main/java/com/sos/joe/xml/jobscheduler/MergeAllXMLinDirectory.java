@@ -9,11 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.ftp.profiles.JOEUserInfo;
@@ -26,7 +27,7 @@ import com.sos.joe.xml.Utils;
 
 public class MergeAllXMLinDirectory {
 
-    private static final Logger LOGGER = Logger.getLogger(MergeAllXMLinDirectory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MergeAllXMLinDirectory.class);
     public final static String MASK_JOB = "^.*\\.job\\.xml$";
     public final static String MASK_LOCK = "^.*\\.lock\\.xml$";
     public final static String MASK_PROCESS_CLASS = "^.*\\.process_class\\.xml$";

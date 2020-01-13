@@ -6,12 +6,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.JobsForm;
@@ -25,7 +26,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobsListener extends JOEListener {
 
-	private static final Logger LOGGER = Logger.getLogger(JobsListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JobsListener.class);
 	private SchedulerDom _dom = null;
 	private ISchedulerUpdate _main = null;
 	private Element _config = null;
@@ -470,7 +471,7 @@ public class JobsListener extends JOEListener {
 			}
 			_main.expandItem(Utils.getAttributeValue("name", job));
 		} catch (Exception e) {
-			LOGGER.error(e);
+			LOGGER.error(e.getMessage(), e);
 			try {
 				new ErrorLog("error in " + getMethodName() + " ; could not start assistent.", e);
 			} catch (Exception ee) {

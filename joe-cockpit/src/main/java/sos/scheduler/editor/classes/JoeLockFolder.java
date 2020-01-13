@@ -7,18 +7,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.Instant;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.MainWindow;
 
 public class JoeLockFolder {
 
-    private static final Logger  LOGGER    = Logger.getLogger(JoeLockFolder.class);
+    private static final Logger  LOGGER    = LoggerFactory.getLogger(JoeLockFolder.class);
     private static final String DEFAUL_TIME_SINCE = "2000-01-01T00:00:00.000Z";
     private static final String JOE_XML_LOCK = "joe.xml.lock";
     String folderName;

@@ -3,7 +3,6 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -24,6 +23,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.classes.JoeLockFolder;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
@@ -41,7 +42,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 public class TabbedContainer implements IContainer, IEditorAdapter {
 
     private static final String IMAGE_EDITOR_SMALL_PNG = "/sos/scheduler/editor/editor-small.png";
-    private static final Logger LOGGER = Logger.getLogger(TabbedContainer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TabbedContainer.class);
     private static final String NEW_SCHEDULER_TITLE = "Unknown";
     private static final String NEW_DOCUMENTATION_TITLE = "Unknown";
     private static final String NEW_DETAIL_TITLE = "Unknown";

@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.composites;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -13,6 +12,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
@@ -24,7 +25,7 @@ import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 public class JobMainComposite extends SOSJOEMessageCodes {
 
     private final int intNoOfLabelColumns = 2;
-    private static final Logger LOGGER = Logger.getLogger(JobMainComposite.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobMainComposite.class);
     private JobListener jobDataProvider = null;
     private Group gMain = null;
     private Text tbxJobName = null;

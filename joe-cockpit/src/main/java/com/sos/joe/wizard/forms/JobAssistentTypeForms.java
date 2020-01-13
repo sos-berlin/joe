@@ -1,6 +1,5 @@
 package com.sos.joe.wizard.forms;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -11,6 +10,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.conf.listeners.JobListener;
 
@@ -26,7 +27,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 /** @author Mueruevet Oeksuez */
 public class JobAssistentTypeForms extends JobWizardBaseForm {
 
-    private static final Logger LOGGER = Logger.getLogger(JobAssistentTypeForms.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobAssistentTypeForms.class);
     private static final String TAG_NAME_JOB = "job";
     private boolean isStandaloneJob = true;
     private Button radStandalonejob = null;
