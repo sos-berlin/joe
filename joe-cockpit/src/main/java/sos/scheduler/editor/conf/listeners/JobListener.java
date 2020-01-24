@@ -795,7 +795,7 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
                 // do nothing
             }
             MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
-            LOGGER.info(e);
+            LOGGER.info(e.getMessage(), e);
         }
     }
 

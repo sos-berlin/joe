@@ -58,7 +58,7 @@ public class IOUtils {
                     objVFS = VFSFactory.getHandler("local");
                     objFileSystemHandler = (ISOSVfsFileTransfer) objVFS;
                 } catch (Exception e) {
-                    LOGGER.error(e);
+                    LOGGER.error(e.getMessage(), e);
                     return null;
                 }
                 SchedulerObjectFactory objFactory = null;
