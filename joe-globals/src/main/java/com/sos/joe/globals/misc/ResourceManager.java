@@ -4,18 +4,19 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class ResourceManager extends SWTResourceManager {
 
-    private static final Logger LOGGER = Logger.getLogger(ResourceManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceManager.class);
     private static final int MISSING_IMAGE_SIZE = 10;
     private static HashMap<String, Image> m_ClassImageMap = new HashMap<String, Image>();
 

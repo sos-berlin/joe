@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.JSHelper.DataElements.JSDataElementDate;
@@ -21,7 +21,7 @@ import com.sos.resources.SOSProductionResource;
 
 public class SourceGenerator extends JSToolBox {
 
-    private static final Logger LOGGER = Logger.getLogger(SourceGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SourceGenerator.class);
     private static final String CLASSNAME = "SourceGenerator";
     private static final String XSLT_PARM_EXTENDS_CLASSNAME = "ExtendsClassName";
     private static final String XSLT_PARM_CLASSNAME_EXTENSION = "ClassNameExtension";
@@ -64,7 +64,6 @@ public class SourceGenerator extends JSToolBox {
     }
 
     public void execute() {
-        LOGGER.setLevel(Level.DEBUG);
         LOGGER.info("Starting transformation");
         conResource4XslPathName = SOSProductionResource.basePackage() + "/xsl/";
         String strMessage = "";

@@ -9,7 +9,6 @@ import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesFo
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesForm_Title;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_ReleasesForm_Releases;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -19,6 +18,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.dialog.classes.SOSGroup;
 import com.sos.joe.jobdoc.editor.listeners.ReleasesListener;
@@ -27,7 +28,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
 
-    private static final Logger LOGGER = Logger.getLogger(ReleasesForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReleasesForm.class);
     private Group group = null;
     private Table tReleases = null;
     private Button bNew = null;

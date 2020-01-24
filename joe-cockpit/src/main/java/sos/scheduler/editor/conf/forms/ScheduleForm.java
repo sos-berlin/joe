@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -23,6 +22,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
@@ -37,7 +38,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ScheduleForm extends SOSJOEMessageCodes {
 
-    private static final Logger LOGGER = Logger.getLogger(ScheduleForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleForm.class);
     private ScheduleListener listener = null;
     private Group scheduleGroup = null;
     private SchedulerDom dom = null;

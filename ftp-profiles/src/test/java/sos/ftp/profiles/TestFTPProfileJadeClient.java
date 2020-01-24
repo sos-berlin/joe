@@ -12,8 +12,9 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
@@ -22,7 +23,7 @@ public class TestFTPProfileJadeClient {
 
     protected Properties ftpProperties;
     protected FTPProfile ftpProfile;
-    private final static Logger LOGGER = Logger.getLogger(TestFTPProfileJadeClient.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TestFTPProfileJadeClient.class);
 
     private void cleanupFolder(String dir) {
         SOSFileEntry sosFileEntry = new SOSFileEntry();

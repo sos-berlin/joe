@@ -3,12 +3,13 @@ package sos.scheduler.editor.conf.listeners;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.IProcessClassDataProvider;
 import sos.scheduler.editor.app.MainWindow;
@@ -21,7 +22,7 @@ import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class JobListener extends JOEListener implements IProcessClassDataProvider {
 
-    private static final Logger LOGGER = Logger.getLogger(JobListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobListener.class);
     private static String library = "";
     public final String[] _languagesJob = LanguageDescriptorList.getLanguages4APIJobs();
     public final String[] _languagesMonitor = LanguageDescriptorList.getLanguages4Monitor();

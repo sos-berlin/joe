@@ -2,7 +2,6 @@ package com.sos.joe.jobdoc.editor.listeners;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -10,6 +9,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.TreeData;
@@ -40,7 +42,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class DocumentationListener extends JobDocBaseListener<DocumentationDom> implements IUpdateTree {
 
-    private final static Logger LOGGER = Logger.getLogger(DocumentationListener.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DocumentationListener.class);
     private TreeItem _profiles;
     private TreeItem _connections;
     private static ArrayList _IDs;

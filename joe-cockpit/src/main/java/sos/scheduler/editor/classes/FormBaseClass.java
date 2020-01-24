@@ -1,6 +1,5 @@
 package sos.scheduler.editor.classes;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.GridData;
@@ -9,6 +8,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
@@ -25,7 +26,7 @@ public class FormBaseClass {
     protected Cursor objLastCursor = null;
     protected FormBaseClass objParentForm = this;
     protected final int intComboBoxStyle = SWT.NONE;
-    private static final Logger LOGGER = Logger.getLogger(FormBaseClass.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FormBaseClass.class);
 
     protected FormBaseClass(Composite parent, int style) {
         shell = parent.getShell();

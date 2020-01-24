@@ -17,7 +17,6 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -42,6 +41,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import sos.scheduler.editor.app.Utils;
@@ -70,7 +71,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class JobAssistentImportJobParamsForm {
 
-    private static final Logger LOGGER = Logger.getLogger(JobAssistentImportJobParamsForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobAssistentImportJobParamsForm.class);
     private static final String KEY_PARAMETER_DESCRIPTION_ = "parameter_description_";
     private static final String KEY_PARAMETER_DESCRIPTION_EN = "parameter_description_en";
     private static final String KEY_PARAMETER_DESCRIPTION_DE = "parameter_description_de";

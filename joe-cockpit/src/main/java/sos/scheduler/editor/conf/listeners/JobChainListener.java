@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
@@ -21,6 +20,8 @@ import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.output.DOMOutputter;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -44,7 +45,7 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
     protected Element _chain = null;
     protected Element _node = null;
     protected Element _source = null;
-    private static final Logger LOGGER = Logger.getLogger(JobChainListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobChainListener.class);
     private Element _config = null;
     private String[] _states = null;
     private final SOSString sosString = new SOSString();

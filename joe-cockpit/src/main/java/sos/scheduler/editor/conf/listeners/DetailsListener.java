@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.StringReader;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -12,6 +11,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
@@ -27,7 +28,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class DetailsListener {
 
-    private static final Logger LOGGER = Logger.getLogger(DetailsListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DetailsListener.class);
     private String jobChainname = null;
     private String state = null;
     private Element noteEN = null;
