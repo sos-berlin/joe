@@ -2,7 +2,6 @@ package sos.scheduler.editor.conf.container;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
@@ -16,6 +15,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
@@ -33,7 +34,7 @@ import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 
 public class JobDocumentation extends FormBaseClass {
 
-    private static final Logger LOGGER = Logger.getLogger(JobDocumentation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobDocumentation.class);
     private Group group = null;
     private Group gMain = null;
     private Group gDescription = null;

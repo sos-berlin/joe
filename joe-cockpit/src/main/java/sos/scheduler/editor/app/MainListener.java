@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Manifest;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.SelectionEvent;
@@ -16,15 +15,15 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import sos.connection.SOSConnection;
-import sos.scheduler.editor.conf.listeners.JOEListener;
-import sos.util.SOSString;
-
 import com.sos.JSHelper.Basics.VersionInfo;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.TextDialog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.IOUtils;
+
+import sos.connection.SOSConnection;
+import sos.scheduler.editor.conf.listeners.JOEListener;
+import sos.util.SOSString;
 
 public class MainListener extends JOEListener {
 

@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.forms;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -15,6 +14,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.classes.LanguageSelector;
 import sos.scheduler.editor.conf.container.JobDotNetAPI;
@@ -37,7 +38,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
     protected LanguageSelector languageSelector = null;
     protected CTabFolder tabFolder = null;
     protected JobScript objJobScript = null;
-    private static final Logger LOGGER = Logger.getLogger(ScriptJobMainForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptJobMainForm.class);
     private final int intNoOfLabelColumns = 2;
     private boolean init = true;
     private Composite tabItemJavaAPIComposite = null;

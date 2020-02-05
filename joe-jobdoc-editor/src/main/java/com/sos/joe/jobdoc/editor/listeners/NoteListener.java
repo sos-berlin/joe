@@ -2,8 +2,10 @@ package com.sos.joe.jobdoc.editor.listeners;
 
 import java.util.Iterator;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sos.JSHelper.Options.JSOptionsClass;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Utils;
@@ -11,7 +13,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class NoteListener extends JobDocBaseListener<DocumentationDom> {
 
-    private static final Logger LOGGER = Logger.getLogger(NoteListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoteListener.class);
     private final String _name;
     private final boolean _optional;
     private String[] _languages = { "de", "en", "fr", "it", "es" };

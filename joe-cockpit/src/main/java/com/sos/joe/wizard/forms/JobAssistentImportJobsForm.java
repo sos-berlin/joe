@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -36,6 +35,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.forms.DetailForm;
@@ -56,7 +58,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobAssistentImportJobsForm {
 
-    private static final Logger LOGGER = Logger.getLogger(JobAssistentImportJobsForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobAssistentImportJobsForm.class);
     private static final String EMPTY_STRING = "";
     private Shell shell = null;
     private Display display = null;

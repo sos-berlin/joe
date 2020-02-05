@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.sos-berlin</groupId>
-        <artifactId>joe</artifactId>
+	<parent>
+		<groupId>com.sos-berlin</groupId>
+		<artifactId>joe</artifactId>
         <version>1.14.0-SNAPSHOT</version>
-    </parent>
+	</parent>
 
 	<groupId>com.sos-berlin.joe</groupId>
 	<artifactId>joe-cockpit</artifactId>
@@ -99,20 +98,20 @@
 			<artifactId>commons-codec</artifactId>
 		</dependency>
 
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.swt</groupId>
 			<artifactId>org.eclipse.swt.${swtSuffix}</artifactId>
 		</dependency>
 
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+		</dependency>
 
 
 		<dependency>
@@ -120,10 +119,10 @@
 			<artifactId>commons-net</artifactId>
 		</dependency>
 
-        <dependency>
-            <groupId>webdavclient4j</groupId>
-            <artifactId>webdavclient4j-core</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>webdavclient4j</groupId>
+			<artifactId>webdavclient4j-core</artifactId>
+		</dependency>
 
 		<dependency>
 			<!-- wird verwendet im Parser für den wizzard - jobdoc -->
@@ -157,27 +156,26 @@
 			<artifactId>common</artifactId>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/jsch-agent-proxy/jsch-agent-proxy -->
-<dependency>
-    <groupId>jsch-agent-proxy</groupId>
-    <artifactId>jsch-agent-proxy</artifactId>
-    <version>0.0.4</version>
-</dependency>
-<dependency>
-    <groupId>com.jcraft</groupId>
-    <artifactId>jsch.agentproxy.connector-factory</artifactId>
-    <version>0.0.9</version>
-</dependency>
-
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch.agentproxy.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch.agentproxy.jsch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch.agentproxy.sshagent</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch.agentproxy.connector-factory</artifactId>
+        </dependency>
 
 		<dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
 		</dependency>
 
 		<dependency>

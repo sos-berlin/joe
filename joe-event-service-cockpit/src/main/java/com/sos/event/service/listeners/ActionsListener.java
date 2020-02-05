@@ -3,13 +3,14 @@ package com.sos.event.service.listeners;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.event.service.actions.IUpdateTree;
 import com.sos.event.service.forms.ActionForm;
@@ -30,7 +31,7 @@ import com.sos.joe.xml.Events.ActionsDom;
 
 public class ActionsListener implements IUpdateTree {
 
-    private static final Logger LOGGER = Logger.getLogger(ActionsListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActionsListener.class);
     private ActionsDom _dom;
     private ActionsForm _gui;
     public static String ACTION_PREFIX = "Action: ";

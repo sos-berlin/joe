@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -18,6 +17,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Attribute;
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.ClusterForm;
@@ -71,7 +73,7 @@ public class SchedulerListener {
     private static final String conItemDataKeyMAX_OCCUR = "max_occur";
     private static final String conItemDataKeyKEY = "key";
     private static final String conItemDataKeyCOPY_ELEMENT = "copy_element";
-    private static final Logger LOGGER = Logger.getLogger(SchedulerListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerListener.class);
     private final String conClassName = this.getClass().getSimpleName();
     private SchedulerDom objSchedulerDom = null;
     private SchedulerForm objSchedulerForm = null;

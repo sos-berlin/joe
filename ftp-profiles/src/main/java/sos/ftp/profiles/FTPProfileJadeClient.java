@@ -147,6 +147,9 @@ public class FTPProfileJadeClient {
             ftpClient = (ISOSVfsFileTransfer) oVFS;
             oVFS.connect(virtuelFileSystemOptions);
             oVFS.authenticate(virtuelFileSystemOptions);
+            if (ftpProfile.isPassiveMode()){
+                 ftpClient.passive();
+            }
         }
     }
 

@@ -1,9 +1,10 @@
 package com.sos.joe.globals.messages;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.util.SOSClassUtil;
 import sos.util.SOSStandardLogger;
@@ -14,7 +15,7 @@ import com.sos.joe.globals.options.Options;
 public class ErrorLog extends Exception {
 
     private static final long serialVersionUID = -4414810697191992062L;
-    private static final Logger LOGGER = Logger.getLogger(ErrorLog.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorLog.class);
     private static Shell sShell = null;
 
     public ErrorLog(final String msg) {

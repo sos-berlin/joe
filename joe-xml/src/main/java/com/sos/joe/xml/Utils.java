@@ -3,7 +3,6 @@ package com.sos.joe.xml;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -26,6 +25,9 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sos.scheduler.editor.app.SchedulerEditorFontDialog;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
@@ -42,7 +44,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class Utils {
 
-    private static final Logger LOGGER = Logger.getLogger(Utils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
     private static final String STR_DEFAULT = "";
     private static final String INT_DEFAULT = null;
     private static final String BOOLEAN_DEFAULT = null;

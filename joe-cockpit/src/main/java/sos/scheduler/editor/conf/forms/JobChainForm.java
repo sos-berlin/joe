@@ -2,7 +2,6 @@ package sos.scheduler.editor.conf.forms;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -18,6 +17,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
@@ -38,7 +39,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 
     private final String conClassName = "JobChainForm";
     final String conMethodName = conClassName + "::enclosing_method";
-    private static final Logger LOGGER = Logger.getLogger(JobChainForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobChainForm.class);
     private JobChainListener jobchainDataProvider = null;
     private JobChainFileWatchingListener jobChainFileWatchingListener;
     private Group jobChainGroup = null;

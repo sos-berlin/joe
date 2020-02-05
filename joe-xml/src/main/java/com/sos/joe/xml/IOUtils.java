@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
@@ -15,6 +14,8 @@ import org.jdom.JDOMException;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.util.SOSFile;
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
@@ -33,7 +34,7 @@ import com.sos.scheduler.model.SchedulerObjectFactory;
 
 public class IOUtils {
 
-    private static final Logger LOGGER = Logger.getLogger(IOUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IOUtils.class);
 
     public static SchedulerHotFolder openHotFolder(final String filename) {
         SchedulerHotFolder objSchedulerHotFolder = null;
@@ -57,7 +58,7 @@ public class IOUtils {
                     objVFS = VFSFactory.getHandler("local");
                     objFileSystemHandler = (ISOSVfsFileTransfer) objVFS;
                 } catch (Exception e) {
-                    LOGGER.error(e);
+                    LOGGER.error(e.getMessage(), e);
                     return null;
                 }
                 SchedulerObjectFactory objFactory = null;

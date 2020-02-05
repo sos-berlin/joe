@@ -2,7 +2,6 @@ package com.sos.event.service.forms;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -19,6 +18,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.util.SOSString;
 
@@ -28,7 +29,7 @@ import com.sos.joe.globals.misc.ResourceManager;
 
 class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 
-    private static final Logger LOGGER = Logger.getLogger(LogicOperationDialog.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogicOperationDialog.class);
     private final Object result = null;
     private Text txt = null;
     private Text txtExpression = null;

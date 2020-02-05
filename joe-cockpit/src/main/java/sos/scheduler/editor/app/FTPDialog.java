@@ -3,7 +3,6 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -25,6 +24,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sos.ftp.profiles.FTPDialogListener;
 import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.ftp.profiles.FTPProfilePicker;
@@ -47,7 +49,7 @@ public abstract class FTPDialog {
     protected SOSString sosString = new SOSString();
     protected Text txtFilename = null;
     protected FTPProfileJadeClient ftpProfileJadeClient = null;
-    private static final Logger LOGGER = Logger.getLogger(FTPDialog.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FTPDialog.class);
     private Group schedulerGroup = null;
     private Text txtLog = null;
     private Button butChangeDir = null;

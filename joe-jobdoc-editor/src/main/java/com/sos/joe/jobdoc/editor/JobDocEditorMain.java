@@ -1,8 +1,9 @@
 package com.sos.joe.jobdoc.editor;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.dialog.components.SOSPreferenceStore;
 import com.sos.dialog.message.ErrorLog;
@@ -11,7 +12,7 @@ import com.sos.i18n.annotation.I18NResourceBundle;
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class JobDocEditorMain {
 
-    private static final Logger LOGGER = Logger.getLogger(JobDocEditorMain.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobDocEditorMain.class);
     private static Display display = null;
     public static MainWindow objMainWindow = null;
 

@@ -3,11 +3,12 @@ package sos.scheduler.editor.conf.listeners;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
@@ -15,7 +16,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class CommandsListener {
 
-    private static final Logger LOGGER = Logger.getLogger(JOEListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JOEListener.class);
     private SchedulerDom _dom;
     private Element _config;
     private ISchedulerUpdate _main;

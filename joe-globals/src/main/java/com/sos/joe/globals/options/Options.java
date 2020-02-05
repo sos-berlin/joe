@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
@@ -18,6 +17,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.util.SOSClassUtil;
 
@@ -38,7 +39,7 @@ public class Options extends JSToolBox {
     private static final String ENV_VAR_SCHEDULER_HOME = "SCHEDULER_HOME";
     private static final String LANGUAGE_EN = "en";
     private static final String ENVIRONMENT_VARIABLE_SOS_LOCALE = "SOS_LOCALE";
-    private static final Logger LOGGER = Logger.getLogger(Options.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Options.class);
     private static Properties JOESettingsDefaults = null;
     private static Properties _properties = null;
     private static boolean _changed = false;

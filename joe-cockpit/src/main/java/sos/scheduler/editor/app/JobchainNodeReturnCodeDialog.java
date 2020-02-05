@@ -1,6 +1,5 @@
 package sos.scheduler.editor.app;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -14,6 +13,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sos.scheduler.editor.classes.returncodes.JobchainListOfReturnCodeElements;
 import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeAddOrderElement;
 import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeNextStateElement;
@@ -29,7 +31,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
 
     protected CTabFolder tabFolder = null;
     protected Group mainGroup = null;
-    private static final Logger LOGGER = Logger.getLogger(ScriptJobMainForm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptJobMainForm.class);
     private Composite tabItemNextStateComposite = null;
     private Composite tabControlComposite = null;
     private Composite tabItemAddOrderComposite = null;

@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.composites;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.HelpEvent;
@@ -23,6 +22,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SchedulerEditorFontDialog;
@@ -34,7 +35,7 @@ import com.sos.joe.globals.messages.Messages;
 /** @author Uwe Risse */
 public class TextArea extends StyledText {
 
-    private static final Logger LOGGER = Logger.getLogger(TextArea.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TextArea.class);
     private String strTagName = "job";
     private String strAttributeName = "";
     private enuSourceTypes enuWhatSourceType = TextArea.enuSourceTypes.ScriptSource;

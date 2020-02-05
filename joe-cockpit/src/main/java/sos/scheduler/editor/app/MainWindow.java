@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -32,6 +31,8 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.ftp.profiles.JOEUserInfo;
@@ -62,7 +63,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class MainWindow {
 
-    private static final Logger LOGGER = Logger.getLogger(MainWindow.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
     private static final String DOT = System.getProperty("os.name").startsWith("Windows") ? "dot.exe" : "dot";
     private static final String NEWLINE_TAB = "n\t";
     private static final String PROPERTY_NAME_EDITOR_JOB_SHOW_WIZARD = "editor.job.show.wizard";
