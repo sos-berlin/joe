@@ -9,13 +9,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import sos.ftp.profiles.FTPProfileJadeClient;
+
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
+import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
+
+import sos.ftp.profiles.FTPProfileJadeClient;
 
 public class FTPDialogSaveAs extends FTPDialog {
 
@@ -91,7 +94,7 @@ public class FTPDialogSaveAs extends FTPDialog {
         String localParentPath = new File(localFullPath).getParent();
         String localFilename = new File(MainWindow.getContainer().getCurrentEditor().getFilename()).getName();
         String remoteFilename = getNewFileName(localFilename, txtFilename.getText());
-        sosRemoteFileEntry = new SOSFileEntry();
+        sosRemoteFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         sosRemoteFileEntry.setDirectory(false);
         sosRemoteFileEntry.setFilename(remoteFilename);
         sosRemoteFileEntry.setParentPath(remoteDir);
@@ -104,7 +107,7 @@ public class FTPDialogSaveAs extends FTPDialog {
         String remoteDir = txtDir.getText() + "";
         String localFullPath = new File(MainWindow.getContainer().getCurrentEditor().getFilename()).getCanonicalPath();
         String remoteFilename = txtFilename.getText();
-        sosRemoteFileEntry = new SOSFileEntry();
+        sosRemoteFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         sosRemoteFileEntry.setDirectory(true);
         sosRemoteFileEntry.setFilename(remoteFilename);
         sosRemoteFileEntry.setParentPath(remoteDir);

@@ -3,6 +3,7 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -27,17 +28,19 @@ import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sos.VirtualFileSystem.common.SOSFileEntry;
+import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+
 import sos.ftp.profiles.FTPDialogListener;
 import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.ftp.profiles.FTPProfilePicker;
 import sos.ftp.profiles.JOEUserInfo;
 import sos.util.SOSString;
-import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.Messages;
-import com.sos.joe.globals.misc.ResourceManager;
-import com.sos.joe.globals.options.Options;
-import com.sos.VirtualFileSystem.common.SOSFileEntry;
-import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public abstract class FTPDialog {
 
@@ -470,7 +473,7 @@ public abstract class FTPDialog {
             }
             listOfSortData = sos.util.SOSSort.sortArrayList(listOfSortData, col.getText());
             directoryTable.removeAll();
-            SOSFileEntry sosFileEntryDirup = new SOSFileEntry();
+            SOSFileEntry sosFileEntryDirup = new SOSFileEntry(EntryType.FILESYSTEM);
             sosFileEntryDirup.setDirectory(true);
             sosFileEntryDirup.setFilename("..");
             sosFileEntryDirup.setFilesize(0);
