@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
+import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
 
 public class TestFTPProfileJadeClient {
 
@@ -26,7 +27,7 @@ public class TestFTPProfileJadeClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(TestFTPProfileJadeClient.class);
 
     private void cleanupFolder(String dir) {
-        SOSFileEntry sosFileEntry = new SOSFileEntry();
+        SOSFileEntry sosFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         try {
             sosFileEntry.setDirectory(false);
@@ -61,7 +62,7 @@ public class TestFTPProfileJadeClient {
         String path = dir + "/" + folder;
         cleanupFolder(path);
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
-        SOSFileEntry sosFileEntry = new SOSFileEntry();
+        SOSFileEntry sosFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         sosFileEntry.setDirectory(true);
         sosFileEntry.setFilename(folder);
         sosFileEntry.setParentPath(dir);
@@ -103,7 +104,7 @@ public class TestFTPProfileJadeClient {
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(dir, folder);
         assertTrue("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(path));
-        SOSFileEntry sosFileEntry = new SOSFileEntry();
+        SOSFileEntry sosFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         sosFileEntry.setDirectory(true);
         sosFileEntry.setFilename(folder);
         sosFileEntry.setParentPath(dir);
@@ -120,7 +121,7 @@ public class TestFTPProfileJadeClient {
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(dir, folder);
         assertTrue("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(path));
-        SOSFileEntry sosFileEntry = new SOSFileEntry();
+        SOSFileEntry sosFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         sosFileEntry.setDirectory(true);
         sosFileEntry.setFilename(folder);
         sosFileEntry.setParentPath(dir);
@@ -215,7 +216,7 @@ public class TestFTPProfileJadeClient {
         targetFile.delete();
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, new JOEUserInfo());
         ftpProfileJadeClient.mkdir(sourceDir, folder);
-        SOSFileEntry sosFileEntry = new SOSFileEntry();
+        SOSFileEntry sosFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         sosFileEntry.setDirectory(true);
         sosFileEntry.setFilename(filename);
         sosFileEntry.setParentPath(path);

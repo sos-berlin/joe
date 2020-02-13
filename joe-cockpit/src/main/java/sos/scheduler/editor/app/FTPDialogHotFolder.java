@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
+import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -92,7 +93,7 @@ public class FTPDialogHotFolder extends FTPDialog {
             SOSFileEntry sosFileEntry = null;
             sosFileEntry = getSosFileEntryFromTable();
             if (sosFileEntry == null) {
-                sosFileEntry = new SOSFileEntry();
+                sosFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
                 sosFileEntry.setDirectory(true);
                 sosFileEntry.setFilename(new File(txtDir.getText()).getName());
                 sosFileEntry.setParentPath(new File(txtDir.getText()).getParent());

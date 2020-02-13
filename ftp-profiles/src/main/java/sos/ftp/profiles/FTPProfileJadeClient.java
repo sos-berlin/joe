@@ -3,6 +3,7 @@ package sos.ftp.profiles;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.swt.widgets.Shell;
@@ -17,8 +18,8 @@ import com.sos.VirtualFileSystem.Factory.VFSFactory;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
 import com.sos.VirtualFileSystem.Options.SOSConnection2OptionsAlternate;
-import com.sos.VirtualFileSystem.common.SOSFileEntries;
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
+import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
 
 public class FTPProfileJadeClient {
 
@@ -147,8 +148,8 @@ public class FTPProfileJadeClient {
             ftpClient = (ISOSVfsFileTransfer) oVFS;
             oVFS.connect(virtuelFileSystemOptions);
             oVFS.authenticate(virtuelFileSystemOptions);
-            if (ftpProfile.isPassiveMode()){
-                 ftpClient.passive();
+            if (ftpProfile.isPassiveMode()) {
+                ftpClient.passive();
             }
         }
     }
@@ -168,7 +169,12 @@ public class FTPProfileJadeClient {
 
     public Vector<String> getList(String remoteDir) throws RuntimeException, Exception {
         connect();
-        return ftpClient.nList(remoteDir);
+        Vector<String> result = new Vector<String>();
+        List<SOSFileEntry> entries = ftpClient.nList(remoteDir, false, true);
+        for (SOSFileEntry entry : entries) {
+            result.add(entry.getFullPath());
+        }
+        return result;
     }
 
     public HashMap<String, SOSFileEntry> getDirectoryContent(String remoteDir) throws Exception {
@@ -176,14 +182,13 @@ public class FTPProfileJadeClient {
         if ("".equals(remoteDir)) {
             remoteDir = "/";
         }
-        
+
         if (!ftpClient.isDirectory(remoteDir)) {
             return null;
         }
-        ftpClient.nList(remoteDir);
-        SOSFileEntries sosFileList = ftpClient.getSOSFileEntries();
+        List<SOSFileEntry> entries = ftpClient.nList(remoteDir, false, true);
         HashMap<String, SOSFileEntry> h = new HashMap<String, SOSFileEntry>();
-        for (SOSFileEntry sosFileListEntry : sosFileList) {
+        for (SOSFileEntry sosFileListEntry : entries) {
             String filename = sosFileListEntry.getFilename();
             if (!".".equals(filename)) {
                 h.put(filename, sosFileListEntry);
@@ -196,13 +201,12 @@ public class FTPProfileJadeClient {
         connect();
         if (sosFileEntry.isDirectory()) {
             ftpClient.changeWorkingDirectory(sosFileEntry.getParentPath());
-            ftpClient.nList(sosFileEntry.getFilename());
-            SOSFileEntries sosFileList = ftpClient.getSOSFileEntries();
-            if (sosFileList.size() == 0) {
+            List<SOSFileEntry> entries = ftpClient.nList(sosFileEntry.getFilename(), false, true);
+            if (entries.size() == 0) {
                 ftpClient.rmdir(sosFileEntry.getFilename());
             }
         } else {
-            ftpClient.delete(sosFileEntry.getFullPath());
+            ftpClient.delete(sosFileEntry.getFullPath(), true);
         }
     }
 
@@ -223,7 +227,7 @@ public class FTPProfileJadeClient {
     }
 
     public void removeFile(String dir, String filename) throws Exception {
-        SOSFileEntry sosFileEntry = new SOSFileEntry();
+        SOSFileEntry sosFileEntry = new SOSFileEntry(EntryType.FILESYSTEM);
         sosFileEntry.setFilename(filename);
         sosFileEntry.setParentPath(dir);
         removeFile(sosFileEntry);
