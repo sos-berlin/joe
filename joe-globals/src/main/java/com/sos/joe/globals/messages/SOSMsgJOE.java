@@ -37,11 +37,8 @@ public class SOSMsgJOE extends SOSMsgControl {
 
     public SOSMsgJOE(String pstrMessageCode) {
         super(pstrMessageCode);
-        if (this.Messages == null) {
+        if (getMessages() == null) {
             super.setMessageResource("JOEMessages");
-            this.Messages = super.Messages;
-        } else {
-            super.Messages = this.Messages;
         }
     }
 
@@ -248,11 +245,10 @@ public class SOSMsgJOE extends SOSMsgControl {
                 Runtime.getRuntime().exec(Options.getBrowserExec(url, lang));
             }
         } catch (Exception e) {
-            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
-                    + com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
-            ErrorLog.message(
-                    com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
-                    SWT.ICON_ERROR | SWT.OK);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; " + com.sos.joe.globals.messages.Messages.getString(
+                    "MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
+            ErrorLog.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e
+                    .getMessage() }), SWT.ICON_ERROR | SWT.OK);
         }
     }
 
