@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.sos.DataExchange.JadeEngine;
 import com.sos.DataExchange.Options.JADEOptions;
 import com.sos.JSHelper.Options.SOSOptionJadeOperation.enuJadeOperations;
-import com.sos.JSHelper.Options.SOSOptionTransferType.enuTransferTypes;
+import com.sos.JSHelper.Options.SOSOptionTransferType.TransferTypes;
 import com.sos.VirtualFileSystem.DataElements.SOSFileList;
 import com.sos.VirtualFileSystem.DataElements.SOSFileListEntry;
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
@@ -25,8 +25,8 @@ public class FTPProfileJadeClient {
 
     protected ISOSVFSHandler oVFS = null;
     protected ISOSVfsFileTransfer ftpClient = null;
-    protected enuTransferTypes enuSourceTransferType = enuTransferTypes.local;
-    protected enuTransferTypes enuTargetTransferType = enuTransferTypes.local;
+    protected TransferTypes enuSourceTransferType = TransferTypes.local;
+    protected TransferTypes enuTargetTransferType = TransferTypes.local;
     private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS =
             "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
     private JADEOptions jadeOptions;
@@ -94,7 +94,7 @@ public class FTPProfileJadeClient {
     private void connect() throws RuntimeException, Exception {
         if (oVFS == null) {
             jadeOptions = new JADEOptions();
-            enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
+            enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
             virtuelFileSystemOptions = jadeOptions.getConnectionOptions().getSource();
             virtuelFileSystemOptions.host.setValue(ftpProfile.getHost());
             virtuelFileSystemOptions.port.setValue(ftpProfile.getPort());
@@ -243,7 +243,7 @@ public class FTPProfileJadeClient {
 
     public void copyLocalFileToRemote(String localDir, String targetDir, String filename) throws Exception {
         jadeOptions = new JADEOptions();
-        enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
+        enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getTarget().directory.setValue(targetDir);
         jadeOptions.getTarget().host.setValue(ftpProfile.getHost());
         jadeOptions.filePath.setValue(filename);
@@ -292,7 +292,7 @@ public class FTPProfileJadeClient {
     public void copyLocalFilesToRemote(String sourceDir, String targetDir, String sourceHotFolder) throws Exception {
         jadeOptions = new JADEOptions();
         String remoteDir = targetDir + "/" + sourceHotFolder;
-        enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
+        enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getSource().directory.setValue(sourceDir);
         jadeOptions.getSource().protocol.setValue("local");
         jadeOptions.getTarget().directory.setValue(remoteDir);
@@ -332,7 +332,7 @@ public class FTPProfileJadeClient {
 
     public File copyRemoteFileToLocal(SOSFileEntry sosFileEntry) throws Exception {
         jadeOptions = new JADEOptions();
-        enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
+        enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getSource().directory.setValue(sosFileEntry.getParentPath());
         jadeOptions.getSource().host.setValue(ftpProfile.getHost());
         jadeOptions.filePath.setValue(sosFileEntry.getFilename());
@@ -382,7 +382,7 @@ public class FTPProfileJadeClient {
 
     private void removeLocalHotFolderFiles(String sourceDir) throws Exception {
         jadeOptions = new JADEOptions();
-        enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
+        enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.protocol.setValue("local");
         jadeOptions.getConnectionOptions().getSource().protocol.setValue("local");
         jadeOptions.filePath.setValue("");
@@ -404,7 +404,7 @@ public class FTPProfileJadeClient {
             removeLocalHotFolderFiles(localDir);
         } catch (Exception e) {
         }
-        enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol());
+        enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getSource().directory.setValue(remoteDir);
         jadeOptions.getSource().host.setValue(ftpProfile.getHost());
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
