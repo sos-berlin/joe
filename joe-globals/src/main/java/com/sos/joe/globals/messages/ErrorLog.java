@@ -10,7 +10,6 @@ import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.joe.globals.options.Options;
 
 import sos.util.SOSClassUtil;
-import sos.util.SOSStandardLogger;
 
 public class ErrorLog extends Exception {
 
@@ -96,10 +95,6 @@ public class ErrorLog extends Exception {
             System.out.println(e.getMessage());
         }
         return s;
-    }
-
-    public static SOSStandardLogger getLogger() {
-        return null;
     }
 
     public static Shell getSShell() {
