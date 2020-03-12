@@ -1,22 +1,24 @@
 package sos.ftp.profiles;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Properties;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
 
 import org.eclipse.swt.SWT;
-
-import sos.settings.SOSProfileSettings;
-import sos.util.SOSLogger;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import sos.settings.SOSProfileSettings;
 
 public class FTPDialogListener {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FTPDialogListener.class);
     private String[] profileNames = null;
     private HashMap<String, FTPProfile> profiles = null;
     private FTPProfile currProfile = null;
@@ -30,18 +32,18 @@ public class FTPDialogListener {
 
     public FTPDialogListener(FTPProfile profile, String profilename) {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             currProfile = profile;
             currProfileName = profilename;
             profiles = new HashMap<String, FTPProfile>();
             profiles.put(profilename, profile);
         } catch (Exception e) {
-            FTPProfile.log("error in FTPDialogListener,  cause: " + e.toString(), 1);
+            LOGGER.error("error in FTPDialogListener,  cause: " + e.toString(), e);
         }
     }
 
     public FTPDialogListener(File configfile) throws Exception {
-        FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+        LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
         try {
             configFile = configfile.getCanonicalPath();
             if (!new File(configFile).exists()) {
@@ -65,8 +67,8 @@ public class FTPDialogListener {
             }
         } catch (Exception e) {
             hasError = true;
-            FTPProfile.log("error in " + sos.util.SOSClassUtil.getMethodName() + "could not read Profiles from " + configFile + ", cause: " + e
-                    .toString(), SOSLogger.WARN);
+            LOGGER.warn("error in " + sos.util.SOSClassUtil.getMethodName() + "could not read Profiles from " + configFile + ", cause: " + e
+                    .toString(), e);
             FTPProfileDialog.message("could not read Profiles from " + configFile, SWT.ICON_WARNING);
         }
     }
@@ -77,7 +79,7 @@ public class FTPDialogListener {
     }
 
     private String[] convert(ArrayList<String> obj) throws Exception {
-        FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+        LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
         ArrayList<String> str = new ArrayList<String>();
         String[] retVal = null;
         try {
@@ -91,7 +93,7 @@ public class FTPDialogListener {
                 retVal[i] = str.get(i).toString();
             }
         } catch (Exception e) {
-            FTPProfile.log("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString(), SOSLogger.WARN);
+            LOGGER.warn("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString(), e);
             hasError = true;
         }
         return retVal;
@@ -150,7 +152,7 @@ public class FTPDialogListener {
     }
 
     public static byte[] getBytesFromFile(File file) throws IOException, Exception {
-        FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+        LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
         byte[] bytes = null;
         try {
             InputStream is = new FileInputStream(file);
@@ -167,13 +169,13 @@ public class FTPDialogListener {
             }
             is.close();
         } catch (Exception e) {
-            FTPProfile.log("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString(), 1);
+            LOGGER.error("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString(), e);
         }
         return bytes;
     }
 
     private void deleteProfile(String profilename) throws Exception {
-        FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+        LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
         try {
             setCurrProfileName(profilename);
             String filename = configFile;
@@ -198,7 +200,7 @@ public class FTPDialogListener {
             wChannel.close();
         } catch (java.io.IOException e) {
             hasError = true;
-            FTPProfile.log("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString(), 1);
+            LOGGER.error("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString(), e);
         }
     }
 
@@ -291,8 +293,8 @@ public class FTPDialogListener {
 
         Exception e) {
             hasError = true;
-            FTPProfile.log("error in " + sos.util.SOSClassUtil.getMethodName() + "could not save configurations File: " + configFile + ", cause: " + e
-                    .toString(), SOSLogger.WARN);
+            LOGGER.warn("error in " + sos.util.SOSClassUtil.getMethodName() + "could not save configurations File: " + configFile + ", cause: " + e
+                    .toString(), e);
             FTPProfileDialog.message("could not save configurations File: " + configFile + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);
         }
     }
@@ -314,7 +316,6 @@ public class FTPDialogListener {
         }
         profileNames = convert(l);
     }
-
 
     public boolean hasError() {
         return hasError;

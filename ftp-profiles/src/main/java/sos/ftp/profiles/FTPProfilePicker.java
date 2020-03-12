@@ -1,5 +1,7 @@
 package sos.ftp.profiles;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -8,14 +10,15 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;
-import sos.util.SOSLogger;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FTPProfilePicker extends Composite {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FTPProfilePicker.class);
     private Button button = null;
     private Combo cboProfile = null;
     private File configFile = null;
@@ -32,7 +35,7 @@ public class FTPProfilePicker extends Composite {
             initialize();
             init();
         } catch (Exception e) {
-            FTPProfile.log("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), 1);
+            LOGGER.error("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), e);
         }
 
     }
@@ -44,14 +47,14 @@ public class FTPProfilePicker extends Composite {
             initialize();
             init();
         } catch (Exception e) {
-            FTPProfile.log("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), 1);
+            LOGGER.error("error in FTPProfilePicker.init()" + ", cause: " + e.toString(), e);
         }
     }
 
     private void init() throws Exception {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-            FTPProfile.log("Configuration File: " + (configFile != null ? configFile.getCanonicalPath() : ""), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
+            LOGGER.trace("Configuration File: " + (configFile != null ? configFile.getCanonicalPath() : ""));
             if (!configFile.exists() && !configFile.createNewFile()) {
                 FTPProfileDialog.message("Could not create config file: " + configFile, SWT.ICON_WARNING);
                 throw new Exception("Could not create config file: " + configFile);
@@ -65,7 +68,7 @@ public class FTPProfilePicker extends Composite {
 
     private void initialize() throws Exception {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             GridData gridData2 = new GridData();
             gridData2.horizontalAlignment = GridData.BEGINNING;
             gridData2.verticalAlignment = GridData.FILL;
@@ -108,7 +111,7 @@ public class FTPProfilePicker extends Composite {
     }
 
     public void dispose() {
-        FTPProfile.log("calling dispose", SOSLogger.DEBUG9);
+        LOGGER.trace("calling dispose");
         super.dispose();
     }
 
@@ -144,7 +147,7 @@ public class FTPProfilePicker extends Composite {
 
     public FTPProfile getProfileByName(String name) throws Exception {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             if (listener == null) {
                 listener = (FTPDialogListener) cboProfile.getData();
             }
@@ -161,7 +164,7 @@ public class FTPProfilePicker extends Composite {
 
     public FTPProfile getSelectedFTPProfile() throws Exception {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             if (listener == null) {
                 listener = (FTPDialogListener) cboProfile.getData();
             }
@@ -173,7 +176,6 @@ public class FTPProfilePicker extends Composite {
             throw new Exception("error in " + sos.util.SOSClassUtil.getMethodName() + ", cause: " + e.toString());
         }
     }
-
 
     public void setLogText(Text text_) {
         FTPProfile.logtext = text_;
@@ -208,7 +210,7 @@ public class FTPProfilePicker extends Composite {
     }
 
     public void addEmptyItem() throws Exception {
-        FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+        LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
         profileDialog.fillCombo(cboProfile, true);
     }
 

@@ -6,15 +6,9 @@ import java.util.Properties;
 
 import org.eclipse.swt.widgets.Text;
 
-import sos.util.SOSLogger;
 import sos.util.SOSString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FTPProfile {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FTPProfile.class);
-
     protected static Text logtext = null;
     private String profilename = null;
     private String host = null;
@@ -198,40 +192,6 @@ public class FTPProfile {
 
     public boolean hasError() {
         return hasError;
-    }
-
-    public static void log(String txt, int level) {
-
-        try {
-            switch (level) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                LOGGER.debug(txt);
-                break;
-            case 10:
-                LOGGER.info(txt);
-                break;
-            case SOSLogger.WARN:
-                LOGGER.warn(txt);
-                break;
-            case SOSLogger.ERROR:
-                LOGGER.error(txt);
-                break;
-            default:
-                LOGGER.info(txt);
-                break;
-            }
-        } catch (Exception e) {
-            System.out.print(txt);
-        }
     }
 
     public boolean isUseKeyAgent() {
