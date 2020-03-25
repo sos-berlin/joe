@@ -1,11 +1,13 @@
 package com.sos.joe.xml;
 
 import static sos.util.SOSClassUtil.getMethodName;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
@@ -17,10 +19,8 @@ import org.jdom.transform.JDOMSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sos.util.SOSFile;
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
-import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
-import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
+import com.sos.VirtualFileSystem.Interfaces.ISOSTransferHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
@@ -31,6 +31,8 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.SchedulerHotFolder;
 import com.sos.scheduler.model.SchedulerHotFolderFileList;
 import com.sos.scheduler.model.SchedulerObjectFactory;
+
+import sos.util.SOSFile;
 
 public class IOUtils {
 
@@ -52,11 +54,9 @@ public class IOUtils {
                     }
                     strHotFolderPathName = fname;
                 }
-                ISOSVFSHandler objVFS = null;
-                ISOSVfsFileTransfer objFileSystemHandler = null;
+                ISOSTransferHandler objFileSystemHandler = null;
                 try {
-                    objVFS = VFSFactory.getHandler("local");
-                    objFileSystemHandler = (ISOSVfsFileTransfer) objVFS;
+                    objFileSystemHandler = VFSFactory.getHandler("local");
                 } catch (Exception e) {
                     LOGGER.error(e.getMessage(), e);
                     return null;
@@ -212,17 +212,14 @@ public class IOUtils {
                             dom.read(filename);
                         }
                     } catch (JDOMException e) {
-                        cont =
-                                ErrorLog.message(
-                                        Messages.getString("MainListener.validationError", new String[] { file.getAbsolutePath(), e.getMessage() }),
-                                        SWT.ICON_WARNING | SWT.YES | SWT.NO);
+                        cont = ErrorLog.message(Messages.getString("MainListener.validationError", new String[] { file.getAbsolutePath(), e
+                                .getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
                         if (cont == SWT.NO) {
                             return false;
                         }
                     } catch (IOException e) {
                         new ErrorLog("error in " + getMethodName(), e);
-                        ErrorLog.message(
-                                Messages.getString("MainListener.errorReadingFile", new String[] { file.getAbsolutePath(), e.getMessage() }),
+                        ErrorLog.message(Messages.getString("MainListener.errorReadingFile", new String[] { file.getAbsolutePath(), e.getMessage() }),
                                 SWT.ICON_ERROR | SWT.OK);
                         return false;
                     }
@@ -319,8 +316,8 @@ public class IOUtils {
                     if (!overrideOriFile) {
                         new File(originFilename).delete();
                     }
-                    if (!(dom instanceof SchedulerDom && ((SchedulerDom) dom).isDirectory())
-                            && !new File(filename).renameTo(new File(originFilename))) {
+                    if (!(dom instanceof SchedulerDom && ((SchedulerDom) dom).isDirectory()) && !new File(filename).renameTo(new File(
+                            originFilename))) {
                         ErrorLog.message("..could not rename file: " + filename, SWT.ICON_ERROR | SWT.OK);
                     }
                 }
