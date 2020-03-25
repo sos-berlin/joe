@@ -17,7 +17,7 @@ import com.sos.VirtualFileSystem.DataElements.SOSFileListEntry;
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
-import com.sos.VirtualFileSystem.Options.SOSConnection2OptionsAlternate;
+import com.sos.VirtualFileSystem.Options.SOSDestinationOptions;
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
 
@@ -31,7 +31,7 @@ public class FTPProfileJadeClient {
             "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
     private JADEOptions jadeOptions;
     private FTPProfile ftpProfile = null;
-    SOSConnection2OptionsAlternate virtuelFileSystemOptions;
+    SOSDestinationOptions virtuelFileSystemOptions;
     JOEUserInfo joeUserInfo;
 
     public ISOSVfsFileTransfer getFtpClient() {
