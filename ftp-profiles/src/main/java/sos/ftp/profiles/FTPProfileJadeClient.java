@@ -47,7 +47,6 @@ public class FTPProfileJadeClient {
         try {
             if (ftpClient != null) {
                 ftpClient.disconnect();
-                ftpClient.close();
                 ftpClient = null;
             }
         } catch (Exception e) {
