@@ -15,16 +15,14 @@ import com.sos.JSHelper.Options.SOSOptionTransferType.TransferTypes;
 import com.sos.VirtualFileSystem.DataElements.SOSFileList;
 import com.sos.VirtualFileSystem.DataElements.SOSFileListEntry;
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
-import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
-import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
+import com.sos.VirtualFileSystem.Interfaces.ISOSTransferHandler;
 import com.sos.VirtualFileSystem.Options.SOSDestinationOptions;
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
 
 public class FTPProfileJadeClient {
 
-    protected ISOSVFSHandler oVFS = null;
-    protected ISOSVfsFileTransfer ftpClient = null;
+    protected ISOSTransferHandler ftpClient = null;
     protected TransferTypes enuSourceTransferType = TransferTypes.local;
     protected TransferTypes enuTargetTransferType = TransferTypes.local;
     private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS =
@@ -34,7 +32,7 @@ public class FTPProfileJadeClient {
     SOSDestinationOptions virtuelFileSystemOptions;
     JOEUserInfo joeUserInfo;
 
-    public ISOSVfsFileTransfer getFtpClient() {
+    public ISOSTransferHandler getFtpClient() {
         return ftpClient;
     }
 
@@ -47,11 +45,6 @@ public class FTPProfileJadeClient {
 
     public void disconnect() {
         try {
-            if (oVFS != null) {
-                oVFS.closeConnection();
-                oVFS.closeSession();
-                oVFS = null;
-            }
             if (ftpClient != null) {
                 ftpClient.disconnect();
                 ftpClient.close();
@@ -92,7 +85,7 @@ public class FTPProfileJadeClient {
     }
 
     private void connect() throws RuntimeException, Exception {
-        if (oVFS == null) {
+        if (ftpClient == null) {
             jadeOptions = new JADEOptions();
             enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
             virtuelFileSystemOptions = jadeOptions.getTransferOptions().getSource();
@@ -144,13 +137,10 @@ public class FTPProfileJadeClient {
                 virtuelFileSystemOptions.proxyProtocol.setValue(ftpProfile.getProxyProtocol());
                 virtuelFileSystemOptions.proxyPort.setValue(ftpProfile.getProxyPort());
             }
-            oVFS = VFSFactory.getHandler(enuSourceTransferType);
-            ftpClient = (ISOSVfsFileTransfer) oVFS;
-            oVFS.connect(virtuelFileSystemOptions);
-            oVFS.authenticate(virtuelFileSystemOptions);
-            if (ftpProfile.isPassiveMode()) {
-                ftpClient.passive();
-            }
+            ftpClient = VFSFactory.getHandler(enuSourceTransferType);
+            ftpClient.connect(virtuelFileSystemOptions);
+            ftpClient.login(virtuelFileSystemOptions);
+
         }
     }
 
