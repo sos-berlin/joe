@@ -95,7 +95,7 @@ public class FTPProfileJadeClient {
         if (oVFS == null) {
             jadeOptions = new JADEOptions();
             enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
-            virtuelFileSystemOptions = jadeOptions.getConnectionOptions().getSource();
+            virtuelFileSystemOptions = jadeOptions.getTransferOptions().getSource();
             virtuelFileSystemOptions.host.setValue(ftpProfile.getHost());
             virtuelFileSystemOptions.port.setValue(ftpProfile.getPort());
             virtuelFileSystemOptions.user.setValue(ftpProfile.getUser());
@@ -384,7 +384,7 @@ public class FTPProfileJadeClient {
         jadeOptions = new JADEOptions();
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.protocol.setValue("local");
-        jadeOptions.getConnectionOptions().getSource().protocol.setValue("local");
+        jadeOptions.getTransferOptions().getSource().protocol.setValue("local");
         jadeOptions.filePath.setValue("");
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
         jadeOptions.getSource().directory.setValue(sourceDir);
