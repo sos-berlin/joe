@@ -189,7 +189,6 @@ public class FTPProfileJadeClient {
     public void removeFile(SOSFileEntry sosFileEntry) throws Exception {
         connect();
         if (sosFileEntry.isDirectory()) {
-            ftpClient.changeWorkingDirectory(sosFileEntry.getParentPath());
             List<SOSFileEntry> entries = ftpClient.nList(sosFileEntry.getFilename(), false, true);
             if (entries.size() == 0) {
                 ftpClient.rmdir(sosFileEntry.getFilename());
@@ -201,7 +200,6 @@ public class FTPProfileJadeClient {
 
     public void renameFile(String remoteDir, String oldFilename, String newFilename) throws Exception {
         connect();
-        ftpClient.changeWorkingDirectory(remoteDir);
         ftpClient.rename(oldFilename, newFilename);
         // if this a job chain configuration file, also copy the configuration
         // parameters file
@@ -225,8 +223,6 @@ public class FTPProfileJadeClient {
     public void removeDir(String dir) throws Exception {
         connect();
         String folder = new File(dir).getName();
-        String path = new File(dir).getParent();
-        ftpClient.changeWorkingDirectory(path);
         ftpClient.rmdir(folder);
     }
 
