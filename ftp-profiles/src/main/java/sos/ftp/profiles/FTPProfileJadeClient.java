@@ -138,7 +138,7 @@ public class FTPProfileJadeClient {
             }
             ftpClient = VFSFactory.getHandler(enuSourceTransferType);
             ftpClient.connect(virtuelFileSystemOptions);
-            ftpClient.login(virtuelFileSystemOptions);
+            ftpClient.login();
 
         }
     }
