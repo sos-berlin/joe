@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sos.JSHelper.io.Files.JSFile;
-import com.sos.VirtualFileSystem.common.SOSFileEntry;
-import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
+import com.sos.vfs.common.SOSFileEntry;
+import com.sos.vfs.common.SOSFileEntry.EntryType;
 
 public class TestFTPProfileJadeClient {
 

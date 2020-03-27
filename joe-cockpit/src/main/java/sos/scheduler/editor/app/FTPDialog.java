@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sos.VirtualFileSystem.common.SOSFileEntry;
-import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
+import com.sos.vfs.common.SOSFileEntry;
+import com.sos.vfs.common.SOSFileEntry.EntryType;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;

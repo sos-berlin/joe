@@ -12,13 +12,13 @@ import com.sos.DataExchange.JadeEngine;
 import com.sos.DataExchange.Options.JADEOptions;
 import com.sos.JSHelper.Options.SOSOptionJadeOperation.enuJadeOperations;
 import com.sos.JSHelper.Options.SOSOptionTransferType.TransferTypes;
-import com.sos.VirtualFileSystem.DataElements.SOSFileList;
-import com.sos.VirtualFileSystem.DataElements.SOSFileListEntry;
-import com.sos.VirtualFileSystem.Factory.VFSFactory;
-import com.sos.VirtualFileSystem.Interfaces.ISOSTransferHandler;
-import com.sos.VirtualFileSystem.Options.SOSDestinationOptions;
-import com.sos.VirtualFileSystem.common.SOSFileEntry;
-import com.sos.VirtualFileSystem.common.SOSFileEntry.EntryType;
+import com.sos.vfs.common.SOSFileList;
+import com.sos.vfs.common.SOSFileListEntry;
+import com.sos.vfs.common.SOSVFSFactory;
+import com.sos.vfs.common.interfaces.ISOSTransferHandler;
+import com.sos.vfs.common.options.SOSDestinationOptions;
+import com.sos.vfs.common.SOSFileEntry;
+import com.sos.vfs.common.SOSFileEntry.EntryType;
 
 public class FTPProfileJadeClient {
 
@@ -136,10 +136,9 @@ public class FTPProfileJadeClient {
                 virtuelFileSystemOptions.proxyProtocol.setValue(ftpProfile.getProxyProtocol());
                 virtuelFileSystemOptions.proxyPort.setValue(ftpProfile.getProxyPort());
             }
-            ftpClient = VFSFactory.getHandler(enuSourceTransferType);
+            ftpClient = SOSVFSFactory.getHandler(enuSourceTransferType);
             ftpClient.connect(virtuelFileSystemOptions);
-            ftpClient.login();
-
+     
         }
     }
 

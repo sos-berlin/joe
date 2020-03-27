@@ -19,9 +19,9 @@ import org.jdom.transform.JDOMSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sos.VirtualFileSystem.Factory.VFSFactory;
-import com.sos.VirtualFileSystem.Interfaces.ISOSTransferHandler;
-import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
+import com.sos.vfs.common.SOSVFSFactory;
+import com.sos.vfs.common.interfaces.ISOSTransferHandler;
+import com.sos.vfs.common.interfaces.ISOSVirtualFile;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;
@@ -56,7 +56,7 @@ public class IOUtils {
                 }
                 ISOSTransferHandler objFileSystemHandler = null;
                 try {
-                    objFileSystemHandler = VFSFactory.getHandler("local");
+                    objFileSystemHandler = SOSVFSFactory.getHandler("local");
                 } catch (Exception e) {
                     LOGGER.error(e.getMessage(), e);
                     return null;
