@@ -16,7 +16,7 @@ import com.sos.vfs.common.SOSFileList;
 import com.sos.vfs.common.SOSFileListEntry;
 import com.sos.vfs.common.SOSVFSFactory;
 import com.sos.vfs.common.interfaces.ISOSTransferHandler;
-import com.sos.vfs.common.options.SOSDestinationOptions;
+import com.sos.vfs.common.options.SOSProviderOptions;
 import com.sos.vfs.common.SOSFileEntry;
 import com.sos.vfs.common.SOSFileEntry.EntryType;
 
@@ -29,7 +29,7 @@ public class FTPProfileJadeClient {
             "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
     private JADEOptions jadeOptions;
     private FTPProfile ftpProfile = null;
-    SOSDestinationOptions virtuelFileSystemOptions;
+    SOSProviderOptions virtuelFileSystemOptions;
     JOEUserInfo joeUserInfo;
 
     public ISOSTransferHandler getFtpClient() {
@@ -87,7 +87,7 @@ public class FTPProfileJadeClient {
         if (ftpClient == null) {
             jadeOptions = new JADEOptions();
             enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
-            virtuelFileSystemOptions = jadeOptions.getTransferOptions().getSource();
+            virtuelFileSystemOptions = jadeOptions.getTransfer().getSource();
             virtuelFileSystemOptions.host.setValue(ftpProfile.getHost());
             virtuelFileSystemOptions.port.setValue(ftpProfile.getPort());
             virtuelFileSystemOptions.user.setValue(ftpProfile.getUser());
@@ -158,7 +158,7 @@ public class FTPProfileJadeClient {
     public Vector<String> getList(String remoteDir) throws RuntimeException, Exception {
         connect();
         Vector<String> result = new Vector<String>();
-        List<SOSFileEntry> entries = ftpClient.nList(remoteDir, false, true);
+        List<SOSFileEntry> entries = ftpClient.listNames(remoteDir, false, true);
         for (SOSFileEntry entry : entries) {
             result.add(entry.getFullPath());
         }
@@ -174,7 +174,7 @@ public class FTPProfileJadeClient {
         if (!ftpClient.isDirectory(remoteDir)) {
             return null;
         }
-        List<SOSFileEntry> entries = ftpClient.nList(remoteDir, false, true);
+        List<SOSFileEntry> entries = ftpClient.listNames(remoteDir, false, true);
         HashMap<String, SOSFileEntry> h = new HashMap<String, SOSFileEntry>();
         for (SOSFileEntry sosFileListEntry : entries) {
             String filename = sosFileListEntry.getFilename();
@@ -188,7 +188,7 @@ public class FTPProfileJadeClient {
     public void removeFile(SOSFileEntry sosFileEntry) throws Exception {
         connect();
         if (sosFileEntry.isDirectory()) {
-            List<SOSFileEntry> entries = ftpClient.nList(sosFileEntry.getFilename(), false, true);
+            List<SOSFileEntry> entries = ftpClient.listNames(sosFileEntry.getFilename(), false, true);
             if (entries.size() == 0) {
                 ftpClient.rmdir(sosFileEntry.getFilename());
             }
@@ -368,7 +368,7 @@ public class FTPProfileJadeClient {
         jadeOptions = new JADEOptions();
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.protocol.setValue("local");
-        jadeOptions.getTransferOptions().getSource().protocol.setValue("local");
+        jadeOptions.getTransfer().getSource().protocol.setValue("local");
         jadeOptions.filePath.setValue("");
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
         jadeOptions.getSource().directory.setValue(sourceDir);
