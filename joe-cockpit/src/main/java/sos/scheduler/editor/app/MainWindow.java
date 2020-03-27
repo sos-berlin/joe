@@ -43,7 +43,7 @@ import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 
 import com.sos.JSHelper.Basics.VersionInfo;
-import com.sos.VirtualFileSystem.common.SOSFileEntry;
+import com.sos.vfs.common.SOSFileEntry;
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
