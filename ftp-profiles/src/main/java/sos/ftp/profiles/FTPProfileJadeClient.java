@@ -9,7 +9,7 @@ import java.util.Vector;
 import org.eclipse.swt.widgets.Shell;
 
 import com.sos.DataExchange.JadeEngine;
-import com.sos.DataExchange.Options.JADEOptions;
+import com.sos.DataExchange.options.JADEOptions;
 import com.sos.JSHelper.Options.SOSOptionJadeOperation.enuJadeOperations;
 import com.sos.JSHelper.Options.SOSOptionTransferType.TransferTypes;
 import com.sos.vfs.common.SOSFileList;
