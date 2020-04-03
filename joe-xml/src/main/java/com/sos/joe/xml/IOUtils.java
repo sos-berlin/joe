@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sos.vfs.common.SOSVFSFactory;
-import com.sos.vfs.common.interfaces.ISOSTransferHandler;
-import com.sos.vfs.common.interfaces.ISOSVirtualFile;
+import com.sos.vfs.common.interfaces.ISOSProvider;
+import com.sos.vfs.common.interfaces.ISOSProviderFile;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;
@@ -54,16 +54,16 @@ public class IOUtils {
                     }
                     strHotFolderPathName = fname;
                 }
-                ISOSTransferHandler objFileSystemHandler = null;
+                ISOSProvider objFileSystemHandler = null;
                 try {
-                    objFileSystemHandler = SOSVFSFactory.getHandler("local");
+                    objFileSystemHandler = SOSVFSFactory.getProvider("local");
                 } catch (Exception e) {
                     LOGGER.error(e.getMessage(), e);
                     return null;
                 }
                 SchedulerObjectFactory objFactory = null;
                 objFactory = new SchedulerObjectFactory();
-                ISOSVirtualFile objHotFolder = objFileSystemHandler.getFileHandle(strHotFolderPathName);
+                ISOSProviderFile objHotFolder = objFileSystemHandler.getFile(strHotFolderPathName);
                 objSchedulerHotFolder = objFactory.createSchedulerHotFolder(objHotFolder);
                 LOGGER.info(String.format("... load %1$s", strHotFolderPathName));
                 SchedulerHotFolderFileList objSchedulerHotFolderFileList = objSchedulerHotFolder.load();
