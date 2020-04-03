@@ -8,31 +8,31 @@ import java.util.Vector;
 
 import org.eclipse.swt.widgets.Shell;
 
-import com.sos.DataExchange.JadeEngine;
-import com.sos.DataExchange.options.JADEOptions;
+import com.sos.DataExchange.SOSDataExchangeEngine;
 import com.sos.JSHelper.Options.SOSOptionJadeOperation.enuJadeOperations;
 import com.sos.JSHelper.Options.SOSOptionTransferType.TransferTypes;
 import com.sos.vfs.common.SOSFileList;
 import com.sos.vfs.common.SOSFileListEntry;
 import com.sos.vfs.common.SOSVFSFactory;
-import com.sos.vfs.common.interfaces.ISOSTransferHandler;
+import com.sos.vfs.common.interfaces.ISOSProvider;
+import com.sos.vfs.common.options.SOSBaseOptions;
 import com.sos.vfs.common.options.SOSProviderOptions;
 import com.sos.vfs.common.SOSFileEntry;
 import com.sos.vfs.common.SOSFileEntry.EntryType;
 
 public class FTPProfileJadeClient {
 
-    protected ISOSTransferHandler ftpClient = null;
+    protected ISOSProvider ftpClient = null;
     protected TransferTypes enuSourceTransferType = TransferTypes.local;
     protected TransferTypes enuTargetTransferType = TransferTypes.local;
     private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS =
             "^.*\\.(monitor|job|job_chain|order|process_class|schedule|lock|config)\\.(xml|png|dot)$";
-    private JADEOptions jadeOptions;
+    private SOSBaseOptions jadeOptions;
     private FTPProfile ftpProfile = null;
     SOSProviderOptions virtuelFileSystemOptions;
     JOEUserInfo joeUserInfo;
 
-    public ISOSTransferHandler getFtpClient() {
+    public ISOSProvider getFtpClient() {
         return ftpClient;
     }
 
@@ -85,7 +85,7 @@ public class FTPProfileJadeClient {
 
     private void connect() throws RuntimeException, Exception {
         if (ftpClient == null) {
-            jadeOptions = new JADEOptions();
+            jadeOptions = new SOSBaseOptions();
             enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
             virtuelFileSystemOptions = jadeOptions.getTransfer().getSource();
             virtuelFileSystemOptions.host.setValue(ftpProfile.getHost());
@@ -136,9 +136,9 @@ public class FTPProfileJadeClient {
                 virtuelFileSystemOptions.proxyProtocol.setValue(ftpProfile.getProxyProtocol());
                 virtuelFileSystemOptions.proxyPort.setValue(ftpProfile.getProxyPort());
             }
-            ftpClient = SOSVFSFactory.getHandler(enuSourceTransferType);
+            ftpClient = SOSVFSFactory.getProvider(enuSourceTransferType);
             ftpClient.connect(virtuelFileSystemOptions);
-     
+
         }
     }
 
@@ -226,7 +226,7 @@ public class FTPProfileJadeClient {
     }
 
     public void copyLocalFileToRemote(String localDir, String targetDir, String filename) throws Exception {
-        jadeOptions = new JADEOptions();
+        jadeOptions = new SOSBaseOptions();
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getTarget().directory.setValue(targetDir);
         jadeOptions.getTarget().host.setValue(ftpProfile.getHost());
@@ -257,7 +257,7 @@ public class FTPProfileJadeClient {
         jadeOptions.getSource().directory.setValue(localDir);
         jadeOptions.getSource().protocol.setValue("local");
         jadeOptions.operation.setValue(enuJadeOperations.copy);
-        JadeEngine jadeEngine = new JadeEngine(jadeOptions);
+        SOSDataExchangeEngine jadeEngine = new SOSDataExchangeEngine(jadeOptions);
         jadeEngine.execute();
         // if this a job chain configuration file, also copy the configuration
         // parameters file
@@ -270,11 +270,11 @@ public class FTPProfileJadeClient {
             } catch (Exception e) {
             }
         }
-        jadeEngine.logout();
+        jadeEngine.disconnect();
     }
 
     public void copyLocalFilesToRemote(String sourceDir, String targetDir, String sourceHotFolder) throws Exception {
-        jadeOptions = new JADEOptions();
+        jadeOptions = new SOSBaseOptions();
         String remoteDir = targetDir + "/" + sourceHotFolder;
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getSource().directory.setValue(sourceDir);
@@ -309,13 +309,13 @@ public class FTPProfileJadeClient {
 
         jadeOptions.operation.setValue(enuJadeOperations.copy);
         jadeOptions.errorOnNoDataFound.value(false);
-        JadeEngine jadeEngine = new JadeEngine(jadeOptions);
+        SOSDataExchangeEngine jadeEngine = new SOSDataExchangeEngine(jadeOptions);
         jadeEngine.execute();
-        jadeEngine.logout();
+        jadeEngine.disconnect();
     }
 
     public File copyRemoteFileToLocal(SOSFileEntry sosFileEntry) throws Exception {
-        jadeOptions = new JADEOptions();
+        jadeOptions = new SOSBaseOptions();
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getSource().directory.setValue(sosFileEntry.getParentPath());
         jadeOptions.getSource().host.setValue(ftpProfile.getHost());
@@ -346,7 +346,7 @@ public class FTPProfileJadeClient {
         jadeOptions.getTarget().directory.setValue(ftpProfile.getLocaldirectory());
         jadeOptions.getTarget().protocol.setValue("local");
         jadeOptions.operation.setValue(enuJadeOperations.copy);
-        JadeEngine jadeEngine = new JadeEngine(jadeOptions);
+        SOSDataExchangeEngine jadeEngine = new SOSDataExchangeEngine(jadeOptions);
         jadeEngine.execute();
         // if this a job chain configuration file, also copy the configuration
         // parameters file
@@ -360,12 +360,12 @@ public class FTPProfileJadeClient {
             } catch (Exception e) {
             }
         }
-        jadeEngine.logout();
+        jadeEngine.disconnect();
         return new File(ftpProfile.getLocaldirectory(), sosFileEntry.getFilename());
     }
 
     private void removeLocalHotFolderFiles(String sourceDir) throws Exception {
-        jadeOptions = new JADEOptions();
+        jadeOptions = new SOSBaseOptions();
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.protocol.setValue("local");
         jadeOptions.getTransfer().getSource().protocol.setValue("local");
@@ -374,13 +374,13 @@ public class FTPProfileJadeClient {
         jadeOptions.getSource().directory.setValue(sourceDir);
         jadeOptions.operation.setValue("delete");
         jadeOptions.errorOnNoDataFound.value(false);
-        JadeEngine jadeEngine = new JadeEngine(jadeOptions);
+        SOSDataExchangeEngine jadeEngine = new SOSDataExchangeEngine(jadeOptions);
         jadeEngine.execute();
-        jadeEngine.logout();
+        jadeEngine.disconnect();
     }
 
     public ArrayList<String> copyRemoteFilesToLocal(String sourceDir, String soureHotFolder) throws Exception {
-        jadeOptions = new JADEOptions();
+        jadeOptions = new SOSBaseOptions();
         String remoteDir = "";
         remoteDir = sourceDir + "/" + soureHotFolder;
         String localDir = ftpProfile.getLocaldirectory() + "/" + soureHotFolder;
@@ -421,14 +421,14 @@ public class FTPProfileJadeClient {
         jadeOptions.getTarget().protocol.setValue("local");
         jadeOptions.operation.setValue(enuJadeOperations.copy);
         jadeOptions.errorOnNoDataFound.value(false);
-        JadeEngine jadeEngine = new JadeEngine(jadeOptions);
+        SOSDataExchangeEngine jadeEngine = new SOSDataExchangeEngine(jadeOptions);
         jadeEngine.execute();
         ArrayList<String> resultList = new ArrayList<String>();
         SOSFileList sosFileList = jadeEngine.getFileList();
         for (SOSFileListEntry sosFileListEntry : sosFileList.getList()) {
             resultList.add(sosFileListEntry.getTargetFileName());
         }
-        jadeEngine.logout();
+        jadeEngine.disconnect();
         return resultList;
     }
 
