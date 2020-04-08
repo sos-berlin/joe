@@ -40,7 +40,7 @@ public class JOEOptionsSuperClass extends JSOptionsClass {
     }
 
     public JOEOptionsSuperClass() {
-        objParentClass = this.getClass();
+        currentClass = this.getClass();
     }
 
     public JOEOptionsSuperClass(final JSListener pobjListener) {
