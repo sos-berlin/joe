@@ -397,9 +397,11 @@ public abstract class FTPDialog {
                 ftpProfilePicker.getProfileByName(ftpProfilePicker.getSelectedProfilename());
                 listener = ftpProfilePicker.getListener();
             }
-            listener.setRemoteDirectory(txtDir);
-            txtDir.setText(listener.getCurrProfile() != null ? listener.getCurrProfile().getRoot() : "");
-            _setEnabled(false);
+            if (listener != null) {
+                listener.setRemoteDirectory(txtDir);
+                txtDir.setText(listener.getCurrProfile() != null ? listener.getCurrProfile().getRoot() : "");
+                _setEnabled(false);
+            }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             MainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);

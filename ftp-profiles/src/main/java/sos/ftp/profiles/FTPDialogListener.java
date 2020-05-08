@@ -209,11 +209,11 @@ public class FTPDialogListener {
 
         try {
             if (!profilePasswort.isEmpty()) {
-                if (profilePasswort.endsWith("=")) {
+                if (profilePasswort.endsWith("=enc")) {
                     encrypt = profilePasswort;
                 } else {
                     String pass = currProfileName;
-                    encrypt = SOSProfileCrypt.encrypt(pass, profilePasswort);
+                    encrypt = SOSProfileCrypt.encryptBasic(pass, profilePasswort)+"=enc";
                 }
             }
             return encrypt;
