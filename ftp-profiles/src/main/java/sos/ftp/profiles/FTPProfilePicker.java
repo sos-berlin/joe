@@ -151,7 +151,8 @@ public class FTPProfilePicker extends Composite {
             if (listener == null) {
                 listener = (FTPDialogListener) cboProfile.getData();
             }
-            if (listener.getProfiles() != null && listener.getProfiles().get(name) != null) {
+            
+            if (listener != null && listener.getProfiles() != null && listener.getProfiles().get(name) != null) {
                 listener.setCurrProfileName(name);
                 cboProfile.setText(name);
                 return (FTPProfile) listener.getProfiles().get(name);

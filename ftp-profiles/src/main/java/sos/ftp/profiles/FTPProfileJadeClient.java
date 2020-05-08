@@ -69,7 +69,7 @@ public class FTPProfileJadeClient {
         return ftpProfile.getDecryptetPassword();
     }
 
-    private String getSftpPassPhrase() throws Exception {
+    private String getCsSftpPassPhrase() throws Exception {
         if (ftpProfile.isPromptForPassphrase()) {
             getPasswordFromDialog();
         }
@@ -88,9 +88,9 @@ public class FTPProfileJadeClient {
             jadeOptions = new SOSBaseOptions();
             enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
             virtuelFileSystemOptions = jadeOptions.getTransfer().getSource();
-            virtuelFileSystemOptions.host.setValue(ftpProfile.getHost());
-            virtuelFileSystemOptions.port.setValue(ftpProfile.getPort());
-            virtuelFileSystemOptions.user.setValue(ftpProfile.getUser());
+            virtuelFileSystemOptions.host.setValue(ftpProfile.getCsHost());
+            virtuelFileSystemOptions.port.setValue(ftpProfile.getCsPort());
+            virtuelFileSystemOptions.user.setValue(ftpProfile.getCsUser());
             virtuelFileSystemOptions.password.setValue(getPassword());
 
             virtuelFileSystemOptions.protocol.setValue(enuSourceTransferType);
@@ -99,8 +99,8 @@ public class FTPProfileJadeClient {
 
             if (ftpProfile.isPublicKeyAuthentication()) {
                 virtuelFileSystemOptions.authMethod.setValue("publickey");
-                virtuelFileSystemOptions.authFile.setValue(ftpProfile.getAuthFile());
-                virtuelFileSystemOptions.passphrase.setValue(getSftpPassPhrase());
+                virtuelFileSystemOptions.authFile.setValue(ftpProfile.getCsAuthFile());
+                virtuelFileSystemOptions.passphrase.setValue(getCsSftpPassPhrase());
                 virtuelFileSystemOptions.useKeyAgent.value(ftpProfile.isUseKeyAgent());
             }
 
@@ -130,11 +130,11 @@ public class FTPProfileJadeClient {
             }
 
             if (ftpProfile.getUseProxy()) {
-                virtuelFileSystemOptions.proxyHost.setValue(ftpProfile.getProxyServer());
-                virtuelFileSystemOptions.proxyPassword.setValue(ftpProfile.getProxyPassword());
-                virtuelFileSystemOptions.proxyUser.setValue(ftpProfile.getProxyUser());
-                virtuelFileSystemOptions.proxyProtocol.setValue(ftpProfile.getProxyProtocol());
-                virtuelFileSystemOptions.proxyPort.setValue(ftpProfile.getProxyPort());
+                virtuelFileSystemOptions.proxyHost.setValue(ftpProfile.getCsProxyServer());
+                virtuelFileSystemOptions.proxyPassword.setValue(ftpProfile.getCsProxyPassword());
+                virtuelFileSystemOptions.proxyUser.setValue(ftpProfile.getCsProxyUser());
+                virtuelFileSystemOptions.proxyProtocol.setValue(ftpProfile.getCsProxyProtocol());
+                virtuelFileSystemOptions.proxyPort.setValue(ftpProfile.getCsProxyPort());
             }
             ftpClient = SOSVFSFactory.getProvider(enuSourceTransferType);
             ftpClient.connect(virtuelFileSystemOptions);
@@ -229,18 +229,18 @@ public class FTPProfileJadeClient {
         jadeOptions = new SOSBaseOptions();
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getTarget().directory.setValue(targetDir);
-        jadeOptions.getTarget().host.setValue(ftpProfile.getHost());
+        jadeOptions.getTarget().host.setValue(ftpProfile.getCsHost());
         jadeOptions.filePath.setValue(filename);
-        jadeOptions.getTarget().port.setValue(ftpProfile.getPort());
+        jadeOptions.getTarget().port.setValue(ftpProfile.getCsPort());
         jadeOptions.getTarget().protocol.setValue(enuSourceTransferType);
         jadeOptions.getTarget().user.setValue(ftpProfile.getUser());
         jadeOptions.getTarget().password.setValue(getPassword());
         if (ftpProfile.getUseProxy()) {
-            jadeOptions.getTarget().proxyHost.setValue(ftpProfile.getProxyServer());
-            jadeOptions.getTarget().proxyUser.setValue(ftpProfile.getProxyUser());
-            jadeOptions.getTarget().proxyPassword.setValue(ftpProfile.getProxyPassword());
-            jadeOptions.getTarget().proxyProtocol.setValue(ftpProfile.getProxyProtocol());
-            jadeOptions.getTarget().proxyPort.setValue(ftpProfile.getProxyPort());
+            jadeOptions.getTarget().proxyHost.setValue(ftpProfile.getCsProxyServer());
+            jadeOptions.getTarget().proxyUser.setValue(ftpProfile.getCsProxyUser());
+            jadeOptions.getTarget().proxyPassword.setValue(ftpProfile.getCsProxyPassword());
+            jadeOptions.getTarget().proxyProtocol.setValue(ftpProfile.getCsProxyProtocol());
+            jadeOptions.getTarget().proxyPort.setValue(ftpProfile.getCsProxyPort());
         }
 
         if (ftpProfile.isPasswordAuthentication()) {
@@ -249,7 +249,7 @@ public class FTPProfileJadeClient {
 
         if (ftpProfile.isPublicKeyAuthentication()) {
             jadeOptions.getTarget().authMethod.setValue("publickey");
-            jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
+            jadeOptions.getTarget().authFile.setValue(ftpProfile.getCsAuthFile());
             jadeOptions.getTarget().useKeyAgent.value(ftpProfile.isUseKeyAgent());
         }
 
@@ -281,18 +281,18 @@ public class FTPProfileJadeClient {
         jadeOptions.getSource().protocol.setValue("local");
         jadeOptions.getTarget().directory.setValue(remoteDir);
         jadeOptions.createFoldersOnTarget.value(true);
-        jadeOptions.getTarget().host.setValue(ftpProfile.getHost());
+        jadeOptions.getTarget().host.setValue(ftpProfile.getCsHost());
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
         jadeOptions.getTarget().port.setValue(ftpProfile.getPort());
         jadeOptions.getTarget().protocol.setValue(enuSourceTransferType);
-        jadeOptions.getTarget().user.setValue(ftpProfile.getUser());
+        jadeOptions.getTarget().user.setValue(ftpProfile.getCsUser());
         jadeOptions.getTarget().password.setValue(getPassword());
         if (ftpProfile.getUseProxy()) {
-            jadeOptions.getTarget().proxyHost.setValue(ftpProfile.getProxyServer());
-            jadeOptions.getTarget().proxyUser.setValue(ftpProfile.getProxyUser());
-            jadeOptions.getTarget().proxyPassword.setValue(ftpProfile.getProxyPassword());
-            jadeOptions.getTarget().proxyProtocol.setValue(ftpProfile.getProxyProtocol());
-            jadeOptions.getTarget().proxyPort.setValue(ftpProfile.getProxyPort());
+            jadeOptions.getTarget().proxyHost.setValue(ftpProfile.getCsProxyServer());
+            jadeOptions.getTarget().proxyUser.setValue(ftpProfile.getCsProxyUser());
+            jadeOptions.getTarget().proxyPassword.setValue(ftpProfile.getCsProxyPassword());
+            jadeOptions.getTarget().proxyProtocol.setValue(ftpProfile.getCsProxyProtocol());
+            jadeOptions.getTarget().proxyPort.setValue(ftpProfile.getCsProxyPort());
         }
 
         if (ftpProfile.isPasswordAuthentication()) {
@@ -301,7 +301,7 @@ public class FTPProfileJadeClient {
 
         if (ftpProfile.isPublicKeyAuthentication()) {
             jadeOptions.getTarget().authMethod.setValue("publickey");
-            jadeOptions.getTarget().authFile.setValue(ftpProfile.getAuthFile());
+            jadeOptions.getTarget().authFile.setValue(ftpProfile.getCsAuthFile());
             jadeOptions.getTarget().useKeyAgent.value(ftpProfile.isUseKeyAgent());
         }
 
@@ -318,18 +318,18 @@ public class FTPProfileJadeClient {
         jadeOptions = new SOSBaseOptions();
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getSource().directory.setValue(sosFileEntry.getParentPath());
-        jadeOptions.getSource().host.setValue(ftpProfile.getHost());
+        jadeOptions.getSource().host.setValue(ftpProfile.getCsHost());
         jadeOptions.filePath.setValue(sosFileEntry.getFilename());
-        jadeOptions.getSource().port.setValue(ftpProfile.getPort());
+        jadeOptions.getSource().port.setValue(ftpProfile.getCsPort());
         jadeOptions.getSource().protocol.setValue(enuSourceTransferType);
-        jadeOptions.getSource().user.setValue(ftpProfile.getUser());
+        jadeOptions.getSource().user.setValue(ftpProfile.getCsUser());
         jadeOptions.getSource().password.setValue(getPassword());
         if (ftpProfile.getUseProxy()) {
-            jadeOptions.getSource().proxyHost.setValue(ftpProfile.getProxyServer());
-            jadeOptions.getSource().proxyUser.setValue(ftpProfile.getProxyUser());
-            jadeOptions.getSource().proxyPassword.setValue(ftpProfile.getProxyPassword());
-            jadeOptions.getSource().proxyProtocol.setValue(ftpProfile.getProxyProtocol());
-            jadeOptions.getSource().proxyPort.setValue(ftpProfile.getProxyPort());
+            jadeOptions.getSource().proxyHost.setValue(ftpProfile.getCsProxyServer());
+            jadeOptions.getSource().proxyUser.setValue(ftpProfile.getCsProxyUser());
+            jadeOptions.getSource().proxyPassword.setValue(ftpProfile.getCsProxyPassword());
+            jadeOptions.getSource().proxyProtocol.setValue(ftpProfile.getCsProxyProtocol());
+            jadeOptions.getSource().proxyPort.setValue(ftpProfile.getCsProxyPort());
         }
 
         if (ftpProfile.isPasswordAuthentication()) {
@@ -338,7 +338,7 @@ public class FTPProfileJadeClient {
 
         if (ftpProfile.isPublicKeyAuthentication()) {
             jadeOptions.getSource().authMethod.setValue("publickey");
-            jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
+            jadeOptions.getSource().authFile.setValue(ftpProfile.getCsAuthFile());
             jadeOptions.getSource().useKeyAgent.value(ftpProfile.isUseKeyAgent());
         }
 
@@ -390,18 +390,18 @@ public class FTPProfileJadeClient {
         }
         enuSourceTransferType = TransferTypes.valueOf(ftpProfile.getProtocol());
         jadeOptions.getSource().directory.setValue(remoteDir);
-        jadeOptions.getSource().host.setValue(ftpProfile.getHost());
+        jadeOptions.getSource().host.setValue(ftpProfile.getCsHost());
         jadeOptions.fileSpec.setValue(REGEX_FOR_JOBSCHEDULER_OBJECTS);
-        jadeOptions.getSource().port.setValue(ftpProfile.getPort());
+        jadeOptions.getSource().port.setValue(ftpProfile.getCsPort());
         jadeOptions.getSource().protocol.setValue(enuSourceTransferType);
-        jadeOptions.getSource().user.setValue(ftpProfile.getUser());
+        jadeOptions.getSource().user.setValue(ftpProfile.getCsUser());
         jadeOptions.getSource().password.setValue(getPassword());
         if (ftpProfile.getUseProxy()) {
-            jadeOptions.getSource().proxyHost.setValue(ftpProfile.getProxyServer());
-            jadeOptions.getSource().proxyUser.setValue(ftpProfile.getProxyUser());
-            jadeOptions.getSource().proxyPassword.setValue(ftpProfile.getProxyPassword());
-            jadeOptions.getSource().proxyProtocol.setValue(ftpProfile.getProxyProtocol());
-            jadeOptions.getSource().proxyPort.setValue(ftpProfile.getProxyPort());
+            jadeOptions.getSource().proxyHost.setValue(ftpProfile.getCsProxyServer());
+            jadeOptions.getSource().proxyUser.setValue(ftpProfile.getCsProxyUser());
+            jadeOptions.getSource().proxyPassword.setValue(ftpProfile.getCsProxyPassword());
+            jadeOptions.getSource().proxyProtocol.setValue(ftpProfile.getCsProxyProtocol());
+            jadeOptions.getSource().proxyPort.setValue(ftpProfile.getCsProxyPort());
         }
 
         if (ftpProfile.isPasswordAuthentication()) {
@@ -410,7 +410,7 @@ public class FTPProfileJadeClient {
 
         if (ftpProfile.isPublicKeyAuthentication()) {
             jadeOptions.getSource().authMethod.setValue("publickey");
-            jadeOptions.getSource().authFile.setValue(ftpProfile.getAuthFile());
+            jadeOptions.getSource().authFile.setValue(ftpProfile.getCsAuthFile());
             jadeOptions.getSource().useKeyAgent.value(ftpProfile.isUseKeyAgent());
         }
 
