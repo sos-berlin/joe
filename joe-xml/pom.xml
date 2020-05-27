@@ -22,6 +22,7 @@
         <dependency>
             <groupId>com.sos-berlin.jobscheduler.enginedoc</groupId>
             <artifactId>enginedoc-common</artifactId>
+            <version>${sos.engine.version}</version>
         </dependency>
 
 		<dependency>
