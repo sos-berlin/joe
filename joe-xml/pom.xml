@@ -8,7 +8,6 @@
 	</parent>
 	<groupId>com.sos-berlin.joe</groupId>
 	<artifactId>joe-xml</artifactId>
-	<description>		</description>
 
 	<dependencies>
 
@@ -22,7 +21,6 @@
         <dependency>
             <groupId>com.sos-berlin.jobscheduler.enginedoc</groupId>
             <artifactId>enginedoc-common</artifactId>
-            <version>${sos.engine.version}</version>
         </dependency>
 
 		<dependency>
