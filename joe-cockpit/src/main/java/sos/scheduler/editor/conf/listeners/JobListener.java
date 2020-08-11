@@ -231,10 +231,10 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
     }
 
     public void setIdleTimeout(final String idleTimeout) {
+        Utils.setAttribute("idle_timeout", idleTimeout, _job, _dom);
         if (_dom.isDirectory() || _dom.isLifeElement()) {
             _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
         }
-        Utils.setAttribute("idle_timeout", idleTimeout, _job, _dom);
     }
 
     public void setForceIdletimeout(final boolean forceIdleTimeout) {
@@ -485,10 +485,10 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
     }
 
     public void setWarnIfLongerThan(final String warnIfLongerThan) {
+        Utils.setAttribute("warn_if_longer_than", warnIfLongerThan, _job, _dom);
         if (_dom.isDirectory() || _dom.isLifeElement()) {
             _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
         }
-        Utils.setAttribute("warn_if_longer_than", warnIfLongerThan, _job, _dom);
     }
 
     public String getWarnIfLongerThan() {
@@ -496,10 +496,10 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
     }
 
     public void setWarnIfShorterThan(final String warnIfShorterThan) {
+        Utils.setAttribute("warn_if_shorter_than", warnIfShorterThan, _job, _dom);
         if (_dom.isDirectory() || _dom.isLifeElement()) {
             _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
         }
-        Utils.setAttribute("warn_if_shorter_than", warnIfShorterThan, _job, _dom);
     }
 
     public String getWarnIfShorterThan() {
@@ -1019,6 +1019,9 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 
     public void setCredentialsKey(String credentialsKey) {
         Utils.setAttribute("credentials_key", credentialsKey, "", _job, _dom);
+        if (_dom.isDirectory() || _dom.isLifeElement()) {
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
+        }
     }
 
     public String getCredentialsKey() {
@@ -1030,6 +1033,9 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
             Utils.setAttribute("load_user_profile", "true", "false", _job, _dom);
         } else {
             Utils.setAttribute("load_user_profile", "false", "false", _job, _dom);
+        }
+        if (_dom.isDirectory() || _dom.isLifeElement()) {
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
         }
     }
 
