@@ -133,18 +133,18 @@ public class FTPProfile {
         if (!SOSString.isEmpty(uri)) {
             if (localUri.startsWith("cs://")) {
                 try {
-                    String concatSign="?";
+                    String concatSign = "?";
                     if (queryPassword != null && !localUri.contains(SOSKeePassPath.QUERY_PARAMETER_PASSWORD + "=")) {
                         localUri = localUri + concatSign + SOSKeePassPath.QUERY_PARAMETER_PASSWORD + "=" + queryPassword;
-                        concatSign="&";
+                        concatSign = "&";
                     }
                     if (queryFile != null && !localUri.contains(SOSKeePassPath.QUERY_PARAMETER_FILE + "=")) {
                         localUri = localUri + concatSign + SOSKeePassPath.QUERY_PARAMETER_FILE + "=" + queryFile;
-                        concatSign="&";
+                        concatSign = "&";
                     }
                     if (queryKeyFile != null && !localUri.contains(SOSKeePassPath.QUERY_PARAMETER_KEY_FILE + "=")) {
                         localUri = localUri + concatSign + SOSKeePassPath.QUERY_PARAMETER_KEY_FILE + "=" + queryKeyFile;
-                        concatSign="&";
+                        concatSign = "&";
                     }
                     return SOSKeePassDatabase.getProperty(localUri);
                 } catch (Exception e) {
@@ -160,12 +160,12 @@ public class FTPProfile {
 
     public String getDecryptetPassword() throws Exception {
         String passwordOrUri = getPassword();
-        String password = passwordOrUri;
+        String password;
         if (!passwordOrUri.isEmpty() && passwordOrUri.endsWith("=")) {
             passwordOrUri = SOSProfileCrypt.decrypt(getProfilename(), passwordOrUri);
         } else {
             if (!passwordOrUri.isEmpty() && passwordOrUri.endsWith("=enc")) {
-                passwordOrUri = passwordOrUri.substring(0,passwordOrUri.length()-4);
+                passwordOrUri = passwordOrUri.substring(0, passwordOrUri.length() - 4);
                 passwordOrUri = SOSProfileCrypt.decryptBasic(getProfilename(), passwordOrUri);
             }
         }
@@ -180,6 +180,8 @@ public class FTPProfile {
             queryKeyFile = path.getQueryParameters().get(SOSKeePassPath.QUERY_PARAMETER_KEY_FILE);
             queryPassword = path.getQueryParameters().get(SOSKeePassPath.QUERY_PARAMETER_PASSWORD);
             password = SOSKeePassDatabase.getProperty(passwordOrUri);
+        } else {
+            password = passwordOrUri;
         }
 
         return password;

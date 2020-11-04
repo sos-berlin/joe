@@ -818,7 +818,9 @@ public class FTPProfileDialog {
             }
 
             String protocol = sosString.parseToString(currProfile.getProtocol());
-
+            if(!SOSString.isEmpty(protocol)) {
+                protocol = protocol.toUpperCase();
+            }
             listener.setCurrProfile(currProfile);
             listener.setCurrProfileName(cboConnectname.getText());
             txtHost.setText(currProfile.getHost());
