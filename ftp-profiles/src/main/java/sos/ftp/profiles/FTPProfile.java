@@ -160,16 +160,18 @@ public class FTPProfile {
 
     public String getDecryptetPassword() throws Exception {
         String passwordOrUri = getPassword();
-        String password;
-        if (!passwordOrUri.isEmpty() && passwordOrUri.endsWith("=")) {
-            passwordOrUri = SOSProfileCrypt.decrypt(getProfilename(), passwordOrUri);
-        } else {
-            if (!passwordOrUri.isEmpty() && passwordOrUri.endsWith("=enc")) {
-                passwordOrUri = passwordOrUri.substring(0, passwordOrUri.length() - 4);
-                passwordOrUri = SOSProfileCrypt.decryptBasic(getProfilename(), passwordOrUri);
-            }
+        if (passwordOrUri.isEmpty()) {
+            return passwordOrUri;
         }
 
+        if (passwordOrUri.endsWith("=")) {
+            passwordOrUri = SOSProfileCrypt.decrypt(getProfilename(), passwordOrUri);
+        } else if (passwordOrUri.endsWith("=enc")) {
+            passwordOrUri = passwordOrUri.substring(0, passwordOrUri.length() - 4);
+            passwordOrUri = SOSProfileCrypt.decryptBasic(getProfilename(), passwordOrUri);
+        }
+
+        String password;
         if (passwordOrUri.startsWith("cs://")) {
             SOSKeePassPath path = new SOSKeePassPath(passwordOrUri);
             if (!path.isValid()) {
