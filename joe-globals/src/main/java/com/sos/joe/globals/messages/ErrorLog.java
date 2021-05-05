@@ -6,11 +6,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sos.util.SOSClassUtil;
-import sos.util.SOSStandardLogger;
-
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.joe.globals.options.Options;
+
+import sos.util.SOSClassUtil;
 
 public class ErrorLog extends Exception {
 
@@ -34,7 +33,6 @@ public class ErrorLog extends Exception {
         try {
             init();
             JobSchedulerException objJSE = new JobSchedulerException(msg, e);
-            objJSE.setIntStatus(JobSchedulerException.NONE);
             String strMsg = msg + "\n" + objJSE.getExceptionText();
             message(strMsg, SWT.ERROR);
             LOGGER.error(strMsg, e);
@@ -48,7 +46,6 @@ public class ErrorLog extends Exception {
         try {
             init();
             JobSchedulerException objJSE = new JobSchedulerException(msg, e);
-            objJSE.setIntStatus(JobSchedulerException.NONE);
             String strMsg = msg + "\n" + objJSE.getExceptionText();
             message(application, strMsg, SWT.ERROR);
             LOGGER.error(strMsg);
@@ -98,10 +95,6 @@ public class ErrorLog extends Exception {
             System.out.println(e.getMessage());
         }
         return s;
-    }
-
-    public static SOSStandardLogger getLogger() {
-        return null;
     }
 
     public static Shell getSShell() {

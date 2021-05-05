@@ -26,12 +26,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import sos.util.SOSLogger;
 import sos.util.SOSString;
 
 public class FTPProfileDialog {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FTPProfileDialog.class);
     private Group profilesGroup = null;
     private SOSString sosString = null;
     private static Shell shell = null;
@@ -84,7 +86,7 @@ public class FTPProfileDialog {
 
     public FTPProfileDialog(File configFile) throws Exception {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             sosString = new SOSString();
             listener = new FTPDialogListener(configFile);
             sosString = new SOSString();
@@ -95,7 +97,7 @@ public class FTPProfileDialog {
 
     public void fillCombo(Combo combo_) throws Exception {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             combo = combo_;
             listener.setConnectionsname(combo);
             String[] profileNames = listener.getProfileNames();
@@ -105,7 +107,7 @@ public class FTPProfileDialog {
             }
             combo.setItems(profileNames);
             combo.setText(listener.getCurrProfileName() != null ? listener.getCurrProfileName() : "");
-            
+
             combo.setData(listener);
             sosString = new SOSString();
             if (emptyItem) {
@@ -118,7 +120,7 @@ public class FTPProfileDialog {
     }
 
     public void fillCombo(Combo combo_, boolean emptyItem_) throws Exception {
-        FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+        LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
         try {
             emptyItem = emptyItem_;
             fillCombo(combo_);
@@ -129,7 +131,7 @@ public class FTPProfileDialog {
 
     public void showModal(Combo combo_) {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             combo = combo_;
             fillCombo(combo);
             shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
@@ -337,13 +339,13 @@ public class FTPProfileDialog {
                 }
             });
             txtFtpUsername.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-            
+
             Composite ftpPasswordRadio = new Composite(groupFtp, SWT.NULL);
             final GridLayout gridLayoutFtpPasswordRadio = new GridLayout();
             gridLayoutFtpPasswordRadio.numColumns = 3;
             ftpPasswordRadio.setLayout(gridLayoutFtpPasswordRadio);
             ftpPasswordRadio.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
-            
+
             butAuthFtpPasswordInteractive = new Button(ftpPasswordRadio, SWT.RADIO);
             butAuthFtpPasswordInteractive.addSelectionListener(new SelectionAdapter() {
 
@@ -493,7 +495,6 @@ public class FTPProfileDialog {
             gridLayoutPublickeyPassPhrase.numColumns = 3;
             publickeyPassphrase.setLayout(gridLayoutPublickeyPassPhrase);
             publickeyPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
-           
 
             Label col = new Label(publickeyPassphrase, SWT.NONE);
             col.setText("                                         ");
@@ -510,7 +511,7 @@ public class FTPProfileDialog {
             butPublickeyPassphraseInteractive.setText("Passphrase Interactive");
 
             col = new Label(publickeyPassphrase, SWT.NONE);
-            col.setText("                                         ");            
+            col.setText("                                         ");
             butPublickeyPassphraseInput = new Button(publickeyPassphrase, SWT.RADIO);
             butPublickeyPassphraseInput.addSelectionListener(new SelectionAdapter() {
 
@@ -805,7 +806,7 @@ public class FTPProfileDialog {
 
     private void initForm() {
         try {
-            FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
+            LOGGER.trace("calling " + sos.util.SOSClassUtil.getMethodName());
             String s = cboConnectname.getText();
             cboConnectname.setItems(listener.getProfileNames());
             cboConnectname.setText(s);
@@ -817,7 +818,9 @@ public class FTPProfileDialog {
             }
 
             String protocol = sosString.parseToString(currProfile.getProtocol());
-
+            if(!SOSString.isEmpty(protocol)) {
+                protocol = protocol.toUpperCase();
+            }
             listener.setCurrProfile(currProfile);
             listener.setCurrProfileName(cboConnectname.getText());
             txtHost.setText(currProfile.getHost());
@@ -898,7 +901,7 @@ public class FTPProfileDialog {
                 butAuthKeyboardInteractive.setSelection(false);
                 butAuthPasswordInteractive.setSelection(false);
                 butAuthFtpPasswordInteractive.setSelection(currProfile.isPromptForPassword());
-                butAuthFtpPasswordInput.setSelection(!currProfile.isPromptForPassword() );             
+                butAuthFtpPasswordInput.setSelection(!currProfile.isPromptForPassword());
             }
             butApply.setEnabled(false);
             combo.setText(listener.getCurrProfileName());
@@ -925,8 +928,6 @@ public class FTPProfileDialog {
             txtProxyUser.setEnabled(useProxyButton.getSelection());
             txtProxyPassword.setEnabled(useProxyButton.getSelection());
             cboProxyProtocol.setEnabled(useProxyButton.getSelection());
-            
-            
 
         } catch (
 
@@ -1048,12 +1049,12 @@ public class FTPProfileDialog {
                 combo.setData(listener);
             }
         } catch (Exception e) {
-            FTPProfile.log("error in FTPProfileDialog.close(), cause: " + e.toString(), -1);
+            LOGGER.error("error in FTPProfileDialog.close(), cause: " + e.toString(), e);
         } finally {
             try {
                 fillCombo(combo);
             } catch (Exception e) {
-                FTPProfile.log("error in FTPProfileDialog.close(), cause: " + e.toString(), -1);
+                LOGGER.error("error in FTPProfileDialog.close(), cause: " + e.toString(), e);
             }
         }
         stopCursor(shell);

@@ -16,14 +16,15 @@ import org.jdom.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sos.ftp.profiles.FTPProfileJadeClient;
-import sos.ftp.profiles.JOEUserInfo;
-import sos.util.SOSFile;
-
-import com.sos.VirtualFileSystem.common.SOSFileEntry;
+import com.sos.vfs.common.SOSFileEntry;
+import com.sos.vfs.common.SOSFileEntry.EntryType;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Utils;
+
+import sos.ftp.profiles.FTPProfileJadeClient;
+import sos.ftp.profiles.JOEUserInfo;
+import sos.util.SOSFile;
 
 public class MergeAllXMLinDirectory {
 
@@ -43,9 +44,8 @@ public class MergeAllXMLinDirectory {
     private ArrayList<String> listOfChangeElementNames = null;
     private SOSFileEntry sosFileEntry;
     private sos.ftp.profiles.FTPProfile ftpProfile;
-	private JOEUserInfo joeUserInfo;
+    private JOEUserInfo joeUserInfo;
 
-    
     public void setFtpProfile(sos.ftp.profiles.FTPProfile ftpProfile) {
         this.ftpProfile = ftpProfile;
     }
@@ -53,7 +53,6 @@ public class MergeAllXMLinDirectory {
     public void setSosFileEntry(SOSFileEntry sosFileEntry) {
         this.sosFileEntry = sosFileEntry;
     }
-    
 
     public MergeAllXMLinDirectory(final String path_) {
         path = path_;
@@ -65,9 +64,9 @@ public class MergeAllXMLinDirectory {
     public MergeAllXMLinDirectory(String path_, JOEUserInfo joeUserInfo) {
         path = path_;
         this.joeUserInfo = joeUserInfo;
- 	}
+    }
 
-	public String parseDocuments() {
+    public String parseDocuments() {
         Element root = null;
         Document parentDoc = null;
         Element jobs = null;
@@ -132,10 +131,10 @@ public class MergeAllXMLinDirectory {
                             parent = new Element(name);
                             config.addContent(parent);
                         }
-                        String jobXMLNameWithoutExtension =
-                                jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
-                        if (!Utils.getAttributeValue("name", xmlRoot).isEmpty()
-                                && !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
+                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName()
+                                + ".xml"));
+                        if (!Utils.getAttributeValue("name", xmlRoot).isEmpty() && !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils
+                                .getAttributeValue("name", xmlRoot))) {
                             listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
                             xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
                         }
@@ -172,9 +171,8 @@ public class MergeAllXMLinDirectory {
                         parent = new Element(name);
                         config.addContent(parent);
                     }
-                    String xmlNameWithoutExtension =
-                            xmlFile.getName().substring(0, xmlFile.getName().indexOf(
-                                            "." + ("add_order".equalsIgnoreCase(xmlRoot.getName()) ? "order" : xmlRoot.getName() + ".xml")));
+                    String xmlNameWithoutExtension = xmlFile.getName().substring(0, xmlFile.getName().indexOf("." + ("add_order".equalsIgnoreCase(
+                            xmlRoot.getName()) ? "order" : xmlRoot.getName() + ".xml")));
                     String[] splitNames = xmlNameWithoutExtension.split(",");
                     String jobChainname = "";
                     String orderId = "";
@@ -182,8 +180,8 @@ public class MergeAllXMLinDirectory {
                         jobChainname = splitNames[0];
                         orderId = splitNames[1];
                     }
-                    if (!Utils.getAttributeValue("job_chain", xmlRoot).isEmpty()
-                            && !jobChainname.equalsIgnoreCase(Utils.getAttributeValue("job_chain", xmlRoot))) {
+                    if (!Utils.getAttributeValue("job_chain", xmlRoot).isEmpty() && !jobChainname.equalsIgnoreCase(Utils.getAttributeValue(
+                            "job_chain", xmlRoot))) {
                         listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
                         xmlRoot.setAttribute("job_chain", jobChainname);
                     }
@@ -199,8 +197,8 @@ public class MergeAllXMLinDirectory {
                     }
                     parent.addContent((Element) xmlRoot.clone());
                     if (!xmlFile.canWrite()) {
-                        listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("job_chain", xmlRoot) + ","
-                                + Utils.getAttributeValue("id", xmlRoot));
+                        listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("job_chain", xmlRoot) + "," + Utils
+                                .getAttributeValue("id", xmlRoot));
                     }
                 }
             }
@@ -228,8 +226,8 @@ public class MergeAllXMLinDirectory {
         try {
             xml = xml + "<spooler>  " + "      <config> " + "      </config> " + "    </spooler>";
         } catch (Exception e) {
-            LOGGER.debug("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: "
-                    + e.getMessage(), e);
+            LOGGER.debug("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: " + e.getMessage(),
+                    e);
         }
         return xml;
     }
@@ -357,8 +355,8 @@ public class MergeAllXMLinDirectory {
         if (attrName != null && attrName.isEmpty()) {
             return "";
         }
-        filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "."
-                        + ("add_order".equalsIgnoreCase(pstrCurrentTagName) ? "order" : pstrCurrentTagName) + ".xml";
+        filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "." + ("add_order".equalsIgnoreCase(
+                pstrCurrentTagName) ? "order" : pstrCurrentTagName) + ".xml";
         if (listOfChanges.containsKey(pstrCurrentTagName + "_" + attrName)) {
             if (listOfChanges.get(pstrCurrentTagName + "_" + attrName).equals(SchedulerDom.DELETE) && !new File(filename).delete()) {
                 ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
@@ -428,18 +426,18 @@ public class MergeAllXMLinDirectory {
     }
 
     private String getFileName(String key, String prefix) {
-        return (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + key.substring(prefix.length()) + "."
-                + prefix.substring(0, prefix.length() - 1) + ".xml";
+        return (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + key.substring(prefix.length()) + "." + prefix.substring(0,
+                prefix.length() - 1) + ".xml";
     }
 
     private void deleteFiles() {
-        HashMap <String,HashMap<String, SOSFileEntry>> directoryContent = new HashMap<String,HashMap<String, SOSFileEntry>>();
+        HashMap<String, HashMap<String, SOSFileEntry>> directoryContent = new HashMap<String, HashMap<String, SOSFileEntry>>();
         String filename = "";
         String prefix = "";
         Iterator<String> keys1 = listOfChanges.keySet().iterator();
         Iterator<String> values1 = listOfChanges.values().iterator();
         while (keys1.hasNext()) {
-            
+
             String key = keys1.next();
             String listOfChangesValue = values1.next();
             if (listOfChangesValue == null) {
@@ -483,30 +481,30 @@ public class MergeAllXMLinDirectory {
                 if (f.exists() && !f.delete()) {
                     ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                 }
-                
+
                 if (sosFileEntry != null) {
-                    FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile,joeUserInfo);
-                    SOSFileEntry s = new SOSFileEntry();
+                    FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile, joeUserInfo);
+                    SOSFileEntry s = new SOSFileEntry(EntryType.FILESYSTEM);
                     s.setFilename(f.getName());
                     s.setParentPath(sosFileEntry.getParentPath() + "/" + sosFileEntry.getFilename());
                     s.setDirectory(false);
                     try {
-                        if (directoryContent.get(s.getParentPath()) == null){
+                        if (directoryContent.get(s.getParentPath()) == null) {
                             HashMap<String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(s.getParentPath());
                             if (h != null) {
                                 directoryContent.put(s.getParentPath(), h);
                             }
                         }
-                      HashMap<String, SOSFileEntry>h = directoryContent.get(s.getParentPath());
-                      if (h.get(s.getFilename()) != null){
-                          ftpProfileJadeClient.removeFile(s);
-                      }
-                  } catch (Exception e) {
-                      LOGGER.error("error removing file with ftp: " + e.getMessage(),e);
-                  }finally{
-                      ftpProfileJadeClient.disconnect();
-                  }
-              }
+                        HashMap<String, SOSFileEntry> h = directoryContent.get(s.getParentPath());
+                        if (h.get(s.getFilename()) != null) {
+                            ftpProfileJadeClient.removeFile(s);
+                        }
+                    } catch (Exception e) {
+                        LOGGER.error("error removing file with ftp: " + e.getMessage(), e);
+                    } finally {
+                        ftpProfileJadeClient.disconnect();
+                    }
+                }
             }
         }
     }

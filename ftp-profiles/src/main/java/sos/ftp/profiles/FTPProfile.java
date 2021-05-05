@@ -6,14 +6,13 @@ import java.util.Properties;
 
 import org.eclipse.swt.widgets.Text;
 
-import sos.util.SOSLogger;
+import com.sos.keepass.SOSKeePassDatabase;
+import com.sos.keepass.SOSKeePassPath;
+import com.sos.keepass.exceptions.SOSKeePassDatabaseException;
+
 import sos.util.SOSString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FTPProfile {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FTPProfile.class);
 
     protected static Text logtext = null;
     private String profilename = null;
@@ -42,6 +41,10 @@ public class FTPProfile {
     private boolean promptForPassword;
     private String sftpPassphrase = null;
 
+    private String queryFile;
+    private String queryKeyFile;
+    private String queryPassword;
+
     private String auth_file = null;
     private SOSString sosString = new SOSString();
     private boolean hasError = false;
@@ -50,14 +53,18 @@ public class FTPProfile {
     public FTPProfile(Properties prop) throws Exception {
         try {
             profilename = sosString.parseToString(prop, "profilename");
+
+            password = sosString.parseToString(prop, "password");
+            this.getDecryptetPassword();
+
             host = sosString.parseToString(prop, "host");
             port = sosString.parseToString(prop, "port");
             user = sosString.parseToString(prop, "user");
             savePassword = sosString.parseToBoolean(sosString.parseToString(prop, "save_password").length() == 0 ? "true" : sosString.parseToString(
                     prop, "save_password"));
-            password = sosString.parseToString(prop, "password");
+
             root = sosString.parseToString(prop, "root");
-            localdirectory = sosString.parseToString(prop, "localdirectory");
+            localdirectory = getValueFromCS(sosString.parseToString(prop, "localdirectory"));
             transfermode = sosString.parseToString(prop, "transfermode");
             protocol = sosString.parseToString(prop, "protocol");
             useProxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
@@ -120,11 +127,65 @@ public class FTPProfile {
         return password;
     }
 
-    public String getDecryptetPassword() throws Exception {
-        String password = getPassword();
-        if (!password.isEmpty() && password.endsWith("=")) {
-            password = SOSProfileCrypt.decrypt(getProfilename(), password);
+    public String getValueFromCS(String uri) {
+        String localUri;
+        localUri = uri;
+        if (!SOSString.isEmpty(uri)) {
+            if (localUri.startsWith("cs://")) {
+                try {
+                    String concatSign = "?";
+                    if (queryPassword != null && !localUri.contains(SOSKeePassPath.QUERY_PARAMETER_PASSWORD + "=")) {
+                        localUri = localUri + concatSign + SOSKeePassPath.QUERY_PARAMETER_PASSWORD + "=" + queryPassword;
+                        concatSign = "&";
+                    }
+                    if (queryFile != null && !localUri.contains(SOSKeePassPath.QUERY_PARAMETER_FILE + "=")) {
+                        localUri = localUri + concatSign + SOSKeePassPath.QUERY_PARAMETER_FILE + "=" + queryFile;
+                        concatSign = "&";
+                    }
+                    if (queryKeyFile != null && !localUri.contains(SOSKeePassPath.QUERY_PARAMETER_KEY_FILE + "=")) {
+                        localUri = localUri + concatSign + SOSKeePassPath.QUERY_PARAMETER_KEY_FILE + "=" + queryKeyFile;
+                        concatSign = "&";
+                    }
+                    return SOSKeePassDatabase.getProperty(localUri);
+                } catch (Exception e) {
+                    return uri;
+                }
+            } else {
+                return uri;
+            }
+        } else {
+            return uri;
         }
+    }
+
+    public String getDecryptetPassword() throws Exception {
+        String passwordOrUri = getPassword();
+        if (passwordOrUri.isEmpty()) {
+            return passwordOrUri;
+        }
+
+        if (passwordOrUri.endsWith("=")) {
+            passwordOrUri = SOSProfileCrypt.decrypt(getProfilename(), passwordOrUri);
+        } else if (passwordOrUri.endsWith("=enc")) {
+            passwordOrUri = passwordOrUri.substring(0, passwordOrUri.length() - 4);
+            passwordOrUri = SOSProfileCrypt.decryptBasic(getProfilename(), passwordOrUri);
+        }
+
+        String password;
+        if (passwordOrUri.startsWith("cs://")) {
+            SOSKeePassPath path = new SOSKeePassPath(passwordOrUri);
+            if (!path.isValid()) {
+                throw new SOSKeePassDatabaseException(String.format("[%s][not valid uri]%s", passwordOrUri, path.getError()));
+            }
+
+            queryFile = path.getQueryParameters().get(SOSKeePassPath.QUERY_PARAMETER_FILE);
+            queryKeyFile = path.getQueryParameters().get(SOSKeePassPath.QUERY_PARAMETER_KEY_FILE);
+            queryPassword = path.getQueryParameters().get(SOSKeePassPath.QUERY_PARAMETER_PASSWORD);
+            password = SOSKeePassDatabase.getProperty(passwordOrUri);
+        } else {
+            password = passwordOrUri;
+        }
+
         return password;
     }
 
@@ -200,40 +261,6 @@ public class FTPProfile {
         return hasError;
     }
 
-    public static void log(String txt, int level) {
-
-        try {
-            switch (level) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                LOGGER.debug(txt);
-                break;
-            case 10:
-                LOGGER.info(txt);
-                break;
-            case SOSLogger.WARN:
-                LOGGER.warn(txt);
-                break;
-            case SOSLogger.ERROR:
-                LOGGER.error(txt);
-                break;
-            default:
-                LOGGER.info(txt);
-                break;
-            }
-        } catch (Exception e) {
-            System.out.print(txt);
-        }
-    }
-
     public boolean isUseKeyAgent() {
         return useKeyAgent;
     }
@@ -276,6 +303,42 @@ public class FTPProfile {
 
     public void setSftpPassphrase(String sftpPassphrase) {
         this.sftpPassphrase = sftpPassphrase;
+    }
+
+    public String getCsPort() {
+        return this.getValueFromCS(this.getPort());
+    }
+
+    public String getCsHost() {
+        return this.getValueFromCS(this.getHost());
+    }
+
+    public String getCsUser() {
+        return this.getValueFromCS(this.getUser());
+    }
+
+    public String getCsAuthFile() {
+        return this.getValueFromCS(this.getAuthFile());
+    }
+
+    public String getCsProxyServer() {
+        return this.getValueFromCS(this.getProxyServer());
+    }
+
+    public String getCsProxyPassword() {
+        return this.getValueFromCS(this.getProxyPassword());
+    }
+
+    public String getCsProxyUser() {
+        return this.getValueFromCS(this.getProxyUser());
+    }
+
+    public String getCsProxyPort() {
+        return this.getValueFromCS(this.getProxyPort());
+    }
+
+    public String getCsProxyProtocol() {
+        return this.getValueFromCS(this.getProxyProtocol());
     }
 
 }

@@ -28,7 +28,7 @@ public class SOSProfileCrypt {
         return pass;
     }
 
-    public static String encrypt(String pass, String str) throws Exception {
+    public static String doEncrypt(Base64.Encoder encoder, String pass, String str) throws Exception {
         try {
             pass = getPadded(pass, 24);
             str = getPadded(str, 8);
@@ -38,16 +38,15 @@ public class SOSProfileCrypt {
             SecretKey key = new SecretKeySpec(pass.getBytes(), "DESede");
             encrypt.init(Cipher.ENCRYPT_MODE, key);
 
-            Base64.Encoder mimeEncoder = java.util.Base64.getMimeEncoder();
             byte[] utf8 = str.getBytes(SOSProfileCrypt.CHARSET);
             byte[] enc = encrypt.doFinal(utf8);
-            return mimeEncoder.encodeToString(enc);
+            return encoder.encodeToString(enc);
         } catch (Exception e) {
             throw new Exception("Could not encrypt: " + e.getMessage());
         }
     }
 
-    public static String decrypt(String pass, String str) throws Exception {
+    public static String doDecrypt(Base64.Decoder decoder, String pass, String str) throws Exception {
         try {
             pass = getPadded(pass, 24);
             Provider bp = new org.bouncycastle.jce.provider.BouncyCastleProvider();
@@ -55,14 +54,32 @@ public class SOSProfileCrypt {
             Cipher decrypt = Cipher.getInstance("DESede/ECB/NoPadding", "BC");
             SecretKey key = new SecretKeySpec(pass.getBytes(), "DESede");
             decrypt.init(Cipher.DECRYPT_MODE, key);
-            Base64.Decoder mimeDecoder = java.util.Base64.getMimeDecoder();
 
-            byte[] dec = mimeDecoder.decode(str);
+            byte[] dec = decoder.decode(str);
             byte[] utf8 = decrypt.doFinal(dec);
             return new String(utf8, SOSProfileCrypt.CHARSET).trim();
         } catch (Exception e) {
             throw new Exception("Could not decrypt: " + e.getMessage());
         }
+    }
+
+    public static String encrypt(String pass, String str) throws Exception {
+        Base64.Encoder encoder = java.util.Base64.getMimeEncoder();
+        return SOSProfileCrypt.doEncrypt(encoder, pass, str);
+    }
+
+    public static String decrypt(String pass, String str) throws Exception {
+        Base64.Decoder decoder = java.util.Base64.getMimeDecoder();
+        return SOSProfileCrypt.doDecrypt(decoder, pass, str);
+    }
+    public static String encryptBasic(String pass, String str) throws Exception {
+        Base64.Encoder encoder = java.util.Base64.getEncoder();
+        return SOSProfileCrypt.doEncrypt(encoder, pass, str);
+    }
+
+    public static String decryptBasic(String pass, String str) throws Exception {
+        Base64.Decoder decoder = java.util.Base64.getDecoder();
+        return SOSProfileCrypt.doDecrypt(decoder, pass, str);
     }
 
     public static String getPadded(String in, int size) {

@@ -515,8 +515,8 @@ public class WebDavDialogListener {
                     if (pass.length() > 8) {
                         pass = pass.substring(pass.length() - 8);
                     }
-                    String encrypt = SOSProfileCrypt.encrypt(pass, sosString.parseToString(profile.get("password")));
-                    s2 += "password=" + encrypt + "\n";
+                    String encrypt = SOSProfileCrypt.encryptBasic(pass, sosString.parseToString(profile.get("password")));
+                    s2 += "password=" + encrypt + "=enc\n";
                     profile.put("password", encrypt);
                     this.password = encrypt;
                     getProfiles().put(profilename, profile);
