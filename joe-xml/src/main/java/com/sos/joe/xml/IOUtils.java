@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.sos.vfs.common.SOSVFSFactory;
 import com.sos.vfs.common.interfaces.ISOSProvider;
 import com.sos.vfs.common.interfaces.ISOSProviderFile;
+import com.sos.vfs.common.options.SOSBaseOptions;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;
@@ -56,7 +57,8 @@ public class IOUtils {
                 }
                 ISOSProvider objFileSystemHandler = null;
                 try {
-                    objFileSystemHandler = SOSVFSFactory.getProvider("local");
+                    SOSBaseOptions vfsOptions = new SOSBaseOptions();
+                    objFileSystemHandler = SOSVFSFactory.getProvider("local", vfsOptions.ssh_provider);
                 } catch (Exception e) {
                     LOGGER.error(e.getMessage(), e);
                     return null;
