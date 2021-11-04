@@ -136,7 +136,8 @@ public class FTPProfileJadeClient {
                 virtuelFileSystemOptions.proxyProtocol.setValue(ftpProfile.getCsProxyProtocol());
                 virtuelFileSystemOptions.proxyPort.setValue(ftpProfile.getCsProxyPort());
             }
-            ftpClient = SOSVFSFactory.getProvider(enuSourceTransferType);
+            SOSBaseOptions vfsOptions = new SOSBaseOptions();
+            ftpClient = SOSVFSFactory.getProvider(enuSourceTransferType, vfsOptions.ssh_provider);
             ftpClient.setBaseOptions(jadeOptions);
             ftpClient.connect(virtuelFileSystemOptions);
 
